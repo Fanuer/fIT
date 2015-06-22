@@ -1,4 +1,9 @@
-﻿using System.Data.Entity;
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
+using System.Web;
+
 
 namespace fIT.WebApi.Models
 {
@@ -15,9 +20,26 @@ namespace fIT.WebApi.Models
         {
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Exercise>()
+                .HasMany(exersice => exersice.Schedules)
+                .WithMany(schedule => schedule.Exercises)
+                .Map(exercises =>
+                {
+                    exercises.MapLeftKey("ExerciseRefId");
+                    exercises.MapRightKey("SchaduleRefId");
+                    exercises.ToTable("ScheduleExercise");
+                });
+
+
+            base.OnModelCreating(modelBuilder);
+        }
+
         public DbSet<User> Users { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Practice> Practices { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
+
     }
 }

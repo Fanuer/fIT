@@ -5,7 +5,7 @@ namespace fIT.WebApi.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using fIT.WebApi.Models;
-    using Models.Enums;
+    using fIT.WebApi.Models.Enums;
 
     internal sealed class Configuration : DbMigrationsConfiguration<fIT.WebApi.Models.DBContext>
     {
@@ -30,6 +30,8 @@ namespace fIT.WebApi.Migrations
                 new Exercise(2, "Klimmzug", "Das normale Hoch-Runter-Business (hängend)"),
                 new Exercise(2, "Kniebeuge", "Das normale Hoch-Runter-Business (stehend)")
                 );
-           }
+
+            context.SaveChanges();
+        }
     }
 }

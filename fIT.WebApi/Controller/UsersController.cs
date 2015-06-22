@@ -13,44 +13,44 @@ using fIT.WebApi.Models;
 
 namespace fIT.WebApi.Controller
 {
-    public class PracticesController : ApiController
+    public class UsersController : ApiController
     {
         private DBContext db = new DBContext();
 
-        // GET: api/Practices
-        public IQueryable<Practice> GetPractices()
+        // GET: api/Users
+        public IQueryable<User> GetUsers()
         {
-            return db.Practices;
+            return db.Users;
         }
 
-        // GET: api/Practices/5
-        [ResponseType(typeof(Practice))]
-        public async Task<IHttpActionResult> GetPractice(int id)
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> GetUser(int id)
         {
-            Practice practice = await db.Practices.FindAsync(id);
-            if (practice == null)
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(practice);
+            return Ok(user);
         }
 
-        // PUT: api/Practices/5
+        // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutPractice(int id, Practice practice)
+        public async Task<IHttpActionResult> PutUser(int id, User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != practice.ID)
+            if (id != user.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(practice).State = EntityState.Modified;
+            db.Entry(user).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +58,7 @@ namespace fIT.WebApi.Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PracticeExists(id))
+                if (!UserExists(id))
                 {
                     return NotFound();
                 }
@@ -71,35 +71,35 @@ namespace fIT.WebApi.Controller
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Practices
-        [ResponseType(typeof(Practice))]
-        public async Task<IHttpActionResult> PostPractice(Practice practice)
+        // POST: api/Users
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> PostUser(User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Practices.Add(practice);
+            db.Users.Add(user);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = practice.ID }, practice);
+            return CreatedAtRoute("DefaultApi", new { id = user.ID }, user);
         }
 
-        // DELETE: api/Practices/5
-        [ResponseType(typeof(Practice))]
-        public async Task<IHttpActionResult> DeletePractice(int id)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
+        public async Task<IHttpActionResult> DeleteUser(int id)
         {
-            Practice practice = await db.Practices.FindAsync(id);
-            if (practice == null)
+            User user = await db.Users.FindAsync(id);
+            if (user == null)
             {
                 return NotFound();
             }
 
-            db.Practices.Remove(practice);
+            db.Users.Remove(user);
             await db.SaveChangesAsync();
 
-            return Ok(practice);
+            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)
@@ -111,9 +111,9 @@ namespace fIT.WebApi.Controller
             base.Dispose(disposing);
         }
 
-        private bool PracticeExists(int id)
+        private bool UserExists(int id)
         {
-            return db.Practices.Count(e => e.ID == id) > 0;
+            return db.Users.Count(e => e.ID == id) > 0;
         }
     }
 }

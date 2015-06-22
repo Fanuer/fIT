@@ -23,11 +23,11 @@ namespace fIT.WebApi.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
-                        UserID = c.Int(nullable: false),
+                        OwnerID = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Users", t => t.UserID, cascadeDelete: true)
-                .Index(t => t.UserID);
+                .ForeignKey("dbo.Users", t => t.OwnerID, cascadeDelete: true)
+                .Index(t => t.OwnerID);
             
             CreateTable(
                 "dbo.Users",
@@ -35,10 +35,10 @@ namespace fIT.WebApi.Migrations
                     {
                         ID = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false),
-                        Gender = c.Int(nullable: false),
+                        Gender = c.Int(),
                         Password = c.String(nullable: false),
-                        Job = c.Int(nullable: false),
-                        Fitness = c.Int(nullable: false),
+                        Job = c.Int(),
+                        Fitness = c.Int(),
                         Age = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.ID);
@@ -47,32 +47,32 @@ namespace fIT.WebApi.Migrations
                 "dbo.Practices",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
-                        Timestamp = c.DateTime(nullable: false),
+                        ID = c.Int(nullable: false),
+                        ScheduleID = c.Int(nullable: false),
+                        ExerciseID = c.Int(nullable: false),
+                        Timestamp = c.Binary(nullable: false, fixedLength: true, timestamp: true, storeType: "rowversion"),
                         Weight = c.Int(nullable: false),
                         NumberOfRepetitions = c.Int(nullable: false),
                         Repetitions = c.Int(nullable: false),
-                        ScheduleID = c.Int(nullable: false),
-                        ExerciseID = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.ID)
+                .PrimaryKey(t => new { t.ID, t.ScheduleID, t.ExerciseID })
                 .ForeignKey("dbo.Exercises", t => t.ExerciseID, cascadeDelete: true)
                 .ForeignKey("dbo.Schedules", t => t.ScheduleID, cascadeDelete: true)
                 .Index(t => t.ScheduleID)
                 .Index(t => t.ExerciseID);
             
             CreateTable(
-                "dbo.ScheduleExercises",
+                "dbo.ScheduleExercise",
                 c => new
                     {
-                        Schedule_ID = c.Int(nullable: false),
-                        Exercise_ID = c.Int(nullable: false),
+                        ExerciseRefId = c.Int(nullable: false),
+                        SchaduleRefId = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => new { t.Schedule_ID, t.Exercise_ID })
-                .ForeignKey("dbo.Schedules", t => t.Schedule_ID, cascadeDelete: true)
-                .ForeignKey("dbo.Exercises", t => t.Exercise_ID, cascadeDelete: true)
-                .Index(t => t.Schedule_ID)
-                .Index(t => t.Exercise_ID);
+                .PrimaryKey(t => new { t.ExerciseRefId, t.SchaduleRefId })
+                .ForeignKey("dbo.Exercises", t => t.ExerciseRefId, cascadeDelete: true)
+                .ForeignKey("dbo.Schedules", t => t.SchaduleRefId, cascadeDelete: true)
+                .Index(t => t.ExerciseRefId)
+                .Index(t => t.SchaduleRefId);
             
         }
         
@@ -80,15 +80,15 @@ namespace fIT.WebApi.Migrations
         {
             DropForeignKey("dbo.Practices", "ScheduleID", "dbo.Schedules");
             DropForeignKey("dbo.Practices", "ExerciseID", "dbo.Exercises");
-            DropForeignKey("dbo.Schedules", "UserID", "dbo.Users");
-            DropForeignKey("dbo.ScheduleExercises", "Exercise_ID", "dbo.Exercises");
-            DropForeignKey("dbo.ScheduleExercises", "Schedule_ID", "dbo.Schedules");
-            DropIndex("dbo.ScheduleExercises", new[] { "Exercise_ID" });
-            DropIndex("dbo.ScheduleExercises", new[] { "Schedule_ID" });
+            DropForeignKey("dbo.ScheduleExercise", "SchaduleRefId", "dbo.Schedules");
+            DropForeignKey("dbo.ScheduleExercise", "ExerciseRefId", "dbo.Exercises");
+            DropForeignKey("dbo.Schedules", "OwnerID", "dbo.Users");
+            DropIndex("dbo.ScheduleExercise", new[] { "SchaduleRefId" });
+            DropIndex("dbo.ScheduleExercise", new[] { "ExerciseRefId" });
             DropIndex("dbo.Practices", new[] { "ExerciseID" });
             DropIndex("dbo.Practices", new[] { "ScheduleID" });
-            DropIndex("dbo.Schedules", new[] { "UserID" });
-            DropTable("dbo.ScheduleExercises");
+            DropIndex("dbo.Schedules", new[] { "OwnerID" });
+            DropTable("dbo.ScheduleExercise");
             DropTable("dbo.Practices");
             DropTable("dbo.Users");
             DropTable("dbo.Schedules");

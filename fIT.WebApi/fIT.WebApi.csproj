@@ -82,26 +82,25 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controller\ExercisesController.cs" />
-    <Compile Include="Controller\PracticesController.cs" />
-    <Compile Include="Controller\SchedulesController.cs" />
     <Compile Include="Controller\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201506211949281_Initial.cs" />
-    <Compile Include="Migrations\201506211949281_Initial.Designer.cs">
-      <DependentUpon>201506211949281_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201506221746014_Initial.cs" />
+    <Compile Include="Migrations\201506221746014_Initial.Designer.cs">
+      <DependentUpon>201506221746014_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\DBContext.cs" />
     <Compile Include="Models\Enums\GenderType.cs" />
     <Compile Include="Models\Enums\JobTypes.cs" />
-    <Compile Include="Models\Enums\SportsType.cs" />
+    <Compile Include="Models\Enums\FitnessType.cs" />
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\Practice.cs" />
     <Compile Include="Models\Schedule.cs" />
@@ -121,8 +120,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201506211949281_Initial.resx">
-      <DependentUpon>201506211949281_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201506221746014_Initial.resx">
+      <DependentUpon>201506221746014_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

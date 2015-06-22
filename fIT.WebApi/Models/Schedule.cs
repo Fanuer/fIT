@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +18,8 @@ namespace fIT.WebApi.Models
         {
             this.ID = id;
             this.Name = name;
-            this.UserID = userID;
-            this.User = owner;
+            this.OwnerID = userID;
+            this.Owner = owner;
             this.Exercises = exercises;
         }
 
@@ -43,12 +44,13 @@ namespace fIT.WebApi.Models
         /// <summary>
         /// Fremdschlüssel zum Nutzer
         /// </summary>        
-        public int UserID { get; set; }
+        public int OwnerID { get; set; }
 
         /// <summary>
         /// Nutzer
         /// </summary>
-        public User User { get; set; }
+        [ForeignKey("OwnerID")]
+        public virtual User Owner { get; set; }
 
         /// <summary>
         /// Uebungen

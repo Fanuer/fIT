@@ -1,4 +1,5 @@
 ﻿using fIT.WebApi.Models.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace fIT.WebApi.Models
@@ -47,7 +48,7 @@ namespace fIT.WebApi.Models
         /// <summary>
         /// Geschlecht
         /// </summary>
-        public GenderType Gender { get; set; }
+        public GenderType? Gender { get; set; }
         
         /// <summary>
         /// Passwort des Nutzers
@@ -58,18 +59,23 @@ namespace fIT.WebApi.Models
         /// <summary>
         /// Berufsfeld
         /// </summary>
-        public JobTypes Job { get; set; }
+        public JobTypes? Job { get; set; }
         
         /// <summary>
         /// Fittness
         /// </summary>
-        public FitnessType Fitness { get; set; }
+        public FitnessType? Fitness { get; set; }
         
         /// <summary>
         /// Alter
         /// </summary>
         [Required]
         public int Age { get; set; }
+
+        /// <summary>
+        /// Trainingsplaene
+        /// </summary>
+        public virtual ICollection<Schedule> Schedules { get; set; }
 
         #endregion
     }

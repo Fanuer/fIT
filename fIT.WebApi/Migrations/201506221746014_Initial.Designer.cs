@@ -13,7 +13,7 @@ namespace fIT.WebApi.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201506211949281_Initial"; }
+            get { return "201506221746014_Initial"; }
         }
         
         string IMigrationMetadata.Source

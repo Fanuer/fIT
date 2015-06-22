@@ -18,6 +18,7 @@ namespace fIT.WebApi.Models
     
         public DBContext() : base("name=DBContext")
         {
+            this.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

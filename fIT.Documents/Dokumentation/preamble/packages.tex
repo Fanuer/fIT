@@ -1,0 +1,281 @@
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/required/babel/babel.pdf
+% Languagesetting
+\usepackage{babel}	% Sprache
+
+\usepackage{textpos} 
+
+
+\usepackage{fixltx2e}	% Verbessert einige Kernkompetenzen von LaTeX2e
+\usepackage{ellipsis}	% Korrigiert den Weiï¿½raum um Auslassungspunkte
+
+\usepackage{placeins} 
+
+\usepackage{ifpdf}
+\ifpdf
+\pdfinfo {
+	/Author (\theauthor)
+	/Title (\thetitle)
+	/Subject ()
+	/Keywords ()
+%	/CreationDate (D:YYYYMMTTHHMMSS)
+}
+\fi
+
+
+
+%%% Doc: www.cs.brown.edu/system/software/latex/doc/calc.pdf
+% Calculation with LaTeX
+\usepackage{calc}
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/xcolor/xcolor.pdf
+% Farben
+% Incompatible: Do not load when using pstricks !
+\usepackage[
+	table % Load for using rowcolors command in tables
+]{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{% 
+   arrows,% 
+   calc,% 
+   fit,% 
+   patterns,% 
+   plotmarks,% 
+   shapes.geometric,% 
+   shapes.misc,% 
+   shapes.symbols,% 
+   shapes.arrows,% 
+   shapes.callouts,% 
+   shapes.multipart,% 
+   shapes.gates.logic.US,% 
+   shapes.gates.logic.IEC,% 
+   er,% 
+   automata,% 
+   backgrounds,% 
+   chains,% 
+   topaths,% 
+   trees,% 
+   petri,% 
+   mindmap,% 
+   matrix,% 
+   calendar,% 
+   folding,% 
+   fadings,% 
+   through,% 
+   positioning,% 
+   scopes,% 
+   decorations.fractals,% 
+   decorations.shapes,% 
+   decorations.text,% 
+   decorations.pathmorphing,% 
+   decorations.pathreplacing,% 
+   decorations.footprints,% 
+   decorations.markings,% 
+   shadows} 
+   
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/required/graphics/grfguide.pdf
+% Bilder
+\usepackage[%
+	%final,
+	%draft % do not include images (faster)
+]{graphicx}
+
+
+% bessere Abstaende innerhalb der Tabelle (Layout))
+% -------------------------------------------------
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/booktabs/booktabs.pdf
+\usepackage{booktabs}
+
+
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/enumitem/enumitem.pdf
+% Better than 'paralist' and 'enumerate' because it uses a keyvalue interface!
+% Do not load together with enumerate.
+%\usepackage{enumitem}
+
+\usepackage{paralist}
+
+
+%%% Doc: http://www.ctan.org/tex-archive/macros/latex/contrib/acronym/acronym.pdf
+% Usage:
+%        Definition: \acro{ acronym }[ short name ]{ full name }
+%        Nutzung im Text: \ac{acronym}
+ \usepackage[
+ 	footnote,	% Full names appear in the footnote
+ 	%smaller,		% Print acronym in smaller fontsize
+ 	%printonlyused %
+ ]{acronym}
+%\include{acronyms}
+
+
+%% Kopf und Fusszeilen====================================================
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/koma-script/scrguide.pdf
+\usepackage[%
+   automark,         % automatische Aktualisierung der Kolumnentitel
+   %nouppercase,      % Grossbuchstaben verhindern
+   %markuppercase    % Grossbuchstaben erzwingen
+   %markusedcase     % vordefinierten Stil beibehalten
+   %komastyle,       % Stil von Koma Script
+   %standardstyle,   % Stil der Standardklassen
+]{scrpage2}
+
+
+
+%% UeberSchriften (Chapter und Sections) =================================
+% -- Ueberschriften komlett Umdefinieren --
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/titlesec/titlesec.pdf
+\usepackage{titlesec}
+
+% -- Section Aussehen veraendern --
+% --------------------------------
+%% -> Section mit Unterstrich
+% \titleformat{\section}
+%   [hang]%[frame]display
+%   {\usekomafont{sectioning}\Large}
+%  {\thesection}
+%   {6pt}
+%   {}
+%   [\titlerule \vspace{0.5\baselineskip}]
+% --------------------------------
+
+% -- Chapter Aussehen veraendern --
+% --------------------------------
+\titleformat{\chapter}[block]	% {command}[shape]
+  {\usekomafont{chapter}\huge\sffamily\bfseries}	% format
+  {   										% label
+  {\thechapter.} \filright%
+  }%}
+  {1pt}										% sep (from chapternumber)
+  {\vspace{0.5pc} \filright}   % {before}[after] (before chaptertitle and after)
+  [\vspace{0.5pc} \filright {}]
+
+% \titleformat{\chapter}[]%
+%    {\usekomafont{chapter}\huge\sffamily\bfseries}%
+%    {\thechapter}%
+%    {1em}%
+%    {}%
+
+
+\usepackage{rotating}
+
+
+\usepackage[numbers,square]{natbib}
+%\usepackage{cite}
+%\bibliographystyle{dinat}
+%\citestyle{alpha}
+\bibliographystyle{alpha}
+
+
+% Quotes =================================================================
+%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/csquotes/csquotes.pdf
+% Advanced features for clever quotations
+\usepackage[%
+   babel,            % the style of all quotation marks will be adapted
+                     % to the document language as chosen by 'babel'
+   german=quotes,		% Styles of quotes in each language
+   %german=guillemets,
+   english=british,
+   french=guillemets
+]{csquotes}
+\usepackage{floatflt}
+
+\usepackage{wrapfig}
+
+%\usepackage{subfigure}
+
+\usepackage{blindtext}
+
+\usepackage{listings}
+\definecolor{lila}{RGB}{112, 6, 147}
+\definecolor{kommentgreen}{RGB}{5,132,71}
+\definecolor{grey}{RGB}{242,242,242}  
+\definecolor{darkgreen}{named}{green}
+\definecolor{darkblue}{named}{blue}
+\definecolor{lightblue}{RGB} {63,95,191}
+\definecolor{darkred}{named}{red}
+\definecolor{grau}{named}{gray}
+\definecolor{fh_orange}{rgb}{0.953,0.201,0}
+\definecolor{fh_grau}{rgb}{0.76,0.75,0.76}
+
+\definecolor{listinggray}{gray}{0.9}
+\definecolor{lbcolor}{rgb}{0.9,0.9,0.9}
+
+\lstset{
+	tabsize=3,
+	float=tbph,
+	frame=single,
+	extendedchars,
+	breaklines=true,
+	basicstyle=\fontsize{9pt}{9pt}\selectfont,
+	columns=flexible, %ist notwendig, damit man Quelltext aus den Listings kopieren kann
+	numbers=left, 
+	numberstyle=\color{black},
+	captionpos=b,
+	aboveskip=7mm,
+	backgroundcolor=\color{grey}
+}
+
+\lstdefinestyle{java}
+{
+	language=Java,
+	keywordstyle=\color{lila},  	% underlined bold black keywords 
+	identifierstyle=\color{blue}, 
+	commentstyle=\color{kommentgreen}, % white comments 
+	stringstyle=\color{black},
+}
+
+\lstdefinestyle{xml}
+{
+	language=xml,
+	basicstyle=\fontsize{9pt}{9pt}\selectfont\color{kommentgreen},
+	keywordstyle=\color{lila},  	% underlined bold black keywords 
+	%Hier können bei Bedarf noch weitere Keywords eingetragen werden
+	keywords={name, value, version, encoding, id, type, xmlns:xsi, ref, namespace},
+	identifierstyle=\color{black},  
+	stringstyle=\color{blue},  
+	commentstyle=\color{lightblue},
+	morecomment=[s]{<!--}{-->},
+	rulecolor=\color{black}
+}
+
+\usepackage{multicol}
+
+\usepackage{nameref}
+
+\usepackage{hyperref}
+\hypersetup{breaklinks=true}
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=black,citecolor=black}
+%\hypersetup{frenchlinks}	% Use small caps instead of color for links
+%\hypersetup{pdfpagemode=FullScreen}
+%\hypersetup{pdfstartpage=3}
+%\hypersetup{pdfstartview=Fit}
+
+
+% Tabellen ueber mehere Seiten
+% ----------------------------
+%%% Doc: ftp://tug.ctan.org/pub/tex-archive/macros/latex/contrib/carlisle/ltxtable.pdf
+% \usepackage{ltxtable} % Longtable + tabularx
+                        % (multi-page tables) + (auto-sized columns in a fixed width table)
+% -> nach hyperref laden
+%\usepackage{ltxtable}
+%\usepackage{longtable}
+\usepackage{tabulary}
+
+
+% Schusterjunge und Hurenkinder verhindern
+\clubpenalty=1000
+\widowpenalty=1000
+\displaywidowpenalty=1000
+
+% Trennen von Bindestrich oder so ...
+%\defaulthyphenchar=127
+
+\usepackage{ucs}               % Extended UTF-8 input encoding
+\usepackage[utf8x]{inputenc}   % trans­lates var­i­ous stan­dard and other in­put en­cod­ings into a ‘LATEX in­ter­nal lan­guage’
+\usepackage[T1]{fontenc}
+\usepackage{alltt}
+\usepackage{marvosym}
+\usepackage{fancybox}
+\usepackage[hang,small,bf]{caption}
+\usepackage{float} 
+\usepackage{multirow}

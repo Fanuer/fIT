@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A7C41468-4AAF-45ED-9FC0-431EE1E615DE}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>fIT.Documents</RootNamespace>
+    <AssemblyName>fIT.Documents</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dokumentation\abschlussarbeit.pdf" />
+    <None Include="Dokumentation\abschlussarbeit.tex" />
+    <None Include="Dokumentation\Beispiel Template\abschlussarbeit.pdf" />
+    <None Include="Dokumentation\Beispiel Template\abschlussarbeit.tcp" />
+    <None Include="Dokumentation\Beispiel Template\abschlussarbeit.tex" />
+    <None Include="Dokumentation\Beispiel Template\bib\bib.bib" />
+    <None Include="Dokumentation\Beispiel Template\content\abstract.log" />
+    <None Include="Dokumentation\Beispiel Template\content\abstract.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\anhang.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\eidesstattliche_erklaerung.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\hauptteil.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\images\fh_logo_neu_orangeA4.pdf" />
+    <None Include="Dokumentation\Beispiel Template\content\images\FH_Logo_neu_orange_A3-A1.pdf" />
+    <None Include="Dokumentation\Beispiel Template\content\motivation.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\quellcode.log" />
+    <None Include="Dokumentation\Beispiel Template\content\quellcode.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\schluss.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\tabellen.log" />
+    <None Include="Dokumentation\Beispiel Template\content\tabellen.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\title.log" />
+    <None Include="Dokumentation\Beispiel Template\content\title.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\wiarbeiten.tex" />
+    <None Include="Dokumentation\Beispiel Template\content\zeichnungen.log" />
+    <None Include="Dokumentation\Beispiel Template\content\zeichnungen.tex" />
+    <None Include="Dokumentation\Beispiel Template\preamble\acronyms.tex" />
+    <None Include="Dokumentation\Beispiel Template\preamble\commands.tex" />
+    <None Include="Dokumentation\Beispiel Template\preamble\packages.log" />
+    <None Include="Dokumentation\Beispiel Template\preamble\packages.tex" />
+    <None Include="Dokumentation\Beispiel Template\preamble\quelltext.tex" />
+    <None Include="Dokumentation\Beispiel Template\stylesheet.tex" />
+    <None Include="Dokumentation\bib\bib.bib" />
+    <None Include="Dokumentation\content\architektur.tex" />
+    <None Include="Dokumentation\content\aspekte_realisierung.tex" />
+    <None Include="Dokumentation\content\aufgabenstellung.tex" />
+    <None Include="Dokumentation\content\eidesstattliche_erklaerung.tex" />
+    <None Include="Dokumentation\content\einleitung.tex" />
+    <None Include="Dokumentation\content\gegenueberstellung.tex" />
+    <None Include="Dokumentation\content\grundlagen.tex" />
+    <None Include="Dokumentation\content\native_app.tex" />
+    <None Include="Dokumentation\content\problemanalyse.tex" />
+    <None Include="Dokumentation\content\schluss.tex" />
+    <None Include="Dokumentation\content\server.tex" />
+    <None Include="Dokumentation\content\title.tex" />
+    <None Include="Dokumentation\content\webapplikation.tex" />
+    <None Include="Dokumentation\preamble\acronyms.tex" />
+    <None Include="Dokumentation\preamble\commands.tex" />
+    <None Include="Dokumentation\preamble\packages.tex" />
+    <None Include="Dokumentation\preamble\quelltext.tex" />
+    <None Include="Dokumentation\stylesheet.tex" />
+    <None Include="Konzeption\EER.mwb" />
+    <None Include="Konzeption\Klassendiagramm fIT.asta" />
+    <None Include="Konzeption\Pflichtenheft.docx" />
+    <None Include="Konzeption\SD_Normal_Abrufen.asta" />
+    <None Include="Konzeption\SD_Normal_Speichern.asta" />
+    <None Include="Konzeption\SD_ServerGeradeWiederErreichbar_Abrufen.asta" />
+    <None Include="Konzeption\SD_ServerGeradeWiederErreichbar_Speichern.asta" />
+    <None Include="Konzeption\SD_ServerWeg_Speichern.asta" />
+    <None Include="Konzeption\UseCase fIT.asta" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dokumentation\Beispiel Template\content\images\52_Foto_FHDortmund_Gebaeude.jpg" />
+    <Content Include="Dokumentation\Beispiel Template\content\listings\java_code.java" />
+    <Content Include="Dokumentation\Beispiel Template\content\listings\xml_code.xml" />
+    <Content Include="Konzeption\DB-Entwurf.jpg" />
+    <Content Include="Konzeption\EER.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dokumentation\content\images\" />
+    <Folder Include="Dokumentation\content\listings\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

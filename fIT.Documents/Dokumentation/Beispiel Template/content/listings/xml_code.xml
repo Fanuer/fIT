@@ -1,0 +1,11 @@
+<!-- Ein Kommentar in XML -->
+<xs:element name="UsernameToken">
+    <xs:complexType>
+        <xs:sequence>
+            <xs:element ref="Username"/>
+            <xs:element ref="Password" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="Id" type="xs:ID"/>
+        <xs:anyAttribute namespace="##other"/>
+    </xs:complexType>
+</xs:element>

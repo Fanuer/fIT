@@ -1,0 +1,162 @@
+%% Dokumentenklasse (Koma Script)
+\documentclass[%
+   %draft,     % Entwurfsstadium
+   final,      % fertiges Dokument
+%%%% --- SchriftgrÃ¶Ãe ---
+   11pt,
+%%%% --- Sprache ---
+   english,
+   ngerman,           % Letzte Sprache ist die Hauptsprache, andere muss erst ausgewÃ¤hlt werden.
+%%%% === SeitengrÃ¶Ãe ===
+   a4paper,
+%%%% === Optionen fÃ¼r den Satzspiegel ===
+   %BCOR5mm,         % Zusaetzlicher Rand auf der Innenseite (Bindekorrektur)
+   %DIV11,           % Seitengroesse (siehe Koma Skript Dokumentation!)
+   %DIVcalc,         % automatische Berechnung einer guten Zeilenlaenge
+   1.1headlines,     % Zeilenanzahl der Kopfzeilen
+   %headinclude,     % Kopf einbeziehen
+   headinclude=false,      % Kopf nicht einbeziehen
+   %footinclude,     % Fuss einbeziehen
+   footinclude=false,      % Fuss nicht einbeziehen
+   %mpinclude,       % Margin einbeziehen
+   mpinclude=false,        % Margin nicht einbeziehen
+   pagesize,         % Schreibt die Papiergroesse in die Datei.
+                     % Wichtig fuer Konvertierungen
+%%%% === Layout ===
+   %oneside,          % einseitiges Layout
+   twoside,         % Seitenraender fÃ¼r zweiseitiges Layout
+   onecolumn,        % Einspaltig
+   %twocolumn,       % Zweispaltig
+   %openany,         % Kapitel beginnen auf jeder Seite
+   %openright,        % Kapitel beginnen immer auf der rechten Seite
+                     % (macht nur bei 'twoside' Sinn)
+   %cleardoubleplain,    % leere, linke Seite mit Seitenstil 'plain'
+   %cleardoubleempty,    % leere, linke Seite mit Seitenstil 'empty'
+   titlepage,        % Titel als einzelne Seite ('titlepage' Umgebung)
+   %notitlepage,     % Titel in Seite integriert
+%%%% --- Absatzeinzug ---
+   %                 % Absatzabstand: Einzeilig,
+   %parskip,         % Freiraum in letzter Zeile: 1em
+   %parskip*,        % Freiraum in letzter Zeile: Viertel einer Zeile
+   %parskip+,        % Freiraum in letzter Zeile: Drittel einer Zeile
+   %parskip-,        % Freiraum in letzter Zeile: keine Vorkehrungen
+   %                 % Absatzabstand: Halbzeilig
+   %halfparskip,     % Freiraum in letzter Zeile: 1em
+   %halfparskip*,    % Freiraum in letzter Zeile: Viertel einer Zeile
+   %halfparskip+,    % Freiraum in letzter Zeile: Drittel einer Zeile
+   parskip=half,      % Freiraum in letzter Zeile: keine Vorkehrungen
+   %                 % Absatzabstand: keiner
+   %parindent,       % EingerÃ¼ckt (Standard)
+%%%% --- Kolumnentitel ---
+   headsepline,      % Linie unter Kolumnentitel
+   %headnosepline,   % keine Linie unter Kolumnentitel
+   %footsepline,     % Linie unter Fussnote
+   %footnosepline,   % keine Linie unter Fussnote
+%%%% --- Kapitel ---
+   %chapterprefix,   % Ausgabe von 'Kapitel:'
+   chapterprefix=false,
+   version=first,  % keine Ausgabe von 'Kapitel:'
+%%%% === Verzeichnisse (TOC, LOF, LOT, BIB) ===
+   listof=totoc,      % Tabellen & Abbildungsverzeichnis ins TOC
+   %idxtotoc,        % Index ins TOC
+   bibliography=totoc,
+   verson=first,         % Bibliographie ins TOC
+   %bibtotocnumbered, % Bibliographie im TOC nummeriert
+   %liststotocnumbered, % Alle Verzeichnisse im TOC nummeriert
+   toc=graduated,        % eingereuckte Gliederung
+   %tocleft,         % Tabellenartige TOC
+   %listsindent,      % eingereuckte LOT, LOF
+   %listsleft,       % Tabellenartige LOT, LOF
+   %pointednumbers,  % Ãberschriftnummerierung mit Punkt, siehe DUDEN !
+   %pointlessnumbers, % Ãberschriftnummerierung ohne Punkt, siehe DUDEN !
+   %openbib,         % alternative Formatierung des Literaturverzeichnisses
+%%%% === Matheformeln ===
+   %leqno,           % Formelnummern links
+   fleqn,            % Formeln werden linksbuendig angezeigt
+]{scrbook}%     Klassen: scrartcl, scrreprt, scrbook
+% -------------------------------------------------------------------------
+
+% -------------- Daten für die Titelseite --> diese müssen angepasst werden!
+\newcommand*{\thedockind}{Bachelorthesis}
+\newcommand*{\thetitle}{Verl{\"a}ssliche mobile Anwendungen}
+\newcommand*{\thesubtitle}{Untersuchungen am Beispiel einer Fitness-App}
+\newcommand*{\theauthor}{Kevin Schie / Stefan Suermann}
+\newcommand*{\thematriculationnumber}{2012013 / 2012027} % Matrikelnummer
+\newcommand*{\thebirthday}{04.07.1993 / 13.12.1987} % Geburtstag
+\newcommand*{\thedegree}{Bachelor of Science}
+\newcommand*{\themajor}{Praktische Informatik} % Studiengang
+\newcommand*{\thedate}{\today} % \today kann durch ein Datum erstetzt werden.
+\newcommand*{\thebetreuer}{Prof. Dr. Johannes Ecke-Sch{\"u}th}
+\newcommand*{\thezweitbetreuer}{Prof. Dr. Klaus-Dieter Kr{\"a}geloh}
+% -------------- Ende Daten für die Titelseite
+
+\input{preamble/packages}
+\input{preamble/commands}
+
+
+% Umbenennung von "Listings"
+\addto\captionsngerman{%
+  \renewcommand{\lstlistlistingname}{Quelltextverzeichnis}%
+  \renewcommand{\lstlistingname}{Quelltext}%
+  \renewcommand{\}}{}
+}
+
+\usepackage{blindtext}
+\usepackage{helvet}	%Paket für die Schriftart
+
+\renewcommand{\familydefault}{\sfdefault}	%sorgt für einheitliche Schriftart im gesamten Dokument
+\setcounter{secnumdepth}{5} %legt die Ebene fest, bis zu der nummeriert wird
+\setcounter{tocdepth}{5} %legt fest wieviele Ebenen im Inhaltsverzeichnis vorkommen
+
+
+\begin{document}
+
+	%\captionsetup[figure]{singlelinecheck=false} %sorgt für eine Linksbündige Bildunterschrift
+	%\captionsetup[lstlisting]{singlelinecheck=off}
+	\captionsetup{singlelinecheck=off}
+	
+  \sffamily		% Schriftart Serifenlos wählen
+  \linespread {1.25}\selectfont %Zeilenabstand: 1.25 da er von Haus aus 1.2 ist und 1,25 * 1,2 = 1,5
+
+	%Titelseite einfügen
+	\input{content/title}
+	
+	\frontmatter	 		%römische Nummerierung für Inhaltsverzeichnis aktivieren
+	\tableofcontents	%Inhaltsverzeichnis erstellen
+	\mainmatter	 			%Arabische Seitenummerierung
+
+	\pagestyle{scrheadings}
+	
+	
+	% ----------------- Einfügen des eigentlichen Textes
+	
+	\input{content/aufgabenstellung}	
+	\input{content/einleitung}	
+	\input{content/problemanalyse}
+	\input{content/grundlagen}
+	\input{content/architektur}
+	\input{content/aspekte_realisierung}	
+	\input{content/server}
+	\input{content/native_app}
+	\input{content/webapplikation}
+	\input{content/gegenueberstellung}
+	\input{content/schluss}
+	
+	% ----------------- Ende des eigentlichen Textes
+	
+
+	%Verzeichnisse erstellen
+  \input{preamble/acronyms}
+	\listoffigures
+	\listoftables
+	\lstlistoflistings
+	
+	\appendix
+	\nocite{*} 
+	
+	%Literaturverzeichnis erstellen
+	\bibliography{bib/bib}
+
+	%\input{content/anhang}
+	\input{content/eidesstattliche_erklaerung}
+\end{document}

@@ -14,12 +14,11 @@ namespace fIT.WebApi.Models
     public class Schedule
     {
         #region ctor
-        public Schedule(int id = -1, string name = "", int userID = -1, User owner = null, ICollection<Exercise> exercises = null)
+        public Schedule(int id = -1, string name = "", int userID = -1, ICollection<Exercise> exercises = null)
         {
             this.ID = id;
             this.Name = name;
-            this.OwnerID = userID;
-            this.Owner = owner;
+            this.UserID = userID;
             this.Exercises = exercises;
         }
 
@@ -44,13 +43,7 @@ namespace fIT.WebApi.Models
         /// <summary>
         /// Fremdschlüssel zum Nutzer
         /// </summary>        
-        public int OwnerID { get; set; }
-
-        /// <summary>
-        /// Nutzer
-        /// </summary>
-        [ForeignKey("OwnerID")]
-        public virtual User Owner { get; set; }
+        public int UserID { get; set; }
 
         /// <summary>
         /// Uebungen

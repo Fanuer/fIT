@@ -13,48 +13,44 @@ using fIT.WebApi.Models;
 
 namespace fIT.WebApi.Controller
 {
-    public class UsersController : ApiController
+    public class ExercisesController : ApiController
     {
         private DBContext db = new DBContext();
 
-        // GET: api/Users
-        public IQueryable<User> GetUsers()
+        // GET: api/Exercises
+        public IQueryable<Exercise> GetExercises()
         {
-            return db.Users;
+            return db.Exercises;
         }
 
-        // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        // GET: api/Exercises/5
+        [ResponseType(typeof(Exercise))]
+        public async Task<IHttpActionResult> GetExercise(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Exercise exercise = await db.Exercises.FindAsync(id);
+            if (exercise == null)
             {
                 return NotFound();
             }
-            else
-            {
-                await db.Entry(user).Collection(x => x.Schedules).LoadAsync();
-            }
 
-            return Ok(user);
+            return Ok(exercise);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Exercises/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutExercise(int id, Exercise exercise)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.ID)
+            if (id != exercise.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            db.Entry(exercise).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +58,7 @@ namespace fIT.WebApi.Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!ExerciseExists(id))
                 {
                     return NotFound();
                 }
@@ -75,35 +71,35 @@ namespace fIT.WebApi.Controller
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
+        // POST: api/Exercises
+        [ResponseType(typeof(Exercise))]
+        public async Task<IHttpActionResult> PostExercise(Exercise exercise)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
+            db.Exercises.Add(exercise);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = user.ID }, user);
+            return CreatedAtRoute("DefaultApi", new { id = exercise.ID }, exercise);
         }
 
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
+        // DELETE: api/Exercises/5
+        [ResponseType(typeof(Exercise))]
+        public async Task<IHttpActionResult> DeleteExercise(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Exercise exercise = await db.Exercises.FindAsync(id);
+            if (exercise == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
+            db.Exercises.Remove(exercise);
             await db.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(exercise);
         }
 
         protected override void Dispose(bool disposing)
@@ -115,9 +111,9 @@ namespace fIT.WebApi.Controller
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool ExerciseExists(int id)
         {
-            return db.Users.Count(e => e.ID == id) > 0;
+            return db.Exercises.Count(e => e.ID == id) > 0;
         }
     }
 }

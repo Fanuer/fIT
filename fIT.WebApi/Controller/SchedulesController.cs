@@ -13,48 +13,44 @@ using fIT.WebApi.Models;
 
 namespace fIT.WebApi.Controller
 {
-    public class UsersController : ApiController
+    public class SchedulesController : ApiController
     {
         private DBContext db = new DBContext();
 
-        // GET: api/Users
-        public IQueryable<User> GetUsers()
+        // GET: api/Schedules
+        public IQueryable<Schedule> GetSchedules()
         {
-            return db.Users;
+            return db.Schedules;
         }
 
-        // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        // GET: api/Schedules/5
+        [ResponseType(typeof(Schedule))]
+        public async Task<IHttpActionResult> GetSchedule(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Schedule schedule = await db.Schedules.FindAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
-            else
-            {
-                await db.Entry(user).Collection(x => x.Schedules).LoadAsync();
-            }
 
-            return Ok(user);
+            return Ok(schedule);
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Schedules/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutSchedule(int id, Schedule schedule)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.ID)
+            if (id != schedule.ID)
             {
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            db.Entry(schedule).State = EntityState.Modified;
 
             try
             {
@@ -62,7 +58,7 @@ namespace fIT.WebApi.Controller
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!UserExists(id))
+                if (!ScheduleExists(id))
                 {
                     return NotFound();
                 }
@@ -75,35 +71,35 @@ namespace fIT.WebApi.Controller
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
+        // POST: api/Schedules
+        [ResponseType(typeof(Schedule))]
+        public async Task<IHttpActionResult> PostSchedule(Schedule schedule)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Users.Add(user);
+            db.Schedules.Add(schedule);
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = user.ID }, user);
+            return CreatedAtRoute("DefaultApi", new { id = schedule.ID }, schedule);
         }
 
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
+        // DELETE: api/Schedules/5
+        [ResponseType(typeof(Schedule))]
+        public async Task<IHttpActionResult> DeleteSchedule(int id)
         {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
+            Schedule schedule = await db.Schedules.FindAsync(id);
+            if (schedule == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
+            db.Schedules.Remove(schedule);
             await db.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(schedule);
         }
 
         protected override void Dispose(bool disposing)
@@ -115,9 +111,9 @@ namespace fIT.WebApi.Controller
             base.Dispose(disposing);
         }
 
-        private bool UserExists(int id)
+        private bool ScheduleExists(int id)
         {
-            return db.Users.Count(e => e.ID == id) > 0;
+            return db.Schedules.Count(e => e.ID == id) > 0;
         }
     }
 }

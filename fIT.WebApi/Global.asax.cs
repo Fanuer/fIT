@@ -1,5 +1,7 @@
-﻿using System;
+﻿using fIT.WebApi.Migrations;
+using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -11,9 +13,10 @@ namespace fIT.WebApi
     {
         protected void Application_Start()
         {
+            Database.SetInitializer(new DBIntitializer());
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
-            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All;
+            /*var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            json.SerializerSettings.PreserveReferencesHandling = Newtonsoft.Json.PreserveReferencesHandling.All;*/
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using Microsoft.Owin.Security.OAuth;
 
 namespace fIT.WebApi
 {
@@ -10,6 +11,8 @@ namespace fIT.WebApi
         public static void Register(HttpConfiguration config)
         {
             // Web-API-Konfiguration und -Dienste
+            config.SuppressDefaultHostAuthentication();
+            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
 
             // Web-API-Routen
             config.MapHttpAttributeRoutes();

@@ -37,7 +37,7 @@ namespace fIT.WebApi.Models
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<User> Users { get; set; }
+        public DbSet<ApplicationUser> Users { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Practice> Practices { get; set; }

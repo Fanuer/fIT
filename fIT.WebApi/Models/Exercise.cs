@@ -35,7 +35,7 @@ namespace fIT.WebApi.Models
         public int ID { get; set; }
 
         /// <summary>
-        /// Name
+        /// DisplayName
         /// </summary>
         [Required]
         public string Name { get; set; }

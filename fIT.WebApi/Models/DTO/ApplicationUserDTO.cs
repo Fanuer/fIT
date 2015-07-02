@@ -4,21 +4,22 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity;
 
 namespace fIT.WebApi.Models.DTO
 {
-    public class UserDTO
+    public class ApplicationUserDTO
     {
-        internal User ToDataModel()
+        internal ApplicationUser ToDataModel()
         {
-            return new User(this.ID, this.Name, this.Password, this.Age, this.Gender.Value, this.Fitness.Value, this.Job.Value);
-            
+            return new ApplicationUser(this.ID, this.Name, this.Password, this.Email, this.Age, this.Gender.Value, this.Fitness.Value, this.Job.Value);
         }
 
         #region Ctor
-        public UserDTO(int id = -1,
+        public ApplicationUserDTO(int id = -1,
                     string name = "",
                     string password = "",
+
                     int age = 0,
                     GenderType gender = GenderType.Male,
                     FitnessType fitness = FitnessType.NoSport,
@@ -33,19 +34,20 @@ namespace fIT.WebApi.Models.DTO
             this.Job = job;
         }
 
-        public UserDTO()
+        public ApplicationUserDTO()
             :this(-1)
         {
 
         }
 
 
-        public UserDTO(User user)
+        public ApplicationUserDTO(ApplicationUser user)
         {
             if (user == null) { throw new ArgumentNullException("user"); }
 
             this.ID = user.ID;
-            this.Name = user.Name;
+            this.Email = user.Email;
+            this.Name = user.Id;
             this.Password = user.Password;
             this.Age = user.Age;
             this.Gender = user.Gender;
@@ -62,10 +64,15 @@ namespace fIT.WebApi.Models.DTO
         public int ID { get; set; }
 
         /// <summary>
-        /// Name des Nutzers
+        /// Username
         /// </summary>
         [Required]
         public string Name { get; set; }
+
+        /// <summary>
+        /// Username
+        /// </summary>
+        public string Email { get; set; }
 
         /// <summary>
         /// Geschlecht

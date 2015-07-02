@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using fIT.WebApi.Models;
+using fIT.WebApi.Models.DTO;
 
 namespace fIT.WebApi.Controller
 {
@@ -24,7 +25,7 @@ namespace fIT.WebApi.Controller
         }
 
         // GET: api/Schedules/5
-        [ResponseType(typeof(Schedule))]
+        [ResponseType(typeof(ScheduleDTO))]
         public async Task<IHttpActionResult> GetSchedule(int id)
         {
             Schedule schedule = await db.Schedules.FindAsync(id);
@@ -33,7 +34,7 @@ namespace fIT.WebApi.Controller
                 return NotFound();
             }
 
-            return Ok(schedule);
+            return Ok(new ScheduleDTO(schedule));
         }
 
         // PUT: api/Schedules/5

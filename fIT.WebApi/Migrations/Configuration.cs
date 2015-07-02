@@ -17,8 +17,8 @@ namespace fIT.WebApi.Migrations
         protected override void Seed(DBContext context)
         {
             context.Users.AddOrUpdate(x => x.ID,
-                new User(1, "Stefan", "test", 27, fitness: FitnessType.OnceAWeek),
-                new User(2, "Kevin", "test", 21, fitness: FitnessType.HighPerformanceAthletes));
+                new ApplicationUser(1, "Stefan", "test", "test@test.de", 27, fitness: FitnessType.OnceAWeek),
+                new ApplicationUser(2, "Kevin", "test", "test@test.de", 21, fitness: FitnessType.HighPerformanceAthletes));
 
             context.Schedules.AddOrUpdate(x => x.ID,
                 new Schedule(1, "BOP", 1),

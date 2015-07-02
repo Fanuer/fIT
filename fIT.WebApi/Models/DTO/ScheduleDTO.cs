@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fIT.WebApi.Models
+namespace fIT.WebApi.Models.DTO
 {
-    /// <summary>
-    /// Definiert einen Trainingsplan
-    /// </summary>
-    public class Schedule
+    public class ScheduleDTO
     {
         #region ctor
-        public Schedule(int id = -1, string name = "", int userID = -1, ICollection<Exercise> exercises = null)
+        public ScheduleDTO(Schedule schedule)
+        {
+            if (schedule== null)
+            {
+                throw new ArgumentNullException("schedule");
+            }
+            this.ID = schedule.ID;
+            this.Name = schedule.Name;
+            this.UserID = schedule.UserID;
+            this.Exercises = schedule.Exercises.Select(x=>x.ID).ToList();
+        }
+
+        public ScheduleDTO(int id = -1, string name = "", int userID = -1, ICollection<int> exercises = null)
         {
             this.ID = id;
             this.Name = name;
@@ -22,7 +30,7 @@ namespace fIT.WebApi.Models
             this.Exercises = exercises;
         }
 
-        public Schedule()
+        public ScheduleDTO()
             :this(-1)
         {
 
@@ -37,7 +45,7 @@ namespace fIT.WebApi.Models
         /// <summary>
         /// DisplayName des Trainingsplans
         /// </summary>
-        [Required]        
+        [Required]
         public string Name { get; set; }
 
         /// <summary>
@@ -48,7 +56,7 @@ namespace fIT.WebApi.Models
         /// <summary>
         /// Uebungen
         /// </summary>
-        public virtual ICollection<Exercise> Exercises { get; set; }
+        public virtual ICollection<int> Exercises { get; set; }
 
         #endregion
     }

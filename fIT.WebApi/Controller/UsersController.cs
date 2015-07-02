@@ -18,16 +18,16 @@ namespace fIT.WebApi.Controller
         private DBContext db = new DBContext();
 
         // GET: api/Users
-        public IQueryable<User> GetUsers()
+        public IQueryable<ApplicationUser> GetUsers()
         {
             return db.Users;
         }
 
         // GET: api/Users/5
-        [ResponseType(typeof(User))]
+        [ResponseType(typeof(ApplicationUser))]
         public async Task<IHttpActionResult> GetUser(int id)
         {
-            User user = await db.Users.FindAsync(id);
+            ApplicationUser user = await db.Users.FindAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -42,7 +42,7 @@ namespace fIT.WebApi.Controller
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        public async Task<IHttpActionResult> PutUser(int id, ApplicationUser user)
         {
             if (!ModelState.IsValid)
             {
@@ -76,8 +76,8 @@ namespace fIT.WebApi.Controller
         }
 
         // POST: api/Users
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
+        [ResponseType(typeof(ApplicationUser))]
+        public async Task<IHttpActionResult> PostUser(ApplicationUser user)
         {
             if (!ModelState.IsValid)
             {
@@ -88,22 +88,6 @@ namespace fIT.WebApi.Controller
             await db.SaveChangesAsync();
 
             return CreatedAtRoute("DefaultApi", new { id = user.ID }, user);
-        }
-
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
-        {
-            User user = await db.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
-
-            return Ok(user);
         }
 
         protected override void Dispose(bool disposing)

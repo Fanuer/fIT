@@ -19,9 +19,11 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <returns></returns>
         [Route("users")]
+        [HttpGet]
         public IHttpActionResult GetUsers()
         {
-            return Ok(this.AppUserManager.Users.Select(u => this.TheModelFactory.Create(u)));
+            //aktueller Workaround: Wenn der EF-Fehler entfernt ist, kann das ToList entfernt werden
+            return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
         }
 
         /// <summary>
@@ -30,6 +32,7 @@ namespace fIT.WebApi.Controller
         /// <param name="Id">user's guid</param>
         /// <returns></returns>
         [Route("user/{id:guid}", Name = "GetUserById")]
+        [HttpGet]
         public async Task<IHttpActionResult> GetUser(string Id)
         {
             var user = await this.AppUserManager.FindByIdAsync(Id);
@@ -49,6 +52,7 @@ namespace fIT.WebApi.Controller
         /// <param name="username">username to search for</param>
         /// <returns></returns>
         [Route("user/{username}")]
+        [HttpGet]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
             var user = await this.AppUserManager.FindByNameAsync(username);
@@ -62,7 +66,8 @@ namespace fIT.WebApi.Controller
 
         }
 
-        [Route("create")]
+        [Route("register")]
+        [HttpPost]
         public async Task<IHttpActionResult> Register(RegisterUserModel createUserModel)
         {
             // validate model
@@ -92,6 +97,43 @@ namespace fIT.WebApi.Controller
             Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
 
             return Created(locationHeader, TheModelFactory.Create(user));
+        }
+
+        [Route("ChangePassword")]
+        [HttpPost]
+        public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult result = await this.AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
+        [Route("user/{id:guid}")]
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteUser(string id)
+        {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            var appUser = await this.AppUserManager.FindByIdAsync(id);
+            if (appUser != null)
+            {
+                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+                return Ok();
+            }
+            return NotFound();
         }
     }
 }

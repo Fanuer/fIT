@@ -3,17 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
+using System.Net.Http.Formatting;
+using Newtonsoft.Json.Serialization;
 
 namespace fIT.WebApi
 {
     public static class WebApiConfig
     {
         public static void Register(HttpConfiguration config)
-        {
-            // Web-API-Konfiguration und -Dienste
-            config.SuppressDefaultHostAuthentication();
-            config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
-
+        {            
             // Web-API-Routen
             config.MapHttpAttributeRoutes();
 
@@ -22,6 +20,10 @@ namespace fIT.WebApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            //JSON-Results werden in CamelCase zurückgegeben
+            var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
         }
     }
 }

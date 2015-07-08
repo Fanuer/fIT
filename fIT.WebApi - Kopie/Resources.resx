@@ -119,27 +119,20 @@
   </resheader>
   <data name="Error_PasswordsNotEqual" xml:space="preserve">
     <value>The password and confirmation password do not match.</value>
-    <comment>Passwörter sind nicht gleich</comment>
   </data>
   <data name="Error_Required" xml:space="preserve">
     <value>The field '{0}' is required.</value>
-    <comment>Feld ist pflicht</comment>
   </data>
   <data name="Error_StringLength" xml:space="preserve">
     <value>The {0} must be at least {2} characters long.</value>
-    <comment>Länge der Eingabe stimmt nicht</comment>
   </data>
   <data name="Label_Age" xml:space="preserve">
     <value>Age</value>
     <comment>Alter des Nutzers</comment>
   </data>
   <data name="Label_ConfirmPassword" xml:space="preserve">
-    <value>Confirm Password</value>
+    <value>Conform Password</value>
     <comment>Vergleichspasswort zur Verifikation der Eingabe</comment>
-  </data>
-  <data name="Label_CurrentPassword" xml:space="preserve">
-    <value>Old Password</value>
-    <comment>Altes Passwort</comment>
   </data>
   <data name="Label_Email" xml:space="preserve">
     <value>Email</value>
@@ -156,10 +149,6 @@
   <data name="Label_JobType" xml:space="preserve">
     <value>Kind of Job</value>
     <comment>Art der beruflichen Tätigkeit (körperlich oder vorwiegend sitzen)</comment>
-  </data>
-  <data name="Label_NewPassword" xml:space="preserve">
-    <value>New Password</value>
-    <comment>Neues Passwort</comment>
   </data>
   <data name="Label_Password" xml:space="preserve">
     <value>Password</value>

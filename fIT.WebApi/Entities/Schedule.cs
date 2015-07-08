@@ -5,24 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fIT.WebApi.Models
+namespace fIT.WebApi.Entities
 {
     /// <summary>
-    /// Uebung fuer Trainingspläne
+    /// Definiert einen Trainingsplan
     /// </summary>
-    public class Exercise
+    public class Schedule
     {
         #region ctor
-        public Exercise(int id = -1, string name ="", string description ="", ICollection<Schedule> schedules = null)
+        public Schedule(int id = -1, string name = "", int userID = -1, ICollection<Exercise> exercises = null)
         {
             this.ID = id;
             this.Name = name;
-            this.Description = description;
-            this.Schedules = Schedules;
+            this.UserID = userID;
+            this.Exercises = exercises;
         }
 
-        public Exercise()
-            :this(-1)
+        public Schedule()
+            : this(-1)
         {
 
         }
@@ -30,26 +30,25 @@ namespace fIT.WebApi.Models
 
         #region Properties
         /// <summary>
-        /// ID der Uebung
+        /// DB ID
         /// </summary>
         public int ID { get; set; }
-
         /// <summary>
-        /// DisplayName
+        /// DisplayName des Trainingsplans
         /// </summary>
         [Required]
         public string Name { get; set; }
 
         /// <summary>
-        /// Beschreibung
-        /// </summary>
-        public string Description { get; set; }
+        /// Fremdschlüssel zum Nutzer
+        /// </summary>        
+        public int UserID { get; set; }
 
         /// <summary>
-        /// Trainingsplaene, die diese Uebung enthalten
+        /// Uebungen
         /// </summary>
-        public virtual ICollection<Schedule> Schedules { get; set; }
-        #endregion
+        public virtual ICollection<Exercise> Exercises { get; set; }
 
+        #endregion
     }
 }

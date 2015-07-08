@@ -60,12 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\fIT.WebApi\fIT.WebApi.csproj">
-      <Project>{3AF1357E-A90D-4B45-A542-9E4F6EACE3BC}</Project>
-      <Name>fIT.WebApi</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>

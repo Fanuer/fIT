@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fIT.WebApi.Models
+namespace fIT.WebApi.Entities
 {
     /// <summary>
     /// Definiert einen Trainingsplan

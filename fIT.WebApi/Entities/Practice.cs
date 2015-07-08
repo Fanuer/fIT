@@ -6,19 +6,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fIT.WebApi.Models
+namespace fIT.WebApi.Entities
 {
     /// <summary>
     /// Definiert eine Trainingseinheit
     /// </summary>
     public class Practice
     {
-        public Practice(int id, 
-            int scheduleID, 
-            int exerciseID, 
-            byte[] timestamp = null, 
-            int weight = 0, 
-            int repetitions = 0, 
+        public Practice(int id,
+            int scheduleID,
+            int exerciseID,
+            byte[] timestamp = null,
+            int weight = 0,
+            int repetitions = 0,
             int numberOfRepetitions = 0)
         {
             this.ID = id;

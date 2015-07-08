@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fIT.WebApi.Models.Enums
+namespace fIT.WebApi.Entities.Enums
 {
     /// <summary>
     /// Geschlecht
@@ -20,5 +20,4 @@ namespace fIT.WebApi.Models.Enums
         /// </summary>
         Female
     }
-
 }

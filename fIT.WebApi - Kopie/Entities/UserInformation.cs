@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,28 +13,30 @@ namespace fIT.WebApi.Entities
     /// <summary>
     /// Entität eines Nutzers
     /// </summary>
-    public class ApplicationUser : IdentityUser
+    public class UserInformation:IdentityUser
     {
         #region Method
         #endregion
 
         #region Ctor
-        public ApplicationUser(
+        public UserInformation(            
             string username = "",
             string email = "",
             int age = 0,
             GenderType gender = GenderType.Male,
             FitnessType fitness = FitnessType.NoSport,
-            JobTypes job = JobTypes.Middle)
-            : base(username)
+            JobTypes job = JobTypes.Middle, 
+            int id = -1) 
+            :base(username)
         {
+            UserID = id;
             Age = age;
             Gender = gender;
             Fitness = fitness;
-            Email = email;
+            Email = email;            
         }
 
-        public ApplicationUser()
+        public UserInformation()
             : this("")
         {
 
@@ -41,16 +44,12 @@ namespace fIT.WebApi.Entities
 
         #endregion
 
-        #region Method
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
-        {
-            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
-            // Add custom user claims here
-            return userIdentity;
-        }
-        #endregion
-
         #region Properties
+        /// <summary>
+        /// Nutzer ID
+        /// </summary>
+        [Index(IsUnique = true)]
+        public int UserID { get; set; }
 
         /// <summary>
         /// Geschlecht
@@ -79,13 +78,8 @@ namespace fIT.WebApi.Entities
         /// <summary>
         /// Trainingsplaene
         /// </summary>
-        //public virtual ICollection<Schedule> Schedules { get; set; }
-
-        /// <summary>
-        /// User Level
-        /// </summary>
-        [Required]
-        public byte Level { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
+        
         #endregion
     }
 }

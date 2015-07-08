@@ -97,20 +97,11 @@ namespace fIT.WebApi {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Confirm Password ähnelt.
+        ///   Sucht eine lokalisierte Zeichenfolge, die Conform Password ähnelt.
         /// </summary>
         internal static string Label_ConfirmPassword {
             get {
                 return ResourceManager.GetString("Label_ConfirmPassword", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Old Password ähnelt.
-        /// </summary>
-        internal static string Label_CurrentPassword {
-            get {
-                return ResourceManager.GetString("Label_CurrentPassword", resourceCulture);
             }
         }
         
@@ -147,15 +138,6 @@ namespace fIT.WebApi {
         internal static string Label_JobType {
             get {
                 return ResourceManager.GetString("Label_JobType", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die New Password ähnelt.
-        /// </summary>
-        internal static string Label_NewPassword {
-            get {
-                return ResourceManager.GetString("Label_NewPassword", resourceCulture);
             }
         }
         

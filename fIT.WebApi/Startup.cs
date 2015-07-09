@@ -49,7 +49,7 @@ namespace fIT.WebApi
             {
 #warning For Dev enviroment only (on production should be AllowInsecureHttp = false)
                 AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/oauth/token"),
+                TokenEndpointPath = new PathString("/Accounts/Login"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new CustomOAuthProvider(), // specify, how to validate the Resource Owner
                 AccessTokenFormat = new CustomJwtFormat(ConfigurationManager.AppSettings["as:Issuer"]) //Specifies the implementation, how to generate the access token

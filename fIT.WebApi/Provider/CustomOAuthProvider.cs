@@ -28,7 +28,7 @@ namespace fIT.WebApi.Provider
             context.Validated();
             return Task.FromResult<object>(null);
         }
-
+        
         /// <summary>
         /// receiving the username and password from the request and validate them against our ASP.NET 2.1 Identity system
         /// </summary>
@@ -39,11 +39,11 @@ namespace fIT.WebApi.Provider
             //Allowing cross domain resources for external logins
             var allowedOrigin = "*";
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
-
+            
             //Search user by username and password
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
             ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
-
+            
             if (user == null)
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
@@ -63,7 +63,7 @@ namespace fIT.WebApi.Provider
 
             //Transfer this identity to an OAuth 2.0 Bearer access ticket
             context.Validated(ticket);
-
+            
         }
     }
 }

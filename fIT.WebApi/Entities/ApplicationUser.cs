@@ -14,9 +14,7 @@ namespace fIT.WebApi.Entities
     /// </summary>
     public class ApplicationUser : IdentityUser
     {
-        #region Method
-        #endregion
-
+     
         #region Ctor
         public ApplicationUser(
             string username = "",
@@ -27,6 +25,7 @@ namespace fIT.WebApi.Entities
             JobTypes job = JobTypes.Middle)
             : base(username)
         {
+            this.Job = job;
             Age = age;
             Gender = gender;
             Fitness = fitness;

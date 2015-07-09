@@ -9,6 +9,13 @@ using fIT.WebApi.Manager;
 using fIT.WebApi.Repository;
 using Newtonsoft.Json.Serialization;
 using Owin;
+using Microsoft.Owin.Security.OAuth;
+using Microsoft.Owin;
+using fIT.WebApi.Provider;
+using System.Configuration;
+using Microsoft.Owin.Security.DataHandler.Encoder;
+using Microsoft.Owin.Security.Jwt;
+using Microsoft.Owin.Security;
 
 namespace fIT.WebApi
 {
@@ -23,6 +30,7 @@ namespace fIT.WebApi
         {
             HttpConfiguration httpConfig = new HttpConfiguration();
             ConfigureOAuthTokenGeneration(app);
+            ConfigureOAuthTokenConsumption(app);
             ConfigureWebApi(httpConfig);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             app.UseWebApi(httpConfig);
@@ -37,8 +45,18 @@ namespace fIT.WebApi
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
 
-            // Plugin the OAuth bearer JSON Web Token tokens generation and Consumption will be here
+            OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
+            {
+#warning For Dev enviroment only (on production should be AllowInsecureHttp = false)
+                AllowInsecureHttp = true,
+                TokenEndpointPath = new PathString("/oauth/token"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                Provider = new CustomOAuthProvider(), // specify, how to validate the Resource Owner
+                AccessTokenFormat = new CustomJwtFormat(ConfigurationManager.AppSettings["as:Issuer"]) //Specifies the implementation, how to generate the access token
+            };
 
+            // OAuth 2.0 Bearer Access Token Generation
+            app.UseOAuthAuthorizationServer(OAuthServerOptions);
         }
 
         /// <summary>
@@ -51,6 +69,30 @@ namespace fIT.WebApi
 
             var jsonFormatter = config.Formatters.OfType<JsonMediaTypeFormatter>().First();
             jsonFormatter.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+        }
+
+        /// <summary>
+        /// Configures how the web api should handle authorization.
+        /// The Api will now only trust issues by our Authorization Server and if Authorization Server = Resource Server
+        /// </summary>
+        /// <param name="app"></param>
+        private void ConfigureOAuthTokenConsumption(IAppBuilder app)
+        {
+            var issuer = ConfigurationManager.AppSettings["as:Issuer"];
+            string audienceId = ConfigurationManager.AppSettings["as:AudienceId"];
+            byte[] audienceSecret= TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["as:AudienceSecret"]);
+
+            // Api controllers with an [Authorize] attribute will be validated with JWT
+            app.UseJwtBearerAuthentication(
+                new JwtBearerAuthenticationOptions
+                {
+                    AuthenticationMode = AuthenticationMode.Active,
+                    AllowedAudiences = new[] { audienceId },
+                    IssuerSecurityTokenProviders = new IIssuerSecurityTokenProvider[]
+                    {
+                        new SymmetricKeyIssuerSecurityTokenProvider(issuer, audienceSecret)
+                    }
+                });
         }
 
         #endregion

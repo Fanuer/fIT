@@ -11,14 +11,15 @@ using Microsoft.AspNet.Identity;
 
 namespace fIT.WebApi.Controller
 {
-    [RoutePrefix("api/accounts")]
+    [Authorize]
+    [RoutePrefix("api/Accounts")]
     public class AccountsController : BaseApiController
     {
         /// <summary>
         /// Gets all application Users
         /// </summary>
         /// <returns></returns>
-        [Route("users")]
+        [Route("Users")]
         [HttpGet]
         public IHttpActionResult GetUsers()
         {
@@ -31,7 +32,7 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="Id">user's guid</param>
         /// <returns></returns>
-        [Route("user/{id:guid}", Name = "GetUserById")]
+        [Route("User/{id:guid}", Name = "GetUserById")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUser(string Id)
         {
@@ -51,7 +52,7 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="username">username to search for</param>
         /// <returns></returns>
-        [Route("user/{username}")]
+        [Route("User/{username}")]
         [HttpGet]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
@@ -66,7 +67,36 @@ namespace fIT.WebApi.Controller
 
         }
 
-        [Route("register")]
+        /// <summary>
+        /// Admin can delete User
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Route("User/{id:guid}")]
+        [HttpDelete]
+        public async Task<IHttpActionResult> DeleteUser(string id)
+        {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            var appUser = await this.AppUserManager.FindByIdAsync(id);
+            if (appUser != null)
+            {
+                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        /// <summary>
+        /// User can register to the Application
+        /// </summary>
+        /// <param name="createUserModel"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [Route("Register")]
         [HttpPost]
         public async Task<IHttpActionResult> Register(RegisterUserModel createUserModel)
         {
@@ -99,6 +129,12 @@ namespace fIT.WebApi.Controller
             return Created(locationHeader, TheModelFactory.Create(user));
         }
 
+        /// <summary>
+        /// User can change its password
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [AllowAnonymous]
         [Route("ChangePassword")]
         [HttpPost]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
@@ -118,22 +154,6 @@ namespace fIT.WebApi.Controller
             return Ok();
         }
 
-        [Route("user/{id:guid}")]
-        [HttpDelete]
-        public async Task<IHttpActionResult> DeleteUser(string id)
-        {
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-            if (appUser != null)
-            {
-                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-                return Ok();
-            }
-            return NotFound();
-        }
+        
     }
 }

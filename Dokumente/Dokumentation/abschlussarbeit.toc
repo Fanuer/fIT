@@ -19,4 +19,5 @@
 \contentsline {chapter}{\nonumberline Abbildungsverzeichnis}{25}{chapter*.4}
 \contentsline {chapter}{\nonumberline Tabellenverzeichnis}{27}{chapter*.5}
 \contentsline {chapter}{\nonumberline Quelltextverzeichnis}{29}{chapter*.6}
-\contentsline {chapter}{\numberline {A}Eidesstattliche Erkl\IeC {\"a}rung}{31}{appendix.A}
+\contentsline {chapter}{\nonumberline Literaturverzeichnis}{31}{appendix*.7}
+\contentsline {chapter}{\numberline {A}Eidesstattliche Erkl\IeC {\"a}rung}{33}{appendix.A}

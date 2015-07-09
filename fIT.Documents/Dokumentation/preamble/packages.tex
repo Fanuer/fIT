@@ -158,12 +158,30 @@
 
 \usepackage{rotating}
 
+%Literatur-Einstellungen
 
-\usepackage[numbers,square]{natbib}
-%\usepackage{cite}
-%\bibliographystyle{dinat}
-%\citestyle{alpha}
-\bibliographystyle{alpha}
+%vielleicht Layout anpassen...
+\usepackage{jurabib}
+
+\jurabibsetup{
+	commabeforerest,
+	ibidem=strict,
+	citefull=first,
+	see,
+	titleformat={colonsep,all},
+}
+
+%Kurzzitat-Schreibweise
+%\usepackage[%
+%authorformat={smallcaps,year},%
+%round,%
+%commabeforerest%
+%]{jurabib}
+%\renewcommand{\jbcitationyearformat}[1]{\unskip, #1}
+
+\renewcommand*{\jbauthorfont}{\textsc}
+\renewcommand*{\biblnfont}{\scshape\textbf}
+\renewcommand*{\bibfnfont}{\normalfont\textbf}
 
 
 % Quotes =================================================================

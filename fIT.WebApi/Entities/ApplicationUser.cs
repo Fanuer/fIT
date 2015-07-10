@@ -78,7 +78,7 @@ namespace fIT.WebApi.Entities
         /// <summary>
         /// Trainingsplaene
         /// </summary>
-        //public virtual ICollection<Schedule> Schedules { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
 
         /// <summary>
         /// User Level

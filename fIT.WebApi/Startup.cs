@@ -13,6 +13,7 @@ using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin;
 using fIT.WebApi.Provider;
 using System.Configuration;
+using fIT.WebApi.Repository.Interfaces;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security;
@@ -43,16 +44,19 @@ namespace fIT.WebApi
         private void ConfigureOAuthTokenGeneration(IAppBuilder app)
         {
             app.CreatePerOwinContext(ApplicationDbContext.Create);
+            app.CreatePerOwinContext<IRepository>(ApplicationDbContext.CreateRepository);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {
 #warning For Dev enviroment only (on production should be AllowInsecureHttp = false)
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/Accounts/Login"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new CustomOAuthProvider(), // specify, how to validate the Resource Owner
-                AccessTokenFormat = new CustomJwtFormat(ConfigurationManager.AppSettings["as:Issuer"]) //Specifies the implementation, how to generate the access token
+                AccessTokenFormat = new CustomJwtFormat(ConfigurationManager.AppSettings["as:Issuer"]), //Specifies the implementation, how to generate the access token
+                RefreshTokenProvider = new CustomRefreshTokenProvider()
             };
 
             // OAuth 2.0 Bearer Access Token Generation

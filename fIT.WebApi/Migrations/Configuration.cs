@@ -47,6 +47,20 @@ namespace fIT.WebApi.Migrations
                 Gender = GenderType.Male
             };
             manager.Create(user, "Test1234");
+
+          // Added Roles
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+ 
+            if (!roleManager.Roles.Any())
+            {
+              roleManager.Create(new IdentityRole { Name = "Admin" });
+              roleManager.Create(new IdentityRole { Name = "User" });
+            }
+
+          var stefan = manager.FindByName("Stefan");
+          var kevin = manager.FindByName("Kevin");
+          manager.AddToRoles(stefan.Id, "User", "Admin");
+          manager.AddToRoles(kevin.Id, "User", "Admin");
         }
     }
 }

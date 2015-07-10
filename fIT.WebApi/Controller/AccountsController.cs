@@ -15,145 +15,189 @@ namespace fIT.WebApi.Controller
     [RoutePrefix("api/Accounts")]
     public class AccountsController : BaseApiController
     {
-        /// <summary>
-        /// Gets all application Users
-        /// </summary>
-        /// <returns></returns>
-        [Route("Users")]
-        [HttpGet]
-        public IHttpActionResult GetUsers()
+      #region Users
+      /// <summary>
+      /// Gets all application Users
+      /// </summary>
+      /// <returns></returns>
+      [Route("Users")]
+      [HttpGet]
+      [Authorize(Roles = "Admin")]
+      public IHttpActionResult GetUsers()
+      {
+        //aktueller Workaround: Wenn der EF-Fehler entfernt ist, kann das ToList entfernt werden
+        return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
+      }
+
+      /// <summary>
+      /// Get a user by its guid
+      /// </summary>
+      /// <param name="Id">user's guid</param>
+      /// <returns></returns>
+      [Route("User/{id:guid}", Name = "GetUserById")]
+      [HttpGet]
+      [Authorize(Roles = "Admin")]
+      public async Task<IHttpActionResult> GetUser(string Id)
+      {
+        var user = await this.AppUserManager.FindByIdAsync(Id);
+
+        if (user != null)
         {
-            //aktueller Workaround: Wenn der EF-Fehler entfernt ist, kann das ToList entfernt werden
-            return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
+          return Ok(this.TheModelFactory.Create(user));
         }
 
-        /// <summary>
-        /// Get a user by its guid
-        /// </summary>
-        /// <param name="Id">user's guid</param>
-        /// <returns></returns>
-        [Route("User/{id:guid}", Name = "GetUserById")]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetUser(string Id)
+        return NotFound();
+
+      }
+
+      /// <summary>
+      /// Get User by Username
+      /// </summary>
+      /// <param name="username">username to search for</param>
+      /// <returns></returns>
+      [Route("User/{username}")]
+      [HttpGet]
+      [Authorize(Roles = "Admin")]
+      public async Task<IHttpActionResult> GetUserByName(string username)
+      {
+        var user = await this.AppUserManager.FindByNameAsync(username);
+
+        if (user != null)
         {
-            var user = await this.AppUserManager.FindByIdAsync(Id);
-
-            if (user != null)
-            {
-                return Ok(this.TheModelFactory.Create(user));
-            }
-
-            return NotFound();
-
+          return Ok(this.TheModelFactory.Create(user));
         }
 
-        /// <summary>
-        /// Get User by Username
-        /// </summary>
-        /// <param name="username">username to search for</param>
-        /// <returns></returns>
-        [Route("User/{username}")]
-        [HttpGet]
-        public async Task<IHttpActionResult> GetUserByName(string username)
+        return NotFound();
+
+      }
+
+      /// <summary>
+      /// Admin can delete User
+      /// </summary>
+      /// <param name="id"></param>
+      /// <returns></returns>
+      [Route("User/{id:guid}")]
+      [HttpDelete]
+      [Authorize(Roles = "Admin")]
+      public async Task<IHttpActionResult> DeleteUser(string id)
+      {
+        //Only SuperAdmin or Admin can delete users (Later when implement roles)
+        var appUser = await this.AppUserManager.FindByIdAsync(id);
+        if (appUser != null)
         {
-            var user = await this.AppUserManager.FindByNameAsync(username);
+          IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
+          if (!result.Succeeded)
+          {
+            return GetErrorResult(result);
+          }
+          return Ok();
+        }
+        return NotFound();
+      }
 
-            if (user != null)
-            {
-                return Ok(this.TheModelFactory.Create(user));
-            }
-
-            return NotFound();
-
+      /// <summary>
+      /// User can register to the Application
+      /// </summary>
+      /// <param name="createUserModel"></param>
+      /// <returns></returns>
+      [AllowAnonymous]
+      [Route("Register")]
+      [HttpPost]
+      public async Task<IHttpActionResult> Register(RegisterUserModel createUserModel)
+      {
+        // validate model
+        if (!ModelState.IsValid)
+        {
+          return BadRequest(ModelState);
         }
 
-        /// <summary>
-        /// Admin can delete User
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Route("User/{id:guid}")]
-        [HttpDelete]
-        public async Task<IHttpActionResult> DeleteUser(string id)
+        var user = new ApplicationUser()
         {
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-            if (appUser != null)
-            {
-                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-                return Ok();
-            }
-            return NotFound();
+          UserName = createUserModel.Username,
+          Email = createUserModel.Email,
+          Gender = createUserModel.Gender,
+          Fitness = createUserModel.Fitness,
+          Job = createUserModel.Job,
+          Age = createUserModel.Age
+
+        };
+
+        IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
+
+        if (!addUserResult.Succeeded)
+        {
+          return GetErrorResult(addUserResult);
         }
 
-        /// <summary>
-        /// User can register to the Application
-        /// </summary>
-        /// <param name="createUserModel"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [Route("Register")]
-        [HttpPost]
-        public async Task<IHttpActionResult> Register(RegisterUserModel createUserModel)
+        Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
+
+        return Created(locationHeader, TheModelFactory.Create(user));
+      }
+
+      /// <summary>
+      /// User can change its password
+      /// </summary>
+      /// <param name="model"></param>
+      /// <returns></returns>
+      [AllowAnonymous]
+      [Route("ChangePassword")]
+      [HttpPost]
+      public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
+      {
+        if (!ModelState.IsValid)
         {
-            // validate model
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = new ApplicationUser()
-            {
-                UserName = createUserModel.Username,
-                Email = createUserModel.Email,
-                Gender = createUserModel.Gender, 
-                Fitness = createUserModel.Fitness,
-                Job = createUserModel.Job,
-                Age = createUserModel.Age
-                
-            };
-
-            IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
-
-            if (!addUserResult.Succeeded)
-            {
-                return GetErrorResult(addUserResult);
-            }
-
-            Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
-
-            return Created(locationHeader, TheModelFactory.Create(user));
+          return BadRequest(ModelState);
         }
 
-        /// <summary>
-        /// User can change its password
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [Route("ChangePassword")]
-        [HttpPost]
-        public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
+        IdentityResult result = await this.AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+
+        if (!result.Succeeded)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            IdentityResult result = await this.AppUserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-            return Ok();
+          return GetErrorResult(result);
         }
 
-        
+        return Ok();
+      }
+
+      #endregion
+
+      #region Roles
+      [Authorize(Roles = "Admin")]
+      [Route("user/{id:guid}/roles")]
+      [HttpPut]
+      public async Task<IHttpActionResult> AssignRolesToUser([FromUri] string id, [FromBody] string[] rolesToAssign)
+      {
+        var appUser = await this.AppUserManager.FindByIdAsync(id);
+        if (appUser == null)
+        {
+          return NotFound();
+        }
+
+        var currentRoles = await this.AppUserManager.GetRolesAsync(appUser.Id);
+        var rolesNotExists = rolesToAssign.Except(this.AppRoleManager.Roles.Select(x => x.Name)).ToArray();
+
+        if (rolesNotExists.Any())
+        {
+          ModelState.AddModelError("", string.Format("Roles '{0}' does not exixts in the system", string.Join(",", rolesNotExists)));
+          return BadRequest(ModelState);
+        }
+
+        IdentityResult removeResult = await this.AppUserManager.RemoveFromRolesAsync(appUser.Id, currentRoles.ToArray());
+        if (!removeResult.Succeeded)
+        {
+          ModelState.AddModelError("", "Failed to remove user roles");
+          return BadRequest(ModelState);
+        }
+
+        IdentityResult addResult = await this.AppUserManager.AddToRolesAsync(appUser.Id, rolesToAssign);
+        if (!addResult.Succeeded)
+        {
+          ModelState.AddModelError("", "Failed to add user roles");
+          return BadRequest(ModelState);
+        }
+
+        return Ok();
+      }
+      #endregion
     }
 }

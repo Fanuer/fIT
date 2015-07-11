@@ -159,6 +159,8 @@
   <ItemGroup>
     <Content Include="Index.html" />
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\fIT-Bachelor - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\fIT-Bachelor - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

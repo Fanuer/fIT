@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
@@ -20,7 +21,6 @@ namespace fIT.WebApi.Controller
     {
         #region Users
         /// <summary>
-        /// GET: api/Accounts/Users
         /// Gets all application Users
         /// </summary>
         /// <returns></returns>
@@ -106,7 +106,7 @@ namespace fIT.WebApi.Controller
         /// Returns the current users Information
         /// </summary>
         /// <returns></returns>
-        [Route("User")]
+        [Route("CurrentUser")]
         [HttpGet]
         [Authorize(Roles = "User")]
         public async Task<IHttpActionResult> GetCurrentUser()
@@ -122,14 +122,16 @@ namespace fIT.WebApi.Controller
         }
 
         /// <summary>
-        /// POST: api/Accounts/register
         /// User can register to the Application
         /// </summary>
-        /// <param name="createUserModel"></param>
-        /// <returns></returns>
+        /// <param name="createUserModel">new User</param>
+        /// <response code="201">Created</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal Server Error</response>
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]
+        [ResponseType(typeof(RegisterUserModel))]
         public async Task<IHttpActionResult> Register(RegisterUserModel createUserModel)
         {
             // validate model

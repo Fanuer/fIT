@@ -46,14 +46,29 @@ namespace fIT.WebApi
         /// <param name="httpConfig"></param>
         private static void InitialiseSwagger(HttpConfiguration httpConfig)
         {
+            
             httpConfig
                 .EnableSwagger(c =>
                 {
                     c.SingleApiVersion("v1", "fIT Api");
                     c.IncludeXmlComments(String.Format(@"{0}\bin\fIT.WebApi.XML", AppDomain.CurrentDomain.BaseDirectory));
                     c.IgnoreObsoleteActions();
+                    c.DescribeAllEnumsAsStrings();
+                    c.OAuth2("oauth2")
+                    .Description("OAuth2 Implicit Grant")
+                    .Flow("password")
+                    //.AuthorizationUrl("http://petstore.swagger.wordnik.com/api/oauth/dialog")
+                    .TokenUrl("/Accounts/Login")
+                    .Scopes(scopes =>
+                    {
+                        scopes.Add("read", "Read access to protected resources");
+                        scopes.Add("write", "Write access to protected resources");
+                    });
                 })
-                .EnableSwaggerUi();
+                .EnableSwaggerUi(c =>
+                {
+                    c.EnableOAuth2Support("c9a622fd2bd5414d9dec10e31263e816", "", "Swagger");
+                });
         }
 
         /// <summary>
@@ -103,7 +118,7 @@ namespace fIT.WebApi
         {
             var issuer = ConfigurationManager.AppSettings["as:Issuer"];
             string audienceId = ConfigurationManager.AppSettings["as:AudienceId"];
-            byte[] audienceSecret= TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["as:AudienceSecret"]);
+            byte[] audienceSecret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["as:AudienceSecret"]);
 
             // Api controllers with an [Authorize] attribute will be validated with JWT
             app.UseJwtBearerAuthentication(

@@ -10,6 +10,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace fIT.WebApi.Repository
 {
+    /// <summary>
+    /// Communcates with the Database
+    /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         #region Ctor

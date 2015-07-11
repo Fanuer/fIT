@@ -57,7 +57,7 @@ namespace fIT.WebApi.Provider
       var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
       context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-      string hashedTokenId = Helper.GetHash(context.Token);
+      var hashedTokenId = Helper.GetHash(context.Token);
       using (IRepository rep = new ApplicationRepository())
       {
         var refreshToken = await rep.RefreshTokens.FindAsync(hashedTokenId);

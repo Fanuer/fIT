@@ -17,6 +17,7 @@ using fIT.WebApi.Repository.Interfaces;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
 using Microsoft.Owin.Security;
+using Swashbuckle.Application;
 
 namespace fIT.WebApi
 {
@@ -34,7 +35,25 @@ namespace fIT.WebApi
             ConfigureOAuthTokenConsumption(app);
             ConfigureWebApi(httpConfig);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+            InitialiseSwagger(httpConfig);
+
             app.UseWebApi(httpConfig);
+        }
+
+        /// <summary>
+        /// Initializes Swagger Documentation
+        /// </summary>
+        /// <param name="httpConfig"></param>
+        private static void InitialiseSwagger(HttpConfiguration httpConfig)
+        {
+            httpConfig
+                .EnableSwagger(c =>
+                {
+                    c.SingleApiVersion("v1", "fIT Api");
+                    c.IncludeXmlComments(String.Format(@"{0}\bin\fIT.WebApi.XML", AppDomain.CurrentDomain.BaseDirectory));
+                    c.IgnoreObsoleteActions();
+                })
+                .EnableSwaggerUi();
         }
 
         /// <summary>

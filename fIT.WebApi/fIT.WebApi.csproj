@@ -30,7 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\fIT.WebApi.XML</DocumentationFile>
+    <DocumentationFile>fIT.WebApi.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -157,6 +157,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fIT.WebApi.XML" />
     <Content Include="Index.html" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\fIT-Bachelor - FTP.pubxml" />

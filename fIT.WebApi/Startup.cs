@@ -13,6 +13,7 @@ using Microsoft.Owin.Security.OAuth;
 using Microsoft.Owin;
 using fIT.WebApi.Provider;
 using System.Configuration;
+using System.IO;
 using fIT.WebApi.Repository.Interfaces;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
@@ -46,12 +47,13 @@ namespace fIT.WebApi
         /// <param name="httpConfig"></param>
         private static void InitialiseSwagger(HttpConfiguration httpConfig)
         {
-            
-            httpConfig
+            try
+            {
+                httpConfig
                 .EnableSwagger(c =>
                 {
                     c.SingleApiVersion("v1", "fIT Api");
-                    c.IncludeXmlComments(String.Format(@"{0}\bin\fIT.WebApi.XML", AppDomain.CurrentDomain.BaseDirectory));
+                    c.IncludeXmlComments(GetXmlPath());
                     c.IgnoreObsoleteActions();
                     c.DescribeAllEnumsAsStrings();
                     c.OAuth2("oauth2")
@@ -69,6 +71,18 @@ namespace fIT.WebApi
                 {
                     c.EnableOAuth2Support("c9a622fd2bd5414d9dec10e31263e816", "", "Swagger");
                 });
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error on creating Swagger: " + e.Message + Environment.NewLine + e.StackTrace);
+            }
+
+        }
+
+        private static string GetXmlPath()
+        {
+            return Path.Combine(System.Web.HttpRuntime.AppDomainAppPath, "fIT.WebApi.XML");
+
         }
 
         /// <summary>

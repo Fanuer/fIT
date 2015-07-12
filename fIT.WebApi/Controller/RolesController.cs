@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -15,7 +16,7 @@ namespace fIT.WebApi.Controller
     /// Controler to manage User roles
     /// </summary>
     [Authorize(Roles = "Admin")]
-    [RoutePrefix("api/roles")]
+    [RoutePrefix("api/Roles")]
     public class RolesController : BaseApiController
     {
         /// <summary> 
@@ -40,7 +41,6 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Returns a list of roles
         /// </summary>
-        /// <response code="200">OK</response>
         /// <response code="500">Internal Server Error</response>
         [Route("", Name = "GetAllRoles")]
         public IHttpActionResult GetAllRoles()
@@ -55,7 +55,8 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        [Route("create")]
+        [Route("Create")]
+        [ResponseType(typeof(CreateRoleModel))]
         public async Task<IHttpActionResult> Create(CreateRoleModel model)
         {
             if (!ModelState.IsValid)
@@ -78,29 +79,32 @@ namespace fIT.WebApi.Controller
 
         }
 
+        /// <summary>
+        /// Deletes a Role
+        /// </summary>
+        /// <param name="id">Id of the role to delete</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [Route("{id:guid}")]
-        public async Task<IHttpActionResult> DeleteRole(string Id)
+        public async Task<IHttpActionResult> DeleteRole(string id)
         {
-
-            var role = await this.AppRoleManager.FindByIdAsync(Id);
-
+            var role = await this.AppRoleManager.FindByIdAsync(id);
             if (role != null)
             {
-                IdentityResult result = await this.AppRoleManager.DeleteAsync(role);
-
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-
-                return Ok();
+                var result = await this.AppRoleManager.DeleteAsync(role);
+                return !result.Succeeded ? GetErrorResult(result) : Ok();
             }
-
             return NotFound();
-
         }
 
+        /// <summary>
+        /// Alters the settings between users and roles
+        /// </summary>
+        /// <param name="model">new settings</param>
+        /// <returns></returns>
         [Route("ManageUsersInRole")]
+        [ResponseType(typeof(UsersInRoleModel))]
         public async Task<IHttpActionResult> ManageUsersInRole(UsersInRoleModel model)
         {
             var role = await this.AppRoleManager.FindByIdAsync(model.Id);

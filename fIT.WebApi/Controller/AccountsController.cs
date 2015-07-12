@@ -23,7 +23,7 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Gets all application Users
         /// </summary>
-        /// <returns></returns>
+        /// <response code="500">Internal Server Error</response>
         [Route("User")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -34,17 +34,17 @@ namespace fIT.WebApi.Controller
         }
 
         /// <summary>
-        /// GET: api/Accounts/Users/{id:guid}
         /// Get a user by its guid
         /// </summary>
-        /// <param name="Id">user's guid</param>
-        /// <returns></returns>
+        /// <param name="id">User's guid</param>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [Route("User/{id:guid}", Name = "GetUserById")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public async Task<IHttpActionResult> GetUser(string Id)
+        public async Task<IHttpActionResult> GetUser(string id)
         {
-            var user = await this.AppUserManager.FindByIdAsync(Id);
+            var user = await this.AppUserManager.FindByIdAsync(id);
 
             if (user != null)
             {
@@ -56,48 +56,20 @@ namespace fIT.WebApi.Controller
         }
 
         /// <summary>
-        /// GET: api/Accounts/Users/{username}
         /// Get User by Username
         /// </summary>
         /// <param name="username">username to search for</param>
-        /// <returns></returns>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [Route("User/{username}")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
             var user = await this.AppUserManager.FindByNameAsync(username);
-
             if (user != null)
             {
                 return Ok(this.TheModelFactory.Create(user));
-            }
-
-            return NotFound();
-
-        }
-        
-        /// <summary>
-        /// DELETE: api/Accounts/Users/{id:guid}
-        /// Admin can delete User
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Route("User/{id:guid}")]
-        [HttpDelete]
-        [Authorize(Roles = "Admin")]
-        public async Task<IHttpActionResult> DeleteUser(string id)
-        {
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-            if (appUser != null)
-            {
-                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-                return Ok();
             }
             return NotFound();
         }
@@ -105,7 +77,8 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Returns the current users Information
         /// </summary>
-        /// <returns></returns>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [Route("CurrentUser")]
         [HttpGet]
         [Authorize(Roles = "User")]
@@ -164,14 +137,15 @@ namespace fIT.WebApi.Controller
         }
 
         /// <summary>
-        /// POST: api/Accounts/ChangePassword
         /// User can change its password
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        /// <param name="model">Data to change a password</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal Server Error</response>
         [AllowAnonymous]
         [Route("ChangePassword")]
         [HttpPost]
+        [ResponseType(typeof(ChangePasswordModel))]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
@@ -189,18 +163,45 @@ namespace fIT.WebApi.Controller
             return Ok();
         }
 
+        /// <summary>
+        /// Admin can delete User
+        /// </summary>
+        /// <param name="id">Id of the user to delete</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [Route("User/{id:guid}")]
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public async Task<IHttpActionResult> DeleteUser(string id)
+        {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            var appUser = await this.AppUserManager.FindByIdAsync(id);
+            if (appUser != null)
+            {
+                var result = await this.AppUserManager.DeleteAsync(appUser);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+                return Ok();
+            }
+            return NotFound();
+        }
+
         #endregion
 
         #region Roles
         /// <summary>
-        /// PUT: User/{id:guid}/roles
         /// Assigned the user to the given roles
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="rolesToAssign"></param>
-        /// <returns></returns>
+        /// <param name="id">User Id</param>
+        /// <param name="rolesToAssign">Roles to assign to the user</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [Authorize(Roles = "Admin")]
-        [Route("user/{id:guid}/roles")]
+        [Route("User/{id:guid}/Roles")]
         [HttpPut]
         public async Task<IHttpActionResult> AssignRolesToUser([FromUri] string id, [FromBody] string[] rolesToAssign)
         {

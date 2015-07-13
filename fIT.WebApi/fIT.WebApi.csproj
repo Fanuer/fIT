@@ -191,6 +191,7 @@
   <ItemGroup>
     <Compile Include="Controller\AccountsController.cs" />
     <Compile Include="Controller\BaseApiController.cs" />
+    <Compile Include="Controller\ExerciseController.cs" />
     <Compile Include="Controller\RefreshTokenController.cs" />
     <Compile Include="Controller\RolesController.cs" />
     <Compile Include="Entities\Client.cs" />
@@ -225,6 +226,8 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\CreateRoleModel.cs" />
+    <Compile Include="Models\ExerciseModel.cs" />
+    <Compile Include="Models\EntryModel.cs" />
     <Compile Include="Models\ModelFactory.cs" />
     <Compile Include="Models\RegisterUserModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
@@ -236,6 +239,7 @@
     <Compile Include="Provider\CustomRefreshTokenProvider.cs" />
     <Compile Include="Repository\ApplicationDbContext.cs" />
     <Compile Include="Repository\Interfaces\IClientRepository.cs" />
+    <Compile Include="Repository\Interfaces\IExerciseRepository.cs" />
     <Compile Include="Repository\Interfaces\IRefreshTokenRepository.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
     <Compile Include="Repository\ApplicationRepository.cs" />

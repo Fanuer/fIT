@@ -99,12 +99,19 @@ namespace fIT.WebApi.Controller
         [Route("CurrentUser")]
         [HttpPut]
         [Authorize(Roles = "User")]
-        public async Task<IHttpActionResult> PutCurrentUser(int id, UserModel model)
+        public async Task<IHttpActionResult> PutCurrentUser(Guid id, UserModel model)
         {
-            if (b)
+            if (!ModelState.IsValid)
             {
-                
+                return BadRequest(ModelState);
             }
+
+            if (id != model.Id)
+            {
+                return BadRequest();
+            }
+
+            var user = this.AppUserManager.FindByIdAsync(id.ToString());
         }
 
         /// <summary>

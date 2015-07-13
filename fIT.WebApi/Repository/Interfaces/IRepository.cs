@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace fIT.WebApi.Repository.Interfaces
 {
-  public interface IRepository:IDisposable
-  {
-    IClientRepository Clients { get; }
-    IRefreshTokenRepository RefreshTokens { get; }
-  }
+    public interface IRepository : IDisposable
+    {
+        IClientRepository Clients { get; }
+        IRefreshTokenRepository RefreshTokens { get; }
+        IExerciseRepository Excercies { get; }
+    }
 }

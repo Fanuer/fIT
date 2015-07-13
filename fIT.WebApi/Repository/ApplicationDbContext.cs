@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using fIT.WebApi.Entities;
+using fIT.WebApi.Models;
 using fIT.WebApi.Repository.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
 

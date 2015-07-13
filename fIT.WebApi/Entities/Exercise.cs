@@ -15,7 +15,7 @@ namespace fIT.WebApi.Entities
         #region ctor
         public Exercise(int id = -1, string name = "", string description = "", ICollection<Schedule> schedules = null)
         {
-            this.ID = id;
+            this.Id = id;
             this.Name = name;
             this.Description = description;
             this.Schedules = Schedules;
@@ -32,7 +32,7 @@ namespace fIT.WebApi.Entities
         /// <summary>
         /// ID der Uebung
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         /// <summary>
         /// DisplayName

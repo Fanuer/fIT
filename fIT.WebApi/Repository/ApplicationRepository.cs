@@ -123,9 +123,9 @@ namespace fIT.WebApi.Repository
         return await _ctx.RefreshTokens.FindAsync(refreshTokenId);
       }
 
-      public async Task<List<RefreshToken>> GetAllAsync()
+      public IQueryable<RefreshToken> GetAllAsync()
       {
-        return await _ctx.RefreshTokens.ToListAsync();
+        return _ctx.RefreshTokens;
       }
 
       #endregion

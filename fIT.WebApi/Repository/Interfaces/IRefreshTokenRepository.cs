@@ -13,6 +13,6 @@ namespace fIT.WebApi.Repository.Interfaces
     Task<bool> RemoveAsync(string refreshTokenId);
     Task<bool> RemoveAsync(RefreshToken refreshToken);
     Task<RefreshToken> FindAsync(string refreshTokenId);
-    Task<List<RefreshToken>> GetAllAsync();
+    IQueryable<RefreshToken> GetAllAsync();
   }
 }

@@ -37,7 +37,6 @@ namespace fIT.WebApi
             ConfigureWebApi(httpConfig);
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             InitialiseSwagger(httpConfig);
-
             app.UseWebApi(httpConfig);
         }
 

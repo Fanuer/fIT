@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.OData;
+using fIT.WebApi.Entities;
 
 namespace fIT.WebApi.Controller
 {
@@ -20,9 +22,10 @@ namespace fIT.WebApi.Controller
         /// <response code="500">Internal Server Error</response>
         [Authorize(Roles = "Admin")]
         [Route("")]
-        public async Task<IHttpActionResult> Get()
+        [EnableQuery]
+        public IQueryable<RefreshToken> Get()
         {
-            return Ok(await this.AppRepository.RefreshTokens.GetAllAsync());
+            return this.AppRepository.RefreshTokens.GetAllAsync();
         }
 
         /// <summary>

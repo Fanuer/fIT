@@ -13,7 +13,6 @@ namespace fIT.WebApi.Models
         public string Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
-        public bool EmailConfirmed { get; set; }
         /// <summary>
         /// Geschlecht
         /// </summary>
@@ -30,7 +29,5 @@ namespace fIT.WebApi.Models
         /// Alter
         /// </summary>
         public int Age { get; set; }
-        public IList<string> Roles { get; set; }
-        public IList<System.Security.Claims.Claim> Claims { get; set; }
     }
 }

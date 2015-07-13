@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.OData;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -43,11 +44,10 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <response code="500">Internal Server Error</response>
         [Route("", Name = "GetAllRoles")]
-        public IHttpActionResult GetAllRoles()
+        [EnableQuery]
+        public IQueryable<IdentityRole> GetAllRoles()
         {
-            var roles = this.AppRoleManager.Roles;
-
-            return Ok(roles);
+            return this.AppRoleManager.Roles;
         }
 
         /// <summary>

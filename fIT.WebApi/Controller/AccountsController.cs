@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using System.Web.Http.OData;
 using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
@@ -27,10 +28,11 @@ namespace fIT.WebApi.Controller
         [Route("User")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        public IHttpActionResult GetUsers()
+        [EnableQuery]
+        public IQueryable<UserModel> GetUsers()
         {
             //aktueller Workaround: Wenn der EF-Fehler entfernt ist, kann das ToList entfernt werden
-            return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
+            return this.AppUserManager.Users.Select(u => this.TheModelFactory.Create(u));
         }
 
         /// <summary>
@@ -92,6 +94,17 @@ namespace fIT.WebApi.Controller
                 return Ok(this.TheModelFactory.Create(user));
             }
             return NotFound();
+        }
+
+        [Route("CurrentUser")]
+        [HttpPut]
+        [Authorize(Roles = "User")]
+        public async Task<IHttpActionResult> PutCurrentUser(int id, UserModel model)
+        {
+            if (b)
+            {
+                
+            }
         }
 
         /// <summary>

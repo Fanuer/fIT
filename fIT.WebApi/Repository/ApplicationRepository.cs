@@ -46,11 +46,11 @@ namespace fIT.WebApi.Repository
 
     #region Properties
 
-    internal IRefreshTokenRepository RefreshTokens { get; private set; }
-    internal IExerciseRepository Excercies { get; private set; }
-    internal IClientRepository Clients { get; private set; }
-    internal IScheduleRepository Schedules { get; private set; }
-    internal IPracticeRepository Practices { get; private set; }
+    public IRefreshTokenRepository RefreshTokens { get; private set; }
+    public IExerciseRepository Excercies { get; private set; }
+    public IClientRepository Clients { get; private set; }
+    public IScheduleRepository Schedules { get; private set; }
+    public IPracticeRepository Practices { get; private set; }
 
     #endregion
 

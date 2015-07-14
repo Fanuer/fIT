@@ -129,10 +129,6 @@
     <value>The {0} must be at least {2} characters long.</value>
     <comment>Länge der Eingabe stimmt nicht</comment>
   </data>
-  <data name="Label_Age" xml:space="preserve">
-    <value>Age</value>
-    <comment>Alter des Nutzers</comment>
-  </data>
   <data name="Label_ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
     <comment>Vergleichspasswort zur Verifikation der Eingabe</comment>
@@ -140,6 +136,10 @@
   <data name="Label_CurrentPassword" xml:space="preserve">
     <value>Old Password</value>
     <comment>Altes Passwort</comment>
+  </data>
+  <data name="Label_DateOfBirth" xml:space="preserve">
+    <value>Date Of Birth</value>
+    <comment>Alter des Nutzers</comment>
   </data>
   <data name="Label_Description" xml:space="preserve">
     <value>Description</value>

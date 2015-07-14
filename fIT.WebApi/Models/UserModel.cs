@@ -56,10 +56,10 @@ namespace fIT.WebApi.Models
     [Display(ResourceType = typeof(Resources), Name = "Label_Fitness")]
     public FitnessType Fitness { get; set; }
     /// <summary>
-    /// Alter
+    /// Geburtstag
     /// </summary>
     [Required(ErrorMessageResourceName = "Error_Required", ErrorMessageResourceType = typeof(Resources))]
-    [Display(ResourceType = typeof(Resources), Name = "Label_Age")]
-    public int Age { get; set; }
+    [Display(ResourceType = typeof(Resources), Name = "Label_DateOfBirth")]
+    public DateTime DateOfBirth { get; set; }
   }
 }

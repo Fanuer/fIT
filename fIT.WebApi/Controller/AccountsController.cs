@@ -31,7 +31,6 @@ namespace fIT.WebApi.Controller
     [EnableQuery]
     public IQueryable<UserModel> GetUsers()
     {
-      //aktueller Workaround: Wenn der EF-Fehler entfernt ist, kann das ToList entfernt werden
       return this.AppUserManager.Users.Select(u => this.TheModelFactory.Create(u));
     }
 
@@ -138,7 +137,7 @@ namespace fIT.WebApi.Controller
         Gender = createUserModel.Gender,
         Fitness = createUserModel.Fitness,
         Job = createUserModel.Job,
-        Age = createUserModel.Age
+        DateOfBirth = createUserModel.DateOfBirth
 
       };
 

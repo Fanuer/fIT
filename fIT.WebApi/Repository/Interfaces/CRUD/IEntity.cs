@@ -5,7 +5,7 @@ using System.Web;
 
 namespace fIT.WebApi.Repository.Interfaces.CRUD
 {
-  internal class IEntity<T>
+    public class IEntity<T>
   {
     public T Id { get; set; }
   }

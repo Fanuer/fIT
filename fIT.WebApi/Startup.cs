@@ -56,19 +56,19 @@ namespace fIT.WebApi
                     c.IgnoreObsoleteActions();
                     c.DescribeAllEnumsAsStrings();
                     c.OAuth2("oauth2")
-                    .Description("OAuth2 Implicit Grant")
+                    .Description("OAuth2 Password Grant")
                     .Flow("password")
                     //.AuthorizationUrl("http://petstore.swagger.wordnik.com/api/oauth/dialog")
                     .TokenUrl("/Accounts/Login")
                     .Scopes(scopes =>
                     {
-                        scopes.Add("read", "Read access to protected resources");
-                        scopes.Add("write", "Write access to protected resources");
+                        scopes.Add("user", "Read access to protected resources");
+                        scopes.Add("admin", "Write access to protected resources");
                     });
                 })
                 .EnableSwaggerUi(c =>
                 {
-                    c.EnableOAuth2Support("c9a622fd2bd5414d9dec10e31263e816", "", "Swagger");
+                    c.InjectJavaScript(typeof(Startup).Assembly, "fIT.WebApi/js/onComplete.js");
                 });
             }
             catch (Exception e)
@@ -99,7 +99,7 @@ namespace fIT.WebApi
             {
 #warning For Dev enviroment only (on production should be AllowInsecureHttp = false)
                 AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/Accounts/Login"),
+                TokenEndpointPath = new PathString("/api/accounts/login"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = new CustomOAuthProvider(), // specify, how to validate the Resource Owner
                 AccessTokenFormat = new CustomJwtFormat(ConfigurationManager.AppSettings["as:Issuer"]), //Specifies the implementation, how to generate the access token

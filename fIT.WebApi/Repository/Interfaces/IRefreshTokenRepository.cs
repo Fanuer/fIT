@@ -8,7 +8,7 @@ using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Repository.Interfaces
 {
-  internal interface IRefreshTokenRepository : IRepositoryAddAndDelete<RefreshToken, string>, IRepositoryFindAll<RefreshToken>, IRepositoryFindSingle<RefreshToken, string>
+    public interface IRefreshTokenRepository : IRepositoryAddAndDelete<RefreshToken, string>, IRepositoryFindAll<RefreshToken>, IRepositoryFindSingle<RefreshToken, string>
   {
   }
 }

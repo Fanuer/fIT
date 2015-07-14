@@ -20,14 +20,14 @@ namespace fIT.WebApi.Entities
         public ApplicationUser(
             string username = "",
             string email = "",
-            int age = 0,
+            DateTime dateOfBirth = default(DateTime),
             GenderType gender = GenderType.Male,
             FitnessType fitness = FitnessType.NoSport,
             JobTypes job = JobTypes.Middle)
             : base(username)
         {
             this.Job = job;
-            Age = age;
+            DateOfBirth = dateOfBirth;
             Gender = gender;
             Fitness = fitness;
             Email = email;
@@ -74,7 +74,7 @@ namespace fIT.WebApi.Entities
         /// Alter
         /// </summary>
         [Required]
-        public int Age { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         /// <summary>
         /// Trainingsplaene

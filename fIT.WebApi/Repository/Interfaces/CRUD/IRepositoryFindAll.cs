@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace fIT.WebApi.Repository.Interfaces.CRUD
 {
-  internal interface IRepositoryFindAll<T>
+    public interface IRepositoryFindAll<T>
   {
     IQueryable<T> GetAllAsync();
   }

@@ -12,99 +12,100 @@ using Microsoft.AspNet.Identity.Owin;
 
 namespace fIT.WebApi.Controller
 {
-  public class BaseApiController : ApiController
-  {
-    #region Field
-    private ModelFactory _modelFactory;
-    private ApplicationUserManager _AppUserManager = null;
-    private ApplicationRoleManager _AppRoleManager = null;
-    private IRepository _rep = null;
-    #endregion
-
-    #region Ctor
-    public BaseApiController()
+    public class BaseApiController : ApiController
     {
-    }
-    #endregion
+        #region Field
+        private ModelFactory _modelFactory;
+        private ApplicationUserManager _AppUserManager = null;
+        private ApplicationRoleManager _AppRoleManager = null;
+        private IRepository _rep = null;
+        #endregion
 
-    #region Methods
-    /// <summary>
-    /// Wraps the modelerrror to a request
-    /// </summary>
-    /// <param name="result"></param>
-    /// <returns></returns>
-    protected IHttpActionResult GetErrorResult(IdentityResult result)
-    {
-      if (result == null)
-      {
-        return InternalServerError();
-      }
-
-      if (!result.Succeeded)
-      {
-        if (result.Errors != null)
+        #region Ctor
+        public BaseApiController()
         {
-          foreach (string error in result.Errors)
-          {
-            ModelState.AddModelError("", error);
-          }
+        }
+        #endregion
+
+        #region Methods
+        /// <summary>
+        /// Wraps the modelerrror to a request
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        protected IHttpActionResult GetErrorResult(IdentityResult result)
+        {
+            if (result == null)
+            {
+                return InternalServerError();
+            }
+
+            if (!result.Succeeded)
+            {
+                if (result.Errors != null)
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error);
+                    }
+                }
+
+                if (ModelState.IsValid)
+                {
+                    // No ModelState errors are available to send, so just return an empty BadRequest.
+                    return BadRequest();
+                }
+
+                return BadRequest(ModelState);
+            }
+
+            return null;
+        }
+        #endregion
+
+        #region Properties
+        /// <summary>
+        /// Singleton Modelfactory
+        /// </summary>
+        protected ModelFactory TheModelFactory
+        {
+            get { return _modelFactory ?? (_modelFactory = new ModelFactory(this.Request)); }
         }
 
-        if (ModelState.IsValid)
+        /// <summary>
+        /// Returns a single User-Manager per Request
+        /// </summary>
+        protected ApplicationUserManager AppUserManager
         {
-          // No ModelState errors are available to send, so just return an empty BadRequest.
-          return BadRequest();
+            get
+            {
+                return _AppUserManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
         }
 
-        return BadRequest(ModelState);
-      }
-
-      return null;
-    }
-    #endregion
-
-    #region Properties
-    /// <summary>
-    /// Singleton Modelfactory
-    /// </summary>
-    protected ModelFactory TheModelFactory
-    {
-      get
-      {
-        if (_modelFactory == null)
+        /// <summary>
+        /// Manages User Roles
+        /// </summary>
+        protected ApplicationRoleManager AppRoleManager
         {
-          _modelFactory = new ModelFactory(this.Request, this.AppUserManager);
+            get { return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
         }
-        return _modelFactory;
-      }
-    }
 
-    /// <summary>
-    /// Returns a single User-Manager per Request
-    /// </summary>
-    protected ApplicationUserManager AppUserManager
-    {
-      get
-      {
-        return _AppUserManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-      }
-    }
+        /// <summary>
+        /// Repository
+        /// </summary>
+        protected IRepository AppRepository
+        {
+            get { return this._rep ?? Request.GetOwinContext().Get<IRepository>(); }
+        }
 
-    /// <summary>
-    /// Manages User Roles
-    /// </summary>
-    protected ApplicationRoleManager AppRoleManager
-    {
-      get { return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
+        /// <summary>
+        /// Current User Id
+        /// </summary>
+        protected string CurrentUserId
+        {
+            get { return this.User.Identity.GetUserId(); }
+        }
+        #endregion
     }
-
-    /// <summary>
-    /// Repository
-    /// </summary>
-    protected IRepository AppRepository
-    {
-      get { return this._rep ?? Request.GetOwinContext().Get<IRepository>(); }
-    }
-    #endregion
-  }
 }

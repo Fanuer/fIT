@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Models
 {
@@ -6,8 +7,8 @@ namespace fIT.WebApi.Models
   /// Defines one entry from the server
   /// </summary>
   /// <typeparam name="T">Type of id-property</typeparam>
-    public class EntryModel<T>
-    {
+    public class EntryModel<T>: IEntity<T>
+  {
       /// <summary>
       /// Id of an entity
       /// </summary>

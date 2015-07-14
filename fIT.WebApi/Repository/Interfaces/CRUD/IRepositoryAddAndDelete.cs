@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace fIT.WebApi.Repository.Interfaces.CRUD
 {
-  internal interface IRepositoryAddAndDelete<T, in TIdProperty> where T : IEntity<TIdProperty>
+    public interface IRepositoryAddAndDelete<T, in TIdProperty> where T : IEntity<TIdProperty>
   {
     Task<bool> AddAsync(T model);
     Task<bool> RemoveAsync(TIdProperty id);

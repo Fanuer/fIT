@@ -14,11 +14,11 @@ namespace fIT.WebApi.Entities
     public class Schedule: IEntity<int>
     {
         #region ctor
-        public Schedule(int id = -1, string name = "", int userID = -1, ICollection<Exercise> exercises = null)
+        public Schedule(int id, string name = "", string userId = "", ICollection<Exercise> exercises = null)
         {
-            this.ID = id;
+            this.Id = id;
             this.Name = name;
-            this.UserID = userID;
+            this.UserID = userId;
             this.Exercises = exercises;
         }
 

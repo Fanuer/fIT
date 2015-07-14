@@ -175,6 +175,7 @@
   <ItemGroup>
     <Content Include="fIT.WebApi.XML" />
     <Content Include="Index.html" />
+    <Content Include="js\onComplete.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\fIT-Bachelor - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\fIT-Bachelor - Web Deploy.pubxml" />
@@ -186,7 +187,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\PracticeController.cs" />
     <Compile Include="Controller\SchedulesController.cs" />
+    <Compile Include="Models\PracticeModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IEntity.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IRepositoryAddAndDelete.cs" />

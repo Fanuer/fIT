@@ -8,7 +8,7 @@ using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Repository.Interfaces
 {
-  internal interface IScheduleRepository : IRepositoryAddAndDelete<Schedule, int>, IRepositoryFindAll<Schedule>, IRepositoryFindSingle<Schedule, int>, IRepositoryUpdate<Schedule, int>
+    public interface IScheduleRepository : IRepositoryAddAndDelete<Schedule, int>, IRepositoryFindAll<Schedule>, IRepositoryFindSingle<Schedule, int>, IRepositoryUpdate<Schedule, int>
   {
   }
 }

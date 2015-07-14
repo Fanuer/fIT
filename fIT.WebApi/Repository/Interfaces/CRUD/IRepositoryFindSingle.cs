@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace fIT.WebApi.Repository.Interfaces.CRUD
 {
-  internal interface IRepositoryFindSingle<T, in TIdProperty> where T : IEntity<TIdProperty>
+    public interface IRepositoryFindSingle<T, in TIdProperty> where T : IEntity<TIdProperty>
   {
     Task<T> FindAsync(TIdProperty id);
   }

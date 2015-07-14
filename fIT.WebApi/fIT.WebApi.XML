@@ -4,36 +4,50 @@
         <name>fIT.WebApi</name>
     </assembly>
     <members>
-        <member name="T:fIT.WebApi.Controller.AccountsController">
+        <member name="M:fIT.WebApi.Controller.PracticeController.GetPractices">
             <summary>
-            
+            Get all PracticeEntries
             </summary>
-        </member>
-        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
-            <summary>
-            Wraps the modelerrror to a request
-            </summary>
-            <param name="result"></param>
             <returns></returns>
         </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
+        <member name="M:fIT.WebApi.Controller.SchedulesController.GetUsers">
             <summary>
-            Singleton Modelfactory
+            Gets all application Users
             </summary>
+            <response code="500">Internal Server Error</response>
         </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
+        <member name="M:fIT.WebApi.Controller.SchedulesController.GetSchedule(System.Int32)">
             <summary>
-            Returns a single User-Manager per Request
+            Get one Schedule
             </summary>
+            <param name="id">exercise id</param>
+            <returns></returns>
         </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
+        <member name="M:fIT.WebApi.Controller.SchedulesController.UpdateExercise(System.Int32,fIT.WebApi.Models.ScheduleModel)">
             <summary>
-            Manages User Roles
+            Updates an existing schedule
             </summary>
+            <param name="id"></param>
+            <param name="schedule"></param>
+            <returns></returns>
         </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
+        <member name="M:fIT.WebApi.Controller.SchedulesController.CreateExercise(fIT.WebApi.Models.ScheduleModel)">
             <summary>
-            Repository
+            Create new Schedule
+            </summary>
+            <param name="schedule">schedule data to create</param>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.DeleteExercise(System.Int32)">
+            <summary>
+            Removes a schedule
+            </summary>
+            <param name="id">id of the schedule to delete</param>
+            <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Controller.AccountsController">
+            <summary>
+            Handles User-based Actions
             </summary>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.GetUsers">
@@ -101,6 +115,64 @@
             <response code="404">Not Found</response>
             <response code="500">Internal Server Error</response>
         </member>
+        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
+            <summary>
+            Wraps the modelerrror to a request
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
+            <summary>
+            Singleton Modelfactory
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
+            <summary>
+            Returns a single User-Manager per Request
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
+            <summary>
+            Manages User Roles
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
+            <summary>
+            Repository
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.CurrentUserId">
+            <summary>
+            Current User Id
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Controller.ExerciseController">
+            <summary>
+            Handles Exercise-based Actions
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.GetExercises">
+            <summary>
+            Get all Exercises
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.GetExercise(System.Int32)">
+            <summary>
+            Get one Exercise
+            </summary>
+            <param name="id">exercise id</param>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.UpdateExercise(System.Int32,fIT.WebApi.Models.ExerciseModel)">
+            <summary>
+            Updates an existing exercise
+            </summary>
+            <param name="id">Id of the exercise to update</param>
+            <param name="exercise">new exercise data</param>
+            <returns></returns>
+        </member>
         <member name="T:fIT.WebApi.Controller.RefreshTokensController">
             <summary>
             Grants access to refreshtoken data
@@ -162,6 +234,157 @@
             </summary>
             <param name="model">new settings</param>
             <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Models.ChangePasswordModel">
+            <summary>
+            Model to change a password
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.ExerciseModel">
+            <summary>
+            Defines one Exercise
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.EntryModel`1">
+            <summary>
+            Defines one entry from the server
+            </summary>
+            <typeparam name="T">Type of id-property</typeparam>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Id">
+            <summary>
+            Id of an entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Name">
+            <summary>
+            Name of an Entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Url">
+            <summary>
+            Url to receive this entity
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.RegisterUserModel">
+            <summary>
+            Data to register a User
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Username">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Email">
+            <summary>
+            User's email
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.ConfirmPassword">
+            <summary>
+            Confirm Password. Must be equal to the given Password
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Gender">
+            <summary>
+            Geschlecht
+            </summary>        
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.DateOfBirth">
+            <summary>
+            Alter
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.RoleModel">
+            <summary>
+            Defines Role Data
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.UserModel">
+            <summary>
+            User data
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Url">
+            <summary>
+            Url to receive this object
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Id">
+            <summary>
+            User Id
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.UserName">
+            <summary>
+            Username
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Email">
+            <summary>
+            User email
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Gender">
+            <summary>
+            Geschlecht
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.DateOfBirth">
+            <summary>
+            Geburtstag
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.UsersInRoleModel">
+            <summary>
+            Definies a Role and the added and removed users
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.Id">
+            <summary>
+            Role Id
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.EnrolledUsers">
+            <summary>
+            Enrolled User
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.RemovedUsers">
+            <summary>
+            Removed User
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Repository.ApplicationDbContext">
+            <summary>
+            Communcates with the Database
+            </summary>
         </member>
         <member name="T:fIT.WebApi.Entities.Client">
             <summary>
@@ -248,7 +471,7 @@
             Fittness
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Entities.ApplicationUser.Age">
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.DateOfBirth">
             <summary>
             Alter
             </summary>
@@ -298,7 +521,7 @@
             Definiert einen Trainingsplan
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Entities.Schedule.ID">
+        <member name="P:fIT.WebApi.Entities.Schedule.Id">
             <summary>
             DB ID
             </summary>
@@ -330,46 +553,6 @@
             <param name="options"></param>
             <param name="context"></param>
             <returns></returns>
-        </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Gender">
-            <summary>
-            Geschlecht
-            </summary>        
-        </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Job">
-            <summary>
-            Berufsfeld
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Fitness">
-            <summary>
-            Fittness
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Age">
-            <summary>
-            Alter
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Gender">
-            <summary>
-            Geschlecht
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Job">
-            <summary>
-            Berufsfeld
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Fitness">
-            <summary>
-            Fittness
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Age">
-            <summary>
-            Alter
-            </summary>
         </member>
         <member name="T:fIT.WebApi.Provider.CustomJwtFormat">
             <summary>
@@ -413,11 +596,6 @@
             <param name="context"></param>
             <returns></returns>
         </member>
-        <member name="T:fIT.WebApi.Repository.ApplicationDbContext">
-            <summary>
-            Communcates with the Database
-            </summary>
-        </member>
         <member name="T:fIT.WebApi.Resources">
             <summary>
               Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
@@ -449,11 +627,6 @@
               Sucht eine lokalisierte Zeichenfolge, die The {0} must be at least {2} characters long. ähnelt.
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Resources.Label_Age">
-            <summary>
-              Sucht eine lokalisierte Zeichenfolge, die Age ähnelt.
-            </summary>
-        </member>
         <member name="P:fIT.WebApi.Resources.Label_ConfirmPassword">
             <summary>
               Sucht eine lokalisierte Zeichenfolge, die Confirm Password ähnelt.
@@ -462,6 +635,16 @@
         <member name="P:fIT.WebApi.Resources.Label_CurrentPassword">
             <summary>
               Sucht eine lokalisierte Zeichenfolge, die Old Password ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_DateOfBirth">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Date Of Birth ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Description">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Description ähnelt.
             </summary>
         </member>
         <member name="P:fIT.WebApi.Resources.Label_Email">
@@ -479,9 +662,19 @@
               Sucht eine lokalisierte Zeichenfolge, die Gender ähnelt.
             </summary>
         </member>
+        <member name="P:fIT.WebApi.Resources.Label_Id">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Id ähnelt.
+            </summary>
+        </member>
         <member name="P:fIT.WebApi.Resources.Label_JobType">
             <summary>
               Sucht eine lokalisierte Zeichenfolge, die Kind of Job ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Name">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
             </summary>
         </member>
         <member name="P:fIT.WebApi.Resources.Label_NewPassword">
@@ -494,9 +687,34 @@
               Sucht eine lokalisierte Zeichenfolge, die Password ähnelt.
             </summary>
         </member>
+        <member name="P:fIT.WebApi.Resources.Label_RoleName">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Role Name ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Schedules">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Schedules ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Url">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Url ähnelt.
+            </summary>
+        </member>
         <member name="P:fIT.WebApi.Resources.Label_Username">
             <summary>
               Sucht eine lokalisierte Zeichenfolge, die Username ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_UsersEnrolledToRole">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Enrolled Users ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_UsersRemovedFromRole">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Removed Users ähnelt.
             </summary>
         </member>
         <member name="M:fIT.WebApi.Startup.Configuration(Owin.IAppBuilder)">

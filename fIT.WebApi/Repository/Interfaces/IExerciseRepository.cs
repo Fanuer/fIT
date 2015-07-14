@@ -9,7 +9,7 @@ using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Repository.Interfaces
 {
-  public interface IExerciseRepository : IRepositoryAddAndDelete<Exercise, int>, IRepositoryFindAll<Exercise>, IRepositoryFindSingle<Exercise, int>, IRepositoryUpdate<Exercise, int>
+  internal interface IExerciseRepository : IRepositoryAddAndDelete<Exercise, int>, IRepositoryFindAll<Exercise>, IRepositoryFindSingle<Exercise, int>, IRepositoryUpdate<Exercise, int>
   {
   }
 }

@@ -8,9 +8,9 @@ namespace fIT.WebApi.Models
 {
   public class CreateRoleModel
   {
-    [Required]
-    [StringLength(256, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
-    [Display(Name = "Role Name")]
+    [Required(ErrorMessageResourceName = "Error_Required", ErrorMessageResourceType = typeof(Resources))]
+    [StringLength(256, ErrorMessageResourceName = "Error_StringLength", ErrorMessageResourceType = typeof(Resources), MinimumLength = 2)]
+    [Display(ResourceType = typeof(Resources), Name = "Label_RoleName")]
     public string Name { get; set; }
   }
 }

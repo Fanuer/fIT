@@ -8,7 +8,7 @@ using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Repository.Interfaces
 {
-  public interface IPracticeRepository: IRepositoryAddAndDelete<Practice, int>, IRepositoryFindAll<Practice>, IRepositoryFindSingle<Practice, int>, IRepositoryUpdate<Practice, int>
+  internal interface IPracticeRepository : IRepositoryAddAndDelete<Practice, int>, IRepositoryFindAll<Practice>, IRepositoryFindSingle<Practice, int>, IRepositoryUpdate<Practice, int>
   {
 
   }

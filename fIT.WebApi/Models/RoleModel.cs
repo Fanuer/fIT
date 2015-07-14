@@ -5,10 +5,10 @@ using System.Web;
 
 namespace fIT.WebApi.Models
 {
-  public class RoleModel
+  /// <summary>
+  /// Defines Role Data
+  /// </summary>
+  public class RoleModel:EntryModel<string>
   {
-    public string Url { get; set; }
-    public string Id { get; set; }
-    public string Name { get; set; }
   }
 }

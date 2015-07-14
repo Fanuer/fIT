@@ -15,7 +15,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace fIT.WebApi.Repository
 {
-  public class ApplicationRepository : IRepository
+  internal class ApplicationRepository : IRepository
   {
     #region Field
     private ApplicationDbContext _ctx;
@@ -46,11 +46,11 @@ namespace fIT.WebApi.Repository
 
     #region Properties
 
-    public IRefreshTokenRepository RefreshTokens { get; private set; }
-    public IExerciseRepository Excercies { get; private set; }
-    public IClientRepository Clients { get; private set; }
-    public IScheduleRepository Schedules { get; private set; }
-    public IPracticeRepository Practices { get; private set; }
+    internal IRefreshTokenRepository RefreshTokens { get; private set; }
+    internal IExerciseRepository Excercies { get; private set; }
+    internal IClientRepository Clients { get; private set; }
+    internal IScheduleRepository Schedules { get; private set; }
+    internal IPracticeRepository Practices { get; private set; }
 
     #endregion
 

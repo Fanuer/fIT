@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace fIT.WebApi.Repository.Interfaces.CRUD
 {
-  public interface IRepositoryUpdate<T, TIdProperty> where T : IEntity<TIdProperty>
+  internal interface IRepositoryUpdate<T, TIdProperty> where T : IEntity<TIdProperty>
   {
     Task<bool> UpdateAsync(TIdProperty id, T model);
   }

@@ -4,13 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Entities
 {
     /// <summary>
     /// Definiert einen Trainingsplan
     /// </summary>
-    public class Schedule
+    public class Schedule: IEntity<int>
     {
         #region ctor
         public Schedule(int id = -1, string name = "", int userID = -1, ICollection<Exercise> exercises = null)

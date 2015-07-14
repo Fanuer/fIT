@@ -9,6 +9,33 @@
             
             </summary>
         </member>
+        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
+            <summary>
+            Wraps the modelerrror to a request
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
+            <summary>
+            Singleton Modelfactory
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
+            <summary>
+            Returns a single User-Manager per Request
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
+            <summary>
+            Manages User Roles
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
+            <summary>
+            Repository
+            </summary>
+        </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.GetUsers">
             <summary>
             Gets all application Users
@@ -73,33 +100,6 @@
             <response code="400">Bad request</response>
             <response code="404">Not Found</response>
             <response code="500">Internal Server Error</response>
-        </member>
-        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
-            <summary>
-            Wraps the modelerrror to a request
-            </summary>
-            <param name="result"></param>
-            <returns></returns>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
-            <summary>
-            Singleton Modelfactory
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
-            <summary>
-            Returns a single User-Manager per Request
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
-            <summary>
-            Manages User Roles
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
-            <summary>
-            Repository
-            </summary>
         </member>
         <member name="T:fIT.WebApi.Controller.RefreshTokensController">
             <summary>
@@ -268,7 +268,7 @@
             Uebung fuer Trainingspläne
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Entities.Exercise.ID">
+        <member name="P:fIT.WebApi.Entities.Exercise.Id">
             <summary>
             ID der Uebung
             </summary>

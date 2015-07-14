@@ -55,7 +55,7 @@ namespace fIT.WebApi.Models
                 Description = exercise.Description,
                 Name = exercise.Name,
                 Url = _UrlHelper.Link("GetExcerciseById", new {id = exercise.Id}),
-                Schedules = exercise.Schedules.Select(x => new EntryModel()
+                Schedules = exercise.Schedules.Select(x => new EntryModel<int>()
                 {
                     Id = x.ID,
                     Name = x.Name,

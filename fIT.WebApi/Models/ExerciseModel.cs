@@ -8,9 +8,9 @@ using System.Web.Http.OData;
 
 namespace fIT.WebApi.Models
 {
-    public class ExerciseModel: EntryModel
+    public class ExerciseModel: EntryModel<int>
     {
         public string Description { get; set; }
-        public IEnumerable<EntryModel> Schedules { get; set; }
+        public IEnumerable<EntryModel<int>> Schedules { get; set; }
     }
 }

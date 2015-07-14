@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Entities
 {
-  public class RefreshToken
+  public class RefreshToken: IEntity<string>
   {
     [Key]
     public string Id { get; set; }

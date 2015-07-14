@@ -4,13 +4,14 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 using fIT.WebApi.Entities.Enums;
+using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Entities
 {
   /// <summary>
   /// Definiert einen UserClient (z.b. App, SPA)
   /// </summary>
-  public class Client
+  public class Client: IEntity<string>
   {
     [Key]
     public string Id { get; set; }

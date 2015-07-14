@@ -45,13 +45,15 @@ namespace fIT.WebApi.Controller
                 return BadRequest();
             }
 
+          var exists = await this.AppRepository.Excercies.ExistsAsync(id); 
+
             try
             {
                 await this.AppRepository.Excercies.UpdateAsync(id, exercise);
             }
             catch (DbUpdateConcurrencyException e)
             {
-                if (!(await this.AppRepository.Excercies.ExistsAsync(id)))
+              if (!exists)
                 {
                     return NotFound();
                 }

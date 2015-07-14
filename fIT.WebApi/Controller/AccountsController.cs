@@ -14,7 +14,7 @@ using Microsoft.AspNet.Identity;
 namespace fIT.WebApi.Controller
 {
     /// <summary>
-    /// 
+    /// Handles User-based Actions
     /// </summary>
     [Authorize]
     [RoutePrefix("api/Accounts")]
@@ -99,7 +99,8 @@ namespace fIT.WebApi.Controller
         [Route("CurrentUser")]
         [HttpPut]
         [Authorize(Roles = "User")]
-        public async Task<IHttpActionResult> PutCurrentUser(Guid id, UserModel model)
+        [ResponseType(typeof(UserModel))]
+        public async Task<IHttpActionResult> PutCurrentUser([FromUri] string id, [FromUri] UserModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -110,8 +111,10 @@ namespace fIT.WebApi.Controller
             {
                 return BadRequest();
             }
-
-            var user = this.AppUserManager.FindByIdAsync(id.ToString());
+          
+            var user = await this.AppUserManager.FindByIdAsync(id);
+          var result = await this.AppUserManager.UpdateAsync(user);
+          return !result.Succeeded ? GetErrorResult(result) : StatusCode(HttpStatusCode.NoContent);
         }
 
         /// <summary>

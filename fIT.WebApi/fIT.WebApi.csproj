@@ -186,6 +186,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Repository\Interfaces\CRUD\IEntity.cs" />
+    <Compile Include="Repository\Interfaces\CRUD\IRepositoryAddAndDelete.cs" />
+    <Compile Include="Repository\Interfaces\CRUD\IRepositoryFindAll.cs" />
+    <Compile Include="Repository\Interfaces\CRUD\IRepositoryFindSingle.cs" />
+    <Compile Include="Repository\Interfaces\CRUD\IRepositoryUpdate.cs" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -240,9 +245,11 @@
     <Compile Include="Repository\ApplicationDbContext.cs" />
     <Compile Include="Repository\Interfaces\IClientRepository.cs" />
     <Compile Include="Repository\Interfaces\IExerciseRepository.cs" />
+    <Compile Include="Repository\Interfaces\IPracticeRepository.cs" />
     <Compile Include="Repository\Interfaces\IRefreshTokenRepository.cs" />
     <Compile Include="Repository\Interfaces\IRepository.cs" />
     <Compile Include="Repository\ApplicationRepository.cs" />
+    <Compile Include="Repository\Interfaces\IScheduleRepository.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

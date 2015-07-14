@@ -5,13 +5,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Entities
 {
     /// <summary>
     /// Definiert eine Trainingseinheit
     /// </summary>
-    public class Practice
+    public class Practice: IEntity<int>
     {
         public Practice(int id,
             int scheduleID,

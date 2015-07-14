@@ -2,10 +2,10 @@
 
 namespace fIT.WebApi.Models
 {
-    public class EntryModel
+    public class EntryModel<T>
     {
         [Required]
-        public int Id { get; set; }
+        public T Id { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

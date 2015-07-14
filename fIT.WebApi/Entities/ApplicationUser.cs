@@ -1,4 +1,5 @@
-﻿using fIT.WebApi.Entities.Enums;
+﻿using System;
+using fIT.WebApi.Entities.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;

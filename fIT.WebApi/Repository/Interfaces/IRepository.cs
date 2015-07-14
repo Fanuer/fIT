@@ -11,5 +11,7 @@ namespace fIT.WebApi.Repository.Interfaces
         IClientRepository Clients { get; }
         IRefreshTokenRepository RefreshTokens { get; }
         IExerciseRepository Excercies { get; }
+        IScheduleRepository Schedules { get; }
+        IPracticeRepository Practices { get; }
     }
 }

@@ -57,11 +57,27 @@ namespace fIT.WebApi.Models
                 Url = _UrlHelper.Link("GetExcerciseById", new {id = exercise.Id}),
                 Schedules = exercise.Schedules.Select(x => new EntryModel<int>()
                 {
-                    Id = x.ID,
+                    Id = x.Id,
                     Name = x.Name,
                     Url = _UrlHelper.Link("GetScheduleById", new {id = x.ID})
                 })
             };
         }
+
+      public ScheduleModel Create(Schedule schedule)
+      {
+        return new ScheduleModel()
+        {
+          Id = schedule.Id,
+          Name = schedule.Name,
+          Url = _UrlHelper.Link("GetScheduleById", new {id = schedule.Id}),
+          Exercises = schedule.Exercises.Select(x => new EntryModel<int>()
+          {
+            Id = x.Id,
+            Name = x.Name,
+            Url = _UrlHelper.Link("GetExcerciseById", new {id = x.Id}),
+          })
+        };
+      }
     }
 }

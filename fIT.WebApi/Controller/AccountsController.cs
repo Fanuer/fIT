@@ -83,7 +83,6 @@ namespace fIT.WebApi.Controller
     /// <response code="500">Internal Server Error</response>
     [Route("CurrentUser")]
     [HttpGet]
-    [Authorize(Roles = "User")]
     public async Task<IHttpActionResult> GetCurrentUser()
     {
       var currentUserId = User.Identity.GetUserId();
@@ -98,7 +97,6 @@ namespace fIT.WebApi.Controller
 
     [Route("CurrentUser")]
     [HttpPut]
-    [Authorize(Roles = "User")]
     [ResponseType(typeof(UserModel))]
     public async Task<IHttpActionResult> UpdateCurrentUser(UserModel model)
     {

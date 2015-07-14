@@ -186,6 +186,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\SchedulesController.cs" />
+    <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IEntity.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IRepositoryAddAndDelete.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IRepositoryFindAll.cs" />

@@ -33,7 +33,7 @@ namespace fIT.WebApi.Entities
         /// <summary>
         /// DB ID
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// DisplayName des Trainingsplans
         /// </summary>
@@ -43,7 +43,7 @@ namespace fIT.WebApi.Entities
         /// <summary>
         /// Fremdschlüssel zum Nutzer
         /// </summary>        
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         /// <summary>
         /// Uebungen

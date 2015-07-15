@@ -150,9 +150,8 @@ namespace fIT.WebApi.Client.Implementation
 
     public async Task<IManagementSession> LoginAsync(string username, string password)
     {
-      var body = new {username, Password = password, grant_type = "password"};
-
-      HttpResponseMessage response = await client.PostAsync(LOGIN_PATH, body, new JsonMediaTypeFormatter());
+      var content = new ObjectContent(typeof(object), new { username, Password = password, grant_type = "password" }, new JsonMediaTypeFormatter());
+      HttpResponseMessage response = await client.PostAsync(LOGIN_PATH, content);
         if (response.IsSuccessStatusCode)
         {
           var result = await response.Content.ReadAsStringAsync();

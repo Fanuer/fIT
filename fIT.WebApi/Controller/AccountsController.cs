@@ -26,8 +26,8 @@ namespace fIT.WebApi.Controller
     [AllowAnonymous]
     public async Task<IHttpActionResult> Ping()
     {
-      var unixtimestpam = (Int32) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-      return this.Ok("ACK " + XmlConvert.ToString(unixtimestpam));
+      var result = new {timestamp = DateTime.Now};
+      return this.Ok(result);
     }
 
     #region Users

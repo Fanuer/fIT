@@ -118,35 +118,35 @@ namespace fIT.WebApi.Client.Implementation
       }
     }
 
-    public async Task<IManagementSession> GetSessionAsync(ClaimsIdentity identity)
-    {
-      var claim = identity.FindFirst(ManagementSession.AccessTokenClaimType);
-      if (claim == null) return null;
+    //public async Task<IManagementSession> GetSessionAsync(ClaimsIdentity identity)
+    //{
+    //  var claim = identity.FindFirst(ManagementSession.AccessTokenClaimType);
+    //  if (claim == null) return null;
 
-      string token = claim.Value;
+    //  string token = claim.Value;
 
-      IManagementSession session;
+    //  IManagementSession session;
 
-      if (!sessions.TryGetValue(token, out session))
-      {
-        try
-        {
-          session = new ManagementSession(this, identity);
-          if (await session.Validate())
-          {
-            if (sessions != null) sessions[token] = session;
-          }
-          else
-          {
-            session.Dispose();
-            session = null;
-          }
-        }
-        catch { }
-      }
+    //  if (!sessions.TryGetValue(token, out session))
+    //  {
+    //    try
+    //    {
+    //      session = new ManagementSession(this, identity);
+    //      if (await session.Validate())
+    //      {
+    //        if (sessions != null) sessions[token] = session;
+    //      }
+    //      else
+    //      {
+    //        session.Dispose();
+    //        session = null;
+    //      }
+    //    }
+    //    catch { }
+    //  }
 
-      return session;
-    }
+    //  return session;
+    //}
 
     public async Task<IManagementSession> LoginAsync(string upn, string password)
     {

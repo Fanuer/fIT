@@ -148,15 +148,17 @@ namespace fIT.WebApi.Client.Implementation
     //  return session;
     //}
 
-    public async Task<IManagementSession> LoginAsync(string upn, string password)
+    public async Task<IManagementSession> LoginAsync(string username, string password)
     {
-        HttpResponseMessage response = await client.PostAsync(LOGIN_PATH, new ObjectContent(typeof(object), new { Upn = upn, Password = password, grant_type="password" }, new JsonMediaTypeFormatter()));
+      var body = new {username, Password = password, grant_type = "password"};
+
+      HttpResponseMessage response = await client.PostAsync(LOGIN_PATH, body, new JsonMediaTypeFormatter());
         if (response.IsSuccessStatusCode)
         {
           var result = await response.Content.ReadAsStringAsync();
           var resultEntries = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
           var accessResult = new AuthenticationResultModel(resultEntries);
-          var session = new ManagementSession(this, upn, accessResult);
+          var session = new ManagementSession(this, username, accessResult);
 
           sessions[session.Token] = session;
 
@@ -165,9 +167,9 @@ namespace fIT.WebApi.Client.Implementation
         throw new ServerException(response);
       }
 
-    public async Task UpdatePasswordAsync(string upn, string oldPassword, string newPassword)
+    public async Task UpdatePasswordAsync(string username, string oldPassword, string newPassword)
     {
-        HttpResponseMessage response = await client.PutAsync(PASSWORD_PATH, new ObjectContent(typeof(object), new { Upn = upn, OldPassword = oldPassword, NewPassword = newPassword }, new JsonMediaTypeFormatter()));
+        HttpResponseMessage response = await client.PutAsync(PASSWORD_PATH, new ObjectContent(typeof(object), new { Upn = username, OldPassword = oldPassword, NewPassword = newPassword }, new JsonMediaTypeFormatter()));
         if (response.IsSuccessStatusCode)
         {
           var result = await response.Content.ReadAsStringAsync();

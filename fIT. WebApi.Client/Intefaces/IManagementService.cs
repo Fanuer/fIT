@@ -6,8 +6,8 @@ namespace fIT.WebApi.Client.Intefaces
 {
     public interface IManagementService
     {
-      Task<IManagementSession> LoginAsync(string upn, string password);
-      Task UpdatePasswordAsync(string upn, string oldPassword, string newPassword);
+      Task<IManagementSession> LoginAsync(string username, string password);
+      Task UpdatePasswordAsync(string username, string oldPassword, string newPassword);
 
       string EncryptString(String base64String);
 

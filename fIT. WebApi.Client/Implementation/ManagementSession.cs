@@ -215,12 +215,14 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task<HttpStatusCode> GetHttpStatusAsync(string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.GetAsync(String.Format(url, args));
       return response.StatusCode;
     }
 
     private async Task<byte[]> GetBytesAsync(string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.GetAsync(String.Format(url, args));
       if (response.IsSuccessStatusCode)
       {
@@ -236,6 +238,7 @@ namespace fIT.WebApi.Client.Implementation
     {
       //ToDO wrap stream for service monitor
 
+      await CheckForRefreshRequirement();
       var response = await client.GetAsync(String.Format(url, args));
       if (response.IsSuccessStatusCode)
       {
@@ -259,6 +262,7 @@ namespace fIT.WebApi.Client.Implementation
     {
       //ToDO wrap stream for service monitor
 
+      await CheckForRefreshRequirement();
       var response = await client.GetAsync(String.Format(url, args));
       if (response.IsSuccessStatusCode)
       {
@@ -280,6 +284,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task PutAsJsonAsync<T>(T model, string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PutAsJsonAsync(String.Format(url, args), model);
       if (response.IsSuccessStatusCode)
       {
@@ -299,6 +304,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task PutAsync(string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PutAsync(String.Format(url, args), new StringContent(String.Empty));
       if (response.IsSuccessStatusCode)
       {
@@ -314,6 +320,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task DeleteAsync(string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.DeleteAsync(String.Format(url, args));
       if (response.IsSuccessStatusCode)
       {
@@ -329,6 +336,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task<T> DeleteAsync<T>(string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.DeleteAsync(String.Format(url, args));
       if (response.IsSuccessStatusCode)
       {
@@ -341,6 +349,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task DeleteAsJsonAsync<T>(T model, string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var message = new HttpRequestMessage(HttpMethod.Delete, JsonConvert.SerializeObject(model));
       var response = await client.SendAsync(message);
       if (response.IsSuccessStatusCode)
@@ -354,6 +363,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task<T> PostAsync<T>(HttpContent content, string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PostAsync(String.Format(url, args), content);
       if (response.IsSuccessStatusCode)
       {
@@ -369,6 +379,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task PostAsync(HttpContent content, string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PostAsync(String.Format(url, args), content);
       if (response.IsSuccessStatusCode)
       {
@@ -385,6 +396,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task PostAsync(string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PostAsync(String.Format(url, args), new StringContent(String.Empty));
       if (response.IsSuccessStatusCode)
       {
@@ -401,6 +413,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task PostAsJsonAsync<T>(T model, string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PostAsJsonAsync(String.Format(url, args), model);
       if (response.IsSuccessStatusCode)
       {
@@ -417,6 +430,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task<TResult> PutAsJsonReturnAsync<T, TResult>(T model, string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PutAsJsonAsync(String.Format(url, args), model);
       if (response.IsSuccessStatusCode)
       {
@@ -431,6 +445,7 @@ namespace fIT.WebApi.Client.Implementation
 
     private async Task<TResult> PostAsJsonReturnAsync<T, TResult>(T model, string url, params object[] args)
     {
+      await CheckForRefreshRequirement();
       var response = await client.PostAsJsonAsync(String.Format(url, args), model);
       if (response.IsSuccessStatusCode)
       {
@@ -441,6 +456,21 @@ namespace fIT.WebApi.Client.Implementation
       {
         if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PostAsJsonAsyncReturn<{0}, {1}>({2}) -> {3}{4}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
         throw new ServerException(response);
+      }
+    }
+
+    private async Task CheckForRefreshRequirement()
+    {
+      if (!String.IsNullOrWhiteSpace(this.RefreshToken) && DateTimeOffset.UtcNow > this.ExpiresOn.Subtract(TimeSpan.FromMinutes(30)))
+      {
+        try
+        {
+          await this.PerformRefreshAsync();
+        }
+        catch (ServerException e)
+        {
+          throw e;
+        }
       }
     }
     #endregion

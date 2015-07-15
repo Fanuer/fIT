@@ -13,18 +13,21 @@ using Microsoft.AspNet.Identity;
 
 namespace fIT.WebApi.Controller
 {
+    /// <summary>
+    /// Grants access to schedule data
+    /// </summary>
     [Authorize]
     [RoutePrefix("api/schedule")]
     public class SchedulesController : BaseApiController
     {
         /// <summary>
-        /// Gets all application Users
+        /// Gets all schedules of a user or all, if logged in as an admin
         /// </summary>
         /// <response code="500">Internal Server Error</response>
         [Route("")]
         [HttpGet]
         [EnableQuery]
-        public IQueryable<ScheduleModel> GetUsers()
+        public IQueryable<ScheduleModel> GetSchedules()
         {
             return this.AppRepository
                        .Schedules
@@ -37,8 +40,10 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Get one Schedule
         /// </summary>
-        /// <param name="id">exercise id</param>
-        /// <returns></returns>
+        /// <param name="id">Schedule id</param>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(ScheduleModel))]
         [HttpGet]
         [Route("{id:int}", Name = "GetScheduleById")]
@@ -59,13 +64,15 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Updates an existing schedule
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="schedule"></param>
-        /// <returns></returns>
+        /// <param name="schedule">New schedule Data</param>
+        /// <param name="id">Schedule id</param>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(void))]
         [Route("{id:int}")]
         [HttpPut]
-        public async Task<IHttpActionResult> UpdateExercise(int id, ScheduleModel schedule)
+        public async Task<IHttpActionResult> UpdateExercise([FromUri]int id, [FromBody]ScheduleModel schedule)
         {
             if (!ModelState.IsValid)
             {
@@ -98,10 +105,12 @@ namespace fIT.WebApi.Controller
         }
 
         /// <summary>
-        /// Create new Schedule
+        /// Create new Schedule for the logged in user
         /// </summary>
-        /// <param name="schedule">schedule data to create</param>
-        /// <returns></returns>
+        /// <param name="schedule">Schedule data to create</param>
+        /// <response code="201">Created</response>  
+        /// <response code="400">Bad request</response> 
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(ScheduleModel))]
         [Route("")]
         [HttpPost]
@@ -120,8 +129,10 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Removes a schedule
         /// </summary>
-        /// <param name="id">id of the schedule to delete</param>
-        /// <returns></returns>
+        /// <param name="id">Id of the schedule to delete</param>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(void))]
         [Route("{id:int}")]
         [HttpDelete]

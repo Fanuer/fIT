@@ -14,7 +14,7 @@ using fIT.WebApi.Models;
 namespace fIT.WebApi.Controller
 {
     /// <summary>
-    /// Handles Exercise-based Actions
+    /// Grants access to exercise data
     /// </summary>
     [Authorize]
     [RoutePrefix("api/exercise")]
@@ -37,7 +37,9 @@ namespace fIT.WebApi.Controller
         /// Get one Exercise
         /// </summary>
         /// <param name="id">exercise id</param>
-        /// <returns></returns>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(ExerciseModel))]
         [HttpGet]
         [Route("{id:int}", Name = "GetExerciseById")]
@@ -57,7 +59,9 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="id">Id of the exercise to update</param>
         /// <param name="exercise">new exercise data</param>
-        /// <returns></returns>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(void))]
         [Route("{id:int}")]
         [HttpPut]
@@ -93,7 +97,13 @@ namespace fIT.WebApi.Controller
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Exercises
+        /// <summary>
+        /// Creates a new Excercise
+        /// </summary>
+        /// <param name="exercise">new exercise data</param>
+        /// <response code="201">Created</response>  
+        /// <response code="400">Bad request</response> 
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(ExerciseModel))]
         [Route("")]
         [HttpPost]
@@ -109,7 +119,13 @@ namespace fIT.WebApi.Controller
             return CreatedAtRoute("DefaultApi", new { id = exercise.Id }, exercise);
         }
 
-        // DELETE: api/Exercises/5
+        /// <summary>
+        /// Removes a exercise
+        /// </summary>
+        /// <param name="id">Id of the exercise to delete</param>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(void))]
         [Route("{id:int}")]
         [HttpDelete]

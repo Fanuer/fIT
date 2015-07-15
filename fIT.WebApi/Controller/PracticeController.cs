@@ -12,6 +12,9 @@ using fIT.WebApi.Models;
 
 namespace fIT.WebApi.Controller
 {
+    /// <summary>
+    /// Grants access to practice data
+    /// </summary>
     [Authorize]
     [RoutePrefix("api/practice")]
     public class PracticeController : BaseApiController
@@ -19,10 +22,11 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Get all PracticeEntries
         /// </summary>
-        /// <returns></returns>
+        /// <response code="500">Internal Server Error</response>
         [HttpGet]
         [EnableQuery]
         [Route("")]
+        [ResponseType(typeof(IQueryable<PracticeModel>))]
         public IQueryable<PracticeModel> GetPractices()
         {
             return this
@@ -34,6 +38,13 @@ namespace fIT.WebApi.Controller
                    .AsQueryable();
         }
 
+        /// <summary>
+        /// Get one practice by id
+        /// </summary>
+        /// <param name="id">id of the practice</param>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(PracticeModel))]
         [HttpGet]
         [Route("{id:int}", Name = "GetPracticeById")]
@@ -52,6 +63,14 @@ namespace fIT.WebApi.Controller
             return Ok(practice);
         }
 
+        /// <summary>
+        /// Updates an existing practice
+        /// </summary>
+        /// <param name="practice">New practice data</param>
+        /// <param name="id">Practice id</param>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(void))]
         [Route("{id:int}")]
         [HttpPut]
@@ -91,7 +110,13 @@ namespace fIT.WebApi.Controller
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Practices
+        /// <summary>
+        /// Create new practice for the logged in user
+        /// </summary>
+        /// <param name="practice">Practice data to create</param>
+        /// <response code="201">Created</response>  
+        /// <response code="400">Bad request</response> 
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(PracticeModel))]
         [Route("")]
         [HttpPost]
@@ -107,7 +132,13 @@ namespace fIT.WebApi.Controller
             return CreatedAtRoute("DefaultApi", new { id = practice.Id }, practice);
         }
 
-        // DELETE: api/Practices/5
+        /// <summary>
+        /// Removes a schedule
+        /// </summary>
+        /// <param name="id">Id of the schedule to delete</param>
+        /// <response code="400">Bad request</response>  
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [ResponseType(typeof(void))]
         [Route("{id:int}")]
         [HttpDelete]

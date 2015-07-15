@@ -29,6 +29,7 @@ namespace fIT.WebApi.Controller
     [HttpGet]
     [Authorize(Roles = "Admin")]
     [EnableQuery]
+    [ResponseType(typeof(IQueryable<UserModel>))]
     public IQueryable<UserModel> GetUsers()
     {
       return this.AppUserManager.Users.Select(u => this.TheModelFactory.Create(u));
@@ -43,6 +44,7 @@ namespace fIT.WebApi.Controller
     [Route("User/{id:guid}", Name = "GetUserById")]
     [HttpGet]
     [Authorize(Roles = "Admin")]
+    [ResponseType(typeof(UserModel))]
     public async Task<IHttpActionResult> GetUser(string id)
     {
       var user = await this.AppUserManager.FindByIdAsync(id);
@@ -65,6 +67,7 @@ namespace fIT.WebApi.Controller
     [Route("User/{username}")]
     [HttpGet]
     [Authorize(Roles = "Admin")]
+    [ResponseType(typeof(UserModel))]
     public async Task<IHttpActionResult> GetUserByName(string username)
     {
       var user = await this.AppUserManager.FindByNameAsync(username);

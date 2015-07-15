@@ -57,12 +57,21 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
+    <Compile Include="ClientTests.cs" />
+    <Compile Include="Model\Temporary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="ClientTests.Admin.cs" />
+    <Compile Include="ClientTests.Users.cs" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\fIT. WebApi.Client\fIT. WebApi.Client.csproj">
+      <Project>{d5fb4bea-baad-448e-9f6d-9be67e4819db}</Project>
+      <Name>fIT. WebApi.Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

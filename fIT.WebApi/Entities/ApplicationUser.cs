@@ -80,12 +80,6 @@ namespace fIT.WebApi.Entities
         /// Trainingsplaene
         /// </summary>
         public virtual ICollection<Schedule> Schedules { get; set; }
-
-        /// <summary>
-        /// User Level
-        /// </summary>
-        [Required]
-        public byte Level { get; set; }
         #endregion
     }
 }

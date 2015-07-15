@@ -189,6 +189,10 @@
   <ItemGroup>
     <Compile Include="Controller\PracticeController.cs" />
     <Compile Include="Controller\SchedulesController.cs" />
+    <Compile Include="Migrations\201507150819282_AlteredModels_WeightTimeStamp.cs" />
+    <Compile Include="Migrations\201507150819282_AlteredModels_WeightTimeStamp.Designer.cs">
+      <DependentUpon>201507150819282_AlteredModels_WeightTimeStamp.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\PracticeModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IEntity.cs" />
@@ -274,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201507101153443_addedClientRefreshtokenSchedules.resx">
       <DependentUpon>201507101153443_addedClientRefreshtokenSchedules.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201507150819282_AlteredModels_WeightTimeStamp.resx">
+      <DependentUpon>201507150819282_AlteredModels_WeightTimeStamp.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

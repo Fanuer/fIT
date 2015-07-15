@@ -24,10 +24,11 @@ namespace fIT.WebApi.Provider
     {
       bool result = false;
       var refreshTokenId = Guid.NewGuid().ToString("n");
+      var clientId = context.Ticket.Properties.Dictionary.ContainsKey("as:client_id") ? context.Ticket.Properties.Dictionary["as:client_id"] : DUMMY_CLIENT;
       var token = new RefreshToken()
       {
         Id = Helper.GetHash(refreshTokenId),
-        ClientId = context.Ticket.Properties.Dictionary["as:client_id"] ?? DUMMY_CLIENT,
+        ClientId = clientId,
         Subject = context.Ticket.Identity.Name,
         IssuedUtc = DateTime.UtcNow,
         ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime")))

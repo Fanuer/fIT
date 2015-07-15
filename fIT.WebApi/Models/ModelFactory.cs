@@ -28,7 +28,7 @@ namespace fIT.WebApi.Models
         #region Method
         public UserModel Create(ApplicationUser datamodel)
         {
-            if (datamodel == null) { throw new ArgumentNullException(nameof(datamodel)); }
+          if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
             return new UserModel
             {
                 Url = _UrlHelper.Link("GetUserById", new { id = datamodel.Id }),
@@ -44,7 +44,7 @@ namespace fIT.WebApi.Models
 
         public RoleModel Create(IdentityRole datamodel)
         {
-            if (datamodel == null) { throw new ArgumentNullException(nameof(datamodel)); }
+          if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
             return new RoleModel
             {
                 Url = _UrlHelper.Link("GetRoleById", new { id = datamodel.Id }),
@@ -55,7 +55,7 @@ namespace fIT.WebApi.Models
 
         public ExerciseModel Create(Exercise datamodel)
         {
-            if (datamodel == null) { throw new ArgumentNullException(nameof(datamodel)); }
+          if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
             return new ExerciseModel()
             {
                 Id = datamodel.Id,
@@ -91,7 +91,7 @@ namespace fIT.WebApi.Models
 
         public PracticeModel Create(Practice datamodel)
         {
-            if (datamodel == null) { throw new ArgumentNullException(nameof(datamodel)); }
+            if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
 
             return new PracticeModel()
             {

@@ -28,7 +28,6 @@ namespace fIT.WebApi.Migrations
                 Email = "Stefan@fIT.com",
                 EmailConfirmed = true,
                 DateOfBirth = new DateTime(1987,12,13),
-                Level = 1,
                 Fitness = FitnessType.OnceAWeek,
                 Job = JobTypes.Easy,
                 Gender = GenderType.Male
@@ -41,7 +40,6 @@ namespace fIT.WebApi.Migrations
                 Email = "Kevin@fIT.com",
                 EmailConfirmed = true,
                 DateOfBirth = new DateTime(1993, 7,4),
-                Level = 1,
                 Fitness = FitnessType.HighPerformanceAthletes,
                 Job = JobTypes.Easy,
                 Gender = GenderType.Male

@@ -56,7 +56,7 @@ namespace fIT.WebApi.Repository
 
     #region Sealed Classes
 
-    private abstract class GenericRepository<T, TIdProperty> : IRepositoryAddAndDelete<T, TIdProperty>, IRepositoryFindAll<T>, IRepositoryFindSingle<T, TIdProperty>, IRepositoryUpdate<T, TIdProperty> where T : IEntity<TIdProperty>
+    private abstract class GenericRepository<T, TIdProperty> : IRepositoryAddAndDelete<T, TIdProperty>, IRepositoryFindAll<T>, IRepositoryFindSingle<T, TIdProperty>, IRepositoryUpdate<T, TIdProperty> where T : class, IEntity<TIdProperty>
     {
       #region Field
 

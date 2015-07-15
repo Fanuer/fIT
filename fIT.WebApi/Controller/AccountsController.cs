@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.OData;
+using System.Xml;
 using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
@@ -20,6 +21,15 @@ namespace fIT.WebApi.Controller
   [RoutePrefix("api/Accounts")]
   public class AccountsController : BaseApiController
   {
+    [Route("ping")]
+    [HttpGet]
+    [AllowAnonymous]
+    public async Task<IHttpActionResult> Ping()
+    {
+      var unixtimestpam = (Int32) (DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+      return this.Ok("ACK " + XmlConvert.ToString(unixtimestpam));
+    }
+
     #region Users
     /// <summary>
     /// Gets all application Users

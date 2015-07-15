@@ -219,6 +219,12 @@ namespace fIT.WebApi.Client.Implementation
       }
     }
 
+    public async Task<bool> Ping()
+    {
+      var result = await this.client.GetAsync("/api/account/ping");
+      return result.IsSuccessStatusCode;
+    }
+
     #endregion
 
     #region Properties

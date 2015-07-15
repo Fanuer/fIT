@@ -9,5 +9,6 @@ namespace fIT.WebApi.Tests
 {
   public partial class ClientTests
   {
+
   }
 }

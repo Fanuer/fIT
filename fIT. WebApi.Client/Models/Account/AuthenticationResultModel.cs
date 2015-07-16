@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace fIT.WebApi.Client.Models
+namespace fIT.WebApi.Client.Models.Account
 {
   public class AuthenticationResultModel
   {
@@ -12,9 +9,10 @@ namespace fIT.WebApi.Client.Models
 
     private const string ACCESS_TOKEN = "access_token";
     private const string REFRESH_TOKEN = "refresh_token";
-    private const string EXPIREDATE = "expires";
-    private const string ISSUEDATE = "issued";
+    private const string EXPIREDATE = ".expires";
+    private const string ISSUEDATE = ".issued";
     private const string TOKEN_TYPE = "token_type";
+    private const string DATEFORMAT = "ddd dd MMM yyyy h:mm tt zzz";
     #endregion
 
     #region Ctor
@@ -48,11 +46,12 @@ namespace fIT.WebApi.Client.Models
       }
       if (httpContentResults.ContainsKey(ISSUEDATE))
       {
-        IssueDate = Convert.ToDateTime(httpContentResults[ISSUEDATE]);
+        IssueDate = DateTime.Parse(httpContentResults[ISSUEDATE]);
+        //IssueDate = Convert.ToDateTime(httpContentResults[ISSUEDATE]);
       }
       if (httpContentResults.ContainsKey(EXPIREDATE))
       {
-        ExpireDate = Convert.ToDateTime(httpContentResults[EXPIREDATE]);
+        ExpireDate = DateTime.Parse(httpContentResults[EXPIREDATE]);
       }
 
     }

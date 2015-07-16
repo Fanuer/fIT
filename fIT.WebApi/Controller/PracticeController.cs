@@ -98,7 +98,7 @@ namespace fIT.WebApi.Controller
                 orig = this.TheModelFactory.Update(practice, this.CurrentUserId, orig);
                 await this.AppRepository.Practices.UpdateAsync(id, orig);
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!exists)
                 {

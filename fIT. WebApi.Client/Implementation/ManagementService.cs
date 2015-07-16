@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Intefaces;
 using fIT.WebApi.Client.Models;
+using fIT.WebApi.Client.Models.Account;
 using Newtonsoft.Json;
 
 namespace fIT.WebApi.Client.Implementation
@@ -150,7 +151,9 @@ namespace fIT.WebApi.Client.Implementation
 
     public async Task<IManagementSession> LoginAsync(string username, string password)
     {
-      var content = new ObjectContent(typeof(object), new { username, Password = password, grant_type = "password" }, new JsonMediaTypeFormatter());
+      const string CONTENT = "username={0}&password={1}&grant_type=password";
+      var content = new StringContent(String.Format(CONTENT, username, password));
+      //var content = new ObjectContent(typeof(object), new { username, Password = password, grant_type = "password" }, new JsonMediaTypeFormatter());
       HttpResponseMessage response = await client.PostAsync(LOGIN_PATH, content);
         if (response.IsSuccessStatusCode)
         {
@@ -220,7 +223,7 @@ namespace fIT.WebApi.Client.Implementation
 
     public async Task<bool> Ping()
     {
-      var result = await this.client.GetAsync("/api/account/ping");
+      var result = await this.client.GetAsync("/api/accounts/ping");
       return result.IsSuccessStatusCode;
     }
 

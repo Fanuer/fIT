@@ -12,16 +12,17 @@ using System.Text;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Intefaces;
 using fIT.WebApi.Client.Models;
+using fIT.WebApi.Client.Models.Account;
 using fIT.WebApi.Client.Models.Shared;
 using log4net;
 using Newtonsoft.Json;
 
 namespace fIT.WebApi.Client.Implementation
 {
-  public class ManagementSession:IManagementSession
+  public partial class ManagementSession : IManagementSession
   {
     #region Field
-    private const string RefreshTokenPath = "/api/account/refreshtoken";
+    private const string RefreshTokenPath = "/api/accounts/login";
     public const string AccessTokenClaimType = "http://fit-bachelor.azurewebsites.net/api/accesstoken";
     public const string RefreshTokenClaimType = "http://fit-bachelor.azurewebsites.net/api/refreshtoken";
     public const string ExpiresClaimType = "http://fit-bachelor.azurewebsites.net/api/tokenexpires";
@@ -133,8 +134,10 @@ namespace fIT.WebApi.Client.Implementation
     {
       string oldToken = Token;
       string newAccessToken = null;
+      const string REFRESHCONTENT = "grant_type=refresh_token&refreshtoken={0}&clientId=client";
 
-      HttpResponseMessage response = await client.PostAsync(RefreshTokenPath, new ObjectContent(typeof(object), RefreshToken, new JsonMediaTypeFormatter()));
+      HttpResponseMessage response = await client.PostAsync(RefreshTokenPath, new StringContent(String.Format(REFRESHCONTENT, this.RefreshToken)));
+      //HttpResponseMessage response = await client.PostAsync(RefreshTokenPath, new ObjectContent(typeof(object), RefreshToken, new JsonMediaTypeFormatter()));
       if (response.IsSuccessStatusCode)
       {
         var result = await response.Content.ReadAsAsync<AuthenticationResultModel>();
@@ -483,9 +486,6 @@ namespace fIT.WebApi.Client.Implementation
     private string RefreshToken { get { return refreshToken; } }
     public DateTimeOffset ExpiresOn { get { return expiresOn; } }
     public string CurrentUsername { get { return currentUsername; }}
-
-    public IAdminManagement Admins { get; set; }
-    public IUserManagement Users { get; set; }
     #endregion
   }
 }

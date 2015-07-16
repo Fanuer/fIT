@@ -28,7 +28,7 @@ namespace fIT.WebApi.Controller
         [Route("ping")]
         [HttpGet]
         [AllowAnonymous]
-        public async Task<IHttpActionResult> Ping()
+        public IHttpActionResult Ping()
         {
             var result = new { timestamp = DateTime.Now };
             return this.Ok(result);

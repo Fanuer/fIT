@@ -57,18 +57,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\ManagementService.cs" />
-    <Compile Include="Implementation\ManagementSession.cs" />
+    <Compile Include="Implementation\ManagementSession.Base.cs" />
+    <Compile Include="Implementation\ManagementSession.Admin.cs" />
     <Compile Include="Intefaces\IAdminManagement.cs" />
     <Compile Include="Intefaces\IManagementService.cs" />
     <Compile Include="Intefaces\IManagementSession.cs" />
     <Compile Include="Intefaces\IUserManagement.cs" />
-    <Compile Include="Models\AuthenticationResultModel.cs" />
+    <Compile Include="Models\Account\AuthenticationResultModel.cs" />
+    <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\ServerException.cs" />
     <Compile Include="Models\Shared\StreamModel.cs" />
     <Compile Include="Models\Shared\XmlStreamModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Implementation\ManagementSession.Users.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

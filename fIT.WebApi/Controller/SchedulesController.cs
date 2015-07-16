@@ -92,7 +92,7 @@ namespace fIT.WebApi.Controller
                 orig = this.TheModelFactory.Update(schedule, orig);
                 await this.AppRepository.Schedules.UpdateAsync(id, orig);
             }
-            catch (DbUpdateConcurrencyException e)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!exists)
                 {

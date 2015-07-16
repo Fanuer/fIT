@@ -13,7 +13,7 @@ namespace fIT.WebApi.Tests
 #if DEBUG
     private const string ServiceUrl = "http://localhost:62816/";
 #else
-      private const string ServiceUrl = "http://fit-bachelor.azurewebsites.net/";
+    private const string ServiceUrl = "http://fit-bachelor.azurewebsites.net/";
 #endif
 
     private const string Username = "Stefan";
@@ -31,39 +31,22 @@ namespace fIT.WebApi.Tests
     [TestMethod]
     public void Login()
     {
-      try
-      {
         using (var service = new ManagementService(ServiceUrl))
         using (var session = service.LoginAsync(Username, Password).Result)
         { 
+          Assert.IsNotNull(session);
         }
-      }
-      catch (Exception e)
-      {
-        
-        throw e;
-      }
-      
     }
 
     [TestMethod]
     public void Ping()
     {
-      try
-      {
         using (var service = new ManagementService(ServiceUrl))
         {
-          Assert.IsTrue(service.Ping().Result);
+          var result = service.Ping().Result;
+          Assert.IsNotNull(result);
         }
-      }
-      catch (Exception e)
-      {
-
-        throw e;
-      }
-
     }
-
 
     [TestMethod]
     public void PerformRefresh()

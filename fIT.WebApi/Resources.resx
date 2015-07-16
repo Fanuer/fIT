@@ -129,10 +129,6 @@
     <value>The {0} must be at least {2} characters long.</value>
     <comment>Länge der Eingabe stimmt nicht</comment>
   </data>
-  <data name="Label_Age" xml:space="preserve">
-    <value>Age</value>
-    <comment>Alter des Nutzers</comment>
-  </data>
   <data name="Label_ConfirmPassword" xml:space="preserve">
     <value>Confirm Password</value>
     <comment>Vergleichspasswort zur Verifikation der Eingabe</comment>
@@ -140,6 +136,14 @@
   <data name="Label_CurrentPassword" xml:space="preserve">
     <value>Old Password</value>
     <comment>Altes Passwort</comment>
+  </data>
+  <data name="Label_DateOfBirth" xml:space="preserve">
+    <value>Date Of Birth</value>
+    <comment>Alter des Nutzers</comment>
+  </data>
+  <data name="Label_Description" xml:space="preserve">
+    <value>Description</value>
+    <comment>Beschreibung</comment>
   </data>
   <data name="Label_Email" xml:space="preserve">
     <value>Email</value>
@@ -153,9 +157,17 @@
     <value>Gender</value>
     <comment>Geschlecht</comment>
   </data>
+  <data name="Label_Id" xml:space="preserve">
+    <value>Id</value>
+    <comment>Object Id</comment>
+  </data>
   <data name="Label_JobType" xml:space="preserve">
     <value>Kind of Job</value>
     <comment>Art der beruflichen Tätigkeit (körperlich oder vorwiegend sitzen)</comment>
+  </data>
+  <data name="Label_Name" xml:space="preserve">
+    <value>Name</value>
+    <comment>Name</comment>
   </data>
   <data name="Label_NewPassword" xml:space="preserve">
     <value>New Password</value>
@@ -165,8 +177,28 @@
     <value>Password</value>
     <comment>Passwort des Nutzers</comment>
   </data>
+  <data name="Label_RoleName" xml:space="preserve">
+    <value>Role Name</value>
+    <comment>Name einer Rolle</comment>
+  </data>
+  <data name="Label_Schedules" xml:space="preserve">
+    <value>Schedules</value>
+    <comment>Trainingspläne</comment>
+  </data>
+  <data name="Label_Url" xml:space="preserve">
+    <value>Url</value>
+    <comment>Url to receive this object</comment>
+  </data>
   <data name="Label_Username" xml:space="preserve">
     <value>Username</value>
     <comment>Name des Nutzers</comment>
+  </data>
+  <data name="Label_UsersEnrolledToRole" xml:space="preserve">
+    <value>Enrolled Users</value>
+    <comment>Nutzer, die diese Rolle haben</comment>
+  </data>
+  <data name="Label_UsersRemovedFromRole" xml:space="preserve">
+    <value>Removed Users</value>
+    <comment>Nutzer, die von der Rolle entfernt wurden</comment>
   </data>
 </root>

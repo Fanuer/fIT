@@ -1,0 +1,837 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>fIT.WebApi</name>
+    </assembly>
+    <members>
+        <member name="T:fIT.WebApi.Controller.PracticeController">
+            <summary>
+            Grants access to practice data
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
+            <summary>
+            Wraps the modelerrror to a request
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
+            <summary>
+            Singleton Modelfactory
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
+            <summary>
+            Returns a single User-Manager per Request
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
+            <summary>
+            Manages User Roles
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
+            <summary>
+            Repository
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.CurrentUserId">
+            <summary>
+            Current User Id
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.PracticeController.GetPractices">
+            <summary>
+            Get all PracticeEntries
+            </summary>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.PracticeController.GetPractice(System.Int32)">
+            <summary>
+            Get one practice by id
+            </summary>
+            <param name="id">id of the practice</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.PracticeController.UpdatePractice(System.Int32,fIT.WebApi.Models.PracticeModel)">
+            <summary>
+            Updates an existing practice
+            </summary>
+            <param name="practice">New practice data</param>
+            <param name="id">Practice id</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.PracticeController.CreatePractice(fIT.WebApi.Models.PracticeModel)">
+            <summary>
+            Create new practice for the logged in user
+            </summary>
+            <param name="practice">Practice data to create</param>
+            <response code="201">Created</response>  
+            <response code="400">Bad request</response> 
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.PracticeController.DeletePractice(System.Int32)">
+            <summary>
+            Removes a schedule
+            </summary>
+            <param name="id">Id of the schedule to delete</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="T:fIT.WebApi.Controller.SchedulesController">
+            <summary>
+            Grants access to schedule data
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.GetSchedules">
+            <summary>
+            Gets all schedules of a user or all, if logged in as an admin
+            </summary>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.GetSchedule(System.Int32)">
+            <summary>
+            Get one Schedule
+            </summary>
+            <param name="id">Schedule id</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.UpdateExercise(System.Int32,fIT.WebApi.Models.ScheduleModel)">
+            <summary>
+            Updates an existing schedule
+            </summary>
+            <param name="schedule">New schedule Data</param>
+            <param name="id">Schedule id</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.CreateExercise(fIT.WebApi.Models.ScheduleModel)">
+            <summary>
+            Create new Schedule for the logged in user
+            </summary>
+            <param name="schedule">Schedule data to create</param>
+            <response code="201">Created</response>  
+            <response code="400">Bad request</response> 
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.DeleteExercise(System.Int32)">
+            <summary>
+            Removes a schedule
+            </summary>
+            <param name="id">Id of the schedule to delete</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="T:fIT.WebApi.Models.EntryModel`1">
+            <summary>
+            Defines one entry from the server
+            </summary>
+            <typeparam name="T">Type of id-property</typeparam>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Id">
+            <summary>
+            Id of an entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Name">
+            <summary>
+            Name of an Entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Url">
+            <summary>
+            Url to receive this entity
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Controller.AccountsController">
+            <summary>
+            Handles User-based Actions
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.Ping">
+            <summary>
+            Method to prove the Serversa availability
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.GetUsers">
+            <summary>
+            Gets all application Users
+            </summary>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.GetUser(System.String)">
+            <summary>
+            Get a user by its guid
+            </summary>
+            <param name="id">User's guid</param>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.GetUserByName(System.String)">
+            <summary>
+            Get User by Username
+            </summary>
+            <param name="username">username to search for</param>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.GetCurrentUser">
+            <summary>
+            Returns the current users Information
+            </summary>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.UpdateCurrentUser(fIT.WebApi.Models.UserModel)">
+            <summary>
+            Updates user data
+            </summary>
+            <param name="model">user data</param>
+            <response code="400">Bad request</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.Register(fIT.WebApi.Models.RegisterUserModel)">
+            <summary>
+            User can register to the Application
+            </summary>
+            <param name="createUserModel">new User</param>
+            <response code="201">Created</response>
+            <response code="400">Bad request</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.ChangePassword(fIT.WebApi.Models.ChangePasswordModel)">
+            <summary>
+            User can change its password
+            </summary>
+            <param name="model">Data to change a password</param>
+            <response code="400">Bad request</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.DeleteUser(System.String)">
+            <summary>
+            Admin can delete User
+            </summary>
+            <param name="id">Id of the user to delete</param>
+            <response code="400">Bad request</response>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.AssignRolesToUser(System.String,System.String[])">
+            <summary>
+            Assigned the user to the given roles
+            </summary>
+            <param name="id">User Id</param>
+            <param name="rolesToAssign">Roles to assign to the user</param>
+            <response code="400">Bad request</response>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="T:fIT.WebApi.Controller.ExerciseController">
+            <summary>
+            Grants access to exercise data
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.GetExercises">
+            <summary>
+            Get all Exercises
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.GetExercise(System.Int32)">
+            <summary>
+            Get one Exercise
+            </summary>
+            <param name="id">exercise id</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.UpdateExercise(System.Int32,fIT.WebApi.Models.ExerciseModel)">
+            <summary>
+            Updates an existing exercise
+            </summary>
+            <param name="id">Id of the exercise to update</param>
+            <param name="exercise">new exercise data</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.CreateExercise(fIT.WebApi.Models.ExerciseModel)">
+            <summary>
+            Creates a new Excercise
+            </summary>
+            <param name="exercise">new exercise data</param>
+            <response code="201">Created</response>  
+            <response code="400">Bad request</response> 
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.ExerciseController.DeleteExercise(System.Int32)">
+            <summary>
+            Removes a exercise
+            </summary>
+            <param name="id">Id of the exercise to delete</param>
+            <response code="400">Bad request</response>  
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="T:fIT.WebApi.Controller.RefreshTokensController">
+            <summary>
+            Grants access to refreshtoken data
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.RefreshTokensController.Get">
+            <summary>
+            Gets all refresh tokens
+            </summary>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.RefreshTokensController.Delete(System.String)">
+            <summary>
+            Deletes a Refreshtoken
+            </summary>
+            <param name="tokenId">tokenID</param>
+            <response code="400">Bad request</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="T:fIT.WebApi.Controller.RolesController">
+            <summary>
+            Controler to manage User roles
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.RolesController.GetRole(System.String)">
+            <summary> 
+            Get a single Role
+            </summary>
+            <param name="id">Guid of the role</param>
+            <response code="200">OK</response>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.RolesController.GetAllRoles">
+            <summary>
+            Returns a list of roles
+            </summary>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.RolesController.Create(fIT.WebApi.Models.CreateRoleModel)">
+            <summary>
+            Creates a new Role
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.RolesController.DeleteRole(System.String)">
+            <summary>
+            Deletes a Role
+            </summary>
+            <param name="id">Id of the role to delete</param>
+            <response code="400">Bad request</response>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
+        <member name="M:fIT.WebApi.Controller.RolesController.ManageUsersInRole(fIT.WebApi.Models.UsersInRoleModel)">
+            <summary>
+            Alters the settings between users and roles
+            </summary>
+            <param name="model">new settings</param>
+            <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Client">
+            <summary>
+            Definiert einen UserClient (z.b. App, SPA)
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Enums.FitnessType">
+            <summary>
+            Art der Fittness eines Nutzers
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.NoSport">
+            <summary>
+            Nutzer macht keinen Sport
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.OnceAWeek">
+            <summary>
+            Nutzer macht ein mal die Woche Sport
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.MoreThanOnceAWeek">
+            <summary>
+            Nutzer macht mehr als einmal die Woche Sport
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.HighPerformanceAthletes">
+            <summary>
+            Hochleistungssportler
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Enums.GenderType">
+            <summary>
+            Geschlecht
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.GenderType.Male">
+            <summary>
+            männlich
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.GenderType.Female">
+            <summary>
+            weiblich
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Enums.JobTypes">
+            <summary>
+            Art der Aktivität des Nutzers
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Easy">
+            <summary>
+            z.B. Schüler, Student, Büroarbeiten
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Middle">
+            <summary>
+            z.B. Handwerker, Verkäufer
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Hard">
+            <summary>
+            z.B. Bauarbeiter, Landwirt
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.ApplicationUser">
+            <summary>
+            Entität eines Nutzers
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Gender">
+            <summary>
+            Geschlecht
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.DateOfBirth">
+            <summary>
+            Alter
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Schedules">
+            <summary>
+            Trainingsplaene
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Exercise">
+            <summary>
+            Uebung fuer Trainingspläne
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Id">
+            <summary>
+            ID der Uebung
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Name">
+            <summary>
+            DisplayName
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Description">
+            <summary>
+            Beschreibung
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Schedules">
+            <summary>
+            Trainingsplaene, die diese Uebung enthalten
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Practice">
+            <summary>
+            Definiert eine Trainingseinheit
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Schedule">
+            <summary>
+            Definiert einen Trainingsplan
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.Id">
+            <summary>
+            DB ID
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.Name">
+            <summary>
+            DisplayName des Trainingsplans
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.UserID">
+            <summary>
+            Fremdschlüssel zum Nutzer
+            </summary>        
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.Exercises">
+            <summary>
+            Uebungen
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Manager.ApplicationUserManager">
+            <summary>
+            Gives access to Users
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Manager.ApplicationUserManager.Create(Microsoft.AspNet.Identity.Owin.IdentityFactoryOptions{fIT.WebApi.Manager.ApplicationUserManager},Microsoft.Owin.IOwinContext)">
+            <summary>
+            Returns a new UserManager for each request
+            </summary>
+            <param name="options"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Models.ChangePasswordModel">
+            <summary>
+            Model to change a password
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.ExerciseModel">
+            <summary>
+            Defines one Exercise
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.RegisterUserModel">
+            <summary>
+            Data to register a User
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Username">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Email">
+            <summary>
+            User's email
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.ConfirmPassword">
+            <summary>
+            Confirm Password. Must be equal to the given Password
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Gender">
+            <summary>
+            Geschlecht
+            </summary>        
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RegisterUserModel.DateOfBirth">
+            <summary>
+            Alter
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.RoleModel">
+            <summary>
+            Defines Role Data
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.UserModel">
+            <summary>
+            User data
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Url">
+            <summary>
+            Url to receive this object
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Id">
+            <summary>
+            User Id
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.UserName">
+            <summary>
+            Username
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Email">
+            <summary>
+            User email
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Gender">
+            <summary>
+            Geschlecht
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.DateOfBirth">
+            <summary>
+            Geburtstag
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.UsersInRoleModel">
+            <summary>
+            Definies a Role and the added and removed users
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.Id">
+            <summary>
+            Role Id
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.EnrolledUsers">
+            <summary>
+            Enrolled User
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.RemovedUsers">
+            <summary>
+            Removed User
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Provider.CustomJwtFormat">
+            <summary>
+            Authorization- and Resource Server
+            
+            Authorization Server:
+            Gets and parses Authorization requests and issues them to the OWIN middleware
+            Resource Server (Audience) aka client:
+            Requests JWT from the Authorization Server. Must be registered to the Authorization Server.
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Provider.CustomJwtFormat._issuer">
+            <summary>
+            Issurer is our API, which acts as Authorization- and Resource Server.
+            Is empty, because we allow all clients
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Provider.CustomJwtFormat.#ctor(System.String)">
+            <summary>
+            Contruktor
+            </summary>
+            <param name="issuer">calling Issuer</param>
+        </member>
+        <member name="T:fIT.WebApi.Provider.CustomOAuthProvider">
+            <summary>
+            Custom implementation of a OAuth Authorization Server Provider
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Provider.CustomOAuthProvider.ValidateClientAuthentication(Microsoft.Owin.Security.OAuth.OAuthValidateClientAuthenticationContext)">
+            <summary>
+            Validates a client thats tries to access the server.
+            Exepts all clients, the api is the onlyclient available and do not allow adding additional clients
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Provider.CustomOAuthProvider.GrantResourceOwnerCredentials(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext)">
+            <summary>
+            receiving the username and password from the request and validate them against our ASP.NET 2.1 Identity system
+            </summary>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Repository.ApplicationDbContext">
+            <summary>
+            Communcates with the Database
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Resources">
+            <summary>
+              Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.ResourceManager">
+            <summary>
+              Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Culture">
+            <summary>
+              Überschreibt die CurrentUICulture-Eigenschaft des aktuellen Threads für alle
+              Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Error_PasswordsNotEqual">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die The password and confirmation password do not match. ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Error_Required">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die The field &apos;{0}&apos; is required. ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Error_StringLength">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die The {0} must be at least {2} characters long. ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_ConfirmPassword">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Confirm Password ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_CurrentPassword">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Old Password ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_DateOfBirth">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Date Of Birth ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Description">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Description ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Email">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Email ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Fitness">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Fitness ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Gender">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Gender ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Id">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Id ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_JobType">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Kind of Job ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Name">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_NewPassword">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die New Password ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Password">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Password ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_RoleName">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Role Name ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Schedules">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Schedules ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Url">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Url ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_Username">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Username ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_UsersEnrolledToRole">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Enrolled Users ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Label_UsersRemovedFromRole">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Removed Users ähnelt.
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Startup.Configuration(Owin.IAppBuilder)">
+            <summary>
+            Get's fired when the applications is started by the host
+            </summary>
+            <param name="app"></param>
+        </member>
+        <member name="M:fIT.WebApi.Startup.InitialiseSwagger(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Initializes Swagger Documentation
+            </summary>
+            <param name="httpConfig"></param>
+        </member>
+        <member name="M:fIT.WebApi.Startup.ConfigureOAuthTokenGeneration(Owin.IAppBuilder)">
+            <summary>
+            Configure the db context and user manager to use a single instance per request
+            </summary>
+            <param name="app"></param>
+        </member>
+        <member name="M:fIT.WebApi.Startup.ConfigureWebApi(System.Web.Http.HttpConfiguration)">
+            <summary>
+            Defines Web Api Routing and Json-Response-Resolver 
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:fIT.WebApi.Startup.ConfigureOAuthTokenConsumption(Owin.IAppBuilder)">
+            <summary>
+            Configures how the web api should handle authorization.
+            The Api will now only trust issues by our Authorization Server and if Authorization Server = Resource Server
+            </summary>
+            <param name="app"></param>
+        </member>
+    </members>
+</doc>

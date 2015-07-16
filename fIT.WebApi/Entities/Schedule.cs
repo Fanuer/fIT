@@ -4,20 +4,21 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Entities
 {
     /// <summary>
     /// Definiert einen Trainingsplan
     /// </summary>
-    public class Schedule
+    public class Schedule: IEntity<int>
     {
         #region ctor
-        public Schedule(int id = -1, string name = "", int userID = -1, ICollection<Exercise> exercises = null)
+        public Schedule(int id, string name = "", string userId = "", ICollection<Exercise> exercises = null)
         {
-            this.ID = id;
+            this.Id = id;
             this.Name = name;
-            this.UserID = userID;
+            this.UserID = userId;
             this.Exercises = exercises;
         }
 
@@ -32,7 +33,7 @@ namespace fIT.WebApi.Entities
         /// <summary>
         /// DB ID
         /// </summary>
-        public int ID { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// DisplayName des Trainingsplans
         /// </summary>
@@ -42,7 +43,7 @@ namespace fIT.WebApi.Entities
         /// <summary>
         /// Fremdschlüssel zum Nutzer
         /// </summary>        
-        public int UserID { get; set; }
+        public string UserID { get; set; }
 
         /// <summary>
         /// Uebungen

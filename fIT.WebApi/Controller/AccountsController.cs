@@ -5,38 +5,63 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
+using System.Web.Http.OData;
+using System.Xml;
 using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
 
 namespace fIT.WebApi.Controller
 {
+    /// <summary>
+    /// Handles User-based Actions
+    /// </summary>
     [Authorize]
     [RoutePrefix("api/Accounts")]
     public class AccountsController : BaseApiController
     {
         /// <summary>
+        /// Method to prove the Serversa availability
+        /// </summary>
+        [ResponseType(typeof(void))]
+        [Route("ping")]
+        [HttpGet]
+        [AllowAnonymous]
+        public IHttpActionResult Ping()
+        {
+            var result = new { timestamp = DateTime.Now };
+            return this.Ok(result);
+        }
+
+        #region Users
+        /// <summary>
         /// Gets all application Users
         /// </summary>
-        /// <returns></returns>
-        [Route("Users")]
+        /// <response code="500">Internal Server Error</response>
+        [Route("User")]
         [HttpGet]
-        public IHttpActionResult GetUsers()
+        [Authorize(Roles = "Admin")]
+        [EnableQuery]
+        [ResponseType(typeof(IQueryable<UserModel>))]
+        public IQueryable<UserModel> GetUsers()
         {
-            //aktueller Workaround: Wenn der EF-Fehler entfernt ist, kann das ToList entfernt werden
-            return Ok(this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)));
+            return this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)).AsQueryable();
         }
 
         /// <summary>
         /// Get a user by its guid
         /// </summary>
-        /// <param name="Id">user's guid</param>
-        /// <returns></returns>
+        /// <param name="id">User's guid</param>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [Route("User/{id:guid}", Name = "GetUserById")]
         [HttpGet]
-        public async Task<IHttpActionResult> GetUser(string Id)
+        [Authorize(Roles = "Admin")]
+        [ResponseType(typeof(UserModel))]
+        public async Task<IHttpActionResult> GetUser(string id)
         {
-            var user = await this.AppUserManager.FindByIdAsync(Id);
+            var user = await this.AppUserManager.FindByIdAsync(id);
 
             if (user != null)
             {
@@ -51,53 +76,75 @@ namespace fIT.WebApi.Controller
         /// Get User by Username
         /// </summary>
         /// <param name="username">username to search for</param>
-        /// <returns></returns>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
         [Route("User/{username}")]
         [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ResponseType(typeof(UserModel))]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
             var user = await this.AppUserManager.FindByNameAsync(username);
+            if (user != null)
+            {
+                return Ok(this.TheModelFactory.Create(user));
+            }
+            return NotFound();
+        }
+
+        /// <summary>
+        /// Returns the current users Information
+        /// </summary>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [Route("CurrentUser")]
+        [HttpGet]
+        public async Task<IHttpActionResult> GetCurrentUser()
+        {
+            var currentUserId = User.Identity.GetUserId();
+            var user = await this.AppUserManager.FindByIdAsync(currentUserId);
 
             if (user != null)
             {
                 return Ok(this.TheModelFactory.Create(user));
             }
-
             return NotFound();
-
         }
 
         /// <summary>
-        /// Admin can delete User
+        /// Updates user data
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Route("User/{id:guid}")]
-        [HttpDelete]
-        public async Task<IHttpActionResult> DeleteUser(string id)
+        /// <param name="model">user data</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal Server Error</response>
+        [Route("CurrentUser")]
+        [HttpPut]
+        [ResponseType(typeof(UserModel))]
+        public async Task<IHttpActionResult> UpdateCurrentUser(UserModel model)
         {
-            //Only SuperAdmin or Admin can delete users (Later when implement roles)
-            var appUser = await this.AppUserManager.FindByIdAsync(id);
-            if (appUser != null)
+            if (!ModelState.IsValid)
             {
-                IdentityResult result = await this.AppUserManager.DeleteAsync(appUser);
-                if (!result.Succeeded)
-                {
-                    return GetErrorResult(result);
-                }
-                return Ok();
+                return BadRequest(ModelState);
             }
-            return NotFound();
+
+            var currentUserId = User.Identity.GetUserId();
+            var user = await this.AppUserManager.FindByIdAsync(currentUserId);
+
+            var result = await this.AppUserManager.UpdateAsync(user);
+            return !result.Succeeded ? GetErrorResult(result) : StatusCode(HttpStatusCode.NoContent);
         }
 
         /// <summary>
         /// User can register to the Application
         /// </summary>
-        /// <param name="createUserModel"></param>
-        /// <returns></returns>
+        /// <param name="createUserModel">new User</param>
+        /// <response code="201">Created</response>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal Server Error</response>
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]
+        [ResponseType(typeof(RegisterUserModel))]
         public async Task<IHttpActionResult> Register(RegisterUserModel createUserModel)
         {
             // validate model
@@ -110,11 +157,11 @@ namespace fIT.WebApi.Controller
             {
                 UserName = createUserModel.Username,
                 Email = createUserModel.Email,
-                Gender = createUserModel.Gender, 
+                Gender = createUserModel.Gender,
                 Fitness = createUserModel.Fitness,
                 Job = createUserModel.Job,
-                Age = createUserModel.Age
-                
+                DateOfBirth = createUserModel.DateOfBirth
+
             };
 
             IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
@@ -132,11 +179,13 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// User can change its password
         /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
+        /// <param name="model">Data to change a password</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="500">Internal Server Error</response>
         [AllowAnonymous]
         [Route("ChangePassword")]
         [HttpPost]
+        [ResponseType(typeof(ChangePasswordModel))]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
         {
             if (!ModelState.IsValid)
@@ -154,6 +203,79 @@ namespace fIT.WebApi.Controller
             return Ok();
         }
 
-        
+        /// <summary>
+        /// Admin can delete User
+        /// </summary>
+        /// <param name="id">Id of the user to delete</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [Route("User/{id:guid}")]
+        [HttpDelete]
+        [Authorize(Roles = "Admin")]
+        public async Task<IHttpActionResult> DeleteUser(string id)
+        {
+            //Only SuperAdmin or Admin can delete users (Later when implement roles)
+            var appUser = await this.AppUserManager.FindByIdAsync(id);
+            if (appUser != null)
+            {
+                var result = await this.AppUserManager.DeleteAsync(appUser);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+                return Ok();
+            }
+            return NotFound();
+        }
+
+        #endregion
+
+        #region Roles
+        /// <summary>
+        /// Assigned the user to the given roles
+        /// </summary>
+        /// <param name="id">User Id</param>
+        /// <param name="rolesToAssign">Roles to assign to the user</param>
+        /// <response code="400">Bad request</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [Authorize(Roles = "Admin")]
+        [Route("User/{id:guid}/Roles")]
+        [HttpPut]
+        public async Task<IHttpActionResult> AssignRolesToUser([FromUri] string id, [FromBody] string[] rolesToAssign)
+        {
+            var appUser = await this.AppUserManager.FindByIdAsync(id);
+            if (appUser == null)
+            {
+                return NotFound();
+            }
+
+            var currentRoles = await this.AppUserManager.GetRolesAsync(appUser.Id);
+            var rolesNotExists = rolesToAssign.Except(this.AppRoleManager.Roles.Select(x => x.Name)).ToArray();
+
+            if (rolesNotExists.Any())
+            {
+                ModelState.AddModelError("", string.Format("Roles '{0}' does not exixts in the system", string.Join(",", rolesNotExists)));
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult removeResult = await this.AppUserManager.RemoveFromRolesAsync(appUser.Id, currentRoles.ToArray());
+            if (!removeResult.Succeeded)
+            {
+                ModelState.AddModelError("", "Failed to remove user roles");
+                return BadRequest(ModelState);
+            }
+
+            IdentityResult addResult = await this.AppUserManager.AddToRolesAsync(appUser.Id, rolesToAssign);
+            if (!addResult.Succeeded)
+            {
+                ModelState.AddModelError("", "Failed to add user roles");
+                return BadRequest(ModelState);
+            }
+
+            return Ok();
+        }
+        #endregion
     }
 }

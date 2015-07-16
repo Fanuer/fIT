@@ -1,13 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using fIT.WebApi.Entities;
+using fIT.WebApi.Models;
+using fIT.WebApi.Repository.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace fIT.WebApi.Repository
 {
+    /// <summary>
+    /// Communcates with the Database
+    /// </summary>
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         #region Ctor
@@ -24,6 +30,12 @@ namespace fIT.WebApi.Repository
         {
             return new ApplicationDbContext();
         }
+
+        public static IRepository CreateRepository()
+        {
+          return new ApplicationRepository();
+        }
+
 
         /*
         
@@ -52,12 +64,12 @@ namespace fIT.WebApi.Repository
         #endregion
 
         #region Properties
-        /*
+        
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Exercise> Exercises { get; set; }
         public DbSet<Practice> Practices { get; set; }
-
-        */
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
         #endregion
 
     }

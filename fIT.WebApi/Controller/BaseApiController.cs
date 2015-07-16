@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using fIT.WebApi.Manager;
 using fIT.WebApi.Models;
+using fIT.WebApi.Repository.Interfaces;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 
@@ -16,6 +17,8 @@ namespace fIT.WebApi.Controller
         #region Field
         private ModelFactory _modelFactory;
         private ApplicationUserManager _AppUserManager = null;
+        private ApplicationRoleManager _AppRoleManager = null;
+        private IRepository _rep = null;
         #endregion
 
         #region Ctor
@@ -41,7 +44,7 @@ namespace fIT.WebApi.Controller
             {
                 if (result.Errors != null)
                 {
-                    foreach (string error in result.Errors)
+                    foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("", error);
                     }
@@ -66,14 +69,7 @@ namespace fIT.WebApi.Controller
         /// </summary>
         protected ModelFactory TheModelFactory
         {
-            get
-            {
-                if (_modelFactory == null)
-                {
-                    _modelFactory = new ModelFactory(this.Request, this.AppUserManager);
-                }
-                return _modelFactory;
-            }
+            get { return _modelFactory ?? (_modelFactory = new ModelFactory(this.Request)); }
         }
 
         /// <summary>
@@ -87,6 +83,29 @@ namespace fIT.WebApi.Controller
             }
         }
 
+        /// <summary>
+        /// Manages User Roles
+        /// </summary>
+        protected ApplicationRoleManager AppRoleManager
+        {
+            get { return _AppRoleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>(); }
+        }
+
+        /// <summary>
+        /// Repository
+        /// </summary>
+        protected IRepository AppRepository
+        {
+            get { return this._rep ?? Request.GetOwinContext().Get<IRepository>(); }
+        }
+
+        /// <summary>
+        /// Current User Id
+        /// </summary>
+        protected string CurrentUserId
+        {
+            get { return this.User.Identity.GetUserId(); }
+        }
         #endregion
     }
 }

@@ -88,15 +88,6 @@ namespace fIT.WebApi {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Zeichenfolge, die Age ähnelt.
-        /// </summary>
-        internal static string Label_Age {
-            get {
-                return ResourceManager.GetString("Label_Age", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Confirm Password ähnelt.
         /// </summary>
         internal static string Label_ConfirmPassword {
@@ -111,6 +102,24 @@ namespace fIT.WebApi {
         internal static string Label_CurrentPassword {
             get {
                 return ResourceManager.GetString("Label_CurrentPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Date Of Birth ähnelt.
+        /// </summary>
+        internal static string Label_DateOfBirth {
+            get {
+                return ResourceManager.GetString("Label_DateOfBirth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Description ähnelt.
+        /// </summary>
+        internal static string Label_Description {
+            get {
+                return ResourceManager.GetString("Label_Description", resourceCulture);
             }
         }
         
@@ -142,11 +151,29 @@ namespace fIT.WebApi {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Id ähnelt.
+        /// </summary>
+        internal static string Label_Id {
+            get {
+                return ResourceManager.GetString("Label_Id", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Kind of Job ähnelt.
         /// </summary>
         internal static string Label_JobType {
             get {
                 return ResourceManager.GetString("Label_JobType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Name ähnelt.
+        /// </summary>
+        internal static string Label_Name {
+            get {
+                return ResourceManager.GetString("Label_Name", resourceCulture);
             }
         }
         
@@ -169,11 +196,56 @@ namespace fIT.WebApi {
         }
         
         /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Role Name ähnelt.
+        /// </summary>
+        internal static string Label_RoleName {
+            get {
+                return ResourceManager.GetString("Label_RoleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Schedules ähnelt.
+        /// </summary>
+        internal static string Label_Schedules {
+            get {
+                return ResourceManager.GetString("Label_Schedules", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Url ähnelt.
+        /// </summary>
+        internal static string Label_Url {
+            get {
+                return ResourceManager.GetString("Label_Url", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die Username ähnelt.
         /// </summary>
         internal static string Label_Username {
             get {
                 return ResourceManager.GetString("Label_Username", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Enrolled Users ähnelt.
+        /// </summary>
+        internal static string Label_UsersEnrolledToRole {
+            get {
+                return ResourceManager.GetString("Label_UsersEnrolledToRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Sucht eine lokalisierte Zeichenfolge, die Removed Users ähnelt.
+        /// </summary>
+        internal static string Label_UsersRemovedFromRole {
+            get {
+                return ResourceManager.GetString("Label_UsersRemovedFromRole", resourceCulture);
             }
         }
     }

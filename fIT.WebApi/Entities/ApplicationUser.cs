@@ -1,4 +1,5 @@
-﻿using fIT.WebApi.Entities.Enums;
+﻿using System;
+using fIT.WebApi.Entities.Enums;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
@@ -19,14 +20,14 @@ namespace fIT.WebApi.Entities
         public ApplicationUser(
             string username = "",
             string email = "",
-            int age = 0,
+            DateTime dateOfBirth = default(DateTime),
             GenderType gender = GenderType.Male,
             FitnessType fitness = FitnessType.NoSport,
             JobTypes job = JobTypes.Middle)
             : base(username)
         {
             this.Job = job;
-            Age = age;
+            DateOfBirth = dateOfBirth;
             Gender = gender;
             Fitness = fitness;
             Email = email;
@@ -73,18 +74,12 @@ namespace fIT.WebApi.Entities
         /// Alter
         /// </summary>
         [Required]
-        public int Age { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         /// <summary>
         /// Trainingsplaene
         /// </summary>
-        //public virtual ICollection<Schedule> Schedules { get; set; }
-
-        /// <summary>
-        /// User Level
-        /// </summary>
-        [Required]
-        public byte Level { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
         #endregion
     }
 }

@@ -27,8 +27,7 @@ namespace fIT.WebApi.Migrations
                 UserName = "Stefan",
                 Email = "Stefan@fIT.com",
                 EmailConfirmed = true,
-                Age = 27,
-                Level = 1,
+                DateOfBirth = new DateTime(1987,12,13),
                 Fitness = FitnessType.OnceAWeek,
                 Job = JobTypes.Easy,
                 Gender = GenderType.Male
@@ -40,13 +39,26 @@ namespace fIT.WebApi.Migrations
                 UserName = "Kevin",
                 Email = "Kevin@fIT.com",
                 EmailConfirmed = true,
-                Age = 22,
-                Level = 1,
+                DateOfBirth = new DateTime(1993, 7,4),
                 Fitness = FitnessType.HighPerformanceAthletes,
                 Job = JobTypes.Easy,
                 Gender = GenderType.Male
             };
             manager.Create(user, "Test1234");
+
+          // Added Roles
+            var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
+ 
+            if (!roleManager.Roles.Any())
+            {
+              roleManager.Create(new IdentityRole { Name = "Admin" });
+              roleManager.Create(new IdentityRole { Name = "User" });
+            }
+
+          var stefan = manager.FindByName("Stefan");
+          var kevin = manager.FindByName("Kevin");
+          manager.AddToRoles(stefan.Id, "User", "Admin");
+          manager.AddToRoles(kevin.Id, "User", "Admin");
         }
     }
 }

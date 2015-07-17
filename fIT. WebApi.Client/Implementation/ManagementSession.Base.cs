@@ -134,13 +134,18 @@ namespace fIT.WebApi.Client.Implementation
     {
       string oldToken = Token;
       string newAccessToken = null;
-      const string REFRESHCONTENT = "grant_type=refresh_token&refreshtoken={0}&clientId=client";
+      const string REFRESHCONTENT = "grant_type=refresh_token&refresh_token={0}&client_id=MyClient";
+      var stringContent = String.Format(String.Format(REFRESHCONTENT, this.RefreshToken));
+      stringContent = this.service.ClientInformation.AddClientData(stringContent);
+      var content = new StringContent(stringContent);
 
-      HttpResponseMessage response = await client.PostAsync(RefreshTokenPath, new StringContent(String.Format(REFRESHCONTENT, this.RefreshToken)));
+      HttpResponseMessage response = await client.PostAsync(RefreshTokenPath, content);
       //HttpResponseMessage response = await client.PostAsync(RefreshTokenPath, new ObjectContent(typeof(object), RefreshToken, new JsonMediaTypeFormatter()));
       if (response.IsSuccessStatusCode)
       {
-        var result = await response.Content.ReadAsAsync<AuthenticationResultModel>();
+        var stringResult = await response.Content.ReadAsStringAsync();
+        var resultEntries = JsonConvert.DeserializeObject<Dictionary<string, string>>(stringResult);
+        var result = new AuthenticationResultModel(resultEntries);
 
         newAccessToken = result.AccessToken;
         this.refreshToken = result.RefreshToken;
@@ -482,9 +487,21 @@ namespace fIT.WebApi.Client.Implementation
 
     #region Properties
 
+    /// <summary>
+    /// Encrypted Access Token to use as Id
+    /// </summary>
     public string Token { get; private set; }
+    /// <summary>
+    /// Current Refresh Token
+    /// </summary>
     private string RefreshToken { get { return refreshToken; } }
+    /// <summary>
+    /// Access Token Expire Date
+    /// </summary>
     public DateTimeOffset ExpiresOn { get { return expiresOn; } }
+    /// <summary>
+    /// Current Username
+    /// </summary>
     public string CurrentUsername { get { return currentUsername; }}
     #endregion
   }

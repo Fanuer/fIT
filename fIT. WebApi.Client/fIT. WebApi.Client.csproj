@@ -66,6 +66,7 @@
     <Compile Include="Models\Account\AuthenticationResultModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\ServerException.cs" />
+    <Compile Include="Models\Shared\ClientInformation.cs" />
     <Compile Include="Models\Shared\StreamModel.cs" />
     <Compile Include="Models\Shared\XmlStreamModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

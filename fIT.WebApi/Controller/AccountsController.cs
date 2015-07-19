@@ -41,9 +41,9 @@ namespace fIT.WebApi.Controller
         /// <response code="500">Internal Server Error</response>
         [Route("User")]
         [HttpGet]
+        [ResponseType(typeof(IEnumerable<UserModel>))]
         [Authorize(Roles = "Admin")]
         [EnableQuery]
-        [ResponseType(typeof(IQueryable<UserModel>))]
         public IQueryable<UserModel> GetUsers()
         {
             return this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)).AsQueryable();

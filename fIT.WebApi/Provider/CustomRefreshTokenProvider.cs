@@ -13,7 +13,7 @@ namespace fIT.WebApi.Provider
 {
   public class CustomRefreshTokenProvider : IAuthenticationTokenProvider
   {
-    private const string DUMMY_CLIENT = "MyClient";
+    internal const string DUMMY_CLIENT = "MyClient";
     private const string IS_REFREHTOKEN_EXPIRED_NAME = "IsRefreshTokenExpired";
 
     public void Create(AuthenticationTokenCreateContext context)
@@ -28,16 +28,28 @@ namespace fIT.WebApi.Provider
         bool result = false;
         var refreshTokenId = Guid.NewGuid().ToString("n");
         var clientId = context.Ticket.Properties.Dictionary.ContainsKey("as:client_id") ? context.Ticket.Properties.Dictionary["as:client_id"] : DUMMY_CLIENT;
+
+
+        var refreshTokenLifetime = context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime") ?? "30";
         var token = new RefreshToken()
         {
           Id = Helper.GetHash(refreshTokenId),
           ClientId = clientId,
           Subject = context.Ticket.Identity.Name,
           IssuedUtc = DateTime.UtcNow,
-          ExpiresUtc = DateTime.UtcNow.AddMinutes(Convert.ToDouble(context.OwinContext.Get<string>("as:clientRefreshTokenLifeTime")))
+          ExpiresUtc = DateTime.UtcNow.AddMinutes(Double.Parse(refreshTokenLifetime))
         };
         context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
         context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
+        if (!context.Ticket.Properties.Dictionary.ContainsKey("as:client_id"))
+        {
+          context.Ticket.Properties.Dictionary.Add("as:client_id", clientId);
+        }
+        else
+        {
+          context.Ticket.Properties.Dictionary["as:client_id"] = clientId;
+        }
+        
 
         token.ProtectedTicket = context.SerializeTicket();
 
@@ -59,20 +71,29 @@ namespace fIT.WebApi.Provider
 
     public async Task ReceiveAsync(AuthenticationTokenReceiveContext context)
     {
-      var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin");
-      context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
-
-      var hashedTokenId = Helper.GetHash(context.Token);
-      using (IRepository rep = new ApplicationRepository())
+      try
       {
-        var refreshToken = await rep.RefreshTokens.FindAsync(hashedTokenId);
+        var allowedOrigin = context.OwinContext.Get<string>("as:clientAllowedOrigin") ?? "*";
+        context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { allowedOrigin });
 
-        if (refreshToken != null)
+        var hashedTokenId = Helper.GetHash(context.Token);
+        using (IRepository rep = new ApplicationRepository())
         {
-          //Get protectedTicket from refreshToken class
-          context.DeserializeTicket(refreshToken.ProtectedTicket);
-          var result = await rep.RefreshTokens.RemoveAsync(hashedTokenId);
+          var refreshToken = await rep.RefreshTokens.FindAsync(hashedTokenId);
+
+          if (refreshToken != null)
+          {
+            //Get protectedTicket from refreshToken class
+            context.DeserializeTicket(refreshToken.ProtectedTicket);
+            var result = await rep.RefreshTokens.RemoveAsync(hashedTokenId);
+          }
         }
+
+      }
+      catch (Exception e)
+      {
+        
+        throw e;
       }
     }
   }

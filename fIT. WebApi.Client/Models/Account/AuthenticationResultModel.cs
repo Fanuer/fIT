@@ -12,7 +12,7 @@ namespace fIT.WebApi.Client.Models.Account
     private const string EXPIREDATE = ".expires";
     private const string ISSUEDATE = ".issued";
     private const string TOKEN_TYPE = "token_type";
-    private const string DATEFORMAT = "ddd dd MMM yyyy h:mm tt zzz";
+    private const string CLIENT_ID = "as:client_id";
     #endregion
 
     #region Ctor
@@ -44,6 +44,10 @@ namespace fIT.WebApi.Client.Models.Account
       {
         TokenType = httpContentResults[TOKEN_TYPE];
       }
+      if (httpContentResults.ContainsKey(CLIENT_ID))
+      {
+        ClientId = httpContentResults[CLIENT_ID];
+      }
       if (httpContentResults.ContainsKey(ISSUEDATE))
       {
         IssueDate = DateTime.Parse(httpContentResults[ISSUEDATE]);
@@ -67,6 +71,7 @@ namespace fIT.WebApi.Client.Models.Account
     public string TokenType { get; set; }
     public DateTime ExpireDate { get; set; }
     public DateTime IssueDate { get; set; }
+    public string ClientId { get; set; }
     #endregion
   }
 }

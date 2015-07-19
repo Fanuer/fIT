@@ -59,6 +59,8 @@ namespace fIT.WebApi.Migrations
           var kevin = manager.FindByName("Kevin");
           manager.AddToRoles(stefan.Id, "User", "Admin");
           manager.AddToRoles(kevin.Id, "User", "Admin");
+
+
         }
     }
 }

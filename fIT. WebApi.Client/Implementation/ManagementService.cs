@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using fIT.WebApi.Client.Intefaces;
 using fIT.WebApi.Client.Models;
 using fIT.WebApi.Client.Models.Account;
+using fIT.WebApi.Client.Models.Shared;
 using Newtonsoft.Json;
 
 namespace fIT.WebApi.Client.Implementation
@@ -36,7 +37,7 @@ namespace fIT.WebApi.Client.Implementation
 
     #region Ctor
 
-    public ManagementService(string baseUri, string tokenEncryptionPassphrase = null)
+    public ManagementService(string baseUri, string tokenEncryptionPassphrase = null, ClientInformation clientInformation = null)
     {
       handler = new WebRequestHandler();
       handler.ServerCertificateValidationCallback += (sender, certificate, chain, errors) => true;
@@ -46,6 +47,8 @@ namespace fIT.WebApi.Client.Implementation
       {
         BaseAddress = new Uri(baseUri)
       };
+
+      this.ClientInformation = clientInformation ?? new ClientInformation();
 
       algorithm = new RijndaelManaged();
       var rdb = new Rfc2898DeriveBytes(tokenEncryptionPassphrase ?? "STATIC", Encoding.Unicode.GetBytes("Some salt ..."));
@@ -152,35 +155,39 @@ namespace fIT.WebApi.Client.Implementation
     public async Task<IManagementSession> LoginAsync(string username, string password)
     {
       const string CONTENT = "username={0}&password={1}&grant_type=password";
-      var content = new StringContent(String.Format(CONTENT, username, password));
+      var stringContent = String.Format(CONTENT, username, password);
+      stringContent = this.ClientInformation.AddClientData(stringContent);
+      var content = new StringContent(stringContent);
+
       //var content = new ObjectContent(typeof(object), new { username, Password = password, grant_type = "password" }, new JsonMediaTypeFormatter());
       HttpResponseMessage response = await client.PostAsync(LOGIN_PATH, content);
-        if (response.IsSuccessStatusCode)
-        {
-          var result = await response.Content.ReadAsStringAsync();
-          var resultEntries = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
-          var accessResult = new AuthenticationResultModel(resultEntries);
-          var session = new ManagementSession(this, username, accessResult);
 
-          sessions[session.Token] = session;
+      if (response.IsSuccessStatusCode)
+      {
+        var result = await response.Content.ReadAsStringAsync();
+        var resultEntries = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
+        var accessResult = new AuthenticationResultModel(resultEntries);
+        var session = new ManagementSession(this, username, accessResult);
 
-          return session;
-        }
-        throw new ServerException(response);
+        sessions[session.Token] = session;
+
+        return session;
       }
+      throw new ServerException(response);
+    }
 
     public async Task UpdatePasswordAsync(string username, string oldPassword, string newPassword)
     {
-        HttpResponseMessage response = await client.PutAsync(PASSWORD_PATH, new ObjectContent(typeof(object), new { Upn = username, OldPassword = oldPassword, NewPassword = newPassword }, new JsonMediaTypeFormatter()));
-        if (response.IsSuccessStatusCode)
-        {
-          var result = await response.Content.ReadAsStringAsync();
-        }
-        else
-        {
-          throw new ServerException(response);
-        }
-      
+      HttpResponseMessage response = await client.PutAsync(PASSWORD_PATH, new ObjectContent(typeof(object), new { Upn = username, OldPassword = oldPassword, NewPassword = newPassword }, new JsonMediaTypeFormatter()));
+      if (response.IsSuccessStatusCode)
+      {
+        var result = await response.Content.ReadAsStringAsync();
+      }
+      else
+      {
+        throw new ServerException(response);
+      }
+
     }
 
     public string EncryptString(String base64String)
@@ -231,7 +238,7 @@ namespace fIT.WebApi.Client.Implementation
 
     #region Properties
     internal string BaseUri { get; private set; }
-
+    internal ClientInformation ClientInformation { get; private set; }
     #endregion
   }
 }

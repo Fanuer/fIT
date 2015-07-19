@@ -28,7 +28,7 @@ namespace fIT.WebApi.Provider
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
           string clientId;
           string clientSecret;
@@ -39,24 +39,24 @@ namespace fIT.WebApi.Provider
             context.TryGetFormCredentials(out clientId, out clientSecret);
           }
 
-          if (context.ClientId == null)
+          if (context.ClientId == null || context.ClientId == CustomRefreshTokenProvider.DUMMY_CLIENT)
           {
             //Remove the comments from the below line context.SetError, and invalidate context 
             //if you want to force sending clientId/secrects once obtain access tokens. 
             context.Validated();
             //context.SetError("invalid_clientId", "ClientId should be sent.");
-            return Task.FromResult<object>(null);
+            return ;
           }
 
           using (IRepository repo = new ApplicationRepository())
           {
-            client = repo.Clients.FindAsync(context.ClientId).Result;
+            client = await repo.Clients.FindAsync(context.ClientId);
           }
 
           if (client == null)
           {
             context.SetError("invalid_clientId", string.Format("Client '{0}' is not registered in the system.", context.ClientId));
-            return Task.FromResult<object>(null);
+            return;
           }
 
           if (client.ApplicationType == ApplicationTypes.NativeConfidential)
@@ -64,14 +64,14 @@ namespace fIT.WebApi.Provider
             if (string.IsNullOrWhiteSpace(clientSecret))
             {
               context.SetError("invalid_clientId", "Client secret should be sent.");
-              return Task.FromResult<object>(null);
+              return ;
             }
             else
             {
               if (client.Secret != Helper.GetHash(clientSecret))
               {
                 context.SetError("invalid_clientId", "Client secret is invalid.");
-                return Task.FromResult<object>(null);
+                return;
               }
             }
           }
@@ -79,14 +79,13 @@ namespace fIT.WebApi.Provider
           if (!client.Active)
           {
             context.SetError("invalid_clientId", "Client is inactive.");
-            return Task.FromResult<object>(null);
+            return;
           }
 
           context.OwinContext.Set("as:clientAllowedOrigin", client.AllowedOrigin);
           context.OwinContext.Set("as:clientRefreshTokenLifeTime", client.RefreshTokenLifeTime.ToString());
 
           context.Validated();
-          return Task.FromResult<object>(null);
         }
         
         /// <summary>
@@ -132,8 +131,8 @@ namespace fIT.WebApi.Provider
 
       public override Task GrantRefreshToken(OAuthGrantRefreshTokenContext context)
       {
-        var originalClient = context.Ticket.Properties.Dictionary["as:client_id"];
-        var currentClient = context.ClientId;
+        var originalClient = context.Ticket.Properties.Dictionary.ContainsKey("as:client_id") ? context.Ticket.Properties.Dictionary["as:client_id"] : "";
+        var currentClient = context.ClientId ?? "";
 
         if (originalClient != currentClient)
         {

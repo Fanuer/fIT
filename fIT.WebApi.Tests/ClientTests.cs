@@ -94,10 +94,14 @@ namespace fIT.WebApi.Tests
                 try
                 {
                     service.RegisterAsync(newUser).Wait();
-                    using(var newUserSession = service.LoginAsync(newUser.Username, newUser.Password).Result)
+                    using (var newUserSession = service.LoginAsync(newUser.Username, newUser.Password).Result)
                     {
                     }
 
+                }
+                catch (Exception e)
+                {
+                    
                 }
                 finally
                 {

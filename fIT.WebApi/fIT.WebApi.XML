@@ -110,28 +110,6 @@
             Method to prove the Serversa availability
             </summary>
         </member>
-        <member name="M:fIT.WebApi.Controller.AccountsController.GetUsers">
-            <summary>
-            Gets all application Users
-            </summary>
-            <response code="500">Internal Server Error</response>
-        </member>
-        <member name="M:fIT.WebApi.Controller.AccountsController.GetUser(System.String)">
-            <summary>
-            Get a user by its guid
-            </summary>
-            <param name="id">User's guid</param>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
-        </member>
-        <member name="M:fIT.WebApi.Controller.AccountsController.GetUserByName(System.String)">
-            <summary>
-            Get User by Username
-            </summary>
-            <param name="username">username to search for</param>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
-        </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.GetCurrentUser">
             <summary>
             Returns the current users Information
@@ -147,7 +125,7 @@
             <response code="400">Bad request</response>
             <response code="500">Internal Server Error</response>
         </member>
-        <member name="M:fIT.WebApi.Controller.AccountsController.Register(fIT.WebApi.Models.RegisterUserModel)">
+        <member name="M:fIT.WebApi.Controller.AccountsController.Register(fIT.WebApi.Models.CreateUserModel)">
             <summary>
             User can register to the Application
             </summary>
@@ -356,47 +334,47 @@
             Url to receive this entity
             </summary>
         </member>
-        <member name="T:fIT.WebApi.Models.RegisterUserModel">
+        <member name="T:fIT.WebApi.Models.CreateUserModel">
             <summary>
             Data to register a User
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Username">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Username">
             <summary>
             User name
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Email">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Email">
             <summary>
             User's email
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Password">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Password">
             <summary>
             Password
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.ConfirmPassword">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.ConfirmPassword">
             <summary>
             Confirm Password. Must be equal to the given Password
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Gender">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Gender">
             <summary>
             Geschlecht
             </summary>        
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Job">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Job">
             <summary>
             Berufsfeld
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.Fitness">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Fitness">
             <summary>
             Fittness
             </summary>
         </member>
-        <member name="P:fIT.WebApi.Models.RegisterUserModel.DateOfBirth">
+        <member name="P:fIT.WebApi.Models.CreateUserModel.DateOfBirth">
             <summary>
             Alter
             </summary>

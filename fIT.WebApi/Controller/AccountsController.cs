@@ -25,7 +25,7 @@ namespace fIT.WebApi.Controller
         /// Method to prove the Serversa availability
         /// </summary>
         [ResponseType(typeof(void))]
-        [Route("ping")]
+        [Route("Ping")]
         [HttpGet]
         [AllowAnonymous]
         public IHttpActionResult Ping()
@@ -35,62 +35,6 @@ namespace fIT.WebApi.Controller
         }
 
         #region Users
-        /// <summary>
-        /// Gets all application Users
-        /// </summary>
-        /// <response code="500">Internal Server Error</response>
-        [Route("User")]
-        [HttpGet]
-        [ResponseType(typeof(IEnumerable<UserModel>))]
-        [Authorize(Roles = "Admin")]
-        [EnableQuery]
-        public IQueryable<UserModel> GetUsers()
-        {
-            return this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)).AsQueryable();
-        }
-
-        /// <summary>
-        /// Get a user by its guid
-        /// </summary>
-        /// <param name="id">User's guid</param>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [Route("User/{id:guid}", Name = "GetUserById")]
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [ResponseType(typeof(UserModel))]
-        public async Task<IHttpActionResult> GetUser(string id)
-        {
-            var user = await this.AppUserManager.FindByIdAsync(id);
-
-            if (user != null)
-            {
-                return Ok(this.TheModelFactory.Create(user));
-            }
-
-            return NotFound();
-
-        }
-
-        /// <summary>
-        /// Get User by Username
-        /// </summary>
-        /// <param name="username">username to search for</param>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [Route("User/{username}")]
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        [ResponseType(typeof(UserModel))]
-        public async Task<IHttpActionResult> GetUserByName(string username)
-        {
-            var user = await this.AppUserManager.FindByNameAsync(username);
-            if (user != null)
-            {
-                return Ok(this.TheModelFactory.Create(user));
-            }
-            return NotFound();
-        }
 
         /// <summary>
         /// Returns the current users Information
@@ -144,8 +88,8 @@ namespace fIT.WebApi.Controller
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]
-        [ResponseType(typeof(RegisterUserModel))]
-        public async Task<IHttpActionResult> Register(RegisterUserModel createUserModel)
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> Register(CreateUserModel createUserModel)
         {
             // validate model
             if (!ModelState.IsValid)
@@ -182,9 +126,8 @@ namespace fIT.WebApi.Controller
         /// <param name="model">Data to change a password</param>
         /// <response code="400">Bad request</response>
         /// <response code="500">Internal Server Error</response>
-        [AllowAnonymous]
         [Route("ChangePassword")]
-        [HttpPost]
+        [HttpPut]
         [ResponseType(typeof(ChangePasswordModel))]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordModel model)
         {

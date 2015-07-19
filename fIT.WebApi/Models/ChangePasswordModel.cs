@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace fIT.WebApi.Models
 {
-  /// <summary>
-  /// Model to change a password
-  /// </summary>
+    /// <summary>
+    /// Model to change a password
+    /// </summary>
     public class ChangePasswordModel
     {
         [Required(ErrorMessageResourceName = "Error_Required", ErrorMessageResourceType = typeof(Resources))]

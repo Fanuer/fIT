@@ -244,7 +244,7 @@
     <Compile Include="Models\ExerciseModel.cs" />
     <Compile Include="Models\EntryModel.cs" />
     <Compile Include="Models\ModelFactory.cs" />
-    <Compile Include="Models\RegisterUserModel.cs" />
+    <Compile Include="Models\CreateUserModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Models\UsersInRoleModel.cs" />

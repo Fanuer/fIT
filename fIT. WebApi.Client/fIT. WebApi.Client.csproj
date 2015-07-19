@@ -64,9 +64,17 @@
     <Compile Include="Intefaces\IManagementSession.cs" />
     <Compile Include="Intefaces\IUserManagement.cs" />
     <Compile Include="Models\Account\AuthenticationResultModel.cs" />
+    <Compile Include="Models\Account\ChangePasswordModel.cs" />
+    <Compile Include="Models\Account\CreateUserModel.cs" />
+    <Compile Include="Models\Account\ForgotPasswordModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
+    <Compile Include="Models\Account\UserModel.cs" />
     <Compile Include="Models\ServerException.cs" />
     <Compile Include="Models\Shared\ClientInformation.cs" />
+    <Compile Include="Models\Shared\Enums\ApplicationTypes.cs" />
+    <Compile Include="Models\Shared\Enums\FitnessTypes.cs" />
+    <Compile Include="Models\Shared\Enums\GenderType.cs" />
+    <Compile Include="Models\Shared\Enums\JobTypes.cs" />
     <Compile Include="Models\Shared\StreamModel.cs" />
     <Compile Include="Models\Shared\XmlStreamModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

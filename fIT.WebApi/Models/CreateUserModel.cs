@@ -11,7 +11,7 @@ namespace fIT.WebApi.Models
     /// <summary>
     /// Data to register a User
     /// </summary>
-    public class RegisterUserModel
+    public class CreateUserModel
     {
         /// <summary>
         /// User name

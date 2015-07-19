@@ -12,38 +12,35 @@ using Android.Widget;
 
 namespace fITNat
 {
-    class dialog_SignUp : DialogFragment
+    class dialog_SignIn : DialogFragment
     {
         private EditText txtUsername;
-        private EditText txtEmail;
         private EditText txtPassword;
-        private EditText txtBirthdate;
-        private Button btnSignUp;
+        private Button btnSignIn;
 
-        public event EventHandler<OnSignUpEventArgs> onSignUpComplete;
+        public event EventHandler<OnSignInEventArgs> onSignInComplete;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreateView(inflater, container, savedInstanceState);
 
-            var view = inflater.Inflate(Resource.Layout.dialog_sign_up, container, false);
+            var view = inflater.Inflate(Resource.Layout.dialog_sign_in, container, false);
 
             txtUsername = view.FindViewById<EditText>(Resource.Id.txtUsername);
-            txtEmail = view.FindViewById<EditText>(Resource.Id.txtEmail);
             txtPassword = view.FindViewById<EditText>(Resource.Id.txtPassword);
-            txtBirthdate = view.FindViewById<EditText>(Resource.Id.txtBirthdate);
-            btnSignUp = view.FindViewById<Button>(Resource.Id.btnDialogEmail);
+            btnSignIn = view.FindViewById<Button>(Resource.Id.btnDialogSignIn);
 
-            btnSignUp.Click += BtnSignUp_Click;
+
+            btnSignIn.Click += BtnSignIn_Click;
 
             return view;
         }
 
-        private void BtnSignUp_Click(object sender, EventArgs e)
+        private void BtnSignIn_Click(object sender, EventArgs e)
         {
-            //User has clicked the SignUp-Button
-            onSignUpComplete.Invoke(this, new OnSignUpEventArgs
-                (txtUsername.Text, txtEmail.Text, txtPassword.Text, txtBirthdate.Text));
+            //User has clicked the Login-Button
+            onSignInComplete.Invoke(this, new OnSignInEventArgs
+                (txtUsername.Text, txtPassword.Text));
             //Dialog will slide to the side and will disapear
             this.Dismiss();
         }
@@ -56,23 +53,15 @@ namespace fITNat
         }
     }
 
-    public class OnSignUpEventArgs : EventArgs
+    public class OnSignInEventArgs : EventArgs
     {
         private string username;
-        private string email;
         private string password;
-        private string birthdate;
-        
+
         public string Username
         {
             get { return username; }
             set { username = value; }
-        }
-
-        public string Email
-        {
-            get { return email; }
-            set { email = value; }
         }
 
         public string Password
@@ -81,18 +70,10 @@ namespace fITNat
             set { password = value; }
         }
 
-        public string Birthdate
-        {
-            get { return birthdate; }
-            set { birthdate = value; }
-        }
-
-        public OnSignUpEventArgs(string username, string email, string password, string birthdate) : base()
+        public OnSignInEventArgs(string username, string password) : base()
         {
             Username = username;
-            Email = email;
             Password = password;
-            Birthdate = birthdate;
         }
     }
 }

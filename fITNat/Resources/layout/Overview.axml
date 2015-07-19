@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/background_light"
+    android:weightSum="100"
+    android:id="@+id/rlOverviewSchedules">
+    <TextView
+        android:id="@+id/txtTitleOverview"
+        android:text="Übersicht Trainingspläne"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="fill_parent"
+        android:layout_height="50dip"
+        android:layout_weight="20"
+        android:textColor="#BBB"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="25sp" />
+    <ListView
+        android:id="@+id/lvSchedules"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtTitleOverview"
+        android:layout_alignParentBottom="true" />
+</RelativeLayout>

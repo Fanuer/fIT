@@ -35,7 +35,62 @@ namespace fIT.WebApi.Controller
         }
 
         #region Users
+        /// <summary>
+        /// Gets all application Users
+        /// </summary>
+        /// <response code="500">Internal Server Error</response>
+        [Route("User")]
+        [HttpGet]
+        [ResponseType(typeof(IEnumerable<UserModel>))]
+        [Authorize(Roles = "Admin")]
+        [EnableQuery]
+        public IQueryable<UserModel> GetUsers()
+        {
+            return this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)).AsQueryable();
+        }
 
+        /// <summary>
+        /// Get a user by its guid
+        /// </summary>
+        /// <param name="id">User's guid</param>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [Route("User/{id:guid}", Name = "GetUserById")]
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ResponseType(typeof(UserModel))]
+        public async Task<IHttpActionResult> GetUser(string id)
+        {
+            var user = await this.AppUserManager.FindByIdAsync(id);
+
+            if (user != null)
+            {
+                return Ok(this.TheModelFactory.Create(user));
+            }
+
+            return NotFound();
+
+        }
+
+        /// <summary>
+        /// Get User by Username
+        /// </summary>
+        /// <param name="username">username to search for</param>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [Route("User/{username}")]
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        [ResponseType(typeof(UserModel))]
+        public async Task<IHttpActionResult> GetUserByName(string username)
+        {
+            var user = await this.AppUserManager.FindByNameAsync(username);
+            if (user != null)
+            {
+                return Ok(this.TheModelFactory.Create(user));
+            }
+            return NotFound();
+        }
         /// <summary>
         /// Returns the current users Information
         /// </summary>
@@ -96,17 +151,26 @@ namespace fIT.WebApi.Controller
             {
                 return BadRequest(ModelState);
             }
-
-            var user = new ApplicationUser()
+            ApplicationUser user = null;
+            try
             {
-                UserName = createUserModel.Username,
-                Email = createUserModel.Email,
-                Gender = createUserModel.Gender,
-                Fitness = createUserModel.Fitness,
-                Job = createUserModel.Job,
-                DateOfBirth = createUserModel.DateOfBirth
+                user = new ApplicationUser()
+                {
+                    UserName = createUserModel.Username,
+                    Email = createUserModel.Email,
+                    Gender = createUserModel.Gender,
+                    Fitness = createUserModel.Fitness,
+                    Job = createUserModel.Job,
+                    DateOfBirth = createUserModel.DateOfBirth
 
-            };
+                };
+            }
+            catch (Exception e)
+            {
+                
+                throw e;
+            }
+            
 
             IdentityResult addUserResult = await this.AppUserManager.CreateAsync(user, createUserModel.Password);
 

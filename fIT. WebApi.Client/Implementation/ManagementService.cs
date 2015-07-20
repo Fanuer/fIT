@@ -13,6 +13,7 @@ using System.Web.Http;
 using fIT.WebApi.Client.Intefaces;
 using fIT.WebApi.Client.Models;
 using fIT.WebApi.Client.Models.Account;
+using fIT.WebApi.Client.Models.Exceptions;
 using fIT.WebApi.Client.Models.Shared;
 using Newtonsoft.Json;
 
@@ -165,9 +166,7 @@ namespace fIT.WebApi.Client.Implementation
 
             if (response.IsSuccessStatusCode)
             {
-                var result = await response.Content.ReadAsStringAsync();
-                var resultEntries = JsonConvert.DeserializeObject<Dictionary<string, string>>(result);
-                var accessResult = new AuthenticationResultModel(resultEntries);
+                var accessResult = await response.Content.ReadAsAsync<AuthenticationResultModel>();
                 var session = new ManagementSession(this, username, accessResult);
 
                 sessions[session.Token] = session;

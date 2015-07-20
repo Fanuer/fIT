@@ -9,6 +9,38 @@
             Grants access to practice data
             </summary>
         </member>
+        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
+            <summary>
+            Wraps the modelerrror to a request
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
+            <summary>
+            Singleton Modelfactory
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
+            <summary>
+            Returns a single User-Manager per Request
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
+            <summary>
+            Manages User Roles
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
+            <summary>
+            Repository
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.CurrentUserId">
+            <summary>
+            Current User Id
+            </summary>
+        </member>
         <member name="M:fIT.WebApi.Controller.PracticeController.GetPractices">
             <summary>
             Get all PracticeEntries
@@ -100,6 +132,27 @@
             <response code="404">Not Found</response>
             <response code="500">Internal Server Error</response>
         </member>
+        <member name="T:fIT.WebApi.Models.EntryModel`1">
+            <summary>
+            Defines one entry from the server
+            </summary>
+            <typeparam name="T">Type of id-property</typeparam>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Id">
+            <summary>
+            Id of an entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Name">
+            <summary>
+            Name of an Entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Url">
+            <summary>
+            Url to receive this entity
+            </summary>
+        </member>
         <member name="T:fIT.WebApi.Controller.AccountsController">
             <summary>
             Handles User-based Actions
@@ -160,38 +213,6 @@
             <response code="400">Bad request</response>
             <response code="404">Not Found</response>
             <response code="500">Internal Server Error</response>
-        </member>
-        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
-            <summary>
-            Wraps the modelerrror to a request
-            </summary>
-            <param name="result"></param>
-            <returns></returns>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
-            <summary>
-            Singleton Modelfactory
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
-            <summary>
-            Returns a single User-Manager per Request
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
-            <summary>
-            Manages User Roles
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
-            <summary>
-            Repository
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.CurrentUserId">
-            <summary>
-            Current User Id
-            </summary>
         </member>
         <member name="T:fIT.WebApi.Controller.ExerciseController">
             <summary>
@@ -302,157 +323,6 @@
             </summary>
             <param name="model">new settings</param>
             <returns></returns>
-        </member>
-        <member name="T:fIT.WebApi.Models.ChangePasswordModel">
-            <summary>
-            Model to change a password
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.ExerciseModel">
-            <summary>
-            Defines one Exercise
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.EntryModel`1">
-            <summary>
-            Defines one entry from the server
-            </summary>
-            <typeparam name="T">Type of id-property</typeparam>
-        </member>
-        <member name="P:fIT.WebApi.Models.EntryModel`1.Id">
-            <summary>
-            Id of an entity
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.EntryModel`1.Name">
-            <summary>
-            Name of an Entity
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.EntryModel`1.Url">
-            <summary>
-            Url to receive this entity
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.CreateUserModel">
-            <summary>
-            Data to register a User
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.Username">
-            <summary>
-            User name
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.Email">
-            <summary>
-            User's email
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.Password">
-            <summary>
-            Password
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.ConfirmPassword">
-            <summary>
-            Confirm Password. Must be equal to the given Password
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.Gender">
-            <summary>
-            Geschlecht
-            </summary>        
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.Job">
-            <summary>
-            Berufsfeld
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.Fitness">
-            <summary>
-            Fittness
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.CreateUserModel.DateOfBirth">
-            <summary>
-            Alter
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.RoleModel">
-            <summary>
-            Defines Role Data
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.UserModel">
-            <summary>
-            User data
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Url">
-            <summary>
-            Url to receive this object
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Id">
-            <summary>
-            User Id
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.UserName">
-            <summary>
-            Username
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Email">
-            <summary>
-            User email
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Gender">
-            <summary>
-            Geschlecht
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Job">
-            <summary>
-            Berufsfeld
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.Fitness">
-            <summary>
-            Fittness
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UserModel.DateOfBirth">
-            <summary>
-            Geburtstag
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.UsersInRoleModel">
-            <summary>
-            Definies a Role and the added and removed users
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UsersInRoleModel.Id">
-            <summary>
-            Role Id
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UsersInRoleModel.EnrolledUsers">
-            <summary>
-            Enrolled User
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.UsersInRoleModel.RemovedUsers">
-            <summary>
-            Removed User
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Repository.ApplicationDbContext">
-            <summary>
-            Communcates with the Database
-            </summary>
         </member>
         <member name="T:fIT.WebApi.Entities.Client">
             <summary>
@@ -617,6 +487,131 @@
             <param name="context"></param>
             <returns></returns>
         </member>
+        <member name="T:fIT.WebApi.Models.ChangePasswordModel">
+            <summary>
+            Model to change a password
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.ExerciseModel">
+            <summary>
+            Defines one Exercise
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.CreateUserModel">
+            <summary>
+            Data to register a User
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Username">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Email">
+            <summary>
+            User's email
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Password">
+            <summary>
+            Password
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.ConfirmPassword">
+            <summary>
+            Confirm Password. Must be equal to the given Password
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Gender">
+            <summary>
+            Geschlecht
+            </summary>        
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.CreateUserModel.DateOfBirth">
+            <summary>
+            Alter
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.RoleModel">
+            <summary>
+            Defines Role Data
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.UserModel">
+            <summary>
+            User data
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Url">
+            <summary>
+            Url to receive this object
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Id">
+            <summary>
+            User Id
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.UserName">
+            <summary>
+            Username
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Email">
+            <summary>
+            User email
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Gender">
+            <summary>
+            Geschlecht
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UserModel.DateOfBirth">
+            <summary>
+            Geburtstag
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.UsersInRoleModel">
+            <summary>
+            Definies a Role and the added and removed users
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.Id">
+            <summary>
+            Role Id
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.EnrolledUsers">
+            <summary>
+            Enrolled User
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.UsersInRoleModel.RemovedUsers">
+            <summary>
+            Removed User
+            </summary>
+        </member>
         <member name="T:fIT.WebApi.Provider.CustomJwtFormat">
             <summary>
             Authorization- and Resource Server
@@ -658,6 +653,11 @@
             </summary>
             <param name="context"></param>
             <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Repository.ApplicationDbContext">
+            <summary>
+            Communcates with the Database
+            </summary>
         </member>
         <member name="T:fIT.WebApi.Resources">
             <summary>

@@ -9,6 +9,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
 using fIT.WebApi.Client.Intefaces;
 using fIT.WebApi.Client.Models;
 using fIT.WebApi.Client.Models.Account;
@@ -252,6 +253,7 @@ namespace fIT.WebApi.Client.Implementation
             }
             else
             {
+              var result = await response.Content.ReadAsAsync<HttpError>();
                 throw new ServerException(response);
             }
         }

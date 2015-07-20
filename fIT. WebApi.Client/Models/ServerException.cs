@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Http;
+using System.Web.Http.ModelBinding;
 
 namespace fIT.WebApi.Client.Models
 {
@@ -22,8 +24,12 @@ namespace fIT.WebApi.Client.Models
     public ServerException(HttpResponseMessage response)
       : base(ResolveMessage(response))
     {
-      StatusCode = response.StatusCode;
+      var resolved = response.Content.ReadAsAsync<ErrorContent>().Result;
+      this.ModelState = resolved.ModelState; 
+      this.StatusCode = response.StatusCode;
     }
+
+    public ModelStateDictionary ModelState{ get; set; }
 
     public HttpStatusCode StatusCode { get; private set; }
 
@@ -42,6 +48,12 @@ namespace fIT.WebApi.Client.Models
     {
       public string Message;
     }
+
+    public class ErrorContent: ErrorMessage
+    {
+      public ModelStateDictionary ModelState { get; set; }
+    }
+
   }
 
 }

@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using System.Threading;
+using fIT.WebApi.Client.Models.Shared.Enums;
 
 namespace fITNat
 {
@@ -49,16 +50,19 @@ namespace fITNat
         {
             //Show the Loader
             progressBar.Visibility = ViewStates.Visible;
-
-            //Data of Registration to send them to the server
-            Thread thread = new Thread(actLikeARequest);
-            thread.Start();
-            /*
+            
             string username = e.Username;
             string email = e.Email;
             string password = e.Password;
-            string birthdate = e.Birthdate;
-            */
+            string passwordConfirm = e.PasswordConfirm;
+            GenderType gender = e.Gender;
+            JobTypes job = e.Job;
+            FitnessType fitness = e.Fitness;
+            DateTime birthdate = e.Birthdate;
+            
+            //Data of Registration to send them to the server
+            Thread thread = new Thread(actLikeARequest);
+            thread.Start();
         }
 
         private void SignInDialog_onSignInComplete(object sender, OnSignInEventArgs e)

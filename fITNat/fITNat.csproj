@@ -49,9 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="dialog_SignIn.cs" />
-    <Compile Include="dialog_SignUp.cs" />
+    <Compile Include="Dialog_SignIn.cs" />
+    <Compile Include="Dialog_SignUp.cs" />
     <Compile Include="MainActivity.cs" />
+    <Compile Include="Resources\enums\FitnessTypes.cs" />
+    <Compile Include="Resources\enums\GenderType.cs" />
+    <Compile Include="Resources\enums\JobTypes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -59,8 +62,8 @@
     <None Include="GettingStarted.Xamarin" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
-    <AndroidResource Include="Resources\layout\dialog_sign_up.axml" />
-    <AndroidResource Include="Resources\layout\dialog_sign_in.axml">
+    <AndroidResource Include="Resources\layout\Dialog_sign_up.axml" />
+    <AndroidResource Include="Resources\layout\Dialog_sign_in.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Overview.axml">
@@ -99,6 +102,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\fIT. WebApi.Client\fIT. WebApi.Client.csproj">
+      <Project>{d5fb4bea-baad-448e-9f6d-9be67e4819db}</Project>
+      <Name>fIT. WebApi.Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

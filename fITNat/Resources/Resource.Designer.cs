@@ -91,44 +91,65 @@ namespace fITNat
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f070005
-			public const int btnDialogEmail = 2131165189;
+			// aapt resource value: 0x7f07000c
+			public const int btnDialogEmail = 2131165196;
 			
 			// aapt resource value: 0x7f070002
 			public const int btnDialogSignIn = 2131165186;
 			
-			// aapt resource value: 0x7f070007
-			public const int btnSignIn = 2131165191;
+			// aapt resource value: 0x7f07000e
+			public const int btnSignIn = 2131165198;
 			
-			// aapt resource value: 0x7f070009
-			public const int btnSignUp = 2131165193;
-			
-			// aapt resource value: 0x7f07000d
-			public const int lvSchedules = 2131165197;
+			// aapt resource value: 0x7f070010
+			public const int btnSignUp = 2131165200;
 			
 			// aapt resource value: 0x7f07000a
-			public const int progressBar1 = 2131165194;
-			
-			// aapt resource value: 0x7f07000b
-			public const int rlOverviewSchedules = 2131165195;
-			
-			// aapt resource value: 0x7f070004
-			public const int txtBirthdate = 2131165188;
+			public const int lblSpinFitness = 2131165194;
 			
 			// aapt resource value: 0x7f070006
-			public const int txtCreateAccount = 2131165190;
+			public const int lblSpinGender = 2131165190;
+			
+			// aapt resource value: 0x7f070008
+			public const int lblSpinJob = 2131165192;
+			
+			// aapt resource value: 0x7f070014
+			public const int lvSchedules = 2131165204;
+			
+			// aapt resource value: 0x7f070011
+			public const int progressBar1 = 2131165201;
+			
+			// aapt resource value: 0x7f070012
+			public const int rlOverviewSchedules = 2131165202;
+			
+			// aapt resource value: 0x7f07000b
+			public const int spinFitness = 2131165195;
+			
+			// aapt resource value: 0x7f070007
+			public const int spinGender = 2131165191;
+			
+			// aapt resource value: 0x7f070009
+			public const int spinJob = 2131165193;
+			
+			// aapt resource value: 0x7f070005
+			public const int txtBirthdate = 2131165189;
+			
+			// aapt resource value: 0x7f07000d
+			public const int txtCreateAccount = 2131165197;
 			
 			// aapt resource value: 0x7f070003
 			public const int txtEmail = 2131165187;
 			
-			// aapt resource value: 0x7f070008
-			public const int txtOr = 2131165192;
+			// aapt resource value: 0x7f07000f
+			public const int txtOr = 2131165199;
 			
 			// aapt resource value: 0x7f070001
 			public const int txtPassword = 2131165185;
 			
-			// aapt resource value: 0x7f07000c
-			public const int txtTitleOverview = 2131165196;
+			// aapt resource value: 0x7f070004
+			public const int txtPasswordConfirm = 2131165188;
+			
+			// aapt resource value: 0x7f070013
+			public const int txtTitleOverview = 2131165203;
 			
 			// aapt resource value: 0x7f070000
 			public const int txtUsername = 2131165184;
@@ -147,10 +168,10 @@ namespace fITNat
 		{
 			
 			// aapt resource value: 0x7f030000
-			public const int dialog_sign_in = 2130903040;
+			public const int Dialog_sign_in = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int dialog_sign_up = 2130903041;
+			public const int Dialog_sign_up = 2130903041;
 			
 			// aapt resource value: 0x7f030002
 			public const int Main = 2130903042;

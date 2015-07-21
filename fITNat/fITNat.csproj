@@ -52,9 +52,6 @@
     <Compile Include="dialog_SignIn.cs" />
     <Compile Include="dialog_SignUp.cs" />
     <Compile Include="MainActivity.cs" />
-    <Compile Include="Resources\enums\FitnessTypes.cs" />
-    <Compile Include="Resources\enums\GenderType.cs" />
-    <Compile Include="Resources\enums\JobTypes.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -103,7 +100,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

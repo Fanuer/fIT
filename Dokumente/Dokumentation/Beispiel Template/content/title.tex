@@ -1,0 +1,59 @@
+
+\begin{titlepage}
+		
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -*- Mode: Latex -*- %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% 
+%% pa_ba_titelblatt.tex 
+%% 
+%% Copyright (C) 2008 Alexander Sprack / Claudia Holz
+%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \begin{textblock}{6.5}(-1,-3)
+    \begin{color}{fh_grau}
+      \rule{6.8cm}{33cm}    
+    \end{color}
+  \end{textblock}
+  \begin{textblock}{6.5}(-1.2,-0.7)
+%  \includegraphics[width=3.8cm]{my-fh-logo}% selbst basteln, falls gewünscht! 
+                                            % Das offizielle Logo ist nicht
+                                            % gestattet!! Bitte BEACHTEN!!!
+  \end{textblock}
+  \begin{textblock}{6.5}(-0.8,1)
+    {\Large \textsf{\thedockind}}            
+  \end{textblock}
+
+  \begin{textblock}{7}(4.5,2)
+    {\noindent \huge 
+      \textsf{\textbf{\thetitle\\[0.3cm] 
+          \Large  \thesubtitle\\[0.05cm]
+          }} }
+  \end{textblock}
+
+
+  \begin{textblock}{6}(4.5,6.5)\noindent
+    \textsf{An der Fachhochschule Dortmund\\
+    im Fachbereich Informatik\\
+    Studiengang \themajor \\
+    erstellte \thedockind \\
+    zur Erlangung des akademischen Grades\\
+    \thedegree}
+  \end{textblock}
+
+  \begin{textblock}{6.5}(-0.4,10.0)
+    \noindent
+    \textsf{von \\
+      \theauthor \\
+      geb.\ am \thebirthday  \\
+      Matr.-Nr. \thematriculationnumber\\[0.7cm]
+      Betreuer:\\
+       \noindent\hspace*{6mm} \thebetreuer \\
+       \noindent\hspace*{6mm} \thezweitbetreuer\\ [0.5cm]
+      Dortmund, \today}    
+  \end{textblock}
+	
+
+\end{titlepage}
+
+
+
+%\thispagestyle{empty}

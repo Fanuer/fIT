@@ -4,15 +4,13 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:minWidth="300dp"
-    android:minHeight="400dp"
-    android:scrollbarAlwaysDrawHorizontalTrack="true"
-    android:scrollbarStyle="insideOverlay">
+    android:minHeight="400dp">
     <EditText
         android:id="@+id/txtUsername"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@drawable/edit_text_style"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="25dp"
@@ -26,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@drawable/edit_text_style"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="Email"
@@ -34,116 +32,33 @@
         android:textColor="#000" />
     <EditText
         android:id="@+id/txtPassword"
-        android:layout_below="@id/txtEmail"
         android:inputType="textPassword"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@drawable/edit_text_style"
-        android:layout_marginBottom="0dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="Password"
         android:paddingLeft="10dp"
-        android:textColor="#000" />
-    <EditText
-        android:id="@+id/txtPasswordConfirm"
-        android:layout_below="@id/txtPassword"
-        android:inputType="textPassword"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:background="@drawable/edit_text_style"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:hint="Password Confirm"
-        android:paddingLeft="10dp"
-        android:textColor="#000" />
+        android:textColor="#000"
+        android:layout_below="@id/txtEmail" />
     <EditText
         android:id="@+id/txtBirthdate"
-        android:layout_below="@id/txtPasswordConfirm"
         android:inputType="date"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:background="@drawable/edit_text_style"
-        android:layout_marginBottom="0dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:hint="Geburtsdatum"
         android:paddingLeft="10dp"
-        android:textColor="#000" />
-    <TextView
-        android:text="Geschlecht"
-        android:id="@+id/lblSpinGender"
-        android:layout_below="@id/txtBirthdate"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:textColor="#000"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp" />
-    <Spinner
-        android:id="@+id/spinGender"
-        android:layout_below="@id/lblSpinGender"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:textColor="#000"
-        android:background="#CCC"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp" />
-    <TextView
-        android:text="Beruf"
-        android:id="@+id/lblSpinJob"
-        android:layout_below="@id/spinGender"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp" />
-    <Spinner
-        android:id="@+id/spinJob"
-        android:layout_below="@id/lblSpinJob"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:textColor="#000"
-        android:background="#CCC"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp" />
-    <TextView
-        android:text="Fitness"
-        android:id="@+id/lblSpinFitness"
-        android:layout_below="@id/spinJob"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp" />
-    <Spinner
-        android:id="@+id/spinFitness"
-        android:layout_below="@id/lblSpinFitness"
-        android:layout_width="match_parent"
-        android:layout_height="35dp"
-        android:textColor="#000"
-        android:background="#CCC"
-        android:layout_marginBottom="0dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:paddingLeft="10dp" />
+        android:layout_below="@id/txtPassword" />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/spinFitness"
+        android:layout_below="@id/txtPassword"
         android:layout_marginTop="50dp">
         <Button
             android:id="@+id/btnDialogEmail"

@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helper\AsyncHelpers.cs" />
     <Compile Include="Implementation\ManagementService.cs" />
     <Compile Include="Implementation\ManagementSession.Base.cs" />
     <Compile Include="Implementation\ManagementSession.Admin.cs" />
@@ -73,7 +74,7 @@
     <Compile Include="Models\Account\ForgotPasswordModel.cs" />
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\UserModel.cs" />
-    <Compile Include="Models\ServerException.cs" />
+    <Compile Include="Models\Exceptions\ServerException.cs" />
     <Compile Include="Models\Shared\ClientInformation.cs" />
     <Compile Include="Models\Shared\Enums\ApplicationTypes.cs" />
     <Compile Include="Models\Shared\Enums\FitnessTypes.cs" />

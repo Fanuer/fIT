@@ -44,19 +44,7 @@
       <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Extensions.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.Primitives, Version=4.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Net.Http.2.2.29\lib\net45\System.Net.Http.Primitives.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
@@ -69,39 +57,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Helper\AsyncHelpers.cs" />
+    <Compile Include="Helper\ExtensionMethods.cs" />
     <Compile Include="Implementation\ManagementService.cs" />
     <Compile Include="Implementation\ManagementSession.Base.cs" />
     <Compile Include="Implementation\ManagementSession.Admin.cs" />
-    <Compile Include="Intefaces\IAdminManagement.cs" />
-    <Compile Include="Intefaces\IManagementService.cs" />
-    <Compile Include="Intefaces\IManagementSession.cs" />
-    <Compile Include="Intefaces\IUserManagement.cs" />
-    <Compile Include="Models\Account\AuthenticationResultModel.cs" />
-    <Compile Include="Models\Account\ChangePasswordModel.cs" />
-    <Compile Include="Models\Account\CreateUserModel.cs" />
-    <Compile Include="Models\Account\ForgotPasswordModel.cs" />
-    <Compile Include="Models\Account\LoginModel.cs" />
-    <Compile Include="Models\Account\UserModel.cs" />
-    <Compile Include="Models\Exceptions\ServerException.cs" />
-    <Compile Include="Models\Shared\ClientInformation.cs" />
-    <Compile Include="Models\Shared\Enums\ApplicationTypes.cs" />
-    <Compile Include="Models\Shared\Enums\FitnessTypes.cs" />
-    <Compile Include="Models\Shared\Enums\GenderType.cs" />
-    <Compile Include="Models\Shared\Enums\JobTypes.cs" />
-    <Compile Include="Models\Shared\StreamModel.cs" />
-    <Compile Include="Models\Shared\XmlStreamModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Implementation\ManagementSession.Users.cs" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\fIT. WebApi.Client.Data\fIT. WebApi.Client.Data.csproj">
+      <Project>{73379ea7-55c0-4bdd-86a6-097b577d4da9}</Project>
+      <Name>fIT. WebApi.Client.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -1,24 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Text;
+using System.Reflection;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Shared;
-using fIT.WebApi.Client.Helper;
+using fIT.WebApi.Client.Portable.Helper;
 using log4net;
 using Newtonsoft.Json;
 
-namespace fIT.WebApi.Client.Implementation
+namespace fIT.WebApi.Client.Portable.Implementation
 {
     public partial class ManagementSession : IManagementSession
     {
@@ -45,25 +41,25 @@ namespace fIT.WebApi.Client.Implementation
         internal ManagementSession(ManagementService service, string username, AuthenticationResultModel authentication)
         {
             this.service = service;
-            this.Token = service.EncryptString(authentication.AccessToken);
+            this.Token = authentication.AccessToken;
             var accessToken = authentication.AccessToken;
             this.refreshToken = authentication.RefreshToken;
             this.currentUsername = username;
 
-            Initialize(accessToken);
+            Initialize(accessToken, new DateTimeOffset(authentication.ExpireDate));
         }
 
-        internal ManagementSession(ManagementService service, ClaimsIdentity identity)
-        {
-            this.service = service;
-            this.Token = identity.FindFirst(AccessTokenClaimType).Value;
-            var accessToken = service.DecryptString(identity.FindFirst(AccessTokenClaimType).Value);
-            this.refreshToken = service.DecryptString(identity.FindFirst(RefreshTokenClaimType).Value);
-            this.expiresOn = DateTimeOffset.Parse(identity.FindFirst(ExpiresClaimType).Value, CultureInfo.InvariantCulture);
-            this.currentUsername = identity.FindFirst(ClaimTypes.Name).Value;
+        //internal ManagementSession(ManagementService service, ClaimsIdentity identity)
+        //{
+        //    this.service = service;
+        //    this.Token = identity.FindFirst(AccessTokenClaimType).Value;
+        //    var accessToken = service.DecryptString(identity.FindFirst(AccessTokenClaimType).Value);
+        //    this.refreshToken = service.DecryptString(identity.FindFirst(RefreshTokenClaimType).Value);
+        //    this.expiresOn = DateTimeOffset.Parse(identity.FindFirst(ExpiresClaimType).Value, CultureInfo.InvariantCulture);
+        //    this.currentUsername = identity.FindFirst(ClaimTypes.Name).Value;
 
-            Initialize(accessToken);
-        }
+        //    Initialize(accessToken);
+        //}
 
         #endregion
 
@@ -74,9 +70,9 @@ namespace fIT.WebApi.Client.Implementation
 
             var parts = new List<string>();
 
-            foreach (var p in data.GetType().GetProperties())
+            foreach (var p in data.GetType().GetRuntimeProperties().Select(x => x.GetMethod))
             {
-                var value = p.GetGetMethod().Invoke(data, null);
+                var value = p.Invoke(data, null);
 
                 if (value != null)
                 {
@@ -102,7 +98,7 @@ namespace fIT.WebApi.Client.Implementation
             return parts.Count > 0 ? "?" + String.Join("&", parts) : String.Empty;
         }
 
-        private void Initialize(string accessToken)
+        private void Initialize(string accessToken, DateTimeOffset initialExpireTime = default(DateTimeOffset))
         {
             handler = new HttpClientHandler();
 
@@ -114,63 +110,42 @@ namespace fIT.WebApi.Client.Implementation
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/octet-stream"));
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            try
+            if (!initialExpireTime.Equals(default(DateTime)))
             {
-                var token = (JwtSecurityToken)tokenHandler.ReadToken(accessToken);
-                expiresOn = token.ValidTo;
+                expiresOn = initialExpireTime;
             }
-            catch (Exception e)
+            else
             {
                 expiresOn = DateTimeOffset.UtcNow.AddMinutes(30);
-                Log.Error(e);
             }
         }
 
         public async Task PerformRefreshAsync()
         {
             string oldToken = Token;
-            string newAccessToken = null;
             const string REFRESHCONTENT = "grant_type=refresh_token&refresh_token={0}&client_id=MyClient";
             var stringContent = String.Format(String.Format(REFRESHCONTENT, this.RefreshToken));
             stringContent = this.service.ClientInformation.AddClientData(stringContent);
             var content = new StringContent(stringContent);
 
             HttpResponseMessage response = await client.PostAsync(RefreshTokenPath, content);
-            
             if (response.IsSuccessStatusCode)
             {
                 var result = await response.Content.ReadAsAsync<AuthenticationResultModel>();
-
-                newAccessToken = result.AccessToken;
                 this.refreshToken = result.RefreshToken;
-
-                Token = service.EncryptString(newAccessToken);
+                Token = result.AccessToken;
+                expiresOn = new DateTimeOffset(result.ExpireDate);
             }
 
-            if (newAccessToken == null)
+            if (Token == null)
             {
                 Dispose();
                 throw new ServerException(response);
             }
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            try
-            {
-                var token = (JwtSecurityToken)tokenHandler.ReadToken(newAccessToken);
-                expiresOn = token.ValidTo;
-            }
-            catch (Exception e)
-            {
-                expiresOn = DateTimeOffset.UtcNow.AddMinutes(30);
-
-                Log.Error(e);
-            }
-
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", newAccessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", Token);
 
             service.AccessTokenChanged(oldToken, Token, this);
         }

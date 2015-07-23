@@ -100,6 +100,12 @@
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\fIT.WebApi.Client.Portable\fIT.WebApi.Client.Portable.csproj">
+      <Project>{e1834616-ba49-4fdc-99b3-b77485ff659e}</Project>
+      <Name>fIT.WebApi.Client.Portable</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
      Other similar extension points exist, see Microsoft.Common.targets.

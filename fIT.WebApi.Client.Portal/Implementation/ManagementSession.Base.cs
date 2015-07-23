@@ -10,11 +10,12 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using fIT.WebApi.Client.Data.Intefaces;
-using fIT.WebApi.Client.Data.Models.Account;
-using fIT.WebApi.Client.Data.Models.Exceptions;
-using fIT.WebApi.Client.Data.Models.Shared;
 using fIT.WebApi.Client.Helper;
+using fIT.WebApi.Client.Intefaces;
+using fIT.WebApi.Client.Models;
+using fIT.WebApi.Client.Models.Account;
+using fIT.WebApi.Client.Models.Exceptions;
+using fIT.WebApi.Client.Models.Shared;
 using log4net;
 using Newtonsoft.Json;
 

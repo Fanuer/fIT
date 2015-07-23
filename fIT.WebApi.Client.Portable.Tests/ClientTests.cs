@@ -3,10 +3,10 @@ using System.Net;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
-using fIT.WebApi.Client.Implementation;
+using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace fIT.WebApi.Tests
+namespace fIT.WebApi.Client.Portable.Tests
 {
     [TestClass]
     public partial class ClientTests

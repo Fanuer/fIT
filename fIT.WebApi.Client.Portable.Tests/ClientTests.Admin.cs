@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using fIT.WebApi.Client.Data.Intefaces;
-using fIT.WebApi.Client.Implementation;
+﻿using fIT.WebApi.Client.Data.Intefaces;
+using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace fIT.WebApi.Tests
+namespace fIT.WebApi.Client.Portable.Tests
 {
     public partial class ClientTests
     {

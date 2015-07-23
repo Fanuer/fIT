@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace fIT.WebApi.Client.Models.Shared
+namespace fIT.WebApi.Client.Data.Models.Shared
 {
   public class ClientInformation
   {
@@ -19,7 +14,7 @@ namespace fIT.WebApi.Client.Models.Shared
     #endregion
 
     
-    internal string AddClientData(string content)
+    public string AddClientData(string content)
     {
       if (String.IsNullOrWhiteSpace(content))
       {

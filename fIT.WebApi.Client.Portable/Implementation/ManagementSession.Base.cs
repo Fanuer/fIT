@@ -98,7 +98,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
             return parts.Count > 0 ? "?" + String.Join("&", parts) : String.Empty;
         }
 
-        private void Initialize(string accessToken, DateTimeOffset initialExpireTime = default(DateTimeOffset))
+        private void Initialize(string accessToken, DateTimeOffset? initialExpireTime = null)
         {
             handler = new HttpClientHandler();
 
@@ -112,9 +112,9 @@ namespace fIT.WebApi.Client.Portable.Implementation
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", accessToken);
 
-            if (!initialExpireTime.Equals(default(DateTime)))
+            if (initialExpireTime.HasValue)
             {
-                expiresOn = initialExpireTime;
+                expiresOn = initialExpireTime.Value;
             }
             else
             {

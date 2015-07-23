@@ -34,6 +34,5 @@ namespace fIT.WebApi.Client.Portable.Helper
             var json = JsonConvert.SerializeObject(model);
             return await client.PutAsync(url, new StringContent(json, Encoding.UTF8, "text/json"));
         }
-
     }
 }

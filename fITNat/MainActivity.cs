@@ -6,6 +6,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using System.Threading;
+using fIT.WebApi.Client.Data.Models.Shared.Enums;
 
 namespace fITNat
 {
@@ -29,7 +30,7 @@ namespace fITNat
                 {
                     //Pull up SignUp-dialog
                     FragmentTransaction transaction = FragmentManager.BeginTransaction();
-                    dialog_SignUp signUpDialog = new dialog_SignUp();
+                    Dialog_SignUp signUpDialog = new Dialog_SignUp();
                     signUpDialog.Show(transaction, "dialog fragment");
 
                     signUpDialog.onSignUpComplete += SignUpDialog_onSignUpComplete;
@@ -38,7 +39,7 @@ namespace fITNat
             {
                 //Pull up SignIn-dialog
                 FragmentTransaction transaction = FragmentManager.BeginTransaction();
-                dialog_SignIn signInDialog = new dialog_SignIn();
+                Dialog_SignIn signInDialog = new Dialog_SignIn();
                 signInDialog.Show(transaction, "dialog fragment");
 
                 signInDialog.onSignInComplete += SignInDialog_onSignInComplete;
@@ -49,16 +50,19 @@ namespace fITNat
         {
             //Show the Loader
             progressBar.Visibility = ViewStates.Visible;
-
-            //Data of Registration to send them to the server
-            Thread thread = new Thread(actLikeARequest);
-            thread.Start();
-            /*
+            
             string username = e.Username;
             string email = e.Email;
             string password = e.Password;
-            string birthdate = e.Birthdate;
-            */
+            string passwordConfirm = e.PasswordConfirm;
+            GenderType gender = e.Gender;
+            JobTypes job = e.Job;
+            FitnessType fitness = e.Fitness;
+            DateTime birthdate = e.Birthdate;
+            
+            //Data of Registration to send them to the server
+            Thread thread = new Thread(actLikeARequest);
+            thread.Start();
         }
 
         private void SignInDialog_onSignInComplete(object sender, OnSignInEventArgs e)

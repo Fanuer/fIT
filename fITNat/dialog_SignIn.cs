@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace fITNat
 {
-    class dialog_SignIn : DialogFragment
+    class Dialog_SignIn : DialogFragment
     {
         private EditText txtUsername;
         private EditText txtPassword;
@@ -24,7 +24,7 @@ namespace fITNat
         {
             base.OnCreateView(inflater, container, savedInstanceState);
 
-            var view = inflater.Inflate(Resource.Layout.dialog_sign_in, container, false);
+            var view = inflater.Inflate(Resource.Layout.Dialog_sign_in, container, false);
 
             txtUsername = view.FindViewById<EditText>(Resource.Id.txtUsername);
             txtPassword = view.FindViewById<EditText>(Resource.Id.txtPassword);

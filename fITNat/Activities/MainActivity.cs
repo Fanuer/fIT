@@ -7,6 +7,10 @@ using Android.Widget;
 using Android.OS;
 using System.Threading;
 using fIT.WebApi.Client.Models.Shared.Enums;
+using System.Collections.Generic;
+using System.Net;
+using System.IO;
+using Android.Graphics.Drawables;
 
 namespace fITNat
 {
@@ -20,6 +24,8 @@ namespace fITNat
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            //Service starten
+            StartService(new Intent(this, typeof(OnOffService)));
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -50,7 +56,7 @@ namespace fITNat
         {
             //Show the Loader
             progressBar.Visibility = ViewStates.Visible;
-            
+
             string username = e.Username;
             string email = e.Email;
             string password = e.Password;
@@ -59,10 +65,57 @@ namespace fITNat
             JobTypes job = e.Job;
             FitnessType fitness = e.Fitness;
             DateTime birthdate = e.Birthdate;
-            
-            //Data of Registration to send them to the server
-            Thread thread = new Thread(actLikeARequest);
+
+            //Dictionary für JSON aufbauen
+            Dictionary<string, string> userSignUp = new Dictionary<string, string>();
+            userSignUp.Add("username", username);
+            userSignUp.Add("email", email);
+            userSignUp.Add("password", password);
+            userSignUp.Add("confirmPassword", passwordConfirm);
+            userSignUp.Add("gender", gender.ToString());
+            userSignUp.Add("job", job.ToString());
+            userSignUp.Add("fitness", fitness.ToString());
+            userSignUp.Add("dateOfBirth", birthdate.ToString());
+            //OnOffService.decideSignUp(userSignUp);
+
+            Thread thread = new Thread(doSomething);
             thread.Start();
+            thread.Join();
+            //Hide the Loader
+            progressBar.Visibility = ViewStates.Invisible;
+            var intent = new Intent(this, typeof(ScheduleActivity));
+            StartActivity(intent);
+
+            /*
+            Testaufruf der REST-API  --> Fehlerhaft!!
+            string url = "http://fit-bachelor.azurewebsites.net:80/api/Accounts/Register";
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(new Uri(url));
+            request.ContentType = "application/json";
+            request.Method = "POST";
+            try
+            {
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    string json = userRegister.ToString();
+                    Console.WriteLine(json);
+
+                    streamWriter.Write(json);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+
+                var httpResponse = (HttpWebResponse)request.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    var result = streamReader.ReadToEnd();
+                    Console.Write(result);
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace);
+            }
+            */
         }
 
         private void SignInDialog_onSignInComplete(object sender, OnSignInEventArgs e)
@@ -70,23 +123,23 @@ namespace fITNat
             //Show the Loader
             progressBar.Visibility = ViewStates.Visible;
 
+            var intent = new Intent(this, typeof(ScheduleActivity));
+            StartActivity(intent);
+
             //Data of Registration to send them to the server
-            Thread thread = new Thread(actLikeARequest);
-            thread.Start();
-            /*
             string username = e.Username;
-            string email = e.Email;
             string password = e.Password;
-            string birthdate = e.Birthdate;
-            */
+
+            Dictionary<string, string> userSignIn = new Dictionary<string, string>();
+            userSignIn.Add("username", username);
+            userSignIn.Add("password", password);
+            //Service-Aufruf
+            //OnOffService.decideSignIn(userSignIn);
         }
 
-        private void actLikeARequest()
+        private void doSomething()
         {
             Thread.Sleep(3000);
-
-            //Hide the Loader with the Main-Thread
-            RunOnUiThread(() => { progressBar.Visibility = ViewStates.Invisible; });
         }
     }
 }

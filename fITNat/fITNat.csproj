@@ -49,9 +49,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dialog_SignIn.cs" />
-    <Compile Include="Dialog_SignUp.cs" />
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="Dialogs\Dialog_SignIn.cs" />
+    <Compile Include="Dialogs\Dialog_SignUp.cs" />
+    <Compile Include="Activities\ExcerciseActivity.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Services\OnOffService.cs" />
+    <Compile Include="Activities\PracticeActivity.cs" />
+    <Compile Include="Activities\ScheduleActivity.cs" />
     <Compile Include="Resources\enums\FitnessTypes.cs" />
     <Compile Include="Resources\enums\GenderType.cs" />
     <Compile Include="Resources\enums\JobTypes.cs" />
@@ -66,7 +70,22 @@
     <AndroidResource Include="Resources\layout\Dialog_sign_in.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Overview.axml">
+    <AndroidResource Include="Resources\layout\ScheduleLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PracticeLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ExerciseLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ScheduleView.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PracticeView.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ExerciseView.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -92,22 +111,22 @@
     <AndroidResource Include="Resources\drawable\ProgressBarStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\edit_text_style.xml" />
+    <AndroidResource Include="Resources\drawable\Edit_text_style.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\anim\slide_up.xml" />
+    <AndroidResource Include="Resources\anim\Slide_up.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\anim\slide_right.xml" />
+    <AndroidResource Include="Resources\anim\Slide_right.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\fIT. WebApi.Client\fIT. WebApi.Client.csproj">
-      <Project>{d5fb4bea-baad-448e-9f6d-9be67e4819db}</Project>
-      <Name>fIT. WebApi.Client</Name>
-    </ProjectReference>
+    <AndroidResource Include="Resources\drawable\CheckDouble.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Check.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

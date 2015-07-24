@@ -9,7 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using fIT.WebApi.Client.Models.Shared.Enums;
+using fIT.WebApi.Client.Data.Models.Shared.Enums;
 
 namespace fITNat
 {

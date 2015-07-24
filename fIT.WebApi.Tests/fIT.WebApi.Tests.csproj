@@ -72,6 +72,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\fIT. WebApi.Client.Data\fIT. WebApi.Client.Data.csproj">
+      <Project>{73379EA7-55C0-4BDD-86A6-097B577D4DA9}</Project>
+      <Name>fIT. WebApi.Client.Data</Name>
+    </ProjectReference>
     <ProjectReference Include="..\fIT. WebApi.Client\fIT. WebApi.Client.csproj">
       <Project>{d5fb4bea-baad-448e-9f6d-9be67e4819db}</Project>
       <Name>fIT. WebApi.Client</Name>

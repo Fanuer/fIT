@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 
-namespace fIT.WebApi.Client.Implementation
+namespace fIT.WebApi.Client.Portable.Implementation
 {
     public partial class ManagementSession : IUserManagement
     {

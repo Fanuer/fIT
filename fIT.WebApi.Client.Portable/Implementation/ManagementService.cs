@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -12,10 +10,10 @@ using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Shared;
-using fIT.WebApi.Client.Helper;
+using fIT.WebApi.Client.Portable.Helper;
 using Newtonsoft.Json;
 
-namespace fIT.WebApi.Client.Implementation
+namespace fIT.WebApi.Client.Portable.Implementation
 {
     public class ManagementService : IManagementService, IDisposable
     {
@@ -28,17 +26,14 @@ namespace fIT.WebApi.Client.Implementation
         private readonly HttpClientHandler handler;
         private readonly HttpClient client;
         private bool disposed;
-
-        private readonly RijndaelManaged algorithm;
-        private readonly byte[] rgbKey;
-        private readonly byte[] rgbIv;
-
+        
         #endregion
 
         #region Ctor
 
         public ManagementService(string baseUri, string tokenEncryptionPassphrase = null, ClientInformation clientInformation = null)
         {
+            
             handler = new HttpClientHandler();
 
             BaseUri = baseUri;
@@ -48,11 +43,6 @@ namespace fIT.WebApi.Client.Implementation
             };
 
             this.ClientInformation = clientInformation ?? new ClientInformation();
-
-            algorithm = new RijndaelManaged();
-            var rdb = new Rfc2898DeriveBytes(tokenEncryptionPassphrase ?? "STATIC", Encoding.Unicode.GetBytes("Some salt ..."));
-            rgbKey = rdb.GetBytes(algorithm.KeySize >> 3);
-            rgbIv = rdb.GetBytes(algorithm.BlockSize >> 3);
 
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -188,44 +178,6 @@ namespace fIT.WebApi.Client.Implementation
                 throw new ServerException(response);
             }
 
-        }
-
-        public string EncryptString(String base64String)
-        {
-            return Convert.ToBase64String(Encrypt(new UTF8Encoding(false).GetBytes(base64String)));
-        }
-
-        public string DecryptString(String base64String)
-        {
-            return new UTF8Encoding(false).GetString(Decrypt(Convert.FromBase64String(base64String)));
-        }
-
-        public byte[] Encrypt(byte[] bytes)
-        {
-            var transform = algorithm.CreateEncryptor(rgbKey, rgbIv);
-
-            using (var buffer = new MemoryStream())
-            using (var stream = new CryptoStream(buffer, transform, CryptoStreamMode.Write))
-            {
-                stream.Write(bytes, 0, bytes.Length);
-                stream.FlushFinalBlock();
-
-                return buffer.ToArray();
-            }
-        }
-
-        public byte[] Decrypt(byte[] input)
-        {
-            var transform = algorithm.CreateDecryptor(rgbKey, rgbIv);
-
-            using (var buffer = new MemoryStream(input, false))
-            using (var stream = new CryptoStream(buffer, transform, CryptoStreamMode.Read))
-            using (var target = new MemoryStream())
-            {
-                stream.CopyTo(target);
-
-                return target.ToArray();
-            }
         }
 
         /// <summary>

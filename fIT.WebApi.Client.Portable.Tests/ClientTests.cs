@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Net;
+using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
-using fIT.WebApi.Client.Implementation;
+using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Nito.AsyncEx.UnitTests;
 
-namespace fIT.WebApi.Tests
+namespace fIT.WebApi.Client.Portable.Tests
 {
     [TestClass]
     public partial class ClientTests
@@ -16,7 +18,7 @@ namespace fIT.WebApi.Tests
 #if DEBUG
         private const string ServiceUrl = "http://localhost:62816/";
 #else
-    private const string ServiceUrl = "http://fit-bachelor.azurewebsites.net/";
+        private const string ServiceUrl = "http://fit-bachelor.azurewebsites.net/";
 #endif
 
         private const string USERNAME = "Stefan";
@@ -32,50 +34,42 @@ namespace fIT.WebApi.Tests
         }
 
         [TestMethod]
-        public void Login()
+        public async Task Login()
         {
             using (var service = new ManagementService(ServiceUrl))
-            using (var session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            using (var session = await service.LoginAsync(USERNAME, PASSWORD))
             {
                 Assert.IsNotNull(session);
             }
         }
 
         [TestMethod]
-        public void PerformRefresh()
+        public async Task PerformRefresh()
         {
             using (var service = new ManagementService(ServiceUrl))
-            using (var session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            using (var session = await service.LoginAsync(USERNAME, PASSWORD))
             {
                 var oldValue = session.Token;
-                session.PerformRefreshAsync().Wait();
+                await session.PerformRefreshAsync();
                 var newValue = session.Token;
                 Assert.AreNotEqual(oldValue, newValue);
             }
         }
 
         [TestMethod]
-        public void FailLoginInvalidUsername()
+        [ExpectedException(typeof(ServerException))]
+        public async Task FailLoginInvalidUsername()
         {
             using (var service = new ManagementService(ServiceUrl))
             {
-                try
+                using (var session = await service.LoginAsync("xyz", PASSWORD))
                 {
-                    using (var session = service.LoginAsync("xyz", PASSWORD).Result)
-                    {
-                    }
-
-                    Assert.Fail();
-                }
-                catch (AggregateException e)
-                {
-                    Assert.IsTrue(e.InnerException is ServerException);
                 }
             }
         }
 
         [TestMethod]
-        public void UserCanRegisterAndDeleteUser()
+        public async Task UserCanRegisterAndDeleteUser()
         {
             var newUser = new CreateUserModel()
             {
@@ -93,24 +87,25 @@ namespace fIT.WebApi.Tests
             {
                 try
                 {
-                    service.RegisterAsync(newUser).Wait();
+                    await service.RegisterAsync(newUser);
                     registrationSuccessful = true;
-                    using (var newUserSession = service.LoginAsync(newUser.Username, newUser.Password).Result)
+                    using (var newUserSession = await service.LoginAsync(newUser.Username, newUser.Password))
                     {
                     }
                 }
                 catch (AggregateException e)
                 {
-                    
+
                 }
                 finally
                 {
                     if (registrationSuccessful)
                     {
-                        using (var rootsession = service.LoginAsync(USERNAME, PASSWORD).Result)
+                        using (var rootsession = await service.LoginAsync(USERNAME, PASSWORD))
                         {
-                            var newUserId = rootsession.Admins.GetUserByUsernameAsync(newUser.Username).Result.Id;
-                            rootsession.Admins.DeleteUserAsync(newUserId).Wait();
+                            var user = await rootsession.Admins.GetUserByUsernameAsync(newUser.Username);
+                            var newUserId = user.Id;
+                            await rootsession.Admins.DeleteUserAsync(newUserId);
                         }
                     }
                 }

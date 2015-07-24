@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using fIT.WebApi.Client.Data.Intefaces;
-using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Intefaces;
+using fIT.WebApi.Client.Models.Account;
+using fIT.WebApi.Client.Models.Shared.Enums;
 
 namespace fIT.WebApi.Client.Implementation
 {

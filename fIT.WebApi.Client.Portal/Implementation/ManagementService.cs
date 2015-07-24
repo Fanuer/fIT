@@ -4,15 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
-using fIT.WebApi.Client.Data.Intefaces;
-using fIT.WebApi.Client.Data.Models.Account;
-using fIT.WebApi.Client.Data.Models.Exceptions;
-using fIT.WebApi.Client.Data.Models.Shared;
-using fIT.WebApi.Client.Helper;
+using fIT.WebApi.Client.Intefaces;
+using fIT.WebApi.Client.Models;
+using fIT.WebApi.Client.Models.Account;
+using fIT.WebApi.Client.Models.Exceptions;
+using fIT.WebApi.Client.Models.Shared;
 using Newtonsoft.Json;
 
 namespace fIT.WebApi.Client.Implementation
@@ -29,7 +27,6 @@ namespace fIT.WebApi.Client.Implementation
         private readonly HttpClient client;
         private bool disposed;
 
-        private readonly RijndaelManaged algorithm;
         private readonly byte[] rgbKey;
         private readonly byte[] rgbIv;
 
@@ -48,11 +45,6 @@ namespace fIT.WebApi.Client.Implementation
             };
 
             this.ClientInformation = clientInformation ?? new ClientInformation();
-
-            algorithm = new RijndaelManaged();
-            var rdb = new Rfc2898DeriveBytes(tokenEncryptionPassphrase ?? "STATIC", Encoding.Unicode.GetBytes("Some salt ..."));
-            rgbKey = rdb.GetBytes(algorithm.KeySize >> 3);
-            rgbIv = rdb.GetBytes(algorithm.BlockSize >> 3);
 
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -121,35 +113,6 @@ namespace fIT.WebApi.Client.Implementation
             }
         }
 
-        //public async Task<IManagementSession> GetSessionAsync(ClaimsIdentity identity)
-        //{
-        //  var claim = identity.FindFirst(ManagementSession.AccessTokenClaimType);
-        //  if (claim == null) return null;
-
-        //  string token = claim.Value;
-
-        //  IManagementSession session;
-
-        //  if (!sessions.TryGetValue(token, out session))
-        //  {
-        //    try
-        //    {
-        //      session = new ManagementSession(this, identity);
-        //      if (await session.Validate())
-        //      {
-        //        if (sessions != null) sessions[token] = session;
-        //      }
-        //      else
-        //      {
-        //        session.Dispose();
-        //        session = null;
-        //      }
-        //    }
-        //    catch { }
-        //  }
-
-        //  return session;
-        //}
 
         public async Task<IManagementSession> LoginAsync(string username, string password)
         {

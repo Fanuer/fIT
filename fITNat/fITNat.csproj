@@ -105,6 +105,10 @@
       <Project>{73379EA7-55C0-4BDD-86A6-097B577D4DA9}</Project>
       <Name>fIT. WebApi.Client.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\fIT.WebApi.Client.Portable\fIT.WebApi.Client.Portable.csproj">
+      <Project>{e1834616-ba49-4fdc-99b3-b77485ff659e}</Project>
+      <Name>fIT.WebApi.Client.Portable</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

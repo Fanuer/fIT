@@ -32,10 +32,10 @@ namespace fITNat
 		{
 			
 			// aapt resource value: 0x7f040000
-			public const int Slide_right = 2130968576;
+			public const int slide_right = 2130968576;
 			
 			// aapt resource value: 0x7f040001
-			public const int Slide_up = 2130968577;
+			public const int slide_up = 2130968577;
 			
 			static Animation()
 			{
@@ -76,13 +76,16 @@ namespace fITNat
 			public const int CheckDouble = 2130837507;
 			
 			// aapt resource value: 0x7f020004
-			public const int Edit_text_style = 2130837508;
+			public const int edit_text_style = 2130837508;
 			
 			// aapt resource value: 0x7f020005
-			public const int Icon = 2130837509;
+			public const int Email_envelope_16 = 2130837509;
 			
 			// aapt resource value: 0x7f020006
-			public const int ProgressBarStyle = 2130837510;
+			public const int Icon = 2130837510;
+			
+			// aapt resource value: 0x7f020007
+			public const int ProgressBarStyle = 2130837511;
 			
 			static Drawable()
 			{

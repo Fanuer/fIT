@@ -46,6 +46,23 @@ namespace fITNat
             txtBirthdate = view.FindViewById<EditText>(Resource.Id.txtBirthdate);
             btnSignUp = view.FindViewById<Button>(Resource.Id.btnDialogEmail);
 
+            //Fehler anzeigen
+            /*
+            try{}
+            catch(ServerException e)
+            {
+            string mistake = e.StackTrace;
+            switch(mistake)
+            case "Username":
+                txtUsername.setError("Benutzername ist falsch!");
+                break;
+            case...
+            }
+
+
+
+            */
+
             //Gender-Spinner
             genderItems = Enum.GetValues(typeof(GenderType)).Cast<GenderType>().ToList();
             ArrayAdapter<GenderType> genderAdpater = new ArrayAdapter<GenderType>(this.Activity, Android.Resource.Layout.SimpleSpinnerDropDownItem, genderItems);
@@ -75,11 +92,13 @@ namespace fITNat
                     txtEmail.Text, 
                     txtPassword.Text, 
                     txtPasswordConfirm.Text, 
-                    getSelectedGender(spinGender.SelectedItem.ToString()), 
-                    getSelectedJob(spinJob.SelectedItem.ToString()), 
-                    getSelectedFitness(spinFitness.SelectedItem.ToString()), 
+                    spinGender.SelectedItem.ToString(), 
+                    spinJob.SelectedItem.ToString(), 
+                    spinFitness.SelectedItem.ToString(), 
                     new DateTime()
                 ));
+            
+
             //Dialog will slide to the side and will disapear
             this.Dismiss();
         }
@@ -91,6 +110,7 @@ namespace fITNat
             Dialog.Window.Attributes.WindowAnimations = Resource.Style.dialog_animation; //sets the animation
         }
 
+        /*
         /// <summary>
         /// Generates GenderType out of string
         /// </summary>
@@ -114,6 +134,7 @@ namespace fITNat
             return gTout;
         }
 
+        
         /// <summary>
         /// Generates JobType out of string
         /// </summary>
@@ -159,6 +180,7 @@ namespace fITNat
             }
             return fTout;
         }
+        */
 
     }
 
@@ -168,9 +190,9 @@ namespace fITNat
         private string email;
         private string password;
         private string passwordConfirm;
-        private GenderType gender;
-        private JobTypes job;
-        private FitnessType fitness;
+        private string gender;
+        private string job;
+        private string fitness;
         private DateTime birthdate;
         
         public string Username
@@ -197,19 +219,19 @@ namespace fITNat
             set { passwordConfirm = value; }
         }
 
-        public GenderType Gender
+        public string Gender
         {
             get { return gender; }
             set { gender = value; }
         }
 
-        public JobTypes Job
+        public string Job
         {
             get { return job; }
             set { job = value; }
         }
         
-        public FitnessType Fitness
+        public string Fitness
         {
             get { return fitness; }
             set { fitness = value; }
@@ -226,9 +248,9 @@ namespace fITNat
             string email, 
             string password, 
             string passwordConfirm, 
-            GenderType gender,
-            JobTypes job,
-            FitnessType fitness,
+            string gender,
+            string job,
+            string fitness,
             DateTime birthdate
             ) : base()
         {

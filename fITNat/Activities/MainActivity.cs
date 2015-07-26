@@ -6,11 +6,11 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using System.Threading;
-using fIT.WebApi.Client.Models.Shared.Enums;
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
 using Android.Graphics.Drawables;
+using fIT.WebApi.Client.Data.Models.Shared.Enums;
 
 namespace fITNat
 {
@@ -61,9 +61,9 @@ namespace fITNat
             string email = e.Email;
             string password = e.Password;
             string passwordConfirm = e.PasswordConfirm;
-            GenderType gender = e.Gender;
-            JobTypes job = e.Job;
-            FitnessType fitness = e.Fitness;
+            string gender = e.Gender;
+            string job = e.Job;
+            string fitness = e.Fitness;
             DateTime birthdate = e.Birthdate;
 
             //Dictionary für JSON aufbauen
@@ -73,8 +73,8 @@ namespace fITNat
             userSignUp.Add("password", password);
             userSignUp.Add("confirmPassword", passwordConfirm);
             userSignUp.Add("gender", gender.ToString());
-            userSignUp.Add("job", job.ToString());
-            userSignUp.Add("fitness", fitness.ToString());
+            userSignUp.Add("job", job);
+            userSignUp.Add("fitness", fitness);
             userSignUp.Add("dateOfBirth", birthdate.ToString());
             //OnOffService.decideSignUp(userSignUp);
 
@@ -85,6 +85,7 @@ namespace fITNat
             progressBar.Visibility = ViewStates.Invisible;
             var intent = new Intent(this, typeof(ScheduleActivity));
             StartActivity(intent);
+
 
             /*
             Testaufruf der REST-API  --> Fehlerhaft!!

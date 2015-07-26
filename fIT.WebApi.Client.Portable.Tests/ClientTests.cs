@@ -6,7 +6,7 @@ using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
 using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Nito.AsyncEx.UnitTests;
+//using Nito.AsyncEx.UnitTests;
 
 namespace fIT.WebApi.Client.Portable.Tests
 {

@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.Util;
+using Java.IO;
 
 namespace fITNat
 {
@@ -22,6 +23,12 @@ namespace fITNat
         }
 
         //OnCreate -> Initialisierung
+        public override void OnCreate()
+        {
+            base.OnCreate();
+
+            //Datenhaltung
+        }
 
         //public StartCommandResult OnStartCommand -> Handling des Neustarts des Services
         //Sticky -> startet bei null
@@ -42,11 +49,10 @@ namespace fITNat
         public bool asyncPing()
         {
             /*
-            while(asyncPing == true)
+            while(server.asyncPing == true)
             {
                 
             }
-            //call http://fit-bachelor.azurewebsites.net:80/api/Accounts/Ping
             */
             return true;
         }

@@ -29,6 +29,11 @@ namespace fITNat
             ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
             ListView lv = (ListView)FindViewById(Resource.Id.lvSchedules);
             lv.Adapter = adapter;
+            lv.ItemClick += (object sender, AdapterView.ItemClickEventArgs e) =>
+            {
+                String selectedFromList = lv.GetItemAtPosition(e.Position).ToString();
+                //Daraus die ID des Trainingsplans holen und diesen dann abfragen + redirect auf die passende Seite!
+            };
         }
     }
 }

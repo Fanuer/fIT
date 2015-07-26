@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData;
 using fIT.WebApi.Entities;
+using Swashbuckle.Swagger.Annotations;
 
 namespace fIT.WebApi.Controller
 {
     /// <summary>
     /// Grants access to refreshtoken data
     /// </summary>
+    [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
     [RoutePrefix("api/RefreshTokens")]
     public class RefreshTokensController : BaseApiController
     {
@@ -23,6 +25,8 @@ namespace fIT.WebApi.Controller
         [Authorize(Roles = "Admin")]
         [Route("")]
         [EnableQuery]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<RefreshToken>))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
         public IQueryable<RefreshToken> Get()
         {
             return this.AppRepository.RefreshTokens.GetAllAsync();
@@ -32,8 +36,7 @@ namespace fIT.WebApi.Controller
         /// Deletes a Refreshtoken
         /// </summary>
         /// <param name="tokenId">tokenID</param>
-        /// <response code="400">Bad request</response>
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [AllowAnonymous]
         [Route("")]
         public async Task<IHttpActionResult> Delete(string tokenId)

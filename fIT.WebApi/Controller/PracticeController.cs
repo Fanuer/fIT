@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.OData;
 using fIT.WebApi.Models;
+using Swashbuckle.Swagger.Annotations;
 
 namespace fIT.WebApi.Controller
 {
@@ -16,6 +17,8 @@ namespace fIT.WebApi.Controller
     /// Grants access to practice data
     /// </summary>
     [Authorize]
+    [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+    [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
     [RoutePrefix("api/practice")]
     public class PracticeController : BaseApiController
     {
@@ -26,7 +29,7 @@ namespace fIT.WebApi.Controller
         [HttpGet]
         [EnableQuery]
         [Route("")]
-        [ResponseType(typeof(IQueryable<PracticeModel>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<PracticeModel>))]
         public IQueryable<PracticeModel> GetPractices()
         {
             return this
@@ -45,7 +48,8 @@ namespace fIT.WebApi.Controller
         /// <response code="400">Bad request</response>  
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(PracticeModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(PracticeModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [HttpGet]
         [Route("{id:int}", Name = "GetPracticeById")]
         public async Task<IHttpActionResult> GetPractice(int id)
@@ -71,7 +75,9 @@ namespace fIT.WebApi.Controller
         /// <response code="400">Bad request</response>  
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(void))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpPut]
         public async Task<IHttpActionResult> UpdatePractice([FromUri]int id, [FromBody] PracticeModel practice)
@@ -117,7 +123,8 @@ namespace fIT.WebApi.Controller
         /// <response code="201">Created</response>  
         /// <response code="400">Bad request</response> 
         /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(PracticeModel))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(PracticeModel))]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [Route("")]
         [HttpPost]
         public async Task<IHttpActionResult> CreatePractice(PracticeModel practice)
@@ -139,7 +146,9 @@ namespace fIT.WebApi.Controller
         /// <response code="400">Bad request</response>  
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(void))]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpDelete]
         public async Task<IHttpActionResult> DeletePractice(int id)

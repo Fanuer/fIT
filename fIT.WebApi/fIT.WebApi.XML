@@ -61,16 +61,12 @@
             <summary>
             Gets all schedules of a user or all, if logged in as an admin
             </summary>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.SchedulesController.GetSchedule(System.Int32)">
             <summary>
             Get one Schedule
             </summary>
             <param name="id">Schedule id</param>
-            <response code="400">Bad request</response>  
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.SchedulesController.UpdateExercise(System.Int32,fIT.WebApi.Models.ScheduleModel)">
             <summary>
@@ -78,27 +74,18 @@
             </summary>
             <param name="schedule">New schedule Data</param>
             <param name="id">Schedule id</param>
-            <response code="400">Bad request</response>  
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.SchedulesController.CreateExercise(fIT.WebApi.Models.ScheduleModel)">
             <summary>
             Create new Schedule for the logged in user
             </summary>
             <param name="schedule">Schedule data to create</param>
-            <response code="201">Created</response>  
-            <response code="400">Bad request</response> 
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.SchedulesController.DeleteExercise(System.Int32)">
             <summary>
             Removes a schedule
             </summary>
             <param name="id">Id of the schedule to delete</param>
-            <response code="400">Bad request</response>  
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="T:fIT.WebApi.Controller.AccountsController">
             <summary>
@@ -114,30 +101,23 @@
             <summary>
             Gets all application Users
             </summary>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.GetUser(System.String)">
             <summary>
             Get a user by its guid
             </summary>
             <param name="id">User's guid</param>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.GetUserByName(System.String)">
             <summary>
             Get User by Username
             </summary>
             <param name="username">username to search for</param>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.GetCurrentUser">
             <summary>
             Returns the current users Information
             </summary>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.UpdateCurrentUser(fIT.WebApi.Models.UserModel)">
             <summary>
@@ -152,26 +132,18 @@
             User can register to the Application
             </summary>
             <param name="createUserModel">new User</param>
-            <response code="201">Created</response>
-            <response code="400">Bad request</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.ChangePassword(fIT.WebApi.Models.ChangePasswordModel)">
             <summary>
             User can change its password
             </summary>
             <param name="model">Data to change a password</param>
-            <response code="400">Bad request</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.DeleteUser(System.String)">
             <summary>
             Admin can delete User
             </summary>
             <param name="id">Id of the user to delete</param>
-            <response code="400">Bad request</response>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.AssignRolesToUser(System.String,System.String[])">
             <summary>
@@ -179,9 +151,6 @@
             </summary>
             <param name="id">User Id</param>
             <param name="rolesToAssign">Roles to assign to the user</param>
-            <response code="400">Bad request</response>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
             <summary>
@@ -231,9 +200,6 @@
             Get one Exercise
             </summary>
             <param name="id">exercise id</param>
-            <response code="400">Bad request</response>  
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.ExerciseController.UpdateExercise(System.Int32,fIT.WebApi.Models.ExerciseModel)">
             <summary>
@@ -241,9 +207,6 @@
             </summary>
             <param name="id">Id of the exercise to update</param>
             <param name="exercise">new exercise data</param>
-            <response code="400">Bad request</response>  
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.ExerciseController.CreateExercise(fIT.WebApi.Models.ExerciseModel)">
             <summary>
@@ -259,9 +222,6 @@
             Removes a exercise
             </summary>
             <param name="id">Id of the exercise to delete</param>
-            <response code="400">Bad request</response>  
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="T:fIT.WebApi.Controller.RefreshTokensController">
             <summary>
@@ -279,8 +239,6 @@
             Deletes a Refreshtoken
             </summary>
             <param name="tokenId">tokenID</param>
-            <response code="400">Bad request</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="T:fIT.WebApi.Controller.RolesController">
             <summary>
@@ -314,16 +272,12 @@
             Deletes a Role
             </summary>
             <param name="id">Id of the role to delete</param>
-            <response code="400">Bad request</response>
-            <response code="404">Not Found</response>
-            <response code="500">Internal Server Error</response>
         </member>
         <member name="M:fIT.WebApi.Controller.RolesController.ManageUsersInRole(fIT.WebApi.Models.UsersInRoleModel)">
             <summary>
             Alters the settings between users and roles
             </summary>
             <param name="model">new settings</param>
-            <returns></returns>
         </member>
         <member name="T:fIT.WebApi.Models.ChangePasswordModel">
             <summary>

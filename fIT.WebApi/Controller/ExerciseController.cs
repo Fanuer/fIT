@@ -10,6 +10,7 @@ using System.Web.Http.Description;
 using System.Web.Http.OData;
 using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
+using Swashbuckle.Swagger.Annotations;
 
 namespace fIT.WebApi.Controller
 {
@@ -18,13 +19,15 @@ namespace fIT.WebApi.Controller
     /// </summary>
     [Authorize]
     [RoutePrefix("api/exercise")]
+    [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+    [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
     public class ExerciseController : BaseApiController
     {
-
         /// <summary>
         /// Get all Exercises
         /// </summary>
         /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<ExerciseModel>))]
         [HttpGet]
         [EnableQuery]
         [Route("")]
@@ -37,10 +40,8 @@ namespace fIT.WebApi.Controller
         /// Get one Exercise
         /// </summary>
         /// <param name="id">exercise id</param>
-        /// <response code="400">Bad request</response>  
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(ExerciseModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ExerciseModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [HttpGet]
         [Route("{id:int}", Name = "GetExerciseById")]
         public async Task<IHttpActionResult> GetExercise(int id)
@@ -59,10 +60,9 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="id">Id of the exercise to update</param>
         /// <param name="exercise">new exercise data</param>
-        /// <response code="400">Bad request</response>  
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(void))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpPut]
         public async Task<IHttpActionResult> UpdateExercise([FromUri]int id, [FromBody] ExerciseModel exercise)
@@ -104,7 +104,8 @@ namespace fIT.WebApi.Controller
         /// <response code="201">Created</response>  
         /// <response code="400">Bad request</response> 
         /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(ExerciseModel))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(ExerciseModel))]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [Route("")]
         [HttpPost]
         public async Task<IHttpActionResult> CreateExercise(ExerciseModel exercise)
@@ -123,10 +124,9 @@ namespace fIT.WebApi.Controller
         /// Removes a exercise
         /// </summary>
         /// <param name="id">Id of the exercise to delete</param>
-        /// <response code="400">Bad request</response>  
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(void))]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteExercise(int id)

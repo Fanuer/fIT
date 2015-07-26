@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
@@ -216,7 +215,8 @@ namespace fIT.WebApi.Client.Portable.Implementation
             }
             else
             {
-              var result = await response.Content.ReadAsAsync<HttpError>();
+              var result = await response.Content.ReadAsStringAsync();
+
                 throw new ServerException(response);
             }
         }

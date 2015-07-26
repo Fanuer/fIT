@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace fIT.WebApi.Client.Data.Models.Exceptions
 {

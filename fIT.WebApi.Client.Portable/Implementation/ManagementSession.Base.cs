@@ -11,7 +11,6 @@ using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Shared;
 using fIT.WebApi.Client.Portable.Helper;
-using log4net;
 using Newtonsoft.Json;
 
 namespace fIT.WebApi.Client.Portable.Implementation
@@ -25,8 +24,6 @@ namespace fIT.WebApi.Client.Portable.Implementation
         public const string ExpiresClaimType = "http://fit-bachelor.azurewebsites.net/api/tokenexpires";
         internal const string ExternalClaimType = "http://fit-bachelor.azurewebsites.net/api/external";
         internal const string IdentityProviderClaimType = "http://schemas.microsoft.com/accesscontrolservice/2010/07/claims/identityprovider";
-
-        protected static ILog Log = LogManager.GetLogger(typeof(ManagementSession));
 
         private HttpClientHandler handler;
         private HttpClient client;
@@ -186,10 +183,8 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.GetAsync(String.Format(url, args));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("GetAsync<{0}>({1}) -> {2}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 return await response.Content.ReadAsAsync<T>();
             }
-            if (Log.IsInfoEnabled) Log.Info(String.Format("Failed GetAsync<{0}>({1}) -> {2}{3}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
 
             throw new ServerException(response);
         }
@@ -207,10 +202,10 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.GetAsync(String.Format(url, args));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("GetBytesAsync<{0}>({1}) -> {2}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("GetBytesAsync<{0}>({1}) -> {2}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 return await response.Content.ReadAsByteArrayAsync();
             }
-            if (Log.IsInfoEnabled) Log.Info(String.Format("Failed GetBytesAsync<{0}>({1}) -> {2}{3}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response));
+            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed GetBytesAsync<{0}>({1}) -> {2}{3}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response));
 
             throw new ServerException(response);
         }
@@ -223,7 +218,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.GetAsync(String.Format(url, args));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("GetStreamAsync<{0}>({1}) -> {2}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("GetStreamAsync<{0}>({1}) -> {2}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
 
                 var Stream = new StreamModel
                 {
@@ -234,7 +229,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
                 return Stream;
             }
 
-            if (Log.IsInfoEnabled) Log.Info(String.Format("Failed GetStreamAsync<{0}>({1}) -> {2}{3}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response));
+            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed GetStreamAsync<{0}>({1}) -> {2}{3}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response));
 
             throw new ServerException(response);
         }
@@ -247,7 +242,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.GetAsync(String.Format(url, args));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("GetXmlStreamAsync<{0}>({1}) -> {2}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("GetXmlStreamAsync<{0}>({1}) -> {2}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
 
                 var Stream = new XmlStreamModel
                 {
@@ -258,7 +253,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
                 return Stream;
             }
 
-            if (Log.IsInfoEnabled) Log.Info(String.Format("Failed GetXmlStreamAsync<{0}>({1}) -> {2}{3}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response));
+            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed GetXmlStreamAsync<{0}>({1}) -> {2}{3}", typeof(byte[]).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response));
 
             throw new ServerException(response);
         }
@@ -269,16 +264,15 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PutAsJsonAsync(String.Format(url, args), model);
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled)
-                    Log.Debug(String.Format("PutAsJsonAsync<{0}>({1}) -> {2}", typeof(T).Name, String.Format(url, args),
-                      await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled)
+                //Log.Debug(String.Format("PutAsJsonAsync<{0}>({1}) -> {2}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 response.Content.Dispose();
             }
             else
             {
-                if (Log.IsInfoEnabled)
-                    Log.Info(String.Format("Failed PutAsJsonAsync<{0}>({1}) -> {2}{3}", typeof(T).Name,
-                      String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled)
+                //Log.Info(String.Format("Failed PutAsJsonAsync<{0}>({1}) -> {2}{3}", typeof(T).Name,
+                //String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
                 throw new ServerException(response);
             }
         }
@@ -289,12 +283,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PutAsync(String.Format(url, args), new StringContent(String.Empty));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("PutAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("PutAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 response.Content.Dispose();
             }
             else
             {
-                if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
                 throw new ServerException(response);
             }
         }
@@ -305,12 +299,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.DeleteAsync(String.Format(url, args));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 response.Content.Dispose();
             }
             else
             {
-                if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
                 throw new ServerException(response);
             }
         }
@@ -321,10 +315,10 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.DeleteAsync(String.Format(url, args));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 return await response.Content.ReadAsAsync<T>();
             }
-            if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
             throw new ServerException(response);
         }
 
@@ -335,10 +329,10 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.SendAsync(message);
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 await response.Content.ReadAsAsync<T>();
             }
-            if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
             throw new ServerException(response);
         }
 
@@ -348,12 +342,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PostAsync(String.Format(url, args), content);
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsync<{0}>({1}) -> {2}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsync<{0}>({1}) -> {2}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 return await response.Content.ReadAsAsync<T>();
             }
             else
             {
-                if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PostAsync<{0}>({1}) -> {2}{3}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PostAsync<{0}>({1}) -> {2}{3}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
                 throw new ServerException(response);
             }
         }
@@ -364,13 +358,13 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PostAsync(String.Format(url, args), content);
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled)
-                    Log.Debug(String.Format("PostAsync(HttpContent, {0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled)
+                //Log.Debug(String.Format("PostAsync(HttpContent, {0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
             }
             else
             {
-                if (Log.IsInfoEnabled)
-                    Log.Info(String.Format("Failed PostAsync(HttpContent, {0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled)
+                //Log.Info(String.Format("Failed PostAsync(HttpContent, {0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
                 throw new ServerException(response);
             }
         }
@@ -381,12 +375,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PostAsync(String.Format(url, args), new StringContent(String.Empty));
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsJsonAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
-                response.Content.Dispose();
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsJsonAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //response.Content.Dispose();
             }
             else
             {
-                if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsJsonAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsJsonAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
 
                 throw new ServerException(response);
             }
@@ -398,12 +392,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PostAsJsonAsync(String.Format(url, args), model);
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsJsonAsync<{0}>({1}) -> {2}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsJsonAsync<{0}>({1}) -> {2}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 response.Content.Dispose();
             }
             else
             {
-                if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsJsonAsync<{0}>({1}) -> {2}{3}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsJsonAsync<{0}>({1}) -> {2}{3}", typeof(T).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
 
                 throw new ServerException(response);
             }
@@ -415,12 +409,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PutAsJsonAsync(String.Format(url, args), model);
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("PutAsJsonAsyncReturn<{0}, {1}>({2}) -> {3}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("PutAsJsonAsyncReturn<{0}, {1}>({2}) -> {3}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
 
                 return await response.Content.ReadAsAsync<TResult>();
             }
 
-            if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsJsonAsync<{0}, {1}>({2}) -> {3}{4}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PutAsJsonAsync<{0}, {1}>({2}) -> {3}{4}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
             throw new ServerException(response);
         }
 
@@ -430,12 +424,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             var response = await client.PostAsJsonAsync(String.Format(url, args), model);
             if (response.IsSuccessStatusCode)
             {
-                if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsJsonAsyncReturn<{0}, {1}>({2}) -> {3}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
+                //if (Log.IsDebugEnabled) Log.Debug(String.Format("PostAsJsonAsyncReturn<{0}, {1}>({2}) -> {3}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync()));
                 return await response.Content.ReadAsAsync<TResult>();
             }
             else
             {
-                if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PostAsJsonAsyncReturn<{0}, {1}>({2}) -> {3}{4}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
+                //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed PostAsJsonAsyncReturn<{0}, {1}>({2}) -> {3}{4}", typeof(T).Name, typeof(TResult).Name, String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
                 throw new ServerException(response);
             }
         }

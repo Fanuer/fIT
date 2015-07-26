@@ -12,7 +12,7 @@ using Android.Widget;
 
 namespace fITNat
 {
-    [Activity(Label = "ExcerciseActivity")]
+    [Activity(Label = "fITNat")]
     public class ExcerciseActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
@@ -29,6 +29,11 @@ namespace fITNat
             ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ExerciseView, Resource.Id.txtExerciseViewDescription, exercises);
             ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
             lv.Adapter = adapter;
+        }
+
+        public override void OnBackPressed()
+        {
+            base.OnBackPressed();
         }
     }
 }

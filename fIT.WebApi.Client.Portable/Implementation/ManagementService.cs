@@ -14,6 +14,9 @@ using Newtonsoft.Json;
 
 namespace fIT.WebApi.Client.Portable.Implementation
 {
+    /// <summary>
+    /// Service zur Kommunikation mit der WebApi
+    /// </summary>
     public class ManagementService : IManagementService, IDisposable
     {
         #region Field
@@ -25,14 +28,18 @@ namespace fIT.WebApi.Client.Portable.Implementation
         private readonly HttpClientHandler handler;
         private readonly HttpClient client;
         private bool disposed;
-        
+
         #endregion
 
         #region Ctor
-
-        public ManagementService(string baseUri, string tokenEncryptionPassphrase = null, ClientInformation clientInformation = null)
+        /// <summary>
+        /// Konstruktor
+        /// </summary>
+        /// <param name="baseUri">Basis-Url unter der der Webservice gehostet wird</param>
+        /// <param name="clientInformation">optionale Clientinformationen. Wenn gesetzt, wird geprüft, ob sich dieser Client am Server anmelden darf</param>
+        public ManagementService(string baseUri, ClientInformation clientInformation = null)
         {
-            
+
             handler = new HttpClientHandler();
 
             BaseUri = baseUri;
@@ -50,6 +57,9 @@ namespace fIT.WebApi.Client.Portable.Implementation
 
         }
 
+        /// <summary>
+        /// Destruktor
+        /// </summary>
         ~ManagementService()
         {
             Dispose(false);
@@ -58,12 +68,19 @@ namespace fIT.WebApi.Client.Portable.Implementation
         #endregion
 
         #region Methods
+        /// <summary>
+        /// Schliesst die Verbindung zum Server
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Schliesst die Verbindung zum Server
+        /// </summary>
+        /// <param name="disposing">Flag, welches anzeigt, ob das Disposing durchgeführt werden soll</param>
         protected void Dispose(bool disposing)
         {
             if (disposed) return;
@@ -91,6 +108,10 @@ namespace fIT.WebApi.Client.Portable.Implementation
             disposed = true;
         }
 
+        /// <summary>
+        /// Session wird aus dem sessionpool entfernt
+        /// </summary>
+        /// <param name="managementSession">session, die entfernt werden soll</param>
         internal void SessionClosed(IManagementSession managementSession)
         {
             if (sessions == null) return;
@@ -101,6 +122,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
             }
         }
 
+        /// <summary>
+        /// Aktulaisiert das Access-Token wenn dieses sich durch ein Refresh geaendert hat
+        /// </summary>
+        /// <param name="oldAccessToken">bisheriges Access-Token</param>
+        /// <param name="accessToken">neues Access-Token</param>
+        /// <param name="managementSession">Session, für welches das Access-Token aktualisiert werden soll</param>
         internal void AccessTokenChanged(string oldAccessToken, string accessToken, IManagementSession managementSession)
         {
             lock (sessions)
@@ -140,6 +167,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
         //  return session;
         //}
 
+        /// <summary>
+        /// Loggt den Nutzer an der Web-Application an
+        /// </summary>
+        /// <param name="username">Anmeldenamen</param>
+        /// <param name="password">password des Nutzers</param>
+        /// <returns></returns>
         public async Task<IManagementSession> LoginAsync(string username, string password)
         {
             const string CONTENT = "username={0}&password={1}&grant_type=password";
@@ -162,9 +195,16 @@ namespace fIT.WebApi.Client.Portable.Implementation
             throw new ServerException(response);
         }
 
+        /// <summary>
+        /// Ändert das Passwort eines Nutzers
+        /// </summary>
+        /// <param name="username">Nutzername</param>
+        /// <param name="oldPassword">altes Passwort</param>
+        /// <param name="newPassword">neues Password</param>
+        /// <returns></returns>
         public async Task UpdatePasswordAsync(string username, string oldPassword, string newPassword)
         {
-            var contentObject = new {Upn = username, OldPassword = oldPassword, NewPassword = newPassword};
+            var contentObject = new { Upn = username, OldPassword = oldPassword, NewPassword = newPassword };
             var content = new StringContent(JsonConvert.SerializeObject(contentObject));
 
             HttpResponseMessage response = await client.PutAsync(PASSWORD_PATH, content);
@@ -205,17 +245,17 @@ namespace fIT.WebApi.Client.Portable.Implementation
             }
             catch (Exception)
             {
-                
+
                 throw;
             }
-            
+
             if (response.IsSuccessStatusCode)
             {
                 response.Content.Dispose();
             }
             else
             {
-              var result = await response.Content.ReadAsStringAsync();
+                var result = await response.Content.ReadAsStringAsync();
 
                 throw new ServerException(response);
             }

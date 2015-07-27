@@ -17,6 +17,17 @@ namespace fIT.WebApi.Client.Portable.Implementation
         {
             await PutAsJsonAsync(model, "/api/accounts/ChangePassword");
         }
+
+        public async Task<UserModel> GetUserDataAsync()
+        {
+            return await GetAsync<UserModel>("api/Accounts/CurrentUser");
+        }
+
+        public async Task UpdateUserDataAsync(UserModel newData)
+        {
+            await PutAsJsonAsync(newData, "api/Accounts/CurrentUser");
+        }
+
         #endregion
 
         #region Properties

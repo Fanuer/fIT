@@ -1,17 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using fIT.WebApi.Client.Portable.Implementation;
-using System.Threading.Tasks;
-
 namespace fITNat.Services
 {
     [Service]
@@ -24,9 +16,9 @@ namespace fITNat.Services
 
         public async override void OnCreate()
         {
-            //Testweise
+                //Testweise
             service = new ManagementService(URL);
-            var test = service.LoginAsync(USERNAME, PASSWORD);
+            var test = await service.LoginAsync(USERNAME, PASSWORD);
             //var session = service.LoginAsync(USERNAME, PASSWORD);
             base.OnCreate();
         }

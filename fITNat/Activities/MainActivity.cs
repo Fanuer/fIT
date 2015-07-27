@@ -10,7 +10,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.IO;
 using Android.Graphics.Drawables;
-using fIT.WebApi.Client.Data.Models.Shared.Enums;
+using fIT.WebApi.Client.Data;
+using fIT.WebApi.Client.Portable.Implementation;
+using fITNat.Services;
 
 namespace fITNat
 {
@@ -24,8 +26,13 @@ namespace fITNat
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            //Service starten
+            //Services starten
             StartService(new Intent(this, typeof(OnOffService)));
+            StartService(new Intent(this, typeof(ManagementServiceLocal)));
+
+            
+
+
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);

@@ -26,6 +26,8 @@ namespace fITNat
 		
 		public static void UpdateIdValues()
 		{
+			global::SQLite.Resource.String.ApplicationName = global::fITNat.Resource.String.ApplicationName;
+			global::SQLite.Resource.String.Hello = global::fITNat.Resource.String.Hello;
 		}
 		
 		public partial class Animation
@@ -186,6 +188,9 @@ namespace fITNat
 			
 			// aapt resource value: 0x7f070020
 			public const int txtScheduleViewDescription = 2131165216;
+			
+			// aapt resource value: 0x7f070021
+			public const int txtScheduleViewID = 2131165217;
 			
 			// aapt resource value: 0x7f07000f
 			public const int txtTitleExercise = 2131165199;

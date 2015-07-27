@@ -12,6 +12,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:textColor="#000" />
+    <TextView
+        android:id="@+id/txtScheduleViewID"
+        android:text="TID"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible" />
 </LinearLayout>

@@ -43,6 +43,9 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
+    <Reference Include="SQLite">
+      <HintPath>..\..\..\..\Downloads\sqlite-net-1.0.8.3\lib\android\SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,6 +55,7 @@
     <Compile Include="Activities\ExcerciseActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\PracticeActivity.cs" />
+    <Compile Include="Schedule.cs" />
     <Compile Include="Activities\ScheduleActivity.cs" />
     <Compile Include="Dialogs\Dialog_SignIn.cs" />
     <Compile Include="Dialogs\Dialog_SignUp.cs" />
@@ -61,6 +65,7 @@
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Adapters\ScheduleListViewAdapter.cs" />
+    <Compile Include="Services\ManagementServiceLocal.cs" />
     <Compile Include="Services\OnOffService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -83,9 +88,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -125,6 +127,13 @@
       <Project>{73379ea7-55c0-4bdd-86a6-097b577d4da9}</Project>
       <Name>fIT. WebApi.Client.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\fIT.WebApi.Client.Portable\fIT.WebApi.Client.Portable.csproj">
+      <Project>{e1834616-ba49-4fdc-99b3-b77485ff659e}</Project>
+      <Name>fIT.WebApi.Client.Portable</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

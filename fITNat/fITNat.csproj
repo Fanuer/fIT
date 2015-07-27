@@ -43,10 +43,11 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="SQLite">
-      <HintPath>..\..\..\..\Downloads\sqlite-net-1.0.8.3\lib\android\SQLite.dll</HintPath>
+      <HintPath>..\SharedAssemblies\SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Threading" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Xml.Linq" />

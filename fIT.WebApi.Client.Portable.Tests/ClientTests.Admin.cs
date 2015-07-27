@@ -1,4 +1,7 @@
-﻿using fIT.WebApi.Client.Data.Intefaces;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
+using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -17,5 +20,32 @@ namespace fIT.WebApi.Client.Portable.Tests
                 Assert.AreEqual(USERNAME, user.UserName);
             }
         }
+
+        [TestMethod]
+        public void GetUserById()
+        {
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            {
+                var guid = new Guid("7b815457-a918-438d-9697-c1c2b4905648");
+                var user = session.Admins.GetUserByIdAsync(guid).Result;
+                Assert.IsNotNull(user);
+                Assert.AreEqual(USERNAME, user.UserName);
+            }
+        }
+
+        [TestMethod]
+        public void GetAllUsers()
+        {
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            {
+                var users = session.Admins.GetAllUsersAsync().Result;
+                Assert.IsNotNull(users);
+                Assert.AreEqual(2, users.Count());
+                Assert.AreEqual(USERNAME, users.First().UserName);
+            }
+        }
+
     }
 }

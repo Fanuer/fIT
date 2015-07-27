@@ -10,12 +10,15 @@ using System.Web.Http.Description;
 using System.Web.Http.OData;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
+using Swashbuckle.Swagger.Annotations;
 
 namespace fIT.WebApi.Controller
 {
     /// <summary>
     /// Grants access to schedule data
     /// </summary>
+    [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+    [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
     [Authorize]
     [RoutePrefix("api/schedule")]
     public class SchedulesController : BaseApiController
@@ -23,7 +26,7 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Gets all schedules of a user or all, if logged in as an admin
         /// </summary>
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<PracticeModel>))]
         [Route("")]
         [HttpGet]
         [EnableQuery]
@@ -41,10 +44,8 @@ namespace fIT.WebApi.Controller
         /// Get one Schedule
         /// </summary>
         /// <param name="id">Schedule id</param>
-        /// <response code="400">Bad request</response>  
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(ScheduleModel))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(ScheduleModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [HttpGet]
         [Route("{id:int}", Name = "GetScheduleById")]
         public async Task<IHttpActionResult> GetSchedule(int id)
@@ -66,10 +67,9 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="schedule">New schedule Data</param>
         /// <param name="id">Schedule id</param>
-        /// <response code="400">Bad request</response>  
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(void))]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpPut]
         public async Task<IHttpActionResult> UpdateExercise([FromUri]int id, [FromBody]ScheduleModel schedule)
@@ -108,9 +108,8 @@ namespace fIT.WebApi.Controller
         /// Create new Schedule for the logged in user
         /// </summary>
         /// <param name="schedule">Schedule data to create</param>
-        /// <response code="201">Created</response>  
-        /// <response code="400">Bad request</response> 
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(PracticeModel))]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [ResponseType(typeof(ScheduleModel))]
         [Route("")]
         [HttpPost]
@@ -130,10 +129,9 @@ namespace fIT.WebApi.Controller
         /// Removes a schedule
         /// </summary>
         /// <param name="id">Id of the schedule to delete</param>
-        /// <response code="400">Bad request</response>  
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
-        [ResponseType(typeof(void))]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteExercise(int id)

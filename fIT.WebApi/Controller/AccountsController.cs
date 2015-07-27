@@ -11,6 +11,7 @@ using System.Xml;
 using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
+using Swashbuckle.Swagger.Annotations;
 
 namespace fIT.WebApi.Controller
 {
@@ -19,6 +20,7 @@ namespace fIT.WebApi.Controller
     /// </summary>
     [Authorize]
     [RoutePrefix("api/Accounts")]
+    [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
     public class AccountsController : BaseApiController
     {
         /// <summary>
@@ -38,10 +40,10 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Gets all application Users
         /// </summary>
-        /// <response code="500">Internal Server Error</response>
         [Route("User")]
         [HttpGet]
-        [ResponseType(typeof(IEnumerable<UserModel>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<UserModel>))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
         [Authorize(Roles = "Admin")]
         [EnableQuery]
         public IQueryable<UserModel> GetUsers()
@@ -53,12 +55,12 @@ namespace fIT.WebApi.Controller
         /// Get a user by its guid
         /// </summary>
         /// <param name="id">User's guid</param>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
         [Route("User/{id:guid}", Name = "GetUserById")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [ResponseType(typeof(UserModel))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         public async Task<IHttpActionResult> GetUser(string id)
         {
             var user = await this.AppUserManager.FindByIdAsync(id);
@@ -76,12 +78,12 @@ namespace fIT.WebApi.Controller
         /// Get User by Username
         /// </summary>
         /// <param name="username">username to search for</param>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
         [Route("User/{username}")]
         [HttpGet]
         [Authorize(Roles = "Admin")]
-        [ResponseType(typeof(UserModel))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
             var user = await this.AppUserManager.FindByNameAsync(username);
@@ -94,10 +96,11 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Returns the current users Information
         /// </summary>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
         [Route("CurrentUser")]
         [HttpGet]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(UserModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         public async Task<IHttpActionResult> GetCurrentUser()
         {
             var currentUserId = User.Identity.GetUserId();
@@ -118,7 +121,9 @@ namespace fIT.WebApi.Controller
         /// <response code="500">Internal Server Error</response>
         [Route("CurrentUser")]
         [HttpPut]
-        [ResponseType(typeof(UserModel))]
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+        [SwaggerResponse(HttpStatusCode.NoContent)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         public async Task<IHttpActionResult> UpdateCurrentUser(UserModel model)
         {
             if (!ModelState.IsValid)
@@ -137,9 +142,8 @@ namespace fIT.WebApi.Controller
         /// User can register to the Application
         /// </summary>
         /// <param name="createUserModel">new User</param>
-        /// <response code="201">Created</response>
-        /// <response code="400">Bad request</response>
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.NoContent, Type = typeof(UserModel))]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [AllowAnonymous]
         [Route("Register")]
         [HttpPost]
@@ -188,8 +192,9 @@ namespace fIT.WebApi.Controller
         /// User can change its password
         /// </summary>
         /// <param name="model">Data to change a password</param>
-        /// <response code="400">Bad request</response>
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [Route("ChangePassword")]
         [HttpPut]
         [ResponseType(typeof(ChangePasswordModel))]
@@ -214,9 +219,10 @@ namespace fIT.WebApi.Controller
         /// Admin can delete User
         /// </summary>
         /// <param name="id">Id of the user to delete</param>
-        /// <response code="400">Bad request</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [Route("User/{id:guid}")]
         [HttpDelete]
         [Authorize(Roles = "Admin")]
@@ -244,9 +250,10 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="id">User Id</param>
         /// <param name="rolesToAssign">Roles to assign to the user</param>
-        /// <response code="400">Bad request</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [Authorize(Roles = "Admin")]
         [Route("User/{id:guid}/Roles")]
         [HttpPut]

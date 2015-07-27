@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 
@@ -33,6 +36,26 @@ namespace fIT.WebApi.Client.Portable.Implementation
         {
             return await this.GetAsync<UserModel>("/api/Accounts/User/{0}", username);
         }
+
+        /// <summary>
+        /// Returns all users
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<UserModel>> GetAllUsersAsync()
+        {
+            return await this.GetAsync<IEnumerable<UserModel>>("/api/Accounts/User");
+        }
+
+        /// <summary>
+        /// Gets a user by its id
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <returns></returns>
+        public async Task<UserModel> GetUserByIdAsync(Guid id)
+        {
+            return await this.GetAsync<UserModel>("/api/Accounts/User/{0}", id);
+        }
+
         #endregion
 
         #region Properties

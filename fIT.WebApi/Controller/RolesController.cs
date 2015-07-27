@@ -10,12 +10,15 @@ using System.Web.Http.OData;
 using fIT.WebApi.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Swashbuckle.Swagger.Annotations;
 
 namespace fIT.WebApi.Controller
 {
     /// <summary>
     /// Controler to manage User roles
     /// </summary>
+    [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
+    [SwaggerResponse(HttpStatusCode.InternalServerError, "An internal Server error has occured")]
     [Authorize(Roles = "Admin")]
     [RoutePrefix("api/Roles")]
     public class RolesController : BaseApiController
@@ -28,6 +31,8 @@ namespace fIT.WebApi.Controller
         /// <response code="404">Not Found</response>
         /// <response code="500">Internal Server Error</response>
         [Route("{id:guid}", Name = "GetRoleById")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(RoleModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         public async Task<IHttpActionResult> GetRole(string id)
         {
             var role = await this.AppRoleManager.FindByIdAsync(id);
@@ -45,9 +50,11 @@ namespace fIT.WebApi.Controller
         /// <response code="500">Internal Server Error</response>
         [Route("", Name = "GetAllRoles")]
         [EnableQuery]
-        public IQueryable<IdentityRole> GetAllRoles()
+        [SwaggerResponseRemoveDefaults]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<RoleModel>))]
+        public IQueryable<RoleModel> GetAllRoles()
         {
-            return this.AppRoleManager.Roles;
+            return this.AppRoleManager.Roles.Select(role=>TheModelFactory.Create(role));
         }
 
         /// <summary>
@@ -56,7 +63,8 @@ namespace fIT.WebApi.Controller
         /// <param name="model"></param>
         /// <returns></returns>
         [Route("Create")]
-        [ResponseType(typeof(CreateRoleModel))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(CreateRoleModel))]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         public async Task<IHttpActionResult> Create(CreateRoleModel model)
         {
             if (!ModelState.IsValid)
@@ -83,9 +91,9 @@ namespace fIT.WebApi.Controller
         /// Deletes a Role
         /// </summary>
         /// <param name="id">Id of the role to delete</param>
-        /// <response code="400">Bad request</response>
-        /// <response code="404">Not Found</response>
-        /// <response code="500">Internal Server Error</response>
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:guid}")]
         public async Task<IHttpActionResult> DeleteRole(string id)
         {
@@ -102,9 +110,9 @@ namespace fIT.WebApi.Controller
         /// Alters the settings between users and roles
         /// </summary>
         /// <param name="model">new settings</param>
-        /// <returns></returns>
         [Route("ManageUsersInRole")]
-        [ResponseType(typeof(UsersInRoleModel))]
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
         public async Task<IHttpActionResult> ManageUsersInRole(UsersInRoleModel model)
         {
             var role = await this.AppRoleManager.FindByIdAsync(model.Id);

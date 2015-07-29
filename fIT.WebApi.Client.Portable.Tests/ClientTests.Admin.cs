@@ -47,5 +47,17 @@ namespace fIT.WebApi.Client.Portable.Tests
             }
         }
 
+        [TestMethod]
+        public void GetAllRoles()
+        {
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            {
+                    var roles = session.Admins.GetAllRolesAsync().Result;
+                    Assert.AreEqual(2, roles.Count());
+                    Assert.IsTrue(roles.Select(x=>x.Name).Contains("user", StringComparer.CurrentCultureIgnoreCase));
+                    Assert.IsTrue(roles.Select(x=>x.Name).Contains("admin", StringComparer.CurrentCultureIgnoreCase));
+            }
+        }
     }
 }

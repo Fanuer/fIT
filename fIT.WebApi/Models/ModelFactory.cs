@@ -136,6 +136,18 @@ namespace fIT.WebApi.Models
             result.Id = model.Id;
             return result;
         }
+
+        internal ApplicationUser Update(UserModel model, ApplicationUser datamodel = null)
+        {
+            var result = datamodel ?? new ApplicationUser();
+            result.DateOfBirth = model.DateOfBirth;
+            result.Fitness = model.Fitness;
+            result.Gender = model.Gender;
+            result.Job = model.Job;
+            result.UserName = model.UserName;
+            result.Email = model.Email;
+            return result;
+        }
         #endregion
     }
 }

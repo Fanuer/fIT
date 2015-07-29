@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Roles;
 
 namespace fIT.WebApi.Client.Portable.Implementation
 {
@@ -54,6 +55,54 @@ namespace fIT.WebApi.Client.Portable.Implementation
         public async Task<UserModel> GetUserByIdAsync(Guid id)
         {
             return await this.GetAsync<UserModel>("/api/Accounts/User/{0}", id);
+        }
+
+        /// <summary>
+        /// Get all roles
+        /// </summary>
+        public async Task<IEnumerable<RoleModel>> GetAllRolesAsync()
+        {
+            return await GetAsync<IEnumerable<RoleModel>>("/api/Roles");
+        }
+
+        /// <summary>
+        /// Gets a roles data by its id
+        /// </summary>
+        /// <param name="id">role id</param>
+        /// <returns></returns>
+        public async Task<RoleModel> GetRoleByIdAsync(string id)
+        {
+            return await GetAsync<RoleModel>("/api/Roles/" + id);
+        }
+
+        /// <summary>
+        /// Deletes an existing role
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteRoleAsync(string id)
+        {
+            await DeleteAsync("/api/Roles/" + id);
+        }
+
+        /// <summary>
+        /// Creates a new Role
+        /// </summary>
+        /// <param name="roleName">Name of the new role. Must be unique</param>
+        /// <returns></returns>
+        public async Task<RoleModel> CreateRoleAsync(string roleName)
+        {
+            return await PostAsJsonReturnAsync<object, RoleModel>(new {Name = roleName}, "/api/Roles/");
+        }
+
+        /// <summary>
+        /// Change the relationships between users and roles
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public async Task ManageUsersInRolesAsync(UsersInRoleModel model)
+        {
+            await PutAsJsonAsync(model, "/api/Roles/ManageUsersInRole");
         }
 
         #endregion

@@ -54,19 +54,25 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<RoleModel>))]
         public IQueryable<RoleModel> GetAllRoles()
         {
-            return this.AppRoleManager.Roles.Select(role=>TheModelFactory.Create(role));
+            return this.AppRoleManager.Roles.ToList().Select(role => TheModelFactory.Create(role)).AsQueryable();
         }
 
         /// <summary>
         /// Creates a new Role
         /// </summary>
-        /// <param name="model"></param>
+        /// <param name="model">role data</param>
         /// <returns></returns>
-        [Route("Create")]
-        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(CreateRoleModel))]
+        [Route("")]
+        [HttpPost]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(RoleModel))]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         public async Task<IHttpActionResult> Create(CreateRoleModel model)
         {
+            var currentRole = await AppRoleManager.FindByNameAsync(model.Name);
+            if (currentRole != null)
+            {
+                ModelState.AddModelError("Name", "A role with this name already exists");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -113,6 +119,7 @@ namespace fIT.WebApi.Controller
         [Route("ManageUsersInRole")]
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
+        [HttpPut]
         public async Task<IHttpActionResult> ManageUsersInRole(UsersInRoleModel model)
         {
             var role = await this.AppRoleManager.FindByIdAsync(model.Id);

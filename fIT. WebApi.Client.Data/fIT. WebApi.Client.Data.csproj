@@ -45,7 +45,10 @@
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\UserModel.cs" />
     <Compile Include="Models\Exceptions\ServerException.cs" />
+    <Compile Include="Models\Roles\RoleModel.cs" />
+    <Compile Include="Models\Roles\UsersInRoleModel.cs" />
     <Compile Include="Models\Shared\ClientInformation.cs" />
+    <Compile Include="Models\Shared\EntryModel.cs" />
     <Compile Include="Models\Shared\Enums\ApplicationTypes.cs" />
     <Compile Include="Models\Shared\Enums\FitnessTypes.cs" />
     <Compile Include="Models\Shared\Enums\GenderType.cs" />

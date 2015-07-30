@@ -9,6 +9,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using fITNat.Services;
+using fIT.WebApi.Client.Data.Models.Exceptions;
 
 namespace fITNat
 {
@@ -17,6 +19,7 @@ namespace fITNat
         private EditText txtUsername;
         private EditText txtPassword;
         private Button btnSignIn;
+        private ManagementServiceLocal mgnService;
 
         public event EventHandler<OnSignInEventArgs> onSignInComplete;
 
@@ -36,8 +39,21 @@ namespace fITNat
             return view;
         }
 
-        private void BtnSignIn_Click(object sender, EventArgs e)
+        private async void BtnSignIn_Click(object sender, EventArgs e)
         {
+            try{
+                await mgnService.SignIn(txtUsername.Text, txtPassword.Text); //hier knallts
+                
+            }
+            catch(ServerException ex)
+            {
+                Console.WriteLine("Login-Fehler: " + ex.StackTrace);
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Login-Fehler: " + exc.StackTrace);
+            }
+            
             //User has clicked the Login-Button
             onSignInComplete.Invoke(this, new OnSignInEventArgs
                 (txtUsername.Text, txtPassword.Text));
@@ -50,6 +66,13 @@ namespace fITNat
             Dialog.Window.RequestFeature(WindowFeatures.NoTitle); //Sets the title bar to invisible
             base.OnActivityCreated(savedInstanceState);
             Dialog.Window.Attributes.WindowAnimations = Resource.Style.dialog_animation; //sets the animation
+        }
+
+        public void SignInFail()
+        {
+            txtPassword.Text = "";
+            txtUsername.SetError("Logindaten falsch",null);
+            txtPassword.SetError("", null);
         }
     }
 
@@ -77,3 +100,4 @@ namespace fITNat
         }
     }
 }
+ 

@@ -21,19 +21,19 @@
         android:text="Trainingspläne"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
-        android:layout_weight="20"
         android:layout_height="50dp"
+        android:layout_weight="80"
         android:textColor="#BBB"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="25sp"
         android:layout_centerHorizontal="true" />
     <ListView
-        android:id="@+id/lvSchedules"
+        android:id="@+id/lvSchedule"
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="fill_parent"
-        android:layout_weight="80"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

@@ -15,26 +15,25 @@ using Java.Lang;
 namespace fITNat
 {
     [Activity(Label = "fITNat")]
-    public class ScheduleActivity : Activity
+    public class ExerciseActivity : Activity
     {
-        private List<Schedule> schedules; //wurde kopiert, um Zugriff zu haben
+        private List<Exercise> exercises;
         private ListView lv;
         private ManagementServiceLocal mgnService;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
-            SetContentView(Resource.Layout.ScheduleLayout);
+            SetContentView(Resource.Layout.ExerciseLayout);
 
-            schedules = new List<Schedule>();
-            lv = (ListView)FindViewById(Resource.Id.lvSchedule);
-
+            List<Exercise> exercises = new List<Exercise>();
+            ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
 
             //Generiert Testdaten
             /*
-            for (int i = 1; i <= 10; i++)
+            for (int i = 0; i < 10; i++)
             {
-                schedules.Add(new Schedule(i, "Testplan "+i, "Kevin"));
+                exercises.Add(i + ". Exercise");
             }
             */
             //Hier die Schedules des Benutzers abholen und in die Liste einfügen
@@ -42,7 +41,7 @@ namespace fITNat
 
 
             //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
-            ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
+            ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises);
             lv.Adapter = adapter;
 
 
@@ -51,17 +50,18 @@ namespace fITNat
 
         /// <summary>
         /// Clickevent auf ein Element des ListViews
-        /// Geht zu dem ausgewählten Trainingsplan und zeigt dort die Übungen an
+        /// Geht zu dem ausgewählten Training
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void lv_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            //Daraus die ID des Trainingsplans holen und diesen dann abfragen + redirect auf die passende Seite!
-            string selectedSchedule = schedules[e.Position].Name.ToString();
-            int tid = Integer.ParseInt(schedules[e.Position].Id.ToString());
-            //Schedule schedule = new Schedule(tid, selectedSchedule, session.ID);
-            //schedule.FindSingle(id);
+            //Daraus die ID der Übung holen und diesen dann abfragen + redirect auf die passende Seite!
+            string selectedExerciseName = exercises[e.Position].Name.ToString();
+            int tid = Integer.ParseInt(exercises[e.Position].Id.ToString());
+            string selectedExerciseDescription = exercises[e.Position].Description.ToString();
+            //Exercise exercise = new Exercise(tid, selectedExerciseName, selectedExerciseDescription, session.ID);
+            //exercise.FindSingle(tid);
 
             SetContentView(Resource.Layout.ExerciseLayout);
         }

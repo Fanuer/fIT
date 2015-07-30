@@ -15,8 +15,8 @@
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v4.4</TargetFrameworkVersion>
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -43,20 +43,24 @@
   <ItemGroup>
     <Reference Include="Mono.Android" />
     <Reference Include="SQLite">
-      <HintPath>..\SharedAssemblies\SQLite.dll</HintPath>
+      <HintPath>..\..\..\..\Downloads\sqlite-net-1.0.8.3\lib\android\SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Runtime" />
     <Reference Include="System.Threading" />
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activities\ExcerciseActivity.cs" />
+    <Compile Include="Exercise.cs" />
+    <Compile Include="Activities\ExerciseActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\PracticeActivity.cs" />
+    <Compile Include="Adapters\ExerciseListViewAdapter.cs" />
+    <Compile Include="Adapters\PracticeListViewAdapter.cs" />
     <Compile Include="Schedule.cs" />
     <Compile Include="Activities\ScheduleActivity.cs" />
     <Compile Include="Dialogs\Dialog_SignIn.cs" />

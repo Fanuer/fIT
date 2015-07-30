@@ -18,10 +18,10 @@
         android:layout_alignParentTop="true" />
     <TextView
         android:id="@+id/txtTitlePractice"
-        android:text="Trainings"
+        android:text="Training"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
-        android:layout_height="50dip"
+        android:layout_height="50dp"
         android:layout_weight="80"
         android:textColor="#BBB"
         android:gravity="center"
@@ -34,5 +34,6 @@
         android:minHeight="25px"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:layout_alignParentBottom="true" />
 </RelativeLayout>

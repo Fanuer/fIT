@@ -6,12 +6,27 @@
     android:minWidth="25px"
     android:minHeight="25px">
     <TextView
-        android:id="@+id/txtExerciseViewDescription"
+        android:id="@+id/txtExerciseViewName"
         android:text="Large Text"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:textColor="#000" />
+    <TextView
+        android:id="@+id/txtExerciseViewDescription"
+        android:text="Large Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:textColor="#000" />
+    <TextView
+        android:id="@+id/txtExerciseViewID"
+        android:text="TID"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible" />
 </LinearLayout>

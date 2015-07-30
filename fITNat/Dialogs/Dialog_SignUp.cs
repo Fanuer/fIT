@@ -10,6 +10,8 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
+using fITNat.Services;
+using fIT.WebApi.Client.Data.Models.Exceptions;
 
 namespace fITNat
 {
@@ -27,6 +29,7 @@ namespace fITNat
         private List<GenderType> genderItems;
         private List<JobTypes> jobItems;
         private List<FitnessType> fitnessItems;
+        private ManagementServiceLocal mgnService;
 
         public event EventHandler<OnSignUpEventArgs> onSignUpComplete;
 
@@ -36,6 +39,7 @@ namespace fITNat
 
             var view = inflater.Inflate(Resource.Layout.Dialog_sign_up, container, false);
 
+            //Alle Eingabeelemente holen
             txtUsername = view.FindViewById<EditText>(Resource.Id.txtUsername);
             txtEmail = view.FindViewById<EditText>(Resource.Id.txtEmail);
             txtPassword = view.FindViewById<EditText>(Resource.Id.txtPassword);
@@ -45,23 +49,6 @@ namespace fITNat
             spinFitness = view.FindViewById<Spinner>(Resource.Id.spinFitness);
             txtBirthdate = view.FindViewById<EditText>(Resource.Id.txtBirthdate);
             btnSignUp = view.FindViewById<Button>(Resource.Id.btnDialogEmail);
-
-            //Fehler anzeigen
-            /*
-            try{}
-            catch(ServerException e)
-            {
-            string mistake = e.StackTrace;
-            switch(mistake)
-            case "Username":
-                txtUsername.setError("Benutzername ist falsch!");
-                break;
-            case...
-            }
-
-
-
-            */
 
             //Gender-Spinner
             genderItems = Enum.GetValues(typeof(GenderType)).Cast<GenderType>().ToList();
@@ -83,24 +70,33 @@ namespace fITNat
             return view;
         }
 
-        private void BtnSignUp_Click(object sender, EventArgs e)
+        private async void BtnSignUp_Click(object sender, EventArgs e)
         {
-            //User has clicked the SignUp-Button
-            onSignUpComplete.Invoke(this, new OnSignUpEventArgs
-                (
-                    txtUsername.Text, 
-                    txtEmail.Text, 
-                    txtPassword.Text, 
-                    txtPasswordConfirm.Text, 
-                    spinGender.SelectedItem.ToString(), 
-                    spinJob.SelectedItem.ToString(), 
-                    spinFitness.SelectedItem.ToString(), 
-                    new DateTime()
-                ));
+            //Types aus den Eingaben genrieren
+            GenderType geschlecht = getSelectedGender(spinGender.SelectedItem.ToString());
+            JobTypes job = getSelectedJob(spinJob.SelectedItem.ToString());
+            FitnessType fitness = getSelectedFitness(spinFitness.SelectedItem.ToString());
+            DateTime birthdate = getSelectedBirthdate(txtBirthdate.Text);
+            try
+            {
+                await mgnService.SignUp(txtUsername.Text,
+                txtEmail.Text,
+                txtPassword.Text,
+                txtPasswordConfirm.Text,
+                geschlecht,
+                job,
+                fitness,
+                birthdate
+                ); //hier knallts
+                //Dialog will slide to the side and will disapear
+                this.Dismiss();
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Fehler (Registrierung): " + ex.StackTrace);
+            }
             
-
-            //Dialog will slide to the side and will disapear
-            this.Dismiss();
+            
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -110,7 +106,6 @@ namespace fITNat
             Dialog.Window.Attributes.WindowAnimations = Resource.Style.dialog_animation; //sets the animation
         }
 
-        /*
         /// <summary>
         /// Generates GenderType out of string
         /// </summary>
@@ -180,19 +175,64 @@ namespace fITNat
             }
             return fTout;
         }
-        */
 
+        /// <summary>
+        /// Generates Birthdate out of string
+        /// </summary>
+        /// <param name="value">string fitnessValue</param>
+        /// <returns>FitnessType of selected value</returns>
+        private DateTime getSelectedBirthdate(string value)
+        {
+            DateTime DTout = new DateTime();
+            try
+            {
+                DTout = DateTime.Parse(value);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Fehler bei Datumskonvertierung: " + ex.StackTrace);
+                SignUpFail("birthdate");
+            }
+            return DTout;
+        }
+
+        /// <summary>
+        /// Fehler bei der Eingabe der Daten zur Registrierung
+        /// </summary>
+        /// <param name="fehler">Fehlerfall</param>
+        public void SignUpFail(string fehler)
+        {
+            switch (fehler)
+            {
+                case "username":
+                    txtUsername.SetError("Username nicht möglich", null);
+                    break;
+                case "password":
+                    txtPassword.Text = "";
+                    txtPassword.SetError("Passwort passt nicht", null);
+                    break;
+                case "birthdate":
+                    txtBirthdate.Text = "";
+                    txtBirthdate.SetError("Geburtsdatum falsch", null);
+                    break;
+            }
+        }
     }
 
+
+
+
+
+    
     public class OnSignUpEventArgs : EventArgs
     {
         private string username;
         private string email;
         private string password;
         private string passwordConfirm;
-        private string gender;
-        private string job;
-        private string fitness;
+        private GenderType gender;
+        private JobTypes job;
+        private FitnessType fitness;
         private DateTime birthdate;
         
         public string Username
@@ -219,19 +259,19 @@ namespace fITNat
             set { passwordConfirm = value; }
         }
 
-        public string Gender
+        public GenderType Gender
         {
             get { return gender; }
             set { gender = value; }
         }
 
-        public string Job
+        public JobTypes Job
         {
             get { return job; }
             set { job = value; }
         }
         
-        public string Fitness
+        public FitnessType Fitness
         {
             get { return fitness; }
             set { fitness = value; }
@@ -248,9 +288,9 @@ namespace fITNat
             string email, 
             string password, 
             string passwordConfirm, 
-            string gender,
-            string job,
-            string fitness,
+            GenderType gender,
+            JobTypes job,
+            FitnessType fitness,
             DateTime birthdate
             ) : base()
         {
@@ -263,5 +303,6 @@ namespace fITNat
             Fitness = fitness;
             Birthdate = birthdate;
         }
+        
     }
 }

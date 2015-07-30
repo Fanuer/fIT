@@ -69,7 +69,7 @@ namespace fIT.WebApi.Client.Portable.Tests
         }
 
         [TestMethod]
-        public async Task UserCanRegisterAndDeleteUser()
+        public void UserCanRegisterAndDeleteUser()
         {
             var newUser = new CreateUserModel()
             {
@@ -87,9 +87,9 @@ namespace fIT.WebApi.Client.Portable.Tests
             {
                 try
                 {
-                    await service.RegisterAsync(newUser);
+                    service.RegisterAsync(newUser).Wait();
                     registrationSuccessful = true;
-                    using (var newUserSession = await service.LoginAsync(newUser.Username, newUser.Password))
+                    using (var newUserSession = service.LoginAsync(newUser.Username, newUser.Password).Result)
                     {
                     }
                 }
@@ -101,11 +101,11 @@ namespace fIT.WebApi.Client.Portable.Tests
                 {
                     if (registrationSuccessful)
                     {
-                        using (var rootsession = await service.LoginAsync(USERNAME, PASSWORD))
+                        using (var rootsession = service.LoginAsync(USERNAME, PASSWORD).Result)
                         {
-                            var user = await rootsession.Admins.GetUserByUsernameAsync(newUser.Username);
+                            var user = rootsession.Admins.GetUserByUsernameAsync(newUser.Username).Result;
                             var newUserId = user.Id;
-                            await rootsession.Admins.DeleteUserAsync(newUserId);
+                            rootsession.Admins.DeleteUserAsync(newUserId).Wait();
                         }
                     }
                 }

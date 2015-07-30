@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.OData;
 using fIT.WebApi.Entities;
+using fIT.WebApi.Models;
 using Swashbuckle.Swagger.Annotations;
 
 namespace fIT.WebApi.Controller
@@ -25,11 +26,16 @@ namespace fIT.WebApi.Controller
         [Authorize(Roles = "Admin")]
         [Route("")]
         [EnableQuery]
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<RefreshToken>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<RefreshTokenModel>))]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
-        public IQueryable<RefreshToken> Get()
+      public IQueryable<RefreshTokenModel> Get()
         {
-            return this.AppRepository.RefreshTokens.GetAllAsync();
+            return this
+                    .AppRepository
+                    .RefreshTokens
+                    .GetAllAsync()
+                    .Select(x=>this.TheModelFactory.Create(x))
+                    .AsQueryable();
         }
 
         /// <summary>

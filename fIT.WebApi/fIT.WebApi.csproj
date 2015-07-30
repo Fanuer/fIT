@@ -195,6 +195,7 @@
       <DependentUpon>201507150819282_AlteredModels_WeightTimeStamp.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\PracticeModel.cs" />
+    <Compile Include="Models\RefreshTokenModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IEntity.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IRepositoryAddAndDelete.cs" />

@@ -44,6 +44,27 @@ namespace fIT.WebApi.Controller
             return NotFound();
         }
 
+        /// <summary> 
+        /// Get a single Role by its name
+        /// </summary>
+        /// <param name="name">name of the role</param>
+        /// <response code="200">OK</response>
+        /// <response code="404">Not Found</response>
+        /// <response code="500">Internal Server Error</response>
+        [Route("{name}", Name = "GetRoleByName")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(RoleModel))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        public async Task<IHttpActionResult> GetRoleByName(string name)
+        {
+          var role = await this.AppRoleManager.FindByNameAsync(name);
+
+          if (role != null)
+          {
+            return Ok(TheModelFactory.Create(role));
+          }
+          return NotFound();
+        }
+
         /// <summary>
         /// Returns a list of roles
         /// </summary>

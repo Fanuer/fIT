@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.RefreshToken;
 using fIT.WebApi.Client.Data.Models.Roles;
 
 namespace fIT.WebApi.Client.Data.Intefaces
@@ -48,6 +49,12 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <returns></returns>
         Task<RoleModel> GetRoleByIdAsync(string id);
         /// <summary>
+        /// Ruft anhand des Names eine Rolle
+        /// </summary>
+        /// <param name="name">Name der Rolle</param>
+        /// <returns></returns>
+        Task<RoleModel> GetRoleByNameAsync(string name);
+        /// <summary>
         /// Loescht eine Rolle
         /// </summary>
         /// <param name="id">Id der zu loeschenden Rolle</param>
@@ -66,5 +73,12 @@ namespace fIT.WebApi.Client.Data.Intefaces
         Task ManageUsersInRolesAsync(UsersInRoleModel model);
 
         #endregion
+
+      #region Refreshtoken
+
+        Task<IEnumerable<RefreshTokenModel>> GetAllRefreshtokensAsync();
+        Task DeleteRefreshtokenAsync(int tokenId);
+
+      #endregion
     }
 }

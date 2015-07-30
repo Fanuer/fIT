@@ -5,10 +5,19 @@ using System.Web;
 
 namespace fIT.WebApi.Models
 {
-  public class ScheduleModel:EntryModel<int>
-  {
-    public string UserId { get; set; }
-    public IEnumerable<EntryModel<int>> Exercises { get; set; }
-    
-  }
+    /// <summary>
+    /// Trainingsplan
+    /// </summary>
+    public class ScheduleModel : EntryModel<int>
+    {
+        /// <summary>
+        /// Nutzer, dem der Trainingsplan gehört
+        /// </summary>
+        public string UserId { get; set; }
+        /// <summary>
+        /// Zugehoerige Uebungen
+        /// </summary>
+        public IEnumerable<EntryModel<int>> Exercises { get; set; }
+
+    }
 }

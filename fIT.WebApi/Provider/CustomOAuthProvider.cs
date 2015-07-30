@@ -108,7 +108,16 @@ namespace fIT.WebApi.Provider
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
-          
+
+            using (IRepository repo = new ApplicationRepository())
+            {
+                var oldtokens = repo.RefreshTokens.GetAllAsync().Where(x=>x.ExpiresUtc<DateTime.UtcNow || x.Subject.Equals(user.UserName)).ToList();
+                foreach (var token in oldtokens)
+                {
+                    await repo.RefreshTokens.RemoveAsync(token);
+                }
+            }
+
             // Generate claim and JWT-Ticket 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager, "JWT");
             oAuthIdentity.AddClaim(new Claim("userId", oAuthIdentity.GetUserId()));

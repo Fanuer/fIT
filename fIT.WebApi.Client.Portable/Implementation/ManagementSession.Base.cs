@@ -322,20 +322,6 @@ namespace fIT.WebApi.Client.Portable.Implementation
             throw new ServerException(response);
         }
 
-        private async Task DeleteAsJsonAsync<T>(T model, string url, params object[] args)
-        {
-            await CheckForRefreshRequirement();
-            var message = new HttpRequestMessage(HttpMethod.Delete, JsonConvert.SerializeObject(model));
-            var response = await client.SendAsync(message);
-            if (response.IsSuccessStatusCode)
-            {
-                //if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
-                await response.Content.ReadAsAsync<T>();
-            }
-            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
-            throw new ServerException(response);
-        }
-
         private async Task<T> PostAsync<T>(HttpContent content, string url, params object[] args)
         {
             await CheckForRefreshRequirement();

@@ -77,7 +77,7 @@ namespace fIT.WebApi.Client.Data.Intefaces
       #region Refreshtoken
 
         Task<IEnumerable<RefreshTokenModel>> GetAllRefreshtokensAsync();
-        Task DeleteRefreshtokenAsync(int tokenId);
+        //Task DeleteRefreshtokenAsync(string tokenId);
 
       #endregion
     }

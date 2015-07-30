@@ -31,11 +31,12 @@ namespace fIT.WebApi.Controller
       public IQueryable<RefreshTokenModel> Get()
         {
             return this
-                    .AppRepository
-                    .RefreshTokens
-                    .GetAllAsync()
-                    .Select(x=>this.TheModelFactory.Create(x))
-                    .AsQueryable();
+                .AppRepository
+                .RefreshTokens
+                .GetAllAsync()
+                .ToList()
+                .Select(x => this.TheModelFactory.Create(x))
+                .AsQueryable();
         }
 
         /// <summary>

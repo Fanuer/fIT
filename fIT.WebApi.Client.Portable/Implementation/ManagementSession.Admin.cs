@@ -102,7 +102,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <returns></returns>
         public async Task<RoleModel> CreateRoleAsync(string roleName)
         {
-            return await PostAsJsonReturnAsync<object, RoleModel>(new {Name = roleName}, "/api/Roles/");
+            return await PostAsJsonReturnAsync<object, RoleModel>(new {Name = roleName}, "/api/Roles");
         }
 
         /// <summary>
@@ -117,12 +117,12 @@ namespace fIT.WebApi.Client.Portable.Implementation
 
       public async Task<IEnumerable<RefreshTokenModel>> GetAllRefreshtokensAsync()
       {
-        return await this.GetAsync<IEnumerable<RefreshTokenModel>>("/api/RefreshToken");
+        return await this.GetAsync<IEnumerable<RefreshTokenModel>>("/api/RefreshTokens");
       }
 
-      public async Task DeleteRefreshtokenAsync(int tokenId)
+      public async Task DeleteRefreshtokenAsync(string tokenId)
       {
-        await DeleteAsJsonAsync(tokenId, "/api/RefreshToken");
+        await DeleteAsJsonAsync(new {tokenId}, "/api/RefreshTokens");
       }
 
       #endregion

@@ -114,7 +114,7 @@ namespace fIT.WebApi.Client.Portable.Tests
             }
         }
 
-        [TestMethod]
+        /*[TestMethod]
         public void DeleteRefreshToken()
         {
             using (var service = new ManagementService(ServiceUrl))
@@ -126,6 +126,6 @@ namespace fIT.WebApi.Client.Portable.Tests
                 tokens = session.Admins.GetAllRefreshtokensAsync().Result;
                 Assert.AreEqual(0, tokens.Count());
             }
-        }
+        }*/
     }
 }

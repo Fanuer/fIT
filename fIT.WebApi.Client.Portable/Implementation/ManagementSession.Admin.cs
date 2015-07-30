@@ -120,10 +120,10 @@ namespace fIT.WebApi.Client.Portable.Implementation
         return await this.GetAsync<IEnumerable<RefreshTokenModel>>("/api/RefreshTokens");
       }
 
-      public async Task DeleteRefreshtokenAsync(string tokenId)
+      /*public async Task DeleteRefreshtokenAsync(string tokenId)
       {
         await DeleteAsJsonAsync(new {tokenId}, "/api/RefreshTokens");
-      }
+      }*/
 
       #endregion
 

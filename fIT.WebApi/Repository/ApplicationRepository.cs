@@ -106,10 +106,10 @@ namespace fIT.WebApi.Repository
 
       public async Task<bool> ExistsAsync(TIdProperty id)
       {
-        return await this.GetAllAsync().CountAsync(e => e.Id.Equals(id)) > 0;
+        return await this.GetAllAsync().AsQueryable().CountAsync(e => e.Id.Equals(id)) > 0;
       }
 
-      public IQueryable<T> GetAllAsync()
+      public IEnumerable<T> GetAllAsync()
       {
         return this._ctx.Set(typeof(T)) as IQueryable<T>;
       }

@@ -29,7 +29,6 @@ namespace fIT.WebApi.Client.Portable.Implementation
         private HttpClient client;
         private string refreshToken;
         private readonly ManagementService service;
-        private readonly string currentUsername;
         private DateTimeOffset expiresOn;
 
         #endregion
@@ -41,7 +40,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
             this.Token = authentication.AccessToken;
             var accessToken = authentication.AccessToken;
             this.refreshToken = authentication.RefreshToken;
-            this.currentUsername = username;
+            this.CurrentUserName = username;
 
             Initialize(accessToken, new DateTimeOffset(authentication.ExpireDate));
         }
@@ -455,7 +454,8 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <summary>
         /// Current Username
         /// </summary>
-        public string CurrentUsername { get { return currentUsername; } }
+        public string CurrentUserName { get; private set; }
+        public string CurrentUserId { get; private set; }
         #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using fIT.WebApi.Client.Data.Models.Shared;
 
 namespace fIT.WebApi.Client.Data.Models.Schedule
 {

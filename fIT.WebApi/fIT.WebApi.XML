@@ -313,6 +313,21 @@
             Expire Date
             </summary>
         </member>
+        <member name="T:fIT.WebApi.Models.ScheduleModel">
+            <summary>
+            Trainingsplan
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ScheduleModel.UserId">
+            <summary>
+            Nutzer, dem der Trainingsplan gehört
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ScheduleModel.Exercises">
+            <summary>
+            Zugehoerige Uebungen
+            </summary>
+        </member>
         <member name="T:fIT.WebApi.Models.ChangePasswordModel">
             <summary>
             Model to change a password
@@ -321,6 +336,16 @@
         <member name="T:fIT.WebApi.Models.ExerciseModel">
             <summary>
             Defines one Exercise
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ExerciseModel.Description">
+            <summary>
+            Beschreibung
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ExerciseModel.Schedules">
+            <summary>
+            Zugehoerige Trainingsplaene
             </summary>
         </member>
         <member name="T:fIT.WebApi.Models.EntryModel`1">

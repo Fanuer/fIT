@@ -56,37 +56,48 @@ namespace fIT.WebApi.Models
     public ExerciseModel Create(Exercise datamodel)
     {
       if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
-      return new ExerciseModel()
-      {
-        Id = datamodel.Id,
-        Description = datamodel.Description,
-        Name = datamodel.Name,
-        Url = _UrlHelper.Link("GetExcerciseById", new { id = datamodel.Id }),
-        Schedules = datamodel.Schedules.Select(x => new EntryModel<int>()
+        var result = new ExerciseModel()
         {
-          Id = x.Id,
-          Name = x.Name,
-          Url = _UrlHelper.Link("GetScheduleById", new { id = x.Id })
-        })
-      };
+            Id = datamodel.Id,
+            Description = datamodel.Description,
+            Name = datamodel.Name,
+            Url = _UrlHelper.Link("GetExcerciseById", new { id = datamodel.Id })
+            };
+        if (datamodel.Schedules != null)
+        {
+            result.Schedules = datamodel.Schedules.Select(x => new EntryModel<int>()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Url = _UrlHelper.Link("GetScheduleById", new {id = x.Id})
+            });
+        }
+        return result;
     }
 
     public ScheduleModel Create(Schedule datamodel)
     {
       if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
 
-      return new ScheduleModel()
-      {
-        Id = datamodel.Id,
-        Name = datamodel.Name,
-        Url = _UrlHelper.Link("GetScheduleById", new { id = datamodel.Id }),
-        Exercises = datamodel.Exercises.Select(x => new EntryModel<int>()
+        var result = new ScheduleModel()
         {
-          Id = x.Id,
-          Name = x.Name,
-          Url = _UrlHelper.Link("GetExcerciseById", new { id = x.Id }),
-        })
-      };
+            Id = datamodel.Id,
+            Name = datamodel.Name,
+            UserId = datamodel.UserID,
+            Url = _UrlHelper.Link("GetScheduleById", new {id = datamodel.Id})
+        };
+
+        if (datamodel.Exercises != null)
+        {
+            result.Exercises = datamodel.Exercises.Select(x => new EntryModel<int>()
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Url = _UrlHelper.Link("GetExcerciseById", new {id = x.Id}),
+            });
+        }
+
+        return result;
     }
 
     public PracticeModel Create(Practice datamodel)

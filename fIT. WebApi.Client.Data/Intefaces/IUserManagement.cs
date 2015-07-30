@@ -22,5 +22,7 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <param name="newData"></param>
         /// <returns></returns>
         Task UpdateUserDataAsync(UserModel newData);
+
+
     }
 }

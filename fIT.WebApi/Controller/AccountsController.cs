@@ -133,7 +133,7 @@ namespace fIT.WebApi.Controller
 
             var currentUserId = User.Identity.GetUserId();
             var user = await this.AppUserManager.FindByIdAsync(currentUserId);
-
+            user = this.TheModelFactory.Update(model, user);
             var result = await this.AppUserManager.UpdateAsync(user);
             return !result.Succeeded ? GetErrorResult(result) : StatusCode(HttpStatusCode.NoContent);
         }

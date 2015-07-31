@@ -8,6 +8,6 @@ namespace fIT.WebApi.Repository.Interfaces.CRUD
 {
     public interface IRepositoryFindAll<T>
   {
-    IQueryable<T> GetAllAsync();
+    IEnumerable<T> GetAllAsync();
   }
 }

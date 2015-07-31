@@ -108,9 +108,8 @@ namespace fIT.WebApi.Controller
         /// Create new Schedule for the logged in user
         /// </summary>
         /// <param name="schedule">Schedule data to create</param>
-        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(PracticeModel))]
+        [SwaggerResponse(HttpStatusCode.Created, Type = typeof(ScheduleModel))]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
-        [ResponseType(typeof(ScheduleModel))]
         [Route("")]
         [HttpPost]
         public async Task<IHttpActionResult> CreateExercise(ScheduleModel schedule)
@@ -121,8 +120,10 @@ namespace fIT.WebApi.Controller
             }
 
             var datamodel = this.TheModelFactory.Update(schedule);
+            datamodel.UserID = this.User.Identity.GetUserId();
             await this.AppRepository.Schedules.AddAsync(datamodel);
-            return CreatedAtRoute("DefaultApi", new { id = schedule.Id }, schedule);
+            var result = this.TheModelFactory.Create(datamodel);
+            return CreatedAtRoute("GetScheduleById", new { id = schedule.Id }, result);
         }
 
         /// <summary>

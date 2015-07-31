@@ -33,29 +33,38 @@ namespace fIT.WebApi.Client.Data.Models.Exceptions
             // Create an anonymous object to use as the template for deserialization:
             var anonymousErrorObject = new { message = "", ModelState = new Dictionary<string, string[]>() };
 
-            // Deserialize:
-            var deserializedErrorObject = JsonConvert.DeserializeAnonymousType(httpErrorObject, anonymousErrorObject);
-            
-
-            // Sometimes, there may be Model Errors:
-            if (deserializedErrorObject.ModelState != null)
+            try
             {
-                var errors = deserializedErrorObject.ModelState.Select(kvp => string.Join(". ", kvp.Value));
-                for (int i = 0; i < errors.Count(); i++)
+                // Deserialize:
+                var deserializedErrorObject = JsonConvert.DeserializeAnonymousType(httpErrorObject, anonymousErrorObject);
+                // Sometimes, there may be Model Errors:
+                if (deserializedErrorObject.ModelState != null)
                 {
-                    // Wrap the errors up into the base Exception.Data Dictionary:
-                    this.Data.Add(i, errors.ElementAt(i));
+                    var errors = deserializedErrorObject.ModelState.Select(kvp => string.Join(". ", kvp.Value));
+                    for (int i = 0; i < errors.Count(); i++)
+                    {
+                        // Wrap the errors up into the base Exception.Data Dictionary:
+                        this.Data.Add(i, errors.ElementAt(i));
+                    }
+                }
+                // Othertimes, there may not be Model Errors:
+                else
+                {
+                    var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpErrorObject);
+                    foreach (var kvp in error)
+                    {
+                        // Wrap the errors up into the base Exception.Data Dictionary:
+                        this.Data.Add(kvp.Key, kvp.Value);
+                    }
                 }
             }
-            // Othertimes, there may not be Model Errors:
-            else
+            catch (JsonReaderException e)
             {
-                var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpErrorObject);
-                foreach (var kvp in error)
-                {
-                    // Wrap the errors up into the base Exception.Data Dictionary:
-                    this.Data.Add(kvp.Key, kvp.Value);
-                }
+                throw new HttpRequestException(this.Response.Content.ReadAsStringAsync().Result);
+            }
+            catch (Exception e)
+            {
+                throw e;
             }
         }
 

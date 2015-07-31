@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -79,6 +82,51 @@ namespace fIT.WebApi.Client.Portable.Tests
                 finally
                 {
                     session.Users.UpdatePasswordAsync(old_password).Wait();
+                }
+            }
+        }
+
+        [TestMethod]
+        public void CreateGetDeleteSchedule()
+        {
+            var newSchedule = new ScheduleModel()
+            {
+                Name = "Test Training"
+            };
+
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            {
+                ScheduleModel myNewSchedule = null;
+
+                try
+                {
+                    var schedules = session.Users.GetAllSchedulesAsync().Result;
+                    Assert.AreEqual(0, schedules.Count());
+
+                    myNewSchedule = session.Users.CreateScheduleAsync(newSchedule).Result;
+                    Assert.IsNotNull(myNewSchedule);
+                    Assert.AreEqual(newSchedule.Name, myNewSchedule.Name);
+                    Assert.AreNotEqual(newSchedule.Id, myNewSchedule.Id);
+                    Assert.AreNotEqual(newSchedule.UserId, myNewSchedule.UserId);
+
+                    var schedule = session.Users.GetScheduleByIdAsync(myNewSchedule.Id).Result;
+                    Assert.AreEqual(newSchedule.Name, schedule.Name);
+                    Assert.AreEqual(newSchedule.Id, schedule.Id);
+                    Assert.AreEqual(newSchedule.UserId, schedule.UserId);
+
+                    session.Users.DeleteScheduleAsync(schedule.Id).Wait();
+                    schedules = session.Users.GetAllSchedulesAsync().Result;
+                    Assert.AreEqual(0, schedules.Count());
+                    schedule = null;
+
+                }
+                finally
+                {
+                    if (myNewSchedule != null)
+                    {
+                        session.Users.DeleteScheduleAsync(myNewSchedule.Id).Wait();
+                    }
                 }
             }
         }

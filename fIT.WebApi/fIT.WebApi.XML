@@ -254,6 +254,15 @@
             <response code="404">Not Found</response>
             <response code="500">Internal Server Error</response>
         </member>
+        <member name="M:fIT.WebApi.Controller.RolesController.GetRoleByName(System.String)">
+            <summary> 
+            Get a single Role by its name
+            </summary>
+            <param name="name">name of the role</param>
+            <response code="200">OK</response>
+            <response code="404">Not Found</response>
+            <response code="500">Internal Server Error</response>
+        </member>
         <member name="M:fIT.WebApi.Controller.RolesController.GetAllRoles">
             <summary>
             Returns a list of roles
@@ -264,7 +273,7 @@
             <summary>
             Creates a new Role
             </summary>
-            <param name="model"></param>
+            <param name="model">role data</param>
             <returns></returns>
         </member>
         <member name="M:fIT.WebApi.Controller.RolesController.DeleteRole(System.String)">
@@ -279,6 +288,46 @@
             </summary>
             <param name="model">new settings</param>
         </member>
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.Id">
+            <summary>
+            Token Id
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.Subject">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.ClientId">
+            <summary>
+            Client name
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.IssuedUtc">
+            <summary>
+            Issue date
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.ExpiresUtc">
+            <summary>
+            Expire Date
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.ScheduleModel">
+            <summary>
+            Trainingsplan
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ScheduleModel.UserId">
+            <summary>
+            Nutzer, dem der Trainingsplan gehört
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ScheduleModel.Exercises">
+            <summary>
+            Zugehoerige Uebungen
+            </summary>
+        </member>
         <member name="T:fIT.WebApi.Models.ChangePasswordModel">
             <summary>
             Model to change a password
@@ -287,6 +336,16 @@
         <member name="T:fIT.WebApi.Models.ExerciseModel">
             <summary>
             Defines one Exercise
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ExerciseModel.Description">
+            <summary>
+            Beschreibung
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.ExerciseModel.Schedules">
+            <summary>
+            Zugehoerige Trainingsplaene
             </summary>
         </member>
         <member name="T:fIT.WebApi.Models.EntryModel`1">

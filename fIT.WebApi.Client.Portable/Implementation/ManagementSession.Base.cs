@@ -29,7 +29,6 @@ namespace fIT.WebApi.Client.Portable.Implementation
         private HttpClient client;
         private string refreshToken;
         private readonly ManagementService service;
-        private readonly string currentUsername;
         private DateTimeOffset expiresOn;
 
         #endregion
@@ -41,7 +40,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
             this.Token = authentication.AccessToken;
             var accessToken = authentication.AccessToken;
             this.refreshToken = authentication.RefreshToken;
-            this.currentUsername = username;
+            this.CurrentUserName = username;
 
             Initialize(accessToken, new DateTimeOffset(authentication.ExpireDate));
         }
@@ -322,20 +321,6 @@ namespace fIT.WebApi.Client.Portable.Implementation
             throw new ServerException(response);
         }
 
-        private async Task DeleteAsJsonAsync<T>(T model, string url, params object[] args)
-        {
-            await CheckForRefreshRequirement();
-            var message = new HttpRequestMessage(HttpMethod.Delete, JsonConvert.SerializeObject(model));
-            var response = await client.SendAsync(message);
-            if (response.IsSuccessStatusCode)
-            {
-                //if (Log.IsDebugEnabled) Log.Debug(String.Format("DeleteAsync({0}) -> {1}", String.Format(url, args), await response.Content.ReadAsStringAsync()));
-                await response.Content.ReadAsAsync<T>();
-            }
-            //if (Log.IsInfoEnabled) Log.Info(String.Format("Failed DeleteAsync({0}) -> {1}{2}", String.Format(url, args), await response.Content.ReadAsStringAsync(), response.ToString()));
-            throw new ServerException(response);
-        }
-
         private async Task<T> PostAsync<T>(HttpContent content, string url, params object[] args)
         {
             await CheckForRefreshRequirement();
@@ -469,7 +454,8 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <summary>
         /// Current Username
         /// </summary>
-        public string CurrentUsername { get { return currentUsername; } }
+        public string CurrentUserName { get; private set; }
+        public string CurrentUserId { get; private set; }
         #endregion
     }
 }

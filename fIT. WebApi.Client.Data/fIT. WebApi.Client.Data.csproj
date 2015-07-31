@@ -45,8 +45,12 @@
     <Compile Include="Models\Account\LoginModel.cs" />
     <Compile Include="Models\Account\UserModel.cs" />
     <Compile Include="Models\Exceptions\ServerException.cs" />
+    <Compile Include="Models\Exercise\ExerciseModel.cs" />
+    <Compile Include="Models\Practice\PracticeModel.cs" />
+    <Compile Include="Models\RefreshToken\RefreshTokenModel.cs" />
     <Compile Include="Models\Roles\RoleModel.cs" />
     <Compile Include="Models\Roles\UsersInRoleModel.cs" />
+    <Compile Include="Models\Schedule\ScheduleModel.cs" />
     <Compile Include="Models\Shared\ClientInformation.cs" />
     <Compile Include="Models\Shared\EntryModel.cs" />
     <Compile Include="Models\Shared\Enums\ApplicationTypes.cs" />

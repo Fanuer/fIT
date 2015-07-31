@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.RefreshToken;
 using fIT.WebApi.Client.Data.Models.Roles;
 
 namespace fIT.WebApi.Client.Portable.Implementation
@@ -76,6 +77,15 @@ namespace fIT.WebApi.Client.Portable.Implementation
         }
 
         /// <summary>
+        /// Gets a roles data by its name
+        /// </summary>
+        /// <param name="name">role name</param>
+        public async Task<RoleModel> GetRoleByNameAsync(string name)
+        {
+          return await GetAsync<RoleModel>("/api/Roles/" + name);
+        }
+
+        /// <summary>
         /// Deletes an existing role
         /// </summary>
         /// <param name="id"></param>
@@ -92,7 +102,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <returns></returns>
         public async Task<RoleModel> CreateRoleAsync(string roleName)
         {
-            return await PostAsJsonReturnAsync<object, RoleModel>(new {Name = roleName}, "/api/Roles/");
+            return await PostAsJsonReturnAsync<object, RoleModel>(new {Name = roleName}, "/api/Roles");
         }
 
         /// <summary>
@@ -105,7 +115,17 @@ namespace fIT.WebApi.Client.Portable.Implementation
             await PutAsJsonAsync(model, "/api/Roles/ManageUsersInRole");
         }
 
-        #endregion
+      public async Task<IEnumerable<RefreshTokenModel>> GetAllRefreshtokensAsync()
+      {
+        return await this.GetAsync<IEnumerable<RefreshTokenModel>>("/api/RefreshTokens");
+      }
+
+      /*public async Task DeleteRefreshtokenAsync(string tokenId)
+      {
+        await DeleteAsJsonAsync(new {tokenId}, "/api/RefreshTokens");
+      }*/
+
+      #endregion
 
         #region Properties
         /// <summary>

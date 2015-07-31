@@ -23,6 +23,7 @@ namespace fITNat
         private Button mBtnSignUp;
         private Button mBtnSignIn;
         private ProgressBar progressBar;
+        private ImageView connectivityPointer;
         private ManagementServiceLocal mngService;
 
         protected override void OnCreate(Bundle bundle)
@@ -37,6 +38,7 @@ namespace fITNat
             mBtnSignUp = FindViewById<Button>(Resource.Id.btnSignUp);
             mBtnSignIn = FindViewById<Button>(Resource.Id.btnSignIn);
             progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
+            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnection);
             mBtnSignUp.Click += (object sender, EventArgs args) =>
                 {
                     //Pull up SignUp-dialog
@@ -66,6 +68,8 @@ namespace fITNat
 
             var intent = new Intent(this, typeof(ScheduleActivity));
             StartActivity(intent);
+
+            //Anhand der InnerException heruasfinden was die Probleme gemacht hat
         }
 
         private void SignInDialog_onSignInComplete(object sender, OnSignInEventArgs e)
@@ -75,6 +79,18 @@ namespace fITNat
 
             var intent = new Intent(this, typeof(ScheduleActivity));
             StartActivity(intent);
+        }
+
+        /// <summary>
+        /// Belegt das Connectivity-Icon entsprechend des Verbindungsstatus
+        /// </summary>
+        /// <param name="online"></param>
+        public void setConnectivityStatus(bool online)
+        {
+            if(online)
+                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+            else
+                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
         }
     }
 }

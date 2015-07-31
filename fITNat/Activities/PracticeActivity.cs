@@ -15,25 +15,40 @@ namespace fITNat
     [Activity(Label = "fITNat")]
     public class PracticeActivity : Activity
     {
+        private ImageView connectivityPointer;
+
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.PracticeLayout);
 
-            List<string> practices = new List<string>();
-            for (int i = 0; i < 10; i++)
+            List<PracticeModel> practices = new List<string>();
+            /*for (int i = 0; i < 10; i++)
             {
                 practices.Add(i + ". Practice");
-            }
+            }*/
 
-            ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.PracticeView, Resource.Id.txtPracticeViewDescription, practices);
+            ArrayAdapter<PracticeModel> adapter = new ArrayAdapter<PracticeModel>(this, Resource.Layout.PracticeView, Resource.Id.txtPracticeViewDescription, practices);
             ListView lv = (ListView)FindViewById(Resource.Id.lvPractice);
+            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionPractice);
             lv.Adapter = adapter;
         }
 
         public override void OnBackPressed()
         {
             base.OnBackPressed();
+        }
+
+        /// <summary>
+        /// Belegt das Connectivity-Icon entsprechend des Verbindungsstatus
+        /// </summary>
+        /// <param name="online"></param>
+        public void setConnectivityStatus(bool online)
+        {
+            if (online)
+                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+            else
+                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
         }
     }
 }

@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
+using System.Threading.Tasks;
 
 namespace fITNat
 {
@@ -39,10 +40,10 @@ namespace fITNat
             return view;
         }
 
-        private async void BtnSignIn_Click(object sender, EventArgs e)
+        private async Task BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                await mgnService.SignIn(txtUsername.Text, txtPassword.Text); //hier knallts
+                mgnService.SignIn(txtUsername.Text, txtPassword.Text).Wait(); //hier knallts
                 
             }
             catch(ServerException ex)

@@ -17,8 +17,10 @@ namespace fITNat
     [Activity(Label = "fITNat")]
     public class ScheduleActivity : Activity
     {
-        private List<Schedule> schedules; //wurde kopiert, um Zugriff zu haben
+        //ScheduleModel kommt noch von Stefan
+        private List<ScheduleModel> schedules;
         private ListView lv;
+        private ImageView connectivityPointer;
         private ManagementServiceLocal mgnService;
 
         protected override void OnCreate(Bundle bundle)
@@ -26,8 +28,9 @@ namespace fITNat
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.ScheduleLayout);
 
-            schedules = new List<Schedule>();
+            schedules = new List<ScheduleModel>();
             lv = (ListView)FindViewById(Resource.Id.lvSchedule);
+            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
 
 
             //Generiert Testdaten
@@ -69,6 +72,19 @@ namespace fITNat
         public override void OnBackPressed()
         {
             base.OnBackPressed();
+        }
+
+
+        /// <summary>
+        /// Belegt das Connectivity-Icon entsprechend des Verbindungsstatus
+        /// </summary>
+        /// <param name="online"></param>
+        public void setConnectivityStatus(bool online)
+        {
+            if (online)
+                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+            else
+                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
         }
     }
 }

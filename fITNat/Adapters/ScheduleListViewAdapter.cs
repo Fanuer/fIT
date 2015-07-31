@@ -12,12 +12,12 @@ using Android.Widget;
 
 namespace fITNat
 {
-    class ScheduleListViewAdapter : BaseAdapter<Schedule>
+    class ScheduleListViewAdapter : BaseAdapter<ScheduleModel>
     {
-        private List<Schedule> mItems;
+        private List<ScheduleModel> mItems;
         private Context mContext;
 
-        public ScheduleListViewAdapter(Context context, List<Schedule> items)
+        public ScheduleListViewAdapter(Context context, List<ScheduleModel> items)
         {
             mItems = items;
             mContext = context;
@@ -33,7 +33,7 @@ namespace fITNat
             return position;
         }
 
-        public override Schedule this[int position]
+        public override ScheduleModel this[int position]
         {
             get { return mItems[position]; }
         }

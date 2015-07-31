@@ -51,6 +51,7 @@ namespace fITNat.Services
                 Console.WriteLine("Serverfehler: " + e.StackTrace);
                 //Falsche Logindaten
                 //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
+                //e.Data => Alle Fehler!!
                 Dialog_SignIn signInD = new Dialog_SignIn();
                 signInD.SignInFail();
             }
@@ -94,6 +95,29 @@ namespace fITNat.Services
                 else if (ex.StackTrace.Contains("username"))
                     fehler = "password";
                 signUpD.SignUpFail(fehler);
+            }
+        }
+
+        public async Task recordPractice(int id,
+                                        int scheduleId,
+                                        int exerciseId,
+                                        string userId,
+                                        DateTime timestamp = default(DateTime),
+                                        double weight = 0,
+                                        int repetitions = 0,
+                                        int numberOfRepetitions = 0)
+        {
+            try
+            {
+                PracticeModel practice = new PracticeModel(id, scheduleId, exerciseId, userId, timestamp, weight, repetitions, numberOfRepetitions);
+            }
+            catch(ServerException ex)
+            {
+                throw;
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Fehler beim Eintragen eines Trainings: " + exc.StackTrace);
             }
         }
     }

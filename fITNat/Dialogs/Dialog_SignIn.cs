@@ -40,10 +40,10 @@ namespace fITNat
             return view;
         }
 
-        private async Task BtnSignIn_Click(object sender, EventArgs e)
+        private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                mgnService.SignIn(txtUsername.Text, txtPassword.Text).Wait(); //hier knallts
+                mgnService.SignIn(txtUsername.Text, txtPassword.Text).Wait();
                 
             }
             catch(ServerException ex)

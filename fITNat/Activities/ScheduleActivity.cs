@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using fITNat.Services;
 using Java.Lang;
+using fIT.WebApi.Client.Data.Models.Schedule;
 
 namespace fITNat
 {

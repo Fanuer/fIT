@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using fIT.WebApi.Client.Data.Models.Practice;
 
 namespace fITNat
 {
@@ -49,7 +50,7 @@ namespace fITNat
 
             TextView txtPracticeViewDescription = row.FindViewById<TextView>(Resource.Id.txtPracticeViewDescription);
             TextView txtID = row.FindViewById<TextView>(Resource.Id.txtPracticeViewID);
-            txtPracticeViewDescription.Text = mItems[position].Name;
+            txtPracticeViewDescription.Text = mItems[position].Id.ToString();
             txtID.Text = mItems[position].Id.ToString();
 
             return row;

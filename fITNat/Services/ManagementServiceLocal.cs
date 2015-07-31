@@ -8,6 +8,7 @@ using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Practice;
 
 namespace fITNat.Services
 {
@@ -101,7 +102,6 @@ namespace fITNat.Services
         public async Task recordPractice(int id,
                                         int scheduleId,
                                         int exerciseId,
-                                        string userId,
                                         DateTime timestamp = default(DateTime),
                                         double weight = 0,
                                         int repetitions = 0,
@@ -109,7 +109,14 @@ namespace fITNat.Services
         {
             try
             {
-                PracticeModel practice = new PracticeModel(id, scheduleId, exerciseId, userId, timestamp, weight, repetitions, numberOfRepetitions);
+                PracticeModel practice = new PracticeModel();
+                practice.Id = id;
+                practice.ScheduleId = scheduleId;
+                practice.ExerciseId = exerciseId;
+                practice.Timestamp = timestamp;
+                practice.Weight = weight;
+                practice.Repetitions = repetitions;
+                practice.NumberOfRepetitions = numberOfRepetitions;
             }
             catch(ServerException ex)
             {

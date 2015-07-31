@@ -70,6 +70,10 @@ namespace fITNat
             return view;
         }
 
+        //
+        //Siehe SignIn für await und asny und so!!!!
+        //
+
         private async void BtnSignUp_Click(object sender, EventArgs e)
         {
             //Types aus den Eingaben genrieren

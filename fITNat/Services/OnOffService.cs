@@ -146,7 +146,7 @@ namespace fITNat
             {
                 try
                 {
-                    await mgnService.recordPractice(id, scheduleId, exerciseId, userId, timestamp, weight, repetitions, numberOfRepetitions);
+                    await mgnService.recordPractice(id, scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions);
                 }
                 catch(ServerException ex)
                 {

@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using fIT.WebApi.Client.Data.Models.Practice;
 
 namespace fITNat
 {
@@ -22,7 +23,7 @@ namespace fITNat
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.PracticeLayout);
 
-            List<PracticeModel> practices = new List<string>();
+            List<PracticeModel> practices = new List<PracticeModel>();
             /*for (int i = 0; i < 10; i++)
             {
                 practices.Add(i + ". Practice");

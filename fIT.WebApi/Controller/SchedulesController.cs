@@ -78,7 +78,11 @@ namespace fIT.WebApi.Controller
         [HttpPut]
         public async Task<IHttpActionResult> UpdateSchedule([FromUri]int id, [FromBody]ScheduleModel schedule)
         {
-            if (id != schedule.Id || !IsValidSchedule(schedule.UserId))
+            if (id != schedule.Id)
+            {
+                ModelState.AddModelError("id", "The given id have to be the same as in the model");
+            }
+            else if(!IsValidSchedule(schedule.UserId))
             {
                 ModelState.AddModelError("id", "You can only update your own schedules");
             }
@@ -115,7 +119,7 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [Route("")]
         [HttpPost]
-        public async Task<IHttpActionResult> CreateExercise(ScheduleModel schedule)
+        public async Task<IHttpActionResult> CreateSchedule(ScheduleModel schedule)
         {
             if (ModelState.IsValid && !schedule.UserId.Equals(this.CurrentUserId))
             {
@@ -141,7 +145,7 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpDelete]
-        public async Task<IHttpActionResult> DeleteExercise(int id)
+        public async Task<IHttpActionResult> DeleteSchedule(int id)
         {
             var schedule = await this.AppRepository.Schedules.FindAsync(id);
             if (schedule == null)
@@ -158,6 +162,94 @@ namespace fIT.WebApi.Controller
             }
 
             await this.AppRepository.Schedules.RemoveAsync(schedule);
+            return Ok();
+        }
+
+        /// <summary>
+        /// Adds an existing exercise to a schedule
+        /// </summary>
+        /// <param name="scheduleId">Id of a schedule of the logged in user</param>
+        /// <param name="exerciseId">Id of an exercise</param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
+        [HttpPut]
+        public async Task<IHttpActionResult> AddExerciseToSchedule(int scheduleId, int exerciseId)
+        {
+            var schedule = await this.AppRepository.Schedules.FindAsync(scheduleId);
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+            if (!IsValidSchedule(schedule.UserID))
+            {
+                ModelState.AddModelError("UserId", "You can only delete your own schedules");
+            }
+
+            var exercise = await this.AppRepository.Exercise.FindAsync(exerciseId);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            bool adding = false;
+            if (ModelState.IsValid)
+            {
+                adding = await this.AppRepository.Schedules.AddExerciseAsync(schedule.Id, exerciseId);
+            }
+            if (!adding)
+            {
+                ModelState.AddModelError("", "Error on adding the exercise");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok();
+        }
+
+        /// <summary>
+        /// Removes an existing exercise from a schedule
+        /// </summary>
+        /// <param name="scheduleId">Id of a schedule of the logged in user</param>
+        /// <param name="exerciseId">Id of an exercise</param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [HttpDelete]
+        [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
+        public async Task<IHttpActionResult> RemoveExerciseFromSchedule(int scheduleId, int exerciseId)
+        {
+            var schedule = await this.AppRepository.Schedules.FindAsync(scheduleId);
+            if (schedule == null)
+            {
+                return NotFound();
+            }
+            if (!IsValidSchedule(schedule.UserID))
+            {
+                ModelState.AddModelError("UserId", "You can only delete your own schedules");
+            }
+
+            var exercise = await this.AppRepository.Exercise.FindAsync(exerciseId);
+            if (exercise == null)
+            {
+                return NotFound();
+            }
+
+            bool removing = false;
+            if (ModelState.IsValid)
+            {
+                removing = await this.AppRepository.Schedules.AddExerciseAsync(schedule.Id, exerciseId);
+            }
+            if (!removing)
+            {
+                ModelState.AddModelError("", "Error on removing the exercise");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             return Ok();
         }
 

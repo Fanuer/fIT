@@ -61,7 +61,7 @@ namespace fIT.WebApi.Models
             Id = datamodel.Id,
             Description = datamodel.Description,
             Name = datamodel.Name,
-            Url = _UrlHelper.Link("GetExcerciseById", new { id = datamodel.Id })
+            Url = _UrlHelper.Link("GetExerciseById", new { id = datamodel.Id })
             };
         if (datamodel.Schedules != null)
         {

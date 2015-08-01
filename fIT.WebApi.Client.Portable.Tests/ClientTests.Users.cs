@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -87,7 +89,7 @@ namespace fIT.WebApi.Client.Portable.Tests
         }
 
         [TestMethod]
-        public void CreateGetDeleteSchedule()
+        public void CreateGetUpdateDeleteSchedule()
         {
             var newSchedule = new ScheduleModel()
             {
@@ -101,25 +103,43 @@ namespace fIT.WebApi.Client.Portable.Tests
 
                 try
                 {
+                    newSchedule.UserId = session.CurrentUserId.ToString();
                     var schedules = session.Users.GetAllSchedulesAsync().Result;
-                    Assert.AreEqual(0, schedules.Count());
 
                     myNewSchedule = session.Users.CreateScheduleAsync(newSchedule).Result;
                     Assert.IsNotNull(myNewSchedule);
                     Assert.AreEqual(newSchedule.Name, myNewSchedule.Name);
                     Assert.AreNotEqual(newSchedule.Id, myNewSchedule.Id);
-                    Assert.AreNotEqual(newSchedule.UserId, myNewSchedule.UserId);
+                    Assert.AreEqual(newSchedule.UserId, myNewSchedule.UserId);
+                    var newSchedules = session.Users.GetAllSchedulesAsync().Result;
+                    Assert.AreEqual(schedules.Count() + 1, newSchedules.Count());
 
                     var schedule = session.Users.GetScheduleByIdAsync(myNewSchedule.Id).Result;
                     Assert.AreEqual(newSchedule.Name, schedule.Name);
-                    Assert.AreEqual(newSchedule.Id, schedule.Id);
+                    Assert.AreEqual(newSchedule.UserId, schedule.UserId);
+                    Assert.AreNotEqual(newSchedule.Id, schedule.Id);
                     Assert.AreEqual(newSchedule.UserId, schedule.UserId);
 
-                    session.Users.DeleteScheduleAsync(schedule.Id).Wait();
-                    schedules = session.Users.GetAllSchedulesAsync().Result;
-                    Assert.AreEqual(0, schedules.Count());
-                    schedule = null;
+                    schedule.Name = newSchedule.Name + " Neu";
+                    session.Users.UpdateScheduleAsync(schedule.Id, schedule);
+                    schedule = session.Users.GetScheduleByIdAsync(schedule.Id).Result;
+                    Assert.AreEqual(newSchedule.Name + " Neu", schedule.Name);
 
+                    session.Users.DeleteScheduleAsync(schedule.Id).Wait();
+                    newSchedules = session.Users.GetAllSchedulesAsync().Result;
+                    Assert.AreEqual(schedules.Count(), newSchedules.Count());
+                    myNewSchedule = null;
+                }
+                catch (AggregateException e)
+                {
+                    if (e.InnerException is ServerException)
+                    {
+                        var innerExc = e.InnerException as ServerException;
+                        foreach (KeyValuePair<string, string> data in innerExc.Data)
+                        {
+                            Console.WriteLine(String.Format("Fehler '{0}': {1}", data.Key, data.Value));
+                        }
+                    }
                 }
                 finally
                 {

@@ -18,5 +18,10 @@ namespace fIT.WebApi.Models
         /// Zugehoerige Trainingsplaene
         /// </summary>
         public IEnumerable<EntryModel<int>> Schedules { get; set; }
+
+        public ExerciseModel()
+        {
+            Schedules = new List<EntryModel<int>>();
+        }
     }
 }

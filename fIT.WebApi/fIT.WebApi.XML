@@ -75,17 +75,33 @@
             <param name="schedule">New schedule Data</param>
             <param name="id">Schedule id</param>
         </member>
-        <member name="M:fIT.WebApi.Controller.SchedulesController.CreateExercise(fIT.WebApi.Models.ScheduleModel)">
+        <member name="M:fIT.WebApi.Controller.SchedulesController.CreateSchedule(fIT.WebApi.Models.ScheduleModel)">
             <summary>
             Create new Schedule for the logged in user
             </summary>
             <param name="schedule">Schedule data to create</param>
         </member>
-        <member name="M:fIT.WebApi.Controller.SchedulesController.DeleteExercise(System.Int32)">
+        <member name="M:fIT.WebApi.Controller.SchedulesController.DeleteSchedule(System.Int32)">
             <summary>
             Removes a schedule
             </summary>
             <param name="id">Id of the schedule to delete</param>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.AddExerciseToSchedule(System.Int32,System.Int32)">
+            <summary>
+            Adds an existing exercise to a schedule
+            </summary>
+            <param name="scheduleId">Id of a schedule of the logged in user</param>
+            <param name="exerciseId">Id of an exercise</param>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.RemoveExerciseFromSchedule(System.Int32,System.Int32)">
+            <summary>
+            Removes an existing exercise from a schedule
+            </summary>
+            <param name="scheduleId">Id of a schedule of the logged in user</param>
+            <param name="exerciseId">Id of an exercise</param>
+            <returns></returns>
         </member>
         <member name="T:fIT.WebApi.Controller.AccountsController">
             <summary>
@@ -488,6 +504,22 @@
             <summary>
             Communcates with the Database
             </summary>
+        </member>
+        <member name="M:fIT.WebApi.Repository.ApplicationRepository.ScheduleRepository.AddExerciseAsync(System.Int32,System.Int32)">
+            <summary>
+            Adds an Exercise to a Schedule
+            </summary>
+            <param name="scheduleId">Id of a schedule</param>
+            <param name="exerciseId">Id of an exercise</param>
+            <returns>true, if adding was successful</returns>
+        </member>
+        <member name="M:fIT.WebApi.Repository.ApplicationRepository.ScheduleRepository.RemoveExerciseAsync(System.Int32,System.Int32)">
+            <summary>
+            Removes an Exercise to a Schedule
+            </summary>
+            <param name="scheduleId">Id of a schedule</param>
+            <param name="exerciseId">Id of an exercise</param>
+            <returns>true, if adding was successful</returns>
         </member>
         <member name="T:fIT.WebApi.Entities.Client">
             <summary>

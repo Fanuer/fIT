@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.Schedule;
 
 namespace fIT.WebApi.Client.Data.Intefaces
@@ -57,6 +58,13 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <param name="model">neue Daten des Trainingsplans</param>
         /// <returns></returns>
         Task UpdateScheduleAsync(int scheduleId, ScheduleModel model);
+
+        #endregion
+
+        #region Exercise
+
+        Task<IEnumerable<ExerciseModel>> GetAllExercisesAsync();
+        Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId);
 
         #endregion
     }

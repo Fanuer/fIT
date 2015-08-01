@@ -104,9 +104,9 @@ namespace fIT.WebApi.Repository
         return await this._ctx.SaveChangesAsync() > 0;
       }
 
-      public async Task<bool> ExistsAsync(TIdProperty id)
+      public bool Exists(TIdProperty id)
       {
-        return await this.GetAllAsync().AsQueryable().CountAsync(e => e.Id.Equals(id)) > 0;
+        return this.GetAllAsync().Count(e => e.Id.Equals(id)) > 0;
       }
 
       public IEnumerable<T> GetAllAsync()

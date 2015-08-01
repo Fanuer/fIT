@@ -55,9 +55,13 @@ namespace fIT.WebApi.Controller
             {
                 return NotFound();
             }
-            if (!this.IsValidSchedule(schedule.UserID))
+            if (!IsValidSchedule(schedule.UserID))
             {
-                return BadRequest();
+                ModelState.AddModelError("UserId", "You can only delete your own schedules");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
             return Ok(schedule);
         }
@@ -72,19 +76,18 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
         [HttpPut]
-        public async Task<IHttpActionResult> UpdateExercise([FromUri]int id, [FromBody]ScheduleModel schedule)
+        public async Task<IHttpActionResult> UpdateSchedule([FromUri]int id, [FromBody]ScheduleModel schedule)
         {
+            if (id != schedule.Id || !IsValidSchedule(schedule.UserId))
+            {
+                ModelState.AddModelError("id", "You can only update your own schedules");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != schedule.Id || !IsValidSchedule(schedule.UserId))
-            {
-                return BadRequest();
-            }
-
-            var exists = await this.AppRepository.Schedules.ExistsAsync(id);
+            var exists = this.AppRepository.Schedules.Exists(id);
 
             try
             {
@@ -114,13 +117,16 @@ namespace fIT.WebApi.Controller
         [HttpPost]
         public async Task<IHttpActionResult> CreateExercise(ScheduleModel schedule)
         {
+            if (ModelState.IsValid && !schedule.UserId.Equals(this.CurrentUserId))
+            {
+                ModelState.AddModelError("UserId", Resources.Error_CreateScheduleOnlyForYourself);
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
             var datamodel = this.TheModelFactory.Update(schedule);
-            datamodel.UserID = this.User.Identity.GetUserId();
             await this.AppRepository.Schedules.AddAsync(datamodel);
             var result = this.TheModelFactory.Create(datamodel);
             return CreatedAtRoute("GetScheduleById", new { id = schedule.Id }, result);
@@ -142,9 +148,13 @@ namespace fIT.WebApi.Controller
             {
                 return NotFound();
             }
-            else if (!IsValidSchedule(schedule.UserID))
+            if (!IsValidSchedule(schedule.UserID))
             {
-                return BadRequest();
+                ModelState.AddModelError("UserId", "You can only delete your own schedules");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             await this.AppRepository.Schedules.RemoveAsync(schedule);
@@ -153,7 +163,7 @@ namespace fIT.WebApi.Controller
 
         private bool IsValidSchedule(string schedulesUserId)
         {
-            return schedulesUserId != User.Identity.GetUserId();
+            return schedulesUserId.Equals(User.Identity.GetUserId());
         }
     }
 }

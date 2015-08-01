@@ -84,6 +84,8 @@ namespace fIT.WebApi.Client.Data.Models.Account
         public DateTime IssueDate { get; set; }
         [JsonProperty("as:client_id")]
         public string ClientId { get; set; }
+
+        public Guid UserId { get; set; }
         #endregion
     }
 }

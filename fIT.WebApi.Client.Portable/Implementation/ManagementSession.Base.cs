@@ -39,6 +39,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
             this.service = service;
             this.Token = authentication.AccessToken;
             var accessToken = authentication.AccessToken;
+            CurrentUserId = authentication.UserId;
             this.refreshToken = authentication.RefreshToken;
             this.CurrentUserName = username;
 
@@ -455,7 +456,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// Current Username
         /// </summary>
         public string CurrentUserName { get; private set; }
-        public string CurrentUserId { get; private set; }
+        public Guid CurrentUserId { get; private set; }
         #endregion
     }
 }

@@ -7,6 +7,7 @@ using fIT.WebApi.Entities;
 using fIT.WebApi.Helpers;
 using fIT.WebApi.Repository;
 using fIT.WebApi.Repository.Interfaces;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security.Infrastructure;
 
 namespace fIT.WebApi.Provider
@@ -41,6 +42,9 @@ namespace fIT.WebApi.Provider
         };
         context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
         context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
+        // Add current User Id
+        context.Ticket.Properties.Dictionary.Add("UserId", context.Ticket.Identity.GetUserId());
+
         if (!context.Ticket.Properties.Dictionary.ContainsKey("as:client_id"))
         {
           context.Ticket.Properties.Dictionary.Add("as:client_id", clientId);

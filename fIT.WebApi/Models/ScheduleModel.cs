@@ -14,6 +14,7 @@ namespace fIT.WebApi.Models
         /// <summary>
         /// Nutzer, dem der Trainingsplan gehört
         /// </summary>
+        [Required(ErrorMessageResourceName = "Error_Required", ErrorMessageResourceType = typeof(Resources))]
         public string UserId { get; set; }
         /// <summary>
         /// Zugehoerige Uebungen

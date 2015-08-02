@@ -33,7 +33,7 @@ namespace fIT.WebApi.Controller
         [Route("")]
         public IQueryable<ExerciseModel> GetExercises()
         {
-            return this.AppRepository.Excercies.GetAllAsync().Select(this.TheModelFactory.Create).AsQueryable();
+            return this.AppRepository.Exercise.GetAllAsync().Select(this.TheModelFactory.Create).AsQueryable();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace fIT.WebApi.Controller
         [Route("{id:int}", Name = "GetExerciseById")]
         public async Task<IHttpActionResult> GetExercise(int id)
         {
-            var exercise = await this.AppRepository.Excercies.FindAsync(id);
+            var exercise = await this.AppRepository.Exercise.FindAsync(id);
             if (exercise == null)
             {
                 return NotFound();
@@ -64,26 +64,26 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IHttpActionResult> UpdateExercise([FromUri]int id, [FromBody] ExerciseModel exercise)
         {
+            if (id != exercise.Id)
+            {
+                ModelState.AddModelError("id", "The given id have to be the same as in the model");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != exercise.Id)
-            {
-                return BadRequest();
-            }
-
-            var exists = await this.AppRepository.Excercies.ExistsAsync(id);
+            var exists = this.AppRepository.Exercise.Exists(id);
 
             try
             {
-                var orig = await this.AppRepository.Excercies.FindAsync(id);
+                var orig = await this.AppRepository.Exercise.FindAsync(id);
                 orig = this.TheModelFactory.Update(exercise, orig);
-                await this.AppRepository.Excercies.UpdateAsync(id, orig);
+                await this.AppRepository.Exercise.UpdateAsync(id, orig);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -107,6 +107,7 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.Created, Type = typeof(ExerciseModel))]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [Route("")]
+        [Authorize(Roles="Admin")]
         [HttpPost]
         public async Task<IHttpActionResult> CreateExercise(ExerciseModel exercise)
         {
@@ -116,8 +117,9 @@ namespace fIT.WebApi.Controller
             }
 
             var datamodel = this.TheModelFactory.Update(exercise);
-            await this.AppRepository.Excercies.AddAsync(datamodel);
-            return CreatedAtRoute("DefaultApi", new { id = exercise.Id }, exercise);
+            await this.AppRepository.Exercise.AddAsync(datamodel);
+            exercise = this.TheModelFactory.Create(datamodel);
+            return CreatedAtRoute("GetExerciseById", new { id = exercise.Id }, exercise);
         }
 
         /// <summary>
@@ -125,19 +127,19 @@ namespace fIT.WebApi.Controller
         /// </summary>
         /// <param name="id">Id of the exercise to delete</param>
         [SwaggerResponse(HttpStatusCode.OK)]
-        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{id:int}")]
+        [Authorize(Roles = "Admin")]
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteExercise(int id)
         {
-            var exercise = await this.AppRepository.Excercies.FindAsync(id);
+            var exercise = await this.AppRepository.Exercise.FindAsync(id);
             if (exercise == null)
             {
                 return NotFound();
             }
 
-            await this.AppRepository.Excercies.RemoveAsync(exercise);
+            await this.AppRepository.Exercise.RemoveAsync(exercise);
             return Ok();
         }
     }

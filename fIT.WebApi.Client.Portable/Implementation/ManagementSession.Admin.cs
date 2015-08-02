@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.RefreshToken;
 using fIT.WebApi.Client.Data.Models.Roles;
 
@@ -19,6 +20,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         #endregion
 
         #region Methods
+        #region User
         /// <summary>
         /// Deletes a user this the given userId
         /// </summary>
@@ -58,6 +60,9 @@ namespace fIT.WebApi.Client.Portable.Implementation
             return await this.GetAsync<UserModel>("/api/Accounts/User/{0}", id);
         }
 
+        #endregion
+
+        #region Roles
         /// <summary>
         /// Get all roles
         /// </summary>
@@ -82,7 +87,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <param name="name">role name</param>
         public async Task<RoleModel> GetRoleByNameAsync(string name)
         {
-          return await GetAsync<RoleModel>("/api/Roles/" + name);
+            return await GetAsync<RoleModel>("/api/Roles/" + name);
         }
 
         /// <summary>
@@ -102,7 +107,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <returns></returns>
         public async Task<RoleModel> CreateRoleAsync(string roleName)
         {
-            return await PostAsJsonReturnAsync<object, RoleModel>(new {Name = roleName}, "/api/Roles");
+            return await PostAsJsonReturnAsync<object, RoleModel>(new { Name = roleName }, "/api/Roles");
         }
 
         /// <summary>
@@ -115,17 +120,59 @@ namespace fIT.WebApi.Client.Portable.Implementation
             await PutAsJsonAsync(model, "/api/Roles/ManageUsersInRole");
         }
 
-      public async Task<IEnumerable<RefreshTokenModel>> GetAllRefreshtokensAsync()
-      {
-        return await this.GetAsync<IEnumerable<RefreshTokenModel>>("/api/RefreshTokens");
-      }
+        #endregion
 
-      /*public async Task DeleteRefreshtokenAsync(string tokenId)
-      {
-        await DeleteAsJsonAsync(new {tokenId}, "/api/RefreshTokens");
-      }*/
+        #region RefreshTokens
+        /// <summary>
+        /// Get all RefreshTokens
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<RefreshTokenModel>> GetAllRefreshtokensAsync()
+        {
+            return await this.GetAsync<IEnumerable<RefreshTokenModel>>("/api/RefreshTokens");
+        }
 
-      #endregion
+        /*public async Task DeleteRefreshtokenAsync(string tokenId)
+        {
+          await DeleteAsJsonAsync(new {tokenId}, "/api/RefreshTokens");
+        }*/
+
+        #endregion
+
+        #region Exercise
+        /// <summary>
+        /// Creates a new exercise
+        /// </summary>
+        /// <param name="model">exercise data</param>
+        /// <returns></returns>
+        public async Task<ExerciseModel> CreateExerciseAsync(ExerciseModel model)
+        {
+            return await this.PostAsJsonReturnAsync<ExerciseModel, ExerciseModel>(model, "/api/exercise");
+        }
+
+        /// <summary>
+        /// Delete an exercise 
+        /// </summary>
+        /// <param name="id">id of an exercise</param>
+        /// <returns></returns>
+        public async Task DeleteExerciseAsync(int id)
+        {
+            await DeleteAsync("/api/exercise/" + id);
+        }
+
+        /// <summary>
+        /// Updates an exercise 
+        /// </summary>
+        /// <param name="id">Id of an exercise</param>
+        /// <param name="model">new exercise data</param>
+        /// <returns></returns>
+        public async Task UpdateExerciseAsync(int id, ExerciseModel model)
+        {
+            await PutAsJsonAsync(model, "api/exercise/" + id);
+        }
+
+        #endregion
+        #endregion
 
         #region Properties
         /// <summary>

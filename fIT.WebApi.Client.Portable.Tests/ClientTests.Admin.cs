@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
+using fIT.WebApi.Client.Data.Models.Exceptions;
+using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.Roles;
 using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -113,6 +116,70 @@ namespace fIT.WebApi.Client.Portable.Tests
                 Console.WriteLine(tokens.Count());
             }
         }
+
+        [TestMethod]
+        public void CreateGetUpdateDeleteExercises()
+        {
+            var newExercise = new ExerciseModel()
+            {
+                
+                Name = "Test Name",
+                Description = "Test Description"
+            };
+
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            {
+                ExerciseModel myNewExercise = null;
+
+                try
+                {
+                    var exercises = session.Users.GetAllExercisesAsync().Result;
+
+                    myNewExercise = session.Admins.CreateExerciseAsync(newExercise).Result;
+                    Assert.IsNotNull(myNewExercise);
+                    Assert.AreEqual(newExercise.Name, myNewExercise.Name);
+                    Assert.AreNotEqual(newExercise.Id, myNewExercise.Id);
+                    Assert.AreEqual(newExercise.Description, myNewExercise.Description);
+                    var newExercises = session.Users.GetAllExercisesAsync().Result;
+                    Assert.AreEqual(exercises.Count() + 1, newExercises.Count());
+
+                    var exercise = session.Users.GetExerciseByIdAsync(myNewExercise.Id).Result;
+                    Assert.AreEqual(newExercise.Name, exercise.Name);
+                    Assert.AreEqual(newExercise.Description, exercise.Description);
+                    Assert.AreNotEqual(newExercise.Id, exercise.Id);
+
+                    exercise.Name = newExercise.Name + " Neu";
+                    session.Admins.UpdateExerciseAsync(exercise.Id, exercise);
+                    exercise = session.Users.GetExerciseByIdAsync(exercise.Id).Result;
+                    Assert.AreEqual(newExercise.Name + " Neu", exercise.Name);
+
+                    session.Admins.DeleteExerciseAsync(exercise.Id).Wait();
+                    newExercises = session.Users.GetAllExercisesAsync().Result;
+                    Assert.AreEqual(exercises.Count(), newExercises.Count());
+                    myNewExercise = null;
+                }
+                catch (AggregateException e)
+                {
+                    if (e.InnerException is ServerException)
+                    {
+                        var innerExc = e.InnerException as ServerException;
+                        foreach (KeyValuePair<string, string> data in innerExc.Data)
+                        {
+                            Console.WriteLine(String.Format("Fehler '{0}': {1}", data.Key, data.Value));
+                        }
+                    }
+                }
+                finally
+                {
+                    if (myNewExercise != null)
+                    {
+                        session.Users.DeleteScheduleAsync(myNewExercise.Id).Wait();
+                    }
+                }
+            }
+        }
+
 
         /*[TestMethod]
         public void DeleteRefreshToken()

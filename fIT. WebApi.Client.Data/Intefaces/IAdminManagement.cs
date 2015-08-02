@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.RefreshToken;
 using fIT.WebApi.Client.Data.Models.Roles;
 
@@ -74,11 +75,33 @@ namespace fIT.WebApi.Client.Data.Intefaces
 
         #endregion
 
-      #region Refreshtoken
+        #region Refreshtoken
 
         Task<IEnumerable<RefreshTokenModel>> GetAllRefreshtokensAsync();
         //Task DeleteRefreshtokenAsync(string tokenId);
 
-      #endregion
+        #endregion
+
+        #region Exercise
+        /// <summary>
+        /// Erstellt eine neue Uebung
+        /// </summary>
+        /// <param name="model">Daten der Uebung</param>
+        /// <returns></returns>
+        Task<ExerciseModel> CreateExerciseAsync(ExerciseModel model);
+        /// <summary>
+        /// Loescht eine Uebung aus dem System
+        /// </summary>
+        /// <param name="id">Id einer Uebung</param>
+        /// <returns></returns>
+        Task DeleteExerciseAsync(int id);
+        /// <summary>
+        /// Äendert die Daten einer Uebung
+        /// </summary>
+        /// <param name="id">Id einer Uebung</param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task UpdateExerciseAsync(int id, ExerciseModel model);
+        #endregion
     }
 }

@@ -18,7 +18,7 @@ namespace fIT.WebApi.Client.Data.Models.Exceptions
         #region Ctor
         public ServerException(HttpResponseMessage response)
         {
-            if (response == null){throw new ArgumentNullException("reason");}
+            if (response == null) { throw new ArgumentNullException("reason"); }
             this.Response = response;
             Initialise();
         }
@@ -38,24 +38,32 @@ namespace fIT.WebApi.Client.Data.Models.Exceptions
                 // Deserialize:
                 var deserializedErrorObject = JsonConvert.DeserializeAnonymousType(httpErrorObject, anonymousErrorObject);
                 // Sometimes, there may be Model Errors:
-                if (deserializedErrorObject.ModelState != null)
+                if (deserializedErrorObject != null)
                 {
-                    var errors = deserializedErrorObject.ModelState.Select(kvp => string.Join(". ", kvp.Value));
-                    for (int i = 0; i < errors.Count(); i++)
+                    if (deserializedErrorObject.ModelState != null)
                     {
-                        // Wrap the errors up into the base Exception.Data Dictionary:
-                        this.Data.Add(i, errors.ElementAt(i));
+                        var errors = deserializedErrorObject.ModelState.Select(kvp => string.Join(". ", kvp.Value));
+                        for (int i = 0; i < errors.Count(); i++)
+                        {
+                            // Wrap the errors up into the base Exception.Data Dictionary:
+                            this.Data.Add(i, errors.ElementAt(i));
+                        }
+                    }
+                    // Othertimes, there may not be Model Errors:
+                    else
+                    {
+                        var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpErrorObject);
+
+                        foreach (var kvp in error)
+                        {
+                            // Wrap the errors up into the base Exception.Data Dictionary:
+                            this.Data.Add(kvp.Key, kvp.Value);
+                        }
                     }
                 }
-                // Othertimes, there may not be Model Errors:
                 else
                 {
-                    var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpErrorObject);
-                    foreach (var kvp in error)
-                    {
-                        // Wrap the errors up into the base Exception.Data Dictionary:
-                        this.Data.Add(kvp.Key, kvp.Value);
-                    }
+                    this.Data.Add("Error", "An unknown error has occured");
                 }
             }
             catch (JsonReaderException e)
@@ -80,7 +88,7 @@ namespace fIT.WebApi.Client.Data.Models.Exceptions
                 return this.Response.StatusCode;
             }
         }
-        
+
         public IEnumerable<string> Errors
         {
             get

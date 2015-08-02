@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
+using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.Schedule;
 
 namespace fIT.WebApi.Client.Portable.Implementation
@@ -15,6 +16,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         #endregion
 
         #region Methods
+        #region User
         /// <summary>
         /// Change the users Password
         /// </summary>
@@ -44,6 +46,9 @@ namespace fIT.WebApi.Client.Portable.Implementation
             await PutAsJsonAsync(newData, "api/Accounts/CurrentUser");
         }
 
+        #endregion
+
+        #region Schedule
         /// <summary>
         /// Creates a new Schedule
         /// </summary>
@@ -70,7 +75,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <returns></returns>
         public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
         {
-            return await this.GetAsync<ScheduleModel>("api/schedule/" +id);
+            return await this.GetAsync<ScheduleModel>("api/schedule/" + id);
         }
 
         /// <summary>
@@ -93,14 +98,35 @@ namespace fIT.WebApi.Client.Portable.Implementation
         {
             await PutAsJsonAsync(model, "api/schedule/" + scheduleId);
         }
+        #endregion
 
+        #region Exercise
+        /// <summary>
+        /// Get all Exercises
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<ExerciseModel>> GetAllExercisesAsync()
+        {
+            return await this.GetAsync<IEnumerable<ExerciseModel>>("api/exercise");
+        }
+
+        /// <summary>
+        /// Gets one Exercise by its id
+        /// </summary>
+        /// <param name="exerciseId">Id of an exercise</param>
+        /// <returns></returns>
+        public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
+        {
+            return await this.GetAsync<ExerciseModel>("api/exercise/" + exerciseId);
+        }
+
+
+        #endregion
         #endregion
 
         #region Properties
         public IUserManagement Users { get { return this; } }
 
         #endregion
-
-        
     }
 }

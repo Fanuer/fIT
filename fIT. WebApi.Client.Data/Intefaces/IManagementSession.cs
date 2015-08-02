@@ -23,6 +23,10 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// </summary>
         string CurrentUserName { get; }
         /// <summary>
+        /// Current User Id
+        /// </summary>
+        Guid CurrentUserId { get; }
+        /// <summary>
         /// All Methods a users with role 'User' can perform
         /// </summary>
         IUserManagement Users { get; }

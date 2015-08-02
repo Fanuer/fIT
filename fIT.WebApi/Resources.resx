@@ -201,4 +201,7 @@
     <value>Removed Users</value>
     <comment>Nutzer, die von der Rolle entfernt wurden</comment>
   </data>
+  <data name="Error_CreateScheduleOnlyForYourself" xml:space="preserve">
+    <value>You can only create Schedules for yourself</value>
+  </data>
 </root>

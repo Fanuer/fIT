@@ -117,6 +117,7 @@ namespace fITNat.Services
                 practice.Weight = weight;
                 practice.Repetitions = repetitions;
                 practice.NumberOfRepetitions = numberOfRepetitions;
+                //await service.recordPracticeAsync(practice);
             }
             catch(ServerException ex)
             {

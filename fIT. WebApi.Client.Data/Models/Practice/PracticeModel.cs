@@ -40,5 +40,9 @@ namespace fIT.WebApi.Client.Data.Models.Practice
         /// Uebung
         /// </summary>
         public int ExerciseId { get; set; }
+        /// <summary>
+        /// ID des angemeldeten Users
+        /// </summary>
+        public string UserId { get; set; }
     }
 }

@@ -77,13 +77,13 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var exists = this.AppRepository.Exercise.Exists(id);
+            var exists = await this.AppRepository.Exercise.ExistsAsync(id);
 
             try
             {
                 var orig = await this.AppRepository.Exercise.FindAsync(id);
                 orig = this.TheModelFactory.Update(exercise, orig);
-                await this.AppRepository.Exercise.UpdateAsync(id, orig);
+                await this.AppRepository.Exercise.UpdateAsync(orig);
             }
             catch (DbUpdateConcurrencyException)
             {

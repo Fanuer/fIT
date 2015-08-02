@@ -58,6 +58,8 @@
     <Compile Include="ClientTests.Admin.cs" />
     <Compile Include="ClientTests.cs" />
     <Compile Include="ClientTests.Users.cs" />
+    <Compile Include="Model\ExtendedTemporary.cs" />
+    <Compile Include="Model\Temporary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

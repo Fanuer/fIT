@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using fIT.WebApi.Client.Data.Models.Practice;
 using fIT.WebApi.Client.Data.Models.Schedule;
 
 namespace fIT.WebApi.Client.Data.Intefaces
@@ -35,7 +36,7 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <returns></returns>
         Task<ScheduleModel> GetScheduleByIdAsync(int id);
         /// <summary>
-        /// Gibt alle Trainingspläe des angemeldeten Nutzers zurück
+        /// Gibt alle Trainingsplaene des angemeldeten Nutzers zurueck
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync();
@@ -65,6 +66,40 @@ namespace fIT.WebApi.Client.Data.Intefaces
 
         Task<IEnumerable<ExerciseModel>> GetAllExercisesAsync();
         Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId);
+
+        #endregion
+
+        #region Practice    
+
+        /// <summary>
+        /// Gibt alle Trainings eines Nutzers zurueck
+        /// </summary>
+        Task<IEnumerable<PracticeModel>> GetAllPracticesAsync();
+        /// <summary>
+        /// Gibt eine Trainingseinheit anhand der Id zurueck
+        /// </summary>
+        /// <param name="id">id eines Trainings</param>
+        /// <returns></returns>
+        Task<PracticeModel> GetPracticeByIdAsync(int id);
+        /// <summary>
+        /// Erstellt ein neues Training fuer den angemeldeten Nutzer
+        /// </summary>
+        /// <param name="model">Trainingsdaten</param>
+        /// <returns></returns>
+        Task<PracticeModel> CreatePracticeAsync(PracticeModel model);
+        /// <summary>
+        /// Loescht ein Training
+        /// </summary>
+        /// <param name="id">id des Datensatzes</param>
+        /// <returns></returns>
+        Task DeletePracticeAsync(int id);
+        /// <summary>
+        /// Aendert ein Training ab
+        /// </summary>
+        /// <param name="id">id des trainings</param>
+        /// <param name="model">neue Daten</param>
+        /// <returns></returns>
+        Task UpdatePracticeAsync(int id, PracticeModel model);
 
         #endregion
     }

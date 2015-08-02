@@ -31,7 +31,7 @@ namespace fIT.WebApi.Repository
             return new ApplicationDbContext();
         }
 
-        public static IRepository CreateRepository()
+        internal static IRepository CreateRepository()
         {
           return new ApplicationRepository();
         }

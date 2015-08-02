@@ -10,6 +10,7 @@ using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
 using fIT.WebApi.Repository.Interfaces;
 using fIT.WebApi.Repository.Interfaces.CRUD;
+using fIT.WebApi.Repository.Interfaces.CRUD.SingleID;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -65,7 +66,7 @@ namespace fIT.WebApi.Repository
 
             #region Ctor
 
-            public GenericRepository(ApplicationDbContext ctx)
+            protected GenericRepository(ApplicationDbContext ctx)
             {
                 _ctx = ctx;
             }
@@ -88,6 +89,12 @@ namespace fIT.WebApi.Repository
                 return await _ctx.SaveChangesAsync() > 0;
             }
 
+            public async Task<bool> RemoveAsync(TIdProperty[] id)
+            {
+                var model = await this.FindAsync(id);
+                return await RemoveAsync(model);
+            }
+
             public async Task<bool> RemoveAsync(TIdProperty id)
             {
                 var model = await this.FindAsync(id);
@@ -104,14 +111,15 @@ namespace fIT.WebApi.Repository
                 return await this._ctx.SaveChangesAsync() > 0;
             }
 
-            public bool Exists(TIdProperty id)
+            public async Task<bool> ExistsAsync(TIdProperty id)
             {
-                return this.GetAllAsync().Count(e => e.Id.Equals(id)) > 0;
+                return await this.GetAllAsync().AsQueryable<T>().CountAsync(e => e.Id.Equals(id)) > 0;
             }
+
 
             public IEnumerable<T> GetAllAsync()
             {
-                return this._ctx.Set(typeof(T)) as IQueryable<T>;
+                return this._ctx.Set(typeof(T)) as IEnumerable<T>;
             }
 
             public async Task<T> FindAsync(TIdProperty id)
@@ -119,7 +127,12 @@ namespace fIT.WebApi.Repository
                 return (T)await this._ctx.Set(typeof(T)).FindAsync(id);
             }
 
-            public async Task<bool> UpdateAsync(TIdProperty id, T model)
+            public async Task<T> FindAsync(TIdProperty[] id)
+            {
+                return (T)await this._ctx.Set(typeof(T)).FindAsync(id);
+            }
+
+            public async Task<bool> UpdateAsync(T model)
             {
                 if (model == null)
                 {
@@ -128,6 +141,7 @@ namespace fIT.WebApi.Repository
                 _ctx.Entry(model).State = EntityState.Modified;
                 return await this._ctx.SaveChangesAsync() > 0;
             }
+
 
             #endregion
 

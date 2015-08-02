@@ -94,7 +94,7 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Repository
         /// </summary>
-        protected IRepository AppRepository
+        internal IRepository AppRepository
         {
             get { return this._rep ?? Request.GetOwinContext().Get<IRepository>(); }
         }

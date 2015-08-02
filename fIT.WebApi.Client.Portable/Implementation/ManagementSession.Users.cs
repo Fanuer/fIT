@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using fIT.WebApi.Client.Data.Models.Practice;
 using fIT.WebApi.Client.Data.Models.Schedule;
 
 namespace fIT.WebApi.Client.Portable.Implementation
@@ -120,6 +121,58 @@ namespace fIT.WebApi.Client.Portable.Implementation
             return await this.GetAsync<ExerciseModel>("api/exercise/" + exerciseId);
         }
 
+        #endregion
+
+        #region Practice
+        /// <summary>
+        /// Gets all of the users practices
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<PracticeModel>> GetAllPracticesAsync()
+        {
+            return await this.GetAsync<IEnumerable<PracticeModel>>("api/practice");
+        }
+
+        /// <summary>
+        /// Gets one practice by its id
+        /// </summary>
+        /// <param name="id">practice id</param>
+        /// <returns></returns>
+        public async Task<PracticeModel> GetPracticeByIdAsync(int id)
+        {
+            return await this.GetAsync<PracticeModel>("api/practice/" + id);
+        }
+
+        /// <summary>
+        /// Creates an new Practice
+        /// </summary>
+        /// <param name="model">practice data</param>
+        /// <returns></returns>
+        public async Task<PracticeModel> CreatePracticeAsync(PracticeModel model)
+        {
+            return await this.PostAsJsonReturnAsync<PracticeModel, PracticeModel>(model, "api/practice");
+        }
+
+        /// <summary>
+        /// Deletes one practice entry
+        /// </summary>
+        /// <param name="id">practice id</param>
+        /// <returns></returns>
+        public async Task DeletePracticeAsync(int id)
+        {
+            await this.DeleteAsync("api/practice/" + id);
+        }
+
+        /// <summary>
+        /// Updates one practice entry
+        /// </summary>
+        /// <param name="id">practice id</param>
+        /// <param name="model">practice data</param>
+        /// <returns></returns>
+        public async Task UpdatePracticeAsync(int id, PracticeModel model)
+        {
+            await PutAsJsonAsync(model, "api/practice/" + id);
+        }
 
         #endregion
         #endregion

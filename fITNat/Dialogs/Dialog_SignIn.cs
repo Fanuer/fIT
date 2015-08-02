@@ -20,7 +20,7 @@ namespace fITNat
         private EditText txtUsername;
         private EditText txtPassword;
         private Button btnSignIn;
-        private OnOffService ooService;
+        private ManagementServiceLocal mgnService;
 
         public event EventHandler<OnSignInEventArgs> onSignInComplete;
 
@@ -43,7 +43,8 @@ namespace fITNat
         private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                ooService.SignIn(txtUsername.Text, txtPassword.Text).Wait();
+                mgnService.SignIn(txtUsername.Text, txtPassword.Text).Wait();
+                
             }
             catch(ServerException ex)
             {

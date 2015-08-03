@@ -63,7 +63,7 @@ namespace fIT.WebApi.Controller
             {
                 return BadRequest(ModelState);
             }
-            return Ok(schedule);
+            return Ok(this.TheModelFactory.Create(schedule));
         }
 
         /// <summary>
@@ -172,6 +172,7 @@ namespace fIT.WebApi.Controller
         /// <param name="exerciseId">Id of an exercise</param>
         /// <returns></returns>
         [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
         [HttpPut]
@@ -186,13 +187,17 @@ namespace fIT.WebApi.Controller
             {
                 ModelState.AddModelError("UserId", "You can only delete your own schedules");
             }
+            if (schedule.Exercises!= null && schedule.Exercises.Any(x=>x.Id==exerciseId))
+            {
+                ModelState.AddModelError("", "Exercise already exists within the given schedule");
+            }
 
             var exercise = await this.AppRepository.Exercise.FindAsync(exerciseId);
             if (exercise == null)
             {
                 return NotFound();
             }
-
+            
             bool adding = false;
             if (ModelState.IsValid)
             {
@@ -216,6 +221,7 @@ namespace fIT.WebApi.Controller
         /// <param name="exerciseId">Id of an exercise</param>
         /// <returns></returns>
         [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [HttpDelete]
         [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
@@ -229,6 +235,10 @@ namespace fIT.WebApi.Controller
             if (!IsValidSchedule(schedule.UserID))
             {
                 ModelState.AddModelError("UserId", "You can only delete your own schedules");
+            }
+            if (schedule.Exercises != null && schedule.Exercises.All(x => x.Id != exerciseId))
+            {
+                return NotFound();
             }
 
             var exercise = await this.AppRepository.Exercise.FindAsync(exerciseId);

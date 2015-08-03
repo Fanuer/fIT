@@ -285,5 +285,29 @@ namespace fIT.WebApi.Client.Portable.Tests
             }
         }
 
+        [TestMethod]
+        public void AddAndRemoveExerciseToSchedule()
+        {
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            using (var schedule = EnsureSchedule(session))
+            using (var exercise = EnsureExercise(session))
+            {
+                var scheduleId = schedule.Model.Id;
+                var exerciseId = exercise.Model.Id;
+
+                var s = session.Users.GetScheduleByIdAsync(scheduleId).Result;
+                Assert.AreEqual(0, s.Exercises.Count());
+
+                session.Users.AddExerciseToScheduleAsync(scheduleId, exerciseId).Wait();
+                s = session.Users.GetScheduleByIdAsync(scheduleId).Result;
+                Assert.AreEqual(1, s.Exercises.Count());
+                Assert.AreEqual(exerciseId, s.Exercises.ElementAt(0).Id);
+
+                session.Users.RemoveExerciseFromScheduleAsync(scheduleId, exerciseId).Wait();
+                s = session.Users.GetScheduleByIdAsync(scheduleId).Result;
+                Assert.AreEqual(0, s.Exercises.Count());
+            }
+        }
     }
 }

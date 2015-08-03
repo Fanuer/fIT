@@ -59,6 +59,20 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <param name="model">neue Daten des Trainingsplans</param>
         /// <returns></returns>
         Task UpdateScheduleAsync(int scheduleId, ScheduleModel model);
+        /// <summary>
+        /// Fuegt eine Trainingsplan eine Uebung hinzu
+        /// </summary>
+        /// <param name="scheduleId">Id eines Trainingsplans</param>
+        /// <param name="exerciseId">Id einer Uebung</param>
+        /// <returns></returns>
+        Task AddExerciseToScheduleAsync(int scheduleId, int exerciseId);
+        /// <summary>
+        /// Entfernt eine Uebung von einem Trainingsplan
+        /// </summary>
+        /// <param name="scheduleId">Id eines Trainingsplans</param>
+        /// <param name="exerciseId">Id einer Uebung</param>
+        /// <returns></returns>
+        Task RemoveExerciseFromScheduleAsync(int scheduleId, int exerciseId);
 
         #endregion
 

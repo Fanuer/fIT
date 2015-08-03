@@ -82,32 +82,25 @@ namespace fIT.WebApi.Controller
         [HttpPut]
         public async Task<IHttpActionResult> UpdatePractice([FromUri]int id, [FromBody] PracticeModel practice)
         {
+            if (id != practice.Id)
+            {
+                ModelState.AddModelError("id", "The given id have to be the same as in the model");
+            }
+            else if (!IsValidRequest(practice.UserId))
+            {
+                ModelState.AddModelError("id", "You can only update your own practices");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != practice.Id)
-            {
-                return BadRequest();
-            }
-            bool exists = false;
-            try
-            {
-                exists = await this.AppRepository.Practices.ExistsAsync(id);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
+            
+            bool exists = this.AppRepository.Exercise.Exists(id);
+            
             try
             {
                 var orig = await this.AppRepository.Practices.FindAsync(id);
-                if (!IsValidRequest(orig.UserId))
-                {
-                    return BadRequest();
-                }
                 orig = this.TheModelFactory.Update(practice, orig);
                 await this.AppRepository.Practices.UpdateAsync(orig);
             }

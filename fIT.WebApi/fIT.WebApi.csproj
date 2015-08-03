@@ -218,14 +218,17 @@
     <Compile Include="Migrations\201508021857521_ChangePracticeKeyDefinition2.Designer.cs">
       <DependentUpon>201508021857521_ChangePracticeKeyDefinition2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201508031040410_AddedModelBinder1.cs" />
+    <Compile Include="Migrations\201508031040410_AddedModelBinder1.Designer.cs">
+      <DependentUpon>201508031040410_AddedModelBinder1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Models\PracticeModel.cs" />
     <Compile Include="Models\RefreshTokenModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IEntity.cs" />
-    <Compile Include="Repository\Interfaces\CRUD\SingleID\IRepositoryAddAndDelete.cs" />
     <Compile Include="Repository\Interfaces\CRUD\MultiId\IRepositoryAddAndDeleteMultiId.cs" />
+    <Compile Include="Repository\Interfaces\CRUD\SingleID\IRepositoryAddAndDelete.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IRepositoryFindAll.cs" />
-    <Compile Include="Repository\Interfaces\CRUD\SingleID\IRepositoryFindSingle.cs" />
     <Compile Include="Repository\Interfaces\CRUD\MultiId\IRepositoryFindSingleMultiId.cs" />
     <Compile Include="Repository\Interfaces\CRUD\IRepositoryUpdate.cs" />
     <Content Include="Web.config" />
@@ -280,6 +283,7 @@
     <Compile Include="Provider\CustomOAuthProvider.cs" />
     <Compile Include="Provider\CustomRefreshTokenProvider.cs" />
     <Compile Include="Repository\ApplicationDbContext.cs" />
+    <Compile Include="Repository\Interfaces\CRUD\SingleID\IRepositoryFindSingle.cs" />
     <Compile Include="Repository\Interfaces\IClientRepository.cs" />
     <Compile Include="Repository\Interfaces\IExerciseRepository.cs" />
     <Compile Include="Repository\Interfaces\IPracticeRepository.cs" />
@@ -327,6 +331,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508021857521_ChangePracticeKeyDefinition2.resx">
       <DependentUpon>201508021857521_ChangePracticeKeyDefinition2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508031022421_AddedModelBinder.resx">
+      <DependentUpon>201508031022421_AddedModelBinder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201508031040410_AddedModelBinder1.resx">
+      <DependentUpon>201508031040410_AddedModelBinder1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

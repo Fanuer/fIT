@@ -77,7 +77,7 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var exists = await this.AppRepository.Exercise.ExistsAsync(id);
+            var exists = this.AppRepository.Exercise.Exists(id);
 
             try
             {

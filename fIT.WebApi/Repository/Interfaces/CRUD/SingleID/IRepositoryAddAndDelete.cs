@@ -7,6 +7,6 @@ namespace fIT.WebApi.Repository.Interfaces.CRUD.SingleID
     Task<bool> AddAsync(T model);
     Task<bool> RemoveAsync(TIdProperty id);
     Task<bool> RemoveAsync(T model);
-        Task<bool> ExistsAsync(TIdProperty id);
+        bool Exists(TIdProperty id);
   }
 }

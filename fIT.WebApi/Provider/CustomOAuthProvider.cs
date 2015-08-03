@@ -135,7 +135,14 @@ namespace fIT.WebApi.Provider
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
             }
-            context.AdditionalResponseParameters.Add("UserId", context.Identity.GetUserId());
+            if (!context.AdditionalResponseParameters.ContainsKey("UserId"))
+            {
+                context.AdditionalResponseParameters.Add("UserId", context.Identity.GetUserId());
+            }
+            else
+            {
+                context.AdditionalResponseParameters["UserId"] = context.Identity.GetUserId();
+            }
 
             return Task.FromResult<object>(null);
         }

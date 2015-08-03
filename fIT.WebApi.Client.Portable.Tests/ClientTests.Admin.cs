@@ -150,7 +150,7 @@ namespace fIT.WebApi.Client.Portable.Tests
                     Assert.AreNotEqual(newExercise.Id, exercise.Id);
 
                     exercise.Name = newExercise.Name + " Neu";
-                    session.Admins.UpdateExerciseAsync(exercise.Id, exercise);
+                    session.Admins.UpdateExerciseAsync(exercise.Id, exercise).Wait();
                     exercise = session.Users.GetExerciseByIdAsync(exercise.Id).Result;
                     Assert.AreEqual(newExercise.Name + " Neu", exercise.Name);
 

@@ -135,8 +135,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
                 Token = result.AccessToken;
                 expiresOn = new DateTimeOffset(result.ExpireDate);
             }
-
-            if (Token == null)
+            else
             {
                 Dispose();
                 throw new ServerException(response);

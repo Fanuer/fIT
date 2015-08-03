@@ -123,7 +123,7 @@ namespace fIT.WebApi.Client.Portable.Tests
                     Assert.AreEqual(newSchedule.UserId, schedule.UserId);
 
                     schedule.Name = newSchedule.Name + " Neu";
-                    session.Users.UpdateScheduleAsync(schedule.Id, schedule);
+                    session.Users.UpdateScheduleAsync(schedule.Id, schedule).Wait();
                     schedule = session.Users.GetScheduleByIdAsync(schedule.Id).Result;
                     Assert.AreEqual(newSchedule.Name + " Neu", schedule.Name);
 
@@ -199,11 +199,11 @@ namespace fIT.WebApi.Client.Portable.Tests
 
                     newPractice.Weight = 70;
 
-                    session.Users.UpdatePracticeAsync(newPractice.Id, newPractice);
+                    session.Users.UpdatePracticeAsync(newPractice.Id, newPractice).Wait();
                     newPractice = session.Users.GetPracticeByIdAsync(newPractice.Id).Result;
                     Assert.AreEqual(70, newPractice.Weight);
 
-                    session.Users.DeleteScheduleAsync(newPractice.Id).Wait();
+                    session.Users.DeletePracticeAsync(newPractice.Id).Wait();
                     allPracticesNew = session.Users.GetAllPracticesAsync().Result;
                     Assert.AreEqual(allPracticesCurrent.Count(), allPracticesNew.Count());
                     testPractice = null;
@@ -279,7 +279,7 @@ namespace fIT.WebApi.Client.Portable.Tests
                 {
                     if (testPractice != null)
                     {
-                        session.Users.DeleteScheduleAsync(testPractice.Id).Wait();
+                        session.Users.DeletePracticeAsync(testPractice.Id).Wait();
                     }
                 }
             }

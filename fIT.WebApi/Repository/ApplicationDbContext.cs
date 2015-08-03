@@ -37,8 +37,6 @@ namespace fIT.WebApi.Repository
         }
 
 
-        /*
-        
         /// <summary>
         /// Creates Bindings between objects
         /// </summary>
@@ -50,17 +48,14 @@ namespace fIT.WebApi.Repository
                 .WithMany(schedule => schedule.Exercises)
                 .Map(exercises =>
                 {
-                    exercises.MapLeftKey("ExerciseRefId");
-                    exercises.MapRightKey("SchaduleRefId");
-                    exercises.ToTable("ScheduleExercise");
+                    exercises.MapLeftKey("Exercise_Id");
+                    exercises.MapRightKey("Schedule_Id");
+                    exercises.ToTable("ScheduleExercises");
                 });
 
-            modelBuilder.Entity<UserInformation>().HasKey(e => e.UserID);
             base.OnModelCreating(modelBuilder);
         }
 
-
-        */
         #endregion
 
         #region Properties

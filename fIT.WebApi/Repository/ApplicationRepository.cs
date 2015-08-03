@@ -122,7 +122,7 @@ namespace fIT.WebApi.Repository
                 return this._ctx.Set(typeof(T)) as IQueryable<T>;
             }
 
-            public async Task<T> FindAsync(TIdProperty id)
+            public virtual async Task<T> FindAsync(TIdProperty id)
             {
                 return (T)await this._ctx.Set(typeof(T)).FindAsync(id);
             }
@@ -176,6 +176,14 @@ namespace fIT.WebApi.Repository
             #endregion
 
             #region Methods
+
+            public async override Task<Schedule> FindAsync(int id)
+            {
+                var result = await base.FindAsync(id);
+                await _ctx.Entry(result).Collection(x => x.Exercises).LoadAsync();
+                return result;
+            }
+
             /// <summary>
             /// Adds an Exercise to a Schedule
             /// </summary>

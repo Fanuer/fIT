@@ -332,9 +332,6 @@
     <EmbeddedResource Include="Migrations\201508021857521_ChangePracticeKeyDefinition2.resx">
       <DependentUpon>201508021857521_ChangePracticeKeyDefinition2.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201508031022421_AddedModelBinder.resx">
-      <DependentUpon>201508031022421_AddedModelBinder.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201508031040410_AddedModelBinder1.resx">
       <DependentUpon>201508031040410_AddedModelBinder1.cs</DependentUpon>
     </EmbeddedResource>

@@ -20,7 +20,7 @@ namespace fITNat
         private EditText txtUsername;
         private EditText txtPassword;
         private Button btnSignIn;
-        private ManagementServiceLocal mgnService;
+        private OnOffService ooService;
 
         public event EventHandler<OnSignInEventArgs> onSignInComplete;
 
@@ -43,23 +43,25 @@ namespace fITNat
         private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                mgnService.SignIn(txtUsername.Text, txtPassword.Text).Wait();
-                
+                ooService.SignIn(txtUsername.Text, txtPassword.Text).Wait();
+                //User has clicked the Login-Button
+                onSignInComplete.Invoke(this, new OnSignInEventArgs
+                    (txtUsername.Text, txtPassword.Text));
+                //Dialog will slide to the side and will disapear
+                this.Dismiss();
             }
             catch(ServerException ex)
             {
-                Console.WriteLine("Login-Fehler: " + ex.StackTrace);
+                Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
+                //Falsche Logindaten
+                //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
+                //e.Data => Alle Fehler!!
+                SignInFail();
             }
             catch(Exception exc)
             {
                 Console.WriteLine("Login-Fehler: " + exc.StackTrace);
             }
-            
-            //User has clicked the Login-Button
-            onSignInComplete.Invoke(this, new OnSignInEventArgs
-                (txtUsername.Text, txtPassword.Text));
-            //Dialog will slide to the side and will disapear
-            this.Dismiss();
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)

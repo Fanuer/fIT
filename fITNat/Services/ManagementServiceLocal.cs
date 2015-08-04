@@ -9,17 +9,24 @@ using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Practice;
+using fIT.WebApi.Client.Data.Models.Schedule;
+using System.Collections.Generic;
+using fIT.WebApi.Client.Data.Models.Exercise;
 
 namespace fITNat.Services
 {
     [Service]
     class ManagementServiceLocal : Service
     {
+        #region Variablen
         private const string URL = @"http://fit-bachelor.azurewebsites.net/";
         private ManagementService service;
+        private ManagementSession mgnSession;
+        private string folder;
         private string username { get; set; }
         private string password { get; set; }
         private IManagementSession session;
+        #endregion
 
         public override void OnCreate()
         {
@@ -32,6 +39,19 @@ namespace fITNat.Services
             {
                 Console.WriteLine("Serverfehler: " + e.StackTrace);
             }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Fehler bei OnCreate in ManagementServiceLocal");
+            }
+        }
+
+        /// <summary>
+        /// Gibt die aktuelle Session zurück
+        /// </summary>
+        /// <returns>aktuelle Session</returns>
+        public IManagementSession actualSession()
+        {
+            return session;
         }
 
         public override IBinder OnBind(Intent intent)
@@ -39,6 +59,13 @@ namespace fITNat.Services
             throw new NotImplementedException();
         }
 
+        #region User
+        /// <summary>
+        /// Login
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public async Task SignIn(string username, string password)
         {
             this.username = username;
@@ -50,11 +77,7 @@ namespace fITNat.Services
             catch(ServerException e)
             {
                 Console.WriteLine("Serverfehler: " + e.StackTrace);
-                //Falsche Logindaten
-                //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
-                //e.Data => Alle Fehler!!
-                Dialog_SignIn signInD = new Dialog_SignIn();
-                signInD.SignInFail();
+                throw;
             }
             catch (Exception exc)
             {
@@ -62,6 +85,18 @@ namespace fITNat.Services
             }
         }
 
+        /// <summary>
+        /// Registrierung am Server
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <param name="passwordConfirm"></param>
+        /// <param name="gender"></param>
+        /// <param name="job"></param>
+        /// <param name="fitness"></param>
+        /// <param name="birthdate"></param>
+        /// <returns></returns>
         public async Task SignUp(
                                 string username,
                                 string email,
@@ -86,21 +121,25 @@ namespace fITNat.Services
             }
             catch(ServerException ex)
             {
-                Console.WriteLine("Serverfehler: " + ex.StackTrace);
-                //Falsche Logindaten
-                //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
-                Dialog_SignUp signUpD = new Dialog_SignUp();
-                string fehler = "";
-                if (ex.StackTrace.Contains("username"))
-                    fehler = "username";
-                else if (ex.StackTrace.Contains("username"))
-                    fehler = "password";
-                signUpD.SignUpFail(fehler);
+                throw;
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Fehler beim Registrieren: " + exc.StackTrace);
             }
         }
 
-        public async Task recordPractice(int id,
-                                        int scheduleId,
+        /// <summary>
+        /// Legt eine Übung am Server an
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <param name="exerciseId"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="weight"></param>
+        /// <param name="repetitions"></param>
+        /// <param name="numberOfRepetitions"></param>
+        /// <returns></returns>
+        public async Task recordPractice(int scheduleId,
                                         int exerciseId,
                                         DateTime timestamp = default(DateTime),
                                         double weight = 0,
@@ -110,7 +149,6 @@ namespace fITNat.Services
             try
             {
                 PracticeModel practice = new PracticeModel();
-                practice.Id = id;
                 practice.ScheduleId = scheduleId;
                 practice.ExerciseId = exerciseId;
                 practice.Timestamp = timestamp;
@@ -127,5 +165,57 @@ namespace fITNat.Services
                 Console.WriteLine("Fehler beim Eintragen eines Trainings: " + exc.StackTrace);
             }
         }
+        #endregion
+
+        #region Schedule
+        /// <summary>
+        /// Ruft alle Trainingspläne vom Server ab
+        /// </summary>
+        /// <returns>IEnumerable aller Pläne</returns>
+        public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync()
+        {
+            try
+            {
+                IEnumerable<ScheduleModel> schedules = await mgnSession.Users.GetAllSchedulesAsync();
+                return schedules;
+            }
+            catch(ServerException ex)
+            {
+                throw;
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Fehler beim Online-Abrufen der Trainingspläne: " + exc.StackTrace);
+                return null;
+            }
+        }
+        #endregion
+
+        #region Exercise
+        /// <summary>
+        /// Ruft eine Übung anhand der ID vom Server ab
+        /// </summary>
+        /// <param name="exerciseId"></param>
+        /// <returns></returns>
+        public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
+        {
+            try
+            {
+                ExerciseModel exercise = await mgnSession.Users.GetExerciseByIdAsync(exerciseId);
+                return exercise;
+            }
+            catch (ServerException ex)
+            {
+                throw;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Fehler beim Online-Abrufen einer Übung: " + exc.StackTrace);
+                return null;
+            }
+        }
+        #endregion
+
+
     }
 }

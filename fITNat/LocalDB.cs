@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -14,32 +15,40 @@ using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Practice;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using fIT.fITNat;
 
 namespace fITNat
 {
     class LocalDB
     {
-        public async Task<bool> createDatabase(string path)
+        private static readonly string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+        private static readonly string path = System.IO.Path.Combine(folder, "app.db");
+
+        public async Task<bool> createDatabase()
         {
             try
             {
                 var connection = new SQLiteAsyncConnection(path);
-                {
-                    await connection.CreateTableAsync<UserModel>();
-                    await connection.CreateTableAsync<PracticeModel>();
-                    await connection.CreateTableAsync<ScheduleModel>();
-                    await connection.CreateTableAsync<ExerciseModel>();
-                    return true;
-                }
+                await connection.CreateTableAsync<UserLoginModel>();
+                await connection.CreateTableAsync<PracticeModel>();
+                await connection.CreateTableAsync<ScheduleModel>();
+                await connection.CreateTableAsync<ExerciseModel>();
+                Console.WriteLine("UserLogin-Table created!");
+                return true;
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine("Fehler beim Anlegen der DB: " + ex.StackTrace);
                 return false;
             }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Fehler beim Anlegen der DB: " + exc.StackTrace);
+                return false;
+            }
         }
 
-        #region User
+        #region UserLogin
         /// <summary>
         /// Speichert oder updatet einen User in der lokalen DB
         /// </summary>
@@ -48,7 +57,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateUser(UserModel data, string path)
+        public async Task<int> insertUpdateUser(UserLoginModel data)
         {
             try
             {
@@ -74,7 +83,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteUser(UserModel data, string path)
+        public async Task<int> deleteUser(UserLoginModel data)
         {
             try
             {
@@ -96,7 +105,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findUser(UserModel data, string path)
+        public async Task<int> findUser(UserLoginModel data)
         {
             try
             {
@@ -117,7 +126,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>Anzahl der User</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfUsers(string path)
+        public async Task<int> findNumberOfUsers()
         {
             try
             {
@@ -146,7 +155,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdatePractice(PracticeModel data, string path)
+        public async Task<int> insertUpdatePractice(PracticeModel data)
         {
             try
             {
@@ -172,7 +181,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deletePractice(PracticeModel data, string path)
+        public async Task<int> deletePractice(PracticeModel data)
         {
             try
             {
@@ -194,7 +203,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findPractice(PracticeModel data, string path)
+        public async Task<int> findPractice(PracticeModel data)
         {
             try
             {
@@ -215,7 +224,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>Anzahl der Trainings</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfPractices(string path)
+        public async Task<int> findNumberOfPractices()
         {
             try
             {
@@ -241,7 +250,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateSchedule(ScheduleModel data, string path)
+        public async Task<int> insertUpdateSchedule(ScheduleModel data)
         {
             try
             {
@@ -267,7 +276,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteSchedule(ScheduleModel data, string path)
+        public async Task<int> deleteSchedule(ScheduleModel data)
         {
             try
             {
@@ -289,7 +298,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findSchedule(ScheduleModel data, string path)
+        public async Task<int> findSchedule(ScheduleModel data)
         {
             try
             {
@@ -310,7 +319,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>Anzahl der Trainingspläne</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfSchedules(string path)
+        public async Task<int> findNumberOfSchedules()
         {
             try
             {
@@ -336,7 +345,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateExercise(ExerciseModel data, string path)
+        public async Task<int> insertUpdateExercise(ExerciseModel data)
         {
             try
             {
@@ -362,7 +371,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteExercise(ExerciseModel data, string path)
+        public async Task<int> deleteExercise(ExerciseModel data)
         {
             try
             {
@@ -384,7 +393,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findExercise(ExerciseModel data, string path)
+        public async Task<int> findExercise(ExerciseModel data)
         {
             try
             {
@@ -405,7 +414,7 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>Anzahl der Übungen</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfExercises(string path)
+        public async Task<int> findNumberOfExercises()
         {
             try
             {

@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using fIT.WebApi.Client.Data.Models.Practice;
+using fIT.WebApi.Client.Data.Models.Exceptions;
 
 namespace fITNat
 {
@@ -17,22 +18,51 @@ namespace fITNat
     public class PracticeActivity : Activity
     {
         private ImageView connectivityPointer;
+        private EditText txtWeight;
+        private EditText txtRepetitions;
+        private EditText txtNumberOfRepetitions;
+        private Button btnSavePractice;
+        private OnOffService ooService;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.PracticeLayout);
 
-            List<PracticeModel> practices = new List<PracticeModel>();
-            /*for (int i = 0; i < 10; i++)
-            {
-                practices.Add(i + ". Practice");
-            }*/
-
-            ArrayAdapter<PracticeModel> adapter = new ArrayAdapter<PracticeModel>(this, Resource.Layout.PracticeView, Resource.Id.txtPracticeViewDescription, practices);
-            ListView lv = (ListView)FindViewById(Resource.Id.lvPractice);
             connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionPractice);
-            lv.Adapter = adapter;
+            txtWeight = FindViewById<EditText>(Resource.Id.txtWeight);
+            txtRepetitions = FindViewById<EditText>(Resource.Id.txtRepetitions);
+            txtNumberOfRepetitions = FindViewById<EditText>(Resource.Id.txtNumberOfRepetitions);
+            btnSavePractice = FindViewById<Button>(Resource.Id.btnSavePractice);
+            btnSavePractice.Click += (object sender, EventArgs args) =>
+            {
+                try
+                {
+                    int scheduleId = 0; //über den Benutzer (aus der Session)
+                    int exerciseId = 0; //über den Weg zu dem Training
+                    string userId = "Test"; //Habe ich!
+                    double weight = Double.Parse(txtWeight.Text);
+                    int repetitions = Java.Lang.Integer.ParseInt(txtRepetitions.Text);
+                    int numberOfRepetitions = Java.Lang.Integer.ParseInt(txtNumberOfRepetitions.Text);
+
+                    ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions).Wait();
+                    //Zurück zu der Übungsseite
+                }
+                catch (ServerException ex)
+                {
+                    Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
+                    CreatePracticeFail();
+                }
+                catch (Exception exc)
+                {
+                    Console.WriteLine("Login-Fehler: " + exc.StackTrace);
+                }
+            };
+        }
+
+        private void CreatePracticeFail()
+        {
+            throw new NotImplementedException();
         }
 
         public override void OnBackPressed()

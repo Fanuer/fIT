@@ -21,30 +21,27 @@ namespace fITNat
         private List<ExerciseModel> exercises;
         private ListView lv;
         private ImageView connectivityPointer;
-        private ManagementServiceLocal mgnService;
+        private OnOffService ooService;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.ExerciseLayout);
+            //ScheduleID auslesen und in die versteckten Felder der Übungen legen
+            string schedule = Intent.GetStringExtra("Schedule");
 
             List<ExerciseModel> exercises = new List<ExerciseModel>();
             connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionExcercise);
             ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
-
-            //Generiert Testdaten
-            /*
-            for (int i = 0; i < 10; i++)
-            {
-                exercises.Add(i + ". Exercise");
-            }
-            */
+            
             //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-            //await mgnService
+            //eine foreach muss drum, um über jede Exercise in der Schedule zu iterieren
+            //var task = ooService.GetExerciseByIdAsync();
+            //exercises = task.Result.ToList();
 
 
-            //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
             ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises);
+            adapter.scheduleID = schedule;
             lv.Adapter = adapter;
 
 
@@ -61,12 +58,15 @@ namespace fITNat
         {
             //Daraus die ID der Übung holen und diesen dann abfragen + redirect auf die passende Seite!
             string selectedExerciseName = exercises[e.Position].Name.ToString();
-            int tid = Integer.ParseInt(exercises[e.Position].Id.ToString());
+            int exerciseId = Integer.ParseInt(exercises[e.Position].Id.ToString());
+            //ScheduleId aus dem versteckten Feld auslesen
+            string scheduleId = "";//txtExerciseViewScheduleID
             string selectedExerciseDescription = exercises[e.Position].Description.ToString();
-            //Exercise exercise = new Exercise(tid, selectedExerciseName, selectedExerciseDescription, session.ID);
-            //exercise.FindSingle(tid);
 
-            SetContentView(Resource.Layout.ExerciseLayout);
+            var practiceActivity = new Intent(this, typeof(PracticeActivity));
+            practiceActivity.PutExtra("Exercise", exerciseId);
+            practiceActivity.PutExtra("Schedule", scheduleId);
+            StartActivity(practiceActivity);
         }
 
         public override void OnBackPressed()

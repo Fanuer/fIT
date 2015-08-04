@@ -24,14 +24,14 @@ namespace fITNat
         private Button mBtnSignIn;
         private ProgressBar progressBar;
         private ImageView connectivityPointer;
-        private ManagementServiceLocal mngService;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             //Services starten
-            //StartService(new Intent(this, typeof(OnOffService)));
+            StartService(new Intent(this, typeof(OnOffService)));
             StartService(new Intent(this, typeof(ManagementServiceLocal)));
+            StartService(new Intent(this, typeof(ConnectivityService)));
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);

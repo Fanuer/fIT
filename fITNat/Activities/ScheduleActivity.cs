@@ -12,6 +12,7 @@ using Android.Widget;
 using fITNat.Services;
 using Java.Lang;
 using fIT.WebApi.Client.Data.Models.Schedule;
+using System.Threading.Tasks;
 
 namespace fITNat
 {
@@ -22,7 +23,7 @@ namespace fITNat
         private List<ScheduleModel> schedules;
         private ListView lv;
         private ImageView connectivityPointer;
-        private ManagementServiceLocal mgnService;
+        private OnOffService ooService;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -42,8 +43,8 @@ namespace fITNat
             }
             */
             //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-            //await mgnService
-
+            var task = ooService.GetAllSchedulesAsync();
+            schedules = task.Result.ToList();
 
             //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
             ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
@@ -63,11 +64,11 @@ namespace fITNat
         {
             //Daraus die ID des Trainingsplans holen und diesen dann abfragen + redirect auf die passende Seite!
             string selectedSchedule = schedules[e.Position].Name.ToString();
-            int tid = Integer.ParseInt(schedules[e.Position].Id.ToString());
-            //Schedule schedule = new Schedule(tid, selectedSchedule, session.ID);
-            //schedule.FindSingle(id);
+            int scheduleId = Integer.ParseInt(schedules[e.Position].Id.ToString());
 
-            SetContentView(Resource.Layout.ExerciseLayout);
+            var exerciseActivity = new Intent(this, typeof(ExerciseActivity));
+            exerciseActivity.PutExtra("Schedule", scheduleId);
+            StartActivity(exerciseActivity);
         }
 
         public override void OnBackPressed()

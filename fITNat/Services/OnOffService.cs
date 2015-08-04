@@ -1,29 +1,28 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-using Android.Util;
-using Java.IO;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
 using System.Threading.Tasks;
 using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
+using fIT.fITNat;
+using fIT.WebApi.Client.Data.Models.Schedule;
+using fIT.WebApi.Client.Data.Models.Exercise;
 
 namespace fITNat
 {
     [Service]
     class OnOffService : Service
     {
+        #region Variablen
         private ConnectivityService conService;
         private ManagementServiceLocal mgnService;
         private bool online;
+        private LocalDB db;
+        #endregion
 
         public override IBinder OnBind(Intent intent)
         {
@@ -38,21 +37,24 @@ namespace fITNat
             ExerciseActivity exerciseA = new ExerciseActivity();
             PracticeActivity practiceA = new PracticeActivity();
             ScheduleActivity scheduleA = new ScheduleActivity();
+            
+            //Datenbank erstellen
+            db = new LocalDB();
 
+            //Erstellen der lokalen DB macht Probleme!!!
+
+            //db.createDatabase().Wait();
+
+            //Verbindungsüberprüfung
             while (true)
             {
                 if(await conService.IsPingReachable())
                 {
                     online = true;
-
-                    
-
-                    //Aufrufe nach online setzen und überprüfen, ob es Unterschiede gab
                 }
                 else
                 {
                     online = false;
-                    //Aufrufe nach offline setzen
                 }
                 //Haken entsprechend der Connection setzen
                 mainA.setConnectivityStatus(online);
@@ -61,10 +63,9 @@ namespace fITNat
                 scheduleA.setConnectivityStatus(online);
             }
             
-
-            //Datenhaltung
         }
 
+        #region User
         /// <summary>
         /// Entsprechend des Netzwerkstatus wird lokal oder am Server angelegt
         /// </summary>
@@ -73,15 +74,43 @@ namespace fITNat
         /// <returns></returns>
         public async Task<bool> SignIn(string username, string password)
         {
+            UserLoginModel user = new UserLoginModel();
+            user.UserName = username;
+            user.Password = password;
             if (online)
             {
-                await mgnService.SignIn(username, password);
-                //Benutzer abfragen, die auf dem Server liegen und mit Lokal abgleichen
+                try
+                {
+                    await mgnService.SignIn(username, password);
+                    //Benutzer abfragen, die auf dem Server liegen und mit Lokal abgleichen
+                    await db.insertUpdateUser(user);
+                    System.Console.WriteLine("Online eingeloggt");
+                }
+                catch(ServerException ex)
+                {
+                    System.Console.WriteLine("Fehler beim Online-Einloggen" + ex.StackTrace);
+                    throw;
+                }
+                catch(Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim Online-Einloggen" + exc.StackTrace);
+                }
             }
             else
             {
-                //Lokal nachgucken
-                //await localService.SignIn(username, password);
+                try
+                {
+                    //Lokal nachgucken
+                    if (await db.findUser(user) != 1)
+                    {
+                        return false;
+                    }
+                    System.Console.WriteLine("Offline eingeloggt");
+                }
+                catch(Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim Offline-Einloggen" + exc.StackTrace);
+                }
             }
             return true;
         }
@@ -107,10 +136,17 @@ namespace fITNat
                                         FitnessType fitness,
                                         DateTime birthdate)
         {
-            if(online)
+            if (online)
             {
-                await mgnService.SignUp(username, email, password, passwordConfirm, gender, job, fitness, birthdate);
-                //Lokal anlegen
+                try
+                {
+                    await mgnService.SignUp(username, email, password, passwordConfirm, gender, job, fitness, birthdate);
+                }
+                catch (ServerException ex)
+                {
+                    System.Console.WriteLine("Fehler beim Registrieren: " + ex.StackTrace);
+                    throw;
+                }
             }
             else
             {
@@ -119,8 +155,9 @@ namespace fITNat
             }
             return true;
         }
+        #endregion
 
-
+        #region Practice
         /// <summary>
         /// Entsprechend des Netzwerkstatus wird lokal oder am Server angelegt
         /// </summary>
@@ -133,20 +170,20 @@ namespace fITNat
         /// <param name="repetitions"></param>
         /// <param name="numberOfRepetitions"></param>
         /// <returns></returns>
-        public async Task<bool> createPractice(int id,
-                                    int scheduleId,
-                                    int exerciseId,
-                                    string userId,
-                                    DateTime timestamp = default(DateTime),
-                                    double weight = 0,
-                                    int repetitions = 0,
-                                    int numberOfRepetitions = 0)
+        public async Task<bool> createPractice( int scheduleId,
+                                                int exerciseId,
+                                                string userId,
+                                                DateTime timestamp = default(DateTime),
+                                                double weight = 0,
+                                                int repetitions = 0,
+                                                int numberOfRepetitions = 0)
         {
             if (online)
             {
                 try
                 {
-                    await mgnService.recordPractice(id, scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions);
+                    string user = mgnService.actualSession().CurrentUserName;
+                    await mgnService.recordPractice(scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions);
                 }
                 catch(ServerException ex)
                 {
@@ -155,19 +192,98 @@ namespace fITNat
             }
             else
             {
+                try
+                {
 
+                }
+                catch(Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim lokalen Anlegen des Trainings: " + exc.StackTrace);
+                }
             }
             return true;
         }
+        #endregion
 
+        #region Schedule
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync()
+        {
+            if (online)
+            {
+                try
+                {
+                    IEnumerable<ScheduleModel> schedules = await mgnService.GetAllSchedulesAsync();
+                    return schedules;
+                }
+                catch (ServerException ex)
+                {
+                    System.Console.WriteLine("Fehler beim Abrufen der Trainingspläne: " + ex.StackTrace);
+                    throw;
+                }
+            }
+            else
+            {
+                try
+                {
+                    return null;
+                }
+                catch (Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim lokalen Abrufen der Trainingspläne: " + exc.StackTrace);
+                    return null;
+                }
+            }
+        }
+        #endregion
 
+        #region Exercise
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="exerciseId"></param>
+        /// <returns></returns>
+        public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
+        {
 
+            if (online)
+            {
+                try
+                {
+                    ExerciseModel exercise = await mgnService.GetExerciseByIdAsync(exerciseId);
+                    return exercise;
+                }
+                catch (ServerException ex)
+                {
+                    System.Console.WriteLine("Fehler beim Abrufen einer Übung: " + ex.StackTrace);
+                    throw;
+                }
+            }
+            else
+            {
+                try
+                {
+                    return null;
+                }
+                catch(Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim lokalen Abrufen einer Übung: " + exc.StackTrace);
+                    return null;
+                }
+            }
+        }
+        #endregion
+
+       
         //public StartCommandResult OnStartCommand -> Handling des Neustarts des Services
         //Sticky -> startet bei null
         //RedeliverIntent -> macht da weiter wo er aufgehört hat
         public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
         {
-            Log.Debug("DemoService", "DemoService started");
+            //Log.Debug("DemoService", "DemoService started");
             return StartCommandResult.Sticky;
         }
 

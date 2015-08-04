@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace fIT.WebApi.Repository.Interfaces.CRUD
 {
     public interface IRepositoryFindAll<T>
-  {
-    IEnumerable<T> GetAllAsync();
+    {
+        Task<IQueryable<T>> GetAllAsync();
   }
 }

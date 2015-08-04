@@ -18,7 +18,7 @@ namespace fIT.WebApi.Entities
             int scheduleId,
             int exerciseId,
             string userId,
-            DateTime timestamp = default(DateTime),
+            DateTime timestamp,
             double weight = 0,
             int repetitions = 0,
             int numberOfRepetitions = 0)
@@ -33,14 +33,14 @@ namespace fIT.WebApi.Entities
             this.NumberOfRepetitions = numberOfRepetitions;
         }
 
-        public Practice():this(-1, -1, -1, "")
+        public Practice():this(-1, -1, -1, "", DateTime.UtcNow)
         {
             
         }
 
         #region Properties
         [Key]
-        [Column(Order = 1)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public DateTime Timestamp { get; set; }
         public double Weight { get; set; }
@@ -48,13 +48,13 @@ namespace fIT.WebApi.Entities
         public int Repetitions { get; set; }
         public string UserId { get; set; }
 
-        [Key]
-        [Column(Order = 2)]
+        [ForeignKey("Schedule")]
         public int ScheduleId { get; set; }
+        public Schedule Schedule { get; set; }
 
-        [Key]
-        [Column(Order = 3)]
+        [ForeignKey("Exercise")]
         public int ExerciseId { get; set; }
+        public Exercise Exercise { get; set; }
         #endregion
 
     }

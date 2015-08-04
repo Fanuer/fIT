@@ -11,6 +11,11 @@ namespace fIT.WebApi.Models
     /// </summary>
     public class ScheduleModel : EntryModel<int>
     {
+        public ScheduleModel()
+        {
+            this.Exercises = new List<EntryModel<int>>();
+        }
+
         /// <summary>
         /// Nutzer, dem der Trainingsplan gehört
         /// </summary>

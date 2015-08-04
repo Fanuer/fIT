@@ -20,6 +20,7 @@ namespace fIT.WebApi.Repository
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            this.Database.Log = Console.WriteLine;
             Configuration.ProxyCreationEnabled = false;
             Configuration.LazyLoadingEnabled = false;
         }
@@ -31,14 +32,12 @@ namespace fIT.WebApi.Repository
             return new ApplicationDbContext();
         }
 
-        public static IRepository CreateRepository()
+        internal static IRepository CreateRepository()
         {
           return new ApplicationRepository();
         }
 
 
-        /*
-        
         /// <summary>
         /// Creates Bindings between objects
         /// </summary>
@@ -50,17 +49,14 @@ namespace fIT.WebApi.Repository
                 .WithMany(schedule => schedule.Exercises)
                 .Map(exercises =>
                 {
-                    exercises.MapLeftKey("ExerciseRefId");
-                    exercises.MapRightKey("SchaduleRefId");
-                    exercises.ToTable("ScheduleExercise");
+                    exercises.MapLeftKey("Exercise_Id");
+                    exercises.MapRightKey("Schedule_Id");
+                    exercises.ToTable("ScheduleExercises");
                 });
 
-            modelBuilder.Entity<UserInformation>().HasKey(e => e.UserID);
             base.OnModelCreating(modelBuilder);
         }
 
-
-        */
         #endregion
 
         #region Properties

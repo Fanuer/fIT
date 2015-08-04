@@ -505,6 +505,12 @@
             Communcates with the Database
             </summary>
         </member>
+        <member name="M:fIT.WebApi.Repository.ApplicationDbContext.OnModelCreating(System.Data.Entity.DbModelBuilder)">
+            <summary>
+            Creates Bindings between objects
+            </summary>
+            <param name="modelBuilder"></param>
+        </member>
         <member name="M:fIT.WebApi.Repository.ApplicationRepository.ScheduleRepository.AddExerciseAsync(System.Int32,System.Int32)">
             <summary>
             Adds an Exercise to a Schedule

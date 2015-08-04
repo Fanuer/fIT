@@ -43,7 +43,7 @@ namespace fIT.WebApi.Provider
         context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
         context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;
         // Add current User Id
-        context.Ticket.Properties.Dictionary.Add("UserId", context.Ticket.Identity.GetUserId());
+        //context.Ticket.Properties.Dictionary.Add("UserId", context.Ticket.Identity.GetUserId());
 
         if (!context.Ticket.Properties.Dictionary.ContainsKey("as:client_id"))
         {

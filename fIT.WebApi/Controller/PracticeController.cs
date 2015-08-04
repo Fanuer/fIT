@@ -30,13 +30,12 @@ namespace fIT.WebApi.Controller
         [EnableQuery]
         [Route("")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<PracticeModel>))]
-        public IQueryable<PracticeModel> GetPractices()
+        public async Task<IQueryable<PracticeModel>> GetPractices()
         {
-            return this
-                   .AppRepository
-                   .Practices
-                   .GetAllAsync()
-                   .Where(x=>x.UserId.Equals(CurrentUserId))
+            var all = await this.AppRepository.Practices.GetAllAsync();
+
+            return all
+                   .Where(x=> CurrentUserId.Equals(x.UserId))
                    .Select(this.TheModelFactory.Create)
                    .AsQueryable();
         }
@@ -82,27 +81,27 @@ namespace fIT.WebApi.Controller
         [HttpPut]
         public async Task<IHttpActionResult> UpdatePractice([FromUri]int id, [FromBody] PracticeModel practice)
         {
+            if (id != practice.Id)
+            {
+                ModelState.AddModelError("id", "The given id have to be the same as in the model");
+            }
+            else if (!IsValidRequest(practice.UserId))
+            {
+                ModelState.AddModelError("id", "You can only update your own practices");
+            }
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != practice.Id)
-            {
-                return BadRequest();
-            }
-
-            var exists = this.AppRepository.Practices.Exists(id);
-
+            
+            bool exists = await this.AppRepository.Exercise.ExistsAsync(id);
+            
             try
             {
                 var orig = await this.AppRepository.Practices.FindAsync(id);
-                if (!IsValidRequest(orig.UserId))
-                {
-                    return BadRequest();
-                }
-                orig = this.TheModelFactory.Update(practice, this.CurrentUserId, orig);
-                await this.AppRepository.Practices.UpdateAsync(id, orig);
+                orig = this.TheModelFactory.Update(practice, orig);
+                await this.AppRepository.Practices.UpdateAsync(orig);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -134,9 +133,11 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var datamodel = this.TheModelFactory.Update(practice, CurrentUserId);
+            var datamodel = this.TheModelFactory.Update(practice);
             await this.AppRepository.Practices.AddAsync(datamodel);
-            return CreatedAtRoute("DefaultApi", new { id = practice.Id }, practice);
+            
+            practice = this.TheModelFactory.Create(datamodel);
+            return CreatedAtRoute("GetPracticeById", new { id = practice.Id }, practice);
         }
 
         /// <summary>

@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
+using fIT.WebApi.Client.Data.Models.Exercise;
+using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
 using fIT.WebApi.Client.Portable.Implementation;
+using fIT.WebApi.Client.Portable.Tests.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 //using Nito.AsyncEx.UnitTests;
 
@@ -33,6 +37,7 @@ namespace fIT.WebApi.Client.Portable.Tests
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
         }
 
+        #region Tests
         [TestMethod]
         public async Task Login()
         {
@@ -111,5 +116,38 @@ namespace fIT.WebApi.Client.Portable.Tests
                 }
             }
         }
+
+        #endregion
+
+        #region Helper
+        /// <summary>
+        /// Erstellt ein Test Trainingsplan
+        /// </summary>
+        /// <param name="session">aktuelle session</param>
+        /// <param name="userId">optionale UserId. Wenn nciht gefüllt, wird die UserId der session benutzt</param>
+        /// <returns></returns>
+        private Temporary<ScheduleModel> EnsureSchedule(IManagementSession session, string userId = null)
+        {
+            var newSchedule = new ScheduleModel()
+            {
+                Name = "Test_Schedule" + System.Environment.TickCount,
+                UserId = userId ?? session.CurrentUserId.ToString(),
+            };
+            var result = session.Users.CreateScheduleAsync(newSchedule).Result;
+            return new Temporary<ScheduleModel>(result, x => session.Users.DeleteScheduleAsync(x.Id));
+        }
+
+        private Temporary<ExerciseModel> EnsureExercise(IManagementSession session)
+        {
+            var exercise = new ExerciseModel()
+            {
+                Name = "Test_Exercise" + System.Environment.TickCount,
+                Description = "Awesome Description"
+            };
+            var result = session.Admins.CreateExerciseAsync(exercise).Result;
+            return new Temporary<ExerciseModel>(result, x=> session.Admins.DeleteExerciseAsync(x.Id));
+        } 
+
+        #endregion
     }
 }

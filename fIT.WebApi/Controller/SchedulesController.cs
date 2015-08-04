@@ -30,14 +30,10 @@ namespace fIT.WebApi.Controller
         [Route("")]
         [HttpGet]
         [EnableQuery]
-        public IQueryable<ScheduleModel> GetSchedules()
+        public async Task<IQueryable<ScheduleModel>> GetSchedules()
         {
-            return this.AppRepository
-                       .Schedules
-                       .GetAllAsync()
-                       .Where(x => IsValidSchedule(x.UserID))
-                       .Select(this.TheModelFactory.Create)
-                       .AsQueryable();
+            var all = await this.AppRepository.Schedules.GetAllAsync();
+            return all.Where(x => IsValidSchedule(x.UserID)).Select(this.TheModelFactory.Create).AsQueryable();
         }
 
         /// <summary>
@@ -63,7 +59,7 @@ namespace fIT.WebApi.Controller
             {
                 return BadRequest(ModelState);
             }
-            return Ok(schedule);
+            return Ok(this.TheModelFactory.Create(schedule));
         }
 
         /// <summary>
@@ -91,13 +87,13 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var exists = this.AppRepository.Schedules.Exists(id);
+            var exists = await this.AppRepository.Schedules.ExistsAsync(id);
 
             try
             {
                 var orig = await this.AppRepository.Schedules.FindAsync(id);
                 orig = this.TheModelFactory.Update(schedule, orig);
-                await this.AppRepository.Schedules.UpdateAsync(id, orig);
+                await this.AppRepository.Schedules.UpdateAsync(orig);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -172,6 +168,7 @@ namespace fIT.WebApi.Controller
         /// <param name="exerciseId">Id of an exercise</param>
         /// <returns></returns>
         [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
         [HttpPut]
@@ -186,13 +183,17 @@ namespace fIT.WebApi.Controller
             {
                 ModelState.AddModelError("UserId", "You can only delete your own schedules");
             }
+            if (schedule.Exercises!= null && schedule.Exercises.Any(x=>x.Id==exerciseId))
+            {
+                ModelState.AddModelError("", "Exercise already exists within the given schedule");
+            }
 
             var exercise = await this.AppRepository.Exercise.FindAsync(exerciseId);
             if (exercise == null)
             {
                 return NotFound();
             }
-
+            
             bool adding = false;
             if (ModelState.IsValid)
             {
@@ -216,6 +217,7 @@ namespace fIT.WebApi.Controller
         /// <param name="exerciseId">Id of an exercise</param>
         /// <returns></returns>
         [SwaggerResponse(HttpStatusCode.OK)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [HttpDelete]
         [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
@@ -230,6 +232,10 @@ namespace fIT.WebApi.Controller
             {
                 ModelState.AddModelError("UserId", "You can only delete your own schedules");
             }
+            if (schedule.Exercises != null && schedule.Exercises.All(x => x.Id != exerciseId))
+            {
+                return NotFound();
+            }
 
             var exercise = await this.AppRepository.Exercise.FindAsync(exerciseId);
             if (exercise == null)
@@ -240,7 +246,7 @@ namespace fIT.WebApi.Controller
             bool removing = false;
             if (ModelState.IsValid)
             {
-                removing = await this.AppRepository.Schedules.AddExerciseAsync(schedule.Id, exerciseId);
+                removing = await this.AppRepository.Schedules.RemoveExerciseAsync(schedule.Id, exerciseId);
             }
             if (!removing)
             {

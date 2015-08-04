@@ -111,7 +111,7 @@ namespace fIT.WebApi.Provider
 
             using (IRepository repo = new ApplicationRepository())
             {
-                var oldtokens = repo.RefreshTokens.GetAllAsync().Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(user.UserName)).ToList();
+                var oldtokens = (await repo.RefreshTokens.GetAllAsync()).Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(user.UserName)).ToList();
                 foreach (var token in oldtokens)
                 {
                     await repo.RefreshTokens.RemoveAsync(token);
@@ -135,7 +135,14 @@ namespace fIT.WebApi.Provider
             {
                 context.AdditionalResponseParameters.Add(property.Key, property.Value);
             }
-            context.AdditionalResponseParameters.Add("UserId", context.Identity.GetUserId());
+            if (!context.AdditionalResponseParameters.ContainsKey("UserId"))
+            {
+                context.AdditionalResponseParameters.Add("UserId", context.Identity.GetUserId());
+            }
+            else
+            {
+                context.AdditionalResponseParameters["UserId"] = context.Identity.GetUserId();
+            }
 
             return Task.FromResult<object>(null);
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using System.Web;
@@ -10,6 +11,7 @@ using fIT.WebApi.Entities;
 using fIT.WebApi.Models;
 using fIT.WebApi.Repository.Interfaces;
 using fIT.WebApi.Repository.Interfaces.CRUD;
+using fIT.WebApi.Repository.Interfaces.CRUD.SingleID;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 
@@ -61,11 +63,12 @@ namespace fIT.WebApi.Repository
             #region Field
 
             protected ApplicationDbContext _ctx;
+            
             #endregion
 
             #region Ctor
 
-            public GenericRepository(ApplicationDbContext ctx)
+            protected GenericRepository(ApplicationDbContext ctx)
             {
                 _ctx = ctx;
             }
@@ -87,7 +90,7 @@ namespace fIT.WebApi.Repository
                 this._ctx.Set(typeof(T)).Add(model);
                 return await _ctx.SaveChangesAsync() > 0;
             }
-
+           
             public async Task<bool> RemoveAsync(TIdProperty id)
             {
                 var model = await this.FindAsync(id);
@@ -104,22 +107,17 @@ namespace fIT.WebApi.Repository
                 return await this._ctx.SaveChangesAsync() > 0;
             }
 
-            public bool Exists(TIdProperty id)
+            public async Task<bool> ExistsAsync(TIdProperty id)
             {
-                return this.GetAllAsync().Count(e => e.Id.Equals(id)) > 0;
+                var all = await this.GetAllAsync();
+                return all.AsEnumerable().Any(e => e.Id.Equals(id));
             }
 
-            public IEnumerable<T> GetAllAsync()
-            {
-                return this._ctx.Set(typeof(T)) as IQueryable<T>;
-            }
+            public abstract Task<IQueryable<T>> GetAllAsync();
 
-            public async Task<T> FindAsync(TIdProperty id)
-            {
-                return (T)await this._ctx.Set(typeof(T)).FindAsync(id);
-            }
+            public abstract Task<T> FindAsync(TIdProperty id);
 
-            public async Task<bool> UpdateAsync(TIdProperty id, T model)
+            public async Task<bool> UpdateAsync(T model)
             {
                 if (model == null)
                 {
@@ -129,30 +127,81 @@ namespace fIT.WebApi.Repository
                 return await this._ctx.SaveChangesAsync() > 0;
             }
 
+
             #endregion
 
             #region Property
-
             #endregion
         }
 
         private class ClientRepository : GenericRepository<Client, string>, IClientRepository
         {
-            public ClientRepository(ApplicationDbContext ctx) : base(ctx) { }
+            #region Ctor
+            public ClientRepository(ApplicationDbContext ctx) : base(ctx)
+            {
+            }
+            #endregion
+
+            #region Methods
+            public async override Task<IQueryable<Client>> GetAllAsync()
+            {
+                var result = await this._ctx.Clients.ToListAsync();
+                return result.AsQueryable();
+            }
+
+            public override async Task<Client> FindAsync(string id)
+            {
+                return await this._ctx.Clients.FindAsync(id);
+            }
+            #endregion
         }
 
         private class RefreshTokenRepository : GenericRepository<RefreshToken, string>, IRefreshTokenRepository
         {
             #region Ctor
-            public RefreshTokenRepository(ApplicationDbContext ctx) : base(ctx) { }
+
+            public RefreshTokenRepository(ApplicationDbContext ctx) : base(ctx){}
             #endregion
+            #region Methods
+            public override async Task<IQueryable<RefreshToken>> GetAllAsync()
+            {
+                var result = await this._ctx.RefreshTokens.ToListAsync();
+                return result.AsQueryable();
+            }
+
+            public override async Task<RefreshToken> FindAsync(string id)
+            {
+                return await this._ctx.RefreshTokens.FindAsync(id);
+            }
+            #endregion
+
+
         }
 
         private class ExerciseRepository : GenericRepository<Exercise, int>, IExerciseRepository
         {
             #region Ctor
-            public ExerciseRepository(ApplicationDbContext ctx) : base(ctx) { }
+
+            public ExerciseRepository(ApplicationDbContext ctx) : base(ctx){}
             #endregion
+
+            #region Methods
+            public override async Task<IQueryable<Exercise>> GetAllAsync()
+            {
+                var result = await this._ctx.Exercises.Include(x=>x.Schedules).ToListAsync();
+                return result.AsQueryable();
+            }
+
+            public override async Task<Exercise> FindAsync(int id)
+            {
+                return await this._ctx
+                                 .Exercises
+                                 .Include(x => x.Schedules)
+                                 .FirstOrDefaultAsync(x=>x.Id==id);
+            }
+            #endregion
+
+            
         }
 
         private class ScheduleRepository : GenericRepository<Schedule, int>, IScheduleRepository
@@ -162,6 +211,23 @@ namespace fIT.WebApi.Repository
             #endregion
 
             #region Methods
+
+            public override async Task<IQueryable<Schedule>> GetAllAsync()
+            {
+                var result = await this._ctx.Schedules.Include(x => x.Exercises).ToListAsync();
+                return result.AsQueryable();
+            }
+
+            public async override Task<Schedule> FindAsync(int id)
+            {
+                return await _ctx
+                                .Schedules
+                                .Include(x => x.Exercises)
+                                .FirstOrDefaultAsync(x => x.Id == id);
+            }
+
+
+
             /// <summary>
             /// Adds an Exercise to a Schedule
             /// </summary>
@@ -197,7 +263,7 @@ namespace fIT.WebApi.Repository
             /// <returns>true, if adding was successful</returns>
              public async Task<bool> RemoveExerciseAsync(int scheduleId, int exerciseId)
             {
-                var schedule = await _ctx.Schedules.Include("Exercise").FirstOrDefaultAsync(x => x.Id == scheduleId);
+                var schedule = await this.FindAsync(scheduleId);
                 if (schedule == null)
                 {
                     throw new Exception("Schedule not found for adding an exercise");
@@ -226,6 +292,21 @@ namespace fIT.WebApi.Repository
             #region Ctor
             public PracticeRepository(ApplicationDbContext ctx) : base(ctx) { }
             #endregion
+
+            #region Methods
+
+            #endregion
+
+            public override async Task<IQueryable<Practice>> GetAllAsync()
+            {
+                var result = await this._ctx.Practices.ToListAsync();
+                return result.AsQueryable();
+            }
+
+            public override async Task<Practice> FindAsync(int id)
+            {
+                return await this._ctx.Practices.FindAsync(id);
+            }
         }
 
         #endregion

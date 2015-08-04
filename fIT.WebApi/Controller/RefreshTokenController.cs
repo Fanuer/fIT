@@ -28,15 +28,14 @@ namespace fIT.WebApi.Controller
         [EnableQuery]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<RefreshTokenModel>))]
         [SwaggerResponse(HttpStatusCode.Unauthorized, "You are not allowed to receive this resource")]
-      public IQueryable<RefreshTokenModel> Get()
+      public async Task<IQueryable<RefreshTokenModel>> Get()
         {
-            return this
-                .AppRepository
-                .RefreshTokens
-                .GetAllAsync()
-                .ToList()
-                .Select(x => this.TheModelFactory.Create(x))
-                .AsQueryable();
+            var all = await this
+                            .AppRepository
+                            .RefreshTokens
+                            .GetAllAsync();
+
+            return all.Select(x => this.TheModelFactory.Create(x)).AsQueryable();
         }
 
         /// <summary>

@@ -10,6 +10,6 @@ using fIT.WebApi.Repository.Interfaces.CRUD.SingleID;
 namespace fIT.WebApi.Repository.Interfaces
 {
     internal interface IClientRepository : IRepositoryFindSingle<Client, string>
-  {
+    {
   }
 }

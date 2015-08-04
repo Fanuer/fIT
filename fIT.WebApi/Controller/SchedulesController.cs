@@ -30,14 +30,10 @@ namespace fIT.WebApi.Controller
         [Route("")]
         [HttpGet]
         [EnableQuery]
-        public IQueryable<ScheduleModel> GetSchedules()
+        public async Task<IQueryable<ScheduleModel>> GetSchedules()
         {
-            return this.AppRepository
-                       .Schedules
-                       .GetAllAsync()
-                       .Where(x => IsValidSchedule(x.UserID))
-                       .Select(this.TheModelFactory.Create)
-                       .AsQueryable();
+            var all = await this.AppRepository.Schedules.GetAllAsync();
+            return all.Where(x => IsValidSchedule(x.UserID)).Select(this.TheModelFactory.Create).AsQueryable();
         }
 
         /// <summary>
@@ -91,7 +87,7 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var exists = this.AppRepository.Schedules.Exists(id);
+            var exists = await this.AppRepository.Schedules.ExistsAsync(id);
 
             try
             {
@@ -250,7 +246,7 @@ namespace fIT.WebApi.Controller
             bool removing = false;
             if (ModelState.IsValid)
             {
-                removing = await this.AppRepository.Schedules.AddExerciseAsync(schedule.Id, exerciseId);
+                removing = await this.AppRepository.Schedules.RemoveExerciseAsync(schedule.Id, exerciseId);
             }
             if (!removing)
             {

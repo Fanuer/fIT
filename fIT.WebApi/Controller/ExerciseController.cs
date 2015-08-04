@@ -31,9 +31,10 @@ namespace fIT.WebApi.Controller
         [HttpGet]
         [EnableQuery]
         [Route("")]
-        public IQueryable<ExerciseModel> GetExercises()
+        public async Task<IQueryable<ExerciseModel>> GetExercises()
         {
-            return this.AppRepository.Exercise.GetAllAsync().Select(this.TheModelFactory.Create).AsQueryable();
+            var all = await this.AppRepository.Exercise.GetAllAsync();
+            return all.Select(this.TheModelFactory.Create).AsQueryable();
         }
 
         /// <summary>
@@ -77,7 +78,7 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var exists = this.AppRepository.Exercise.Exists(id);
+            var exists = await this.AppRepository.Exercise.ExistsAsync(id);
 
             try
             {

@@ -93,7 +93,7 @@ namespace fIT.WebApi.Models
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Url = _UrlHelper.Link("GetExcerciseById", new { id = x.Id }),
+                    Url = _UrlHelper.Link("GetExerciseById", new { id = x.Id }),
                 });
             }
 

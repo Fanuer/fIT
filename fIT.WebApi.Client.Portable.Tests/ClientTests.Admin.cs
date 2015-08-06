@@ -31,8 +31,7 @@ namespace fIT.WebApi.Client.Portable.Tests
             using (var service = new ManagementService(ServiceUrl))
             using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
             {
-                var guid = new Guid("7b815457-a918-438d-9697-c1c2b4905648");
-                var user = session.Admins.GetUserByIdAsync(guid).Result;
+                var user = session.Admins.GetUserByIdAsync(session.CurrentUserId).Result;
                 Assert.IsNotNull(user);
                 Assert.AreEqual(USERNAME, user.UserName);
             }

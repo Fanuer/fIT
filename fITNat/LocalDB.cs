@@ -30,20 +30,23 @@ namespace fITNat
             {
                 var connection = new SQLiteAsyncConnection(path);
                 await connection.CreateTableAsync<UserLoginModel>();
-                await connection.CreateTableAsync<PracticeModel>();
+                Console.WriteLine("User geht");
                 await connection.CreateTableAsync<ScheduleModel>();
-                await connection.CreateTableAsync<ExerciseModel>();
-                Console.WriteLine("UserLogin-Table created!");
+                Console.WriteLine("Schedule geht");
+                //await connection.CreateTableAsync<ExerciseModel>();
+                //Console.WriteLine("Exercise geht");
+                //await connection.CreateTableAsync<PracticeModel>();
+                //Console.WriteLine("Practice geht");
                 return true;
             }
             catch (SQLiteException ex)
             {
-                Console.WriteLine("Fehler beim Anlegen der DB: " + ex.StackTrace);
+                Console.WriteLine("Fehler beim Anlegen der DB(SQLite-Fehler): " + ex.StackTrace);
                 return false;
             }
             catch(Exception exc)
             {
-                Console.WriteLine("Fehler beim Anlegen der DB: " + exc.StackTrace);
+                Console.WriteLine("Fehler beim Anlegen der DB: " + exc.StackTrace + "" + exc.GetType());
                 return false;
             }
         }
@@ -111,6 +114,27 @@ namespace fITNat
             {
                 var db = new SQLiteAsyncConnection(path);
                 await db.FindAsync<UserModel>(data);
+                return 1;
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Sucht einen Benutzer an Hand der Login-Daten in der lokalen DB
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public async Task<int> findUser(string username, string password)
+        {
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                //await db.QueryAsync<String>("Select username from User where username=:username and password=:password", );
                 return 1;
             }
             catch (SQLiteException ex)
@@ -334,6 +358,26 @@ namespace fITNat
                 return -1;
             }
         }
+
+        /// <summary>
+        /// Gibt einen Trainingsplan an Hand der ID zurück
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
+        {
+            return new ScheduleModel();
+        }
+
+        /// <summary>
+        /// Gibt alle Trainingspläne eines Users zurück
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync(int userID)
+        {
+            return null;
+        }
         #endregion
 
         #region Exercise
@@ -406,6 +450,16 @@ namespace fITNat
                 Console.WriteLine(ex.Message);
                 return -1;
             }
+        }
+
+        /// <summary>
+        /// Gibt eine Übung an Hand der ID zurück
+        /// </summary>
+        /// <param name="exerciseId"></param>
+        /// <returns></returns>
+        public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
+        {
+            return new ExerciseModel();
         }
 
         /// <summary>

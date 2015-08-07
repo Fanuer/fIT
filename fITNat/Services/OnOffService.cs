@@ -11,6 +11,7 @@ using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.fITNat;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using System.Threading;
 
 namespace fITNat
 {
@@ -30,39 +31,13 @@ namespace fITNat
         }
 
         //OnCreate -> Initialisierung
-        public async override void OnCreate()
+        public override void OnCreate()
         {
             base.OnCreate();
-            MainActivity mainA = new MainActivity();
-            ExerciseActivity exerciseA = new ExerciseActivity();
-            PracticeActivity practiceA = new PracticeActivity();
-            ScheduleActivity scheduleA = new ScheduleActivity();
-            
-            //Datenbank erstellen
-            db = new LocalDB();
-
-            //Erstellen der lokalen DB macht Probleme!!!
-
-            //db.createDatabase().Wait();
-
-            //Verbindungsüberprüfung
-            while (true)
-            {
-                if(await conService.IsPingReachable())
-                {
-                    online = true;
-                }
-                else
-                {
-                    online = false;
-                }
-                //Haken entsprechend der Connection setzen
-                mainA.setConnectivityStatus(online);
-                exerciseA.setConnectivityStatus(online);
-                practiceA.setConnectivityStatus(online);
-                scheduleA.setConnectivityStatus(online);
-            }
-            
+            conService = new ConnectivityService();
+            mgnService = new ManagementServiceLocal();
+            online = false;
+            db = new LocalDB();     
         }
 
         #region User
@@ -248,7 +223,6 @@ namespace fITNat
         /// <returns></returns>
         public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
         {
-
             if (online)
             {
                 try
@@ -275,15 +249,90 @@ namespace fITNat
                 }
             }
         }
+
+        /// <summary>
+        /// Gibt einen Trainingsplan zurück
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
+        {
+            if (online)
+            {
+                try
+                {
+                    ScheduleModel schedule = await mgnService.GetScheduleByIdAsync(id);
+                    return schedule;
+                }
+                catch (ServerException ex)
+                {
+                    System.Console.WriteLine("Fehler beim Abrufen eines Trainingsplans: " + ex.StackTrace);
+                    throw;
+                }
+            }
+            else
+            {
+                try
+                {
+                    //TODO
+                    return null;
+                }
+                catch (Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim lokalen Abrufen eines Trainingsplans: " + exc.StackTrace);
+                    return null;
+                }
+            }
+        }
         #endregion
 
-       
+
         //public StartCommandResult OnStartCommand -> Handling des Neustarts des Services
         //Sticky -> startet bei null
         //RedeliverIntent -> macht da weiter wo er aufgehört hat
-        public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+        public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
-            //Log.Debug("DemoService", "DemoService started");
+            Console.WriteLine("OnOffService gestartet!");
+            conService = new ConnectivityService();
+            Task.Run(async () =>
+            {
+                //MainActivity mainA = new MainActivity();
+                //ExerciseActivity exerciseA = new ExerciseActivity();
+                //PracticeActivity practiceA = new PracticeActivity();
+                //ScheduleActivity scheduleA = new ScheduleActivity();
+
+                //Datenbank erstellen
+                db = new LocalDB();
+
+                //Erstellen der lokalen DB macht Probleme!!!
+                var task = db.createDatabase();
+                if (task.Result)
+                {
+                    //Verbindungsüberprüfung
+
+                    while (true)
+                    {
+                        if (await conService.IsPingReachable())
+                        {
+                            online = true;
+                        }
+                        else
+                        {
+                            online = false;
+                        }
+                        //Timeout 10sek.
+                        System.Threading.Thread.Sleep(10000);
+
+                        //Haken entsprechend der Connection setzen
+                        //mainA.setConnectivityStatus(online);
+                        //exerciseA.setConnectivityStatus(online);
+                        //practiceA.setConnectivityStatus(online);
+                        //scheduleA.setConnectivityStatus(online);
+                    }
+                }
+            });
+
+
             return StartCommandResult.Sticky;
         }
 

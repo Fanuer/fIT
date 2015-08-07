@@ -27,6 +27,7 @@ namespace fITNat
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreateView(inflater, container, savedInstanceState);
+            ooService = new OnOffService();
 
             var view = inflater.Inflate(Resource.Layout.Dialog_sign_in, container, false);
 
@@ -43,24 +44,33 @@ namespace fITNat
         private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                ooService.SignIn(txtUsername.Text, txtPassword.Text).Wait();
-                //User has clicked the Login-Button
-                onSignInComplete.Invoke(this, new OnSignInEventArgs
-                    (txtUsername.Text, txtPassword.Text));
-                //Dialog will slide to the side and will disapear
-                this.Dismiss();
+                var t = ooService.SignIn(txtUsername.Text, txtPassword.Text);
+                bool result = t.Result;
+                if(result)
+                {
+                    //User has clicked the Login-Button
+                    onSignInComplete.Invoke(this, new OnSignInEventArgs
+                        (txtUsername.Text, txtPassword.Text));
+                    //Dialog will slide to the side and will disapear
+                    this.Dismiss();
+                    Console.WriteLine("Result");
+                }
+                else
+                {
+                    Console.WriteLine("Result falsch");
+                    //Falsche Logindaten
+                    //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
+                    //e.Data => Alle Fehler!!
+                    SignInFail();
+                }
             }
             catch(ServerException ex)
             {
                 Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
-                //Falsche Logindaten
-                //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
-                //e.Data => Alle Fehler!!
-                SignInFail();
             }
             catch(Exception exc)
             {
-                Console.WriteLine("Login-Fehler: " + exc.StackTrace);
+                Console.WriteLine("Login-Fehler: " + exc.StackTrace + "" + exc.GetType());
             }
         }
 

@@ -27,31 +27,29 @@ namespace fITNat
 
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.ScheduleLayout);
-
-            schedules = new List<ScheduleModel>();
-            lv = (ListView)FindViewById(Resource.Id.lvSchedule);
-            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
-
-
-            //Generiert Testdaten
-            /*
-            for (int i = 1; i <= 10; i++)
+            try
             {
-                schedules.Add(new Schedule(i, "Testplan "+i, "Kevin"));
+                base.OnCreate(bundle);
+                SetContentView(Resource.Layout.ScheduleLayout);
+
+                schedules = new List<ScheduleModel>();
+                lv = (ListView)FindViewById(Resource.Id.lvSchedule);
+                connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
+
+                //Hier die Schedules des Benutzers abholen und in die Liste einfügen
+                var task = ooService.GetAllSchedulesAsync();
+                schedules = task.Result.ToList();
+
+                ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
+                lv.Adapter = adapter;
+
+
+                lv.ItemClick += lv_ItemClick;
             }
-            */
-            //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-            var task = ooService.GetAllSchedulesAsync();
-            schedules = task.Result.ToList();
-
-            //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
-            ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
-            lv.Adapter = adapter;
-
-
-            lv.ItemClick += lv_ItemClick;
+            catch(System.Exception exc)
+            {
+                Console.WriteLine("Fehler beim Erstellen der Schedule-Übersicht: " + exc.StackTrace);
+            }
         }
 
         /// <summary>

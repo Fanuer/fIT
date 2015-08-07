@@ -30,19 +30,7 @@ namespace fITNat.Services
 
         public override void OnCreate()
         {
-            try {
-                //Testweise
-                service = new ManagementService(URL);
-                base.OnCreate();
-            }
-            catch(ServerException e)
-            {
-                Console.WriteLine("Serverfehler: " + e.StackTrace);
-            }
-            catch(Exception exc)
-            {
-                Console.WriteLine("Fehler bei OnCreate in ManagementServiceLocal");
-            }
+            base.OnCreate();
         }
 
         /// <summary>
@@ -74,7 +62,7 @@ namespace fITNat.Services
             {
                 session = await service.LoginAsync(username, password);
             }
-            catch(ServerException e)
+            catch (ServerException e)
             {
                 Console.WriteLine("Serverfehler: " + e.StackTrace);
                 throw;
@@ -119,50 +107,13 @@ namespace fITNat.Services
                 user.DateOfBirth = birthdate;
                 await service.RegisterAsync(user);
             }
-            catch(ServerException ex)
+            catch (ServerException ex)
             {
                 throw;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Console.WriteLine("Fehler beim Registrieren: " + exc.StackTrace);
-            }
-        }
-
-        /// <summary>
-        /// Legt eine Übung am Server an
-        /// </summary>
-        /// <param name="scheduleId"></param>
-        /// <param name="exerciseId"></param>
-        /// <param name="timestamp"></param>
-        /// <param name="weight"></param>
-        /// <param name="repetitions"></param>
-        /// <param name="numberOfRepetitions"></param>
-        /// <returns></returns>
-        public async Task recordPractice(int scheduleId,
-                                        int exerciseId,
-                                        DateTime timestamp = default(DateTime),
-                                        double weight = 0,
-                                        int repetitions = 0,
-                                        int numberOfRepetitions = 0)
-        {
-            try
-            {
-                PracticeModel practice = new PracticeModel();
-                practice.ScheduleId = scheduleId;
-                practice.ExerciseId = exerciseId;
-                practice.Timestamp = timestamp;
-                practice.Weight = weight;
-                practice.Repetitions = repetitions;
-                practice.NumberOfRepetitions = numberOfRepetitions;
-            }
-            catch(ServerException ex)
-            {
-                throw;
-            }
-            catch(Exception exc)
-            {
-                Console.WriteLine("Fehler beim Eintragen eines Trainings: " + exc.StackTrace);
             }
         }
         #endregion
@@ -179,13 +130,36 @@ namespace fITNat.Services
                 IEnumerable<ScheduleModel> schedules = await mgnSession.Users.GetAllSchedulesAsync();
                 return schedules;
             }
-            catch(ServerException ex)
+            catch (ServerException ex)
             {
                 throw;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Console.WriteLine("Fehler beim Online-Abrufen der Trainingspläne: " + exc.StackTrace);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Ruft einen Trainingsplan an Hand der ID vom Server ab
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
+        {
+            try
+            {
+                ScheduleModel schedule = await mgnSession.Users.GetScheduleByIdAsync(id);
+                return schedule;
+            }
+            catch (ServerException ex)
+            {
+                throw;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Fehler beim Online-Abrufen eines Trainingsplans: " + exc.StackTrace);
                 return null;
             }
         }
@@ -216,6 +190,63 @@ namespace fITNat.Services
         }
         #endregion
 
+        #region Practice
+        /// <summary>
+        /// Legt eine Übung am Server an
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <param name="exerciseId"></param>
+        /// <param name="timestamp"></param>
+        /// <param name="weight"></param>
+        /// <param name="repetitions"></param>
+        /// <param name="numberOfRepetitions"></param>
+        /// <returns></returns>
+        public async Task recordPractice(int scheduleId,
+                                        int exerciseId,
+                                        DateTime timestamp = default(DateTime),
+                                        double weight = 0,
+                                        int repetitions = 0,
+                                        int numberOfRepetitions = 0)
+        {
+            try
+            {
+                PracticeModel practice = new PracticeModel();
+                practice.ScheduleId = scheduleId;
+                practice.ExerciseId = exerciseId;
+                practice.Timestamp = timestamp;
+                practice.Weight = weight;
+                practice.Repetitions = repetitions;
+                practice.NumberOfRepetitions = numberOfRepetitions;
+            }
+            catch (ServerException ex)
+            {
+                throw;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Fehler beim Eintragen eines Trainings: " + exc.StackTrace);
+            }
+        }
+        #endregion
 
+
+        public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
+        {
+
+            try
+            {
+                service = new ManagementService(URL);
+                Console.WriteLine("ManagementServiceLocal gestartet!");
+            }
+            catch (ServerException e)
+            {
+                Console.WriteLine("Serverfehler: " + e.StackTrace);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Fehler bei OnCreate in ManagementServiceLocal");
+            }
+            return StartCommandResult.Sticky;
+        }
     }
 }

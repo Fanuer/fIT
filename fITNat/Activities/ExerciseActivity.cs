@@ -12,6 +12,7 @@ using Android.Widget;
 using fITNat.Services;
 using Java.Lang;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using fIT.WebApi.Client.Data.Models.Shared;
 
 namespace fITNat
 {
@@ -25,27 +26,40 @@ namespace fITNat
 
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.ExerciseLayout);
-            //ScheduleID auslesen und in die versteckten Felder der Übungen legen
-            string schedule = Intent.GetStringExtra("Schedule");
+            try
+            {
+                base.OnCreate(bundle);
+                SetContentView(Resource.Layout.ExerciseLayout);
+                //ScheduleID auslesen und in die versteckten Felder der Übungen legen
+                int scheduleID = Integer.ParseInt(Intent.GetStringExtra("Schedule"));
 
-            List<ExerciseModel> exercises = new List<ExerciseModel>();
-            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionExcercise);
-            ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
-            
-            //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-            //eine foreach muss drum, um über jede Exercise in der Schedule zu iterieren
-            //var task = ooService.GetExerciseByIdAsync();
-            //exercises = task.Result.ToList();
+                List<ExerciseModel> exercises = new List<ExerciseModel>();
+                connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionExcercise);
+                ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
+
+                //Hier die Schedules des Benutzers abholen und in die Liste einfügen
+                //eine foreach muss drum, um über jede Exercise in der Schedule zu iterieren
+                var schedule = ooService.GetScheduleByIdAsync(scheduleID);
+                IEnumerable<EntryModel<int>> scheduleExercises = schedule.Result.Exercises;
+
+                foreach (var item in scheduleExercises)
+                {
+                    var task = ooService.GetExerciseByIdAsync(item.Id);
+                    exercises.Add(task.Result);
+                }
 
 
-            ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises);
-            adapter.scheduleID = schedule;
-            lv.Adapter = adapter;
+                ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises);
+                adapter.scheduleID = scheduleID;
+                lv.Adapter = adapter;
 
 
-            lv.ItemClick += lv_ItemClick;
+                lv.ItemClick += lv_ItemClick;
+            }
+            catch(System.Exception exc)
+            {
+                Console.WriteLine("Fehler beim Erstellen der Exercise-Übersicht: " + exc.StackTrace);
+            }
         }
 
         /// <summary>

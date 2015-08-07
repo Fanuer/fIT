@@ -17,7 +17,7 @@ namespace fITNat
     {
         private List<ExerciseModel> mItems;
         private Context mContext;
-        public string scheduleID { get; set; }
+        public int scheduleID { get; set; }
 
         public ExerciseListViewAdapter(Context context, List<ExerciseModel> items)
         {
@@ -56,7 +56,7 @@ namespace fITNat
             txtExerciseViewName.Text = mItems[position].Name;
             txtID.Text = mItems[position].Id.ToString();
             txtExerciseViewDescription.Text = mItems[position].Description;
-            txtExerciseViewScheduleID.Text = scheduleID;
+            txtExerciseViewScheduleID.Text = scheduleID.ToString();
 
             return row;
         }

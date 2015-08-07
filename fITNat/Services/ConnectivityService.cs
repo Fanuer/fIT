@@ -21,6 +21,12 @@ namespace fITNat
     {
         private ConnectivityManager connectivityManager;
 
+        public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
+        {
+            Console.WriteLine("ConnectivityService gestartet!");
+            return StartCommandResult.Sticky;
+        }
+
         public bool IsConnected
         {
             get
@@ -42,7 +48,6 @@ namespace fITNat
         public async Task<bool> IsPingReachable()
         {
             string host = @"http://fit-bachelor.azurewebsites.net/";
-            int msTimeout = 10000;
             if (!IsConnected)
                 return false;
 
@@ -51,7 +56,7 @@ namespace fITNat
                 bool reachable;
                 try
                 {
-                    reachable = InetAddress.GetByName(host).IsReachable(msTimeout);
+                    reachable = InetAddress.GetByName(host).IsReachable(0);
                 }
                 catch (UnknownHostException)
                 {

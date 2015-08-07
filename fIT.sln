@@ -23,6 +23,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fIT. WebApi.Client.Data", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fIT.WebApi.Client.Portable.Tests", "fIT.WebApi.Client.Portable.Tests\fIT.WebApi.Client.Portable.Tests.csproj", "{89015FD5-BBDF-4E88-9E56-76CEF61BD62A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{080A7B69-51F8-464F-B571-2108F58E06B0}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\AzureWebsitePublishModule.psm1 = PublishScripts\AzureWebsitePublishModule.psm1
+		PublishScripts\Publish-WebApplicationWebsite.ps1 = PublishScripts\Publish-WebApplicationWebsite.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Configurations", "Configurations", "{7DAC4516-6C55-4E2E-94C1-8E987E1D6FBC}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Configurations\fITSPA-WAWS-dev-2.json = PublishScripts\Configurations\fITSPA-WAWS-dev-2.json
+		PublishScripts\Configurations\fITSPA-WAWS-dev.json = PublishScripts\Configurations\fITSPA-WAWS-dev.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fIT.SPA", "fIT.SPA\fIT.SPA.csproj", "{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +153,22 @@ Global
 		{89015FD5-BBDF-4E88-9E56-76CEF61BD62A}.Release|x64.Build.0 = Release|Any CPU
 		{89015FD5-BBDF-4E88-9E56-76CEF61BD62A}.Release|x86.ActiveCfg = Release|Any CPU
 		{89015FD5-BBDF-4E88-9E56-76CEF61BD62A}.Release|x86.Build.0 = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|ARM.Build.0 = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|x64.Build.0 = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Debug|x86.Build.0 = Debug|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|ARM.ActiveCfg = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|ARM.Build.0 = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|x64.ActiveCfg = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|x64.Build.0 = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|x86.ActiveCfg = Release|Any CPU
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -150,5 +180,7 @@ Global
 		{E1834616-BA49-4FDC-99B3-B77485FF659E} = {05DDD473-BED7-4C20-AF13-939CB0396C1F}
 		{73379EA7-55C0-4BDD-86A6-097B577D4DA9} = {05DDD473-BED7-4C20-AF13-939CB0396C1F}
 		{89015FD5-BBDF-4E88-9E56-76CEF61BD62A} = {05DDD473-BED7-4C20-AF13-939CB0396C1F}
+		{7DAC4516-6C55-4E2E-94C1-8E987E1D6FBC} = {080A7B69-51F8-464F-B571-2108F58E06B0}
+		{5F3B5DB4-875F-4137-B7DA-DC7F3711D478} = {DBECD4BC-F5A9-4250-A5A4-A76C259F3905}
 	EndGlobalSection
 EndGlobal

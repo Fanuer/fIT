@@ -21,6 +21,7 @@ namespace fITNat
         private EditText txtPassword;
         private Button btnSignIn;
         private OnOffService ooService;
+        private ScheduleActivity scheduleActivity;
 
         public event EventHandler<OnSignInEventArgs> onSignInComplete;
 
@@ -44,6 +45,7 @@ namespace fITNat
         private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
+                ooService = new OnOffService();
                 var t = ooService.SignIn(txtUsername.Text, txtPassword.Text);
                 bool result = t.Result;
                 if(result)
@@ -54,13 +56,13 @@ namespace fITNat
                     //Dialog will slide to the side and will disapear
                     this.Dismiss();
                     Console.WriteLine("Result");
+
                 }
                 else
                 {
                     Console.WriteLine("Result falsch");
                     //Falsche Logindaten
                     //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
-                    //e.Data => Alle Fehler!!
                     SignInFail();
                 }
             }
@@ -84,8 +86,8 @@ namespace fITNat
         public void SignInFail()
         {
             txtPassword.Text = "";
-            txtUsername.SetError("Logindaten falsch",null);
-            txtPassword.SetError("", null);
+            //txtUsername.SetError("Logindaten falsch",null);
+            txtPassword.SetError("Logindaten falsch", null);
         }
     }
 

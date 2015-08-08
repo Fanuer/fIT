@@ -217,6 +217,7 @@ namespace fITNat.Services
                 practice.Weight = weight;
                 practice.Repetitions = repetitions;
                 practice.NumberOfRepetitions = numberOfRepetitions;
+                await mgnSession.CreatePracticeAsync(practice);
             }
             catch (ServerException ex)
             {

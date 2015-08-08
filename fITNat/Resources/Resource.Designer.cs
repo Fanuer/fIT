@@ -26,6 +26,10 @@ namespace fITNat
 		
 		public static void UpdateIdValues()
 		{
+			global::SQLite.Resource.String.ApplicationName = global::fITNat.Resource.String.ApplicationName;
+			global::SQLite.Resource.String.Hello = global::fITNat.Resource.String.Hello;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::fITNat.Resource.String.ApplicationName;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::fITNat.Resource.String.Hello;
 		}
 		
 		public partial class Animation
@@ -106,26 +110,26 @@ namespace fITNat
 			// aapt resource value: 0x7f070002
 			public const int btnDialogSignIn = 2131165186;
 			
-			// aapt resource value: 0x7f070026
-			public const int btnSavePractice = 2131165222;
+			// aapt resource value: 0x7f070027
+			public const int btnSavePractice = 2131165223;
 			
-			// aapt resource value: 0x7f070017
-			public const int btnSignIn = 2131165207;
+			// aapt resource value: 0x7f070018
+			public const int btnSignIn = 2131165208;
 			
-			// aapt resource value: 0x7f070019
-			public const int btnSignUp = 2131165209;
+			// aapt resource value: 0x7f07001a
+			public const int btnSignUp = 2131165210;
 			
-			// aapt resource value: 0x7f070015
-			public const int ivConnection = 2131165205;
+			// aapt resource value: 0x7f070016
+			public const int ivConnection = 2131165206;
 			
 			// aapt resource value: 0x7f07000e
 			public const int ivConnectionExcercise = 2131165198;
 			
-			// aapt resource value: 0x7f07001c
-			public const int ivConnectionPractice = 2131165212;
+			// aapt resource value: 0x7f07001d
+			public const int ivConnectionPractice = 2131165213;
 			
-			// aapt resource value: 0x7f070027
-			public const int ivConnectionSchedule = 2131165223;
+			// aapt resource value: 0x7f070028
+			public const int ivConnectionSchedule = 2131165224;
 			
 			// aapt resource value: 0x7f07000a
 			public const int lblSpinFitness = 2131165194;
@@ -139,14 +143,14 @@ namespace fITNat
 			// aapt resource value: 0x7f070010
 			public const int lvExercise = 2131165200;
 			
-			// aapt resource value: 0x7f070029
-			public const int lvSchedule = 2131165225;
-			
-			// aapt resource value: 0x7f07001a
-			public const int progressBar1 = 2131165210;
+			// aapt resource value: 0x7f07002a
+			public const int lvSchedule = 2131165226;
 			
 			// aapt resource value: 0x7f07001b
-			public const int rlPracticeLayout = 2131165211;
+			public const int progressBar1 = 2131165211;
+			
+			// aapt resource value: 0x7f07001c
+			public const int rlPracticeLayout = 2131165212;
 			
 			// aapt resource value: 0x7f07000d
 			public const int rlScheduleLayout = 2131165197;
@@ -163,8 +167,8 @@ namespace fITNat
 			// aapt resource value: 0x7f070005
 			public const int txtBirthdate = 2131165189;
 			
-			// aapt resource value: 0x7f070016
-			public const int txtCreateAccount = 2131165206;
+			// aapt resource value: 0x7f070017
+			public const int txtCreateAccount = 2131165207;
 			
 			// aapt resource value: 0x7f070003
 			public const int txtEmail = 2131165187;
@@ -181,14 +185,17 @@ namespace fITNat
 			// aapt resource value: 0x7f070014
 			public const int txtExerciseViewScheduleID = 2131165204;
 			
+			// aapt resource value: 0x7f070015
+			public const int txtExerciseViewUserID = 2131165205;
+			
+			// aapt resource value: 0x7f070026
+			public const int txtNumberOfRepetitions = 2131165222;
+			
 			// aapt resource value: 0x7f070025
-			public const int txtNumberOfRepetitions = 2131165221;
+			public const int txtNumberOfRepetitionsLabel = 2131165221;
 			
-			// aapt resource value: 0x7f070024
-			public const int txtNumberOfRepetitionsLabel = 2131165220;
-			
-			// aapt resource value: 0x7f070018
-			public const int txtOr = 2131165208;
+			// aapt resource value: 0x7f070019
+			public const int txtOr = 2131165209;
 			
 			// aapt resource value: 0x7f070001
 			public const int txtPassword = 2131165185;
@@ -196,41 +203,44 @@ namespace fITNat
 			// aapt resource value: 0x7f070004
 			public const int txtPasswordConfirm = 2131165188;
 			
-			// aapt resource value: 0x7f07001e
-			public const int txtPracticeActual = 2131165214;
+			// aapt resource value: 0x7f07001f
+			public const int txtPracticeActual = 2131165215;
+			
+			// aapt resource value: 0x7f070024
+			public const int txtRepetitions = 2131165220;
 			
 			// aapt resource value: 0x7f070023
-			public const int txtRepetitions = 2131165219;
-			
-			// aapt resource value: 0x7f070022
-			public const int txtRepetitionsLabel = 2131165218;
-			
-			// aapt resource value: 0x7f07002a
-			public const int txtScheduleViewDescription = 2131165226;
+			public const int txtRepetitionsLabel = 2131165219;
 			
 			// aapt resource value: 0x7f07002b
-			public const int txtScheduleViewID = 2131165227;
+			public const int txtScheduleViewDescription = 2131165227;
+			
+			// aapt resource value: 0x7f07002c
+			public const int txtScheduleViewID = 2131165228;
+			
+			// aapt resource value: 0x7f07002d
+			public const int txtScheduleViewUserID = 2131165229;
 			
 			// aapt resource value: 0x7f07000f
 			public const int txtTitleExercise = 2131165199;
 			
-			// aapt resource value: 0x7f07001d
-			public const int txtTitlePractice = 2131165213;
+			// aapt resource value: 0x7f07001e
+			public const int txtTitlePractice = 2131165214;
 			
-			// aapt resource value: 0x7f070028
-			public const int txtTitleSchedule = 2131165224;
+			// aapt resource value: 0x7f070029
+			public const int txtTitleSchedule = 2131165225;
 			
 			// aapt resource value: 0x7f070000
 			public const int txtUsername = 2131165184;
 			
-			// aapt resource value: 0x7f070020
-			public const int txtWeight = 2131165216;
-			
-			// aapt resource value: 0x7f07001f
-			public const int txtWeightLabel = 2131165215;
-			
 			// aapt resource value: 0x7f070021
-			public const int txtWeightLabelSmall = 2131165217;
+			public const int txtWeight = 2131165217;
+			
+			// aapt resource value: 0x7f070020
+			public const int txtWeightLabel = 2131165216;
+			
+			// aapt resource value: 0x7f070022
+			public const int txtWeightLabelSmall = 2131165218;
 			
 			static Id()
 			{

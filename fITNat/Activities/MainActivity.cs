@@ -24,6 +24,8 @@ namespace fITNat
         private Button mBtnSignIn;
         private ProgressBar progressBar;
         private ImageView connectivityPointer;
+        private string userID;
+        private ManagementServiceLocal mgnService;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -31,7 +33,7 @@ namespace fITNat
             //Services starten
             StartService(new Intent(this, typeof(OnOffService)));
             StartService(new Intent(this, typeof(ManagementServiceLocal)));
-            StartService(new Intent(this, typeof(ConnectivityService)));
+            mgnService = new ManagementServiceLocal();
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
@@ -74,11 +76,19 @@ namespace fITNat
 
         private void SignInDialog_onSignInComplete(object sender, OnSignInEventArgs e)
         {
-            //Show the Loader
-            //progressBar.Visibility = ViewStates.Visible;
-
-            var intent = new Intent(this, typeof(ScheduleActivity));
-            StartActivity(intent);
+            var session = mgnService.actualSession();
+            if (session != null)
+            {
+                userID = session.CurrentUserId.ToString();
+            }
+            else
+            {
+                //UserId vom Login holen
+                //userId = 
+            }
+            var scheduleActivity = new Intent(this, typeof(ScheduleActivity));
+            scheduleActivity.PutExtra("User", userID);
+            StartActivity(scheduleActivity);
         }
 
         /// <summary>

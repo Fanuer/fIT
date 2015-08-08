@@ -1,16 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using fIT.WebApi.Client.Data.Models.Practice;
 using fIT.WebApi.Client.Data.Models.Exceptions;
+using fITNat.Services;
 
 namespace fITNat
 {
@@ -23,11 +17,14 @@ namespace fITNat
         private EditText txtNumberOfRepetitions;
         private Button btnSavePractice;
         private OnOffService ooService;
+        private ManagementServiceLocal mgnService;
+        private string userId;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.PracticeLayout);
+            mgnService = new ManagementServiceLocal();
 
             connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionPractice);
             txtWeight = FindViewById<EditText>(Resource.Id.txtWeight);
@@ -40,13 +37,23 @@ namespace fITNat
                 {
                     int scheduleId = 0; //über den Benutzer (aus der Session)
                     int exerciseId = 0; //über den Weg zu dem Training
-                    string userId = "Test"; //Habe ich!
+                    var session = mgnService.actualSession();
+                    if (session != null)
+                    {
+                        userId = session.CurrentUserId.ToString();
+                    }
+                    else
+                    {
+                        //UserId aus der Exercise holen
+                        //userId = 
+                    }
                     double weight = Double.Parse(txtWeight.Text);
                     int repetitions = Java.Lang.Integer.ParseInt(txtRepetitions.Text);
                     int numberOfRepetitions = Java.Lang.Integer.ParseInt(txtNumberOfRepetitions.Text);
 
                     ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions).Wait();
                     //Zurück zu der Übungsseite
+                    OnBackPressed();
                 }
                 catch (ServerException ex)
                 {
@@ -65,6 +72,9 @@ namespace fITNat
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Beim Drücken des Zurück-Knopfs
+        /// </summary>
         public override void OnBackPressed()
         {
             base.OnBackPressed();

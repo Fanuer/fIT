@@ -11,11 +11,8 @@ using Android.Views;
 using Android.Widget;
 using System.Threading.Tasks;
 using SQLite;
-using fIT.WebApi.Client.Data.Models.Account;
-using fIT.WebApi.Client.Data.Models.Practice;
-using fIT.WebApi.Client.Data.Models.Schedule;
-using fIT.WebApi.Client.Data.Models.Exercise;
-using fIT.fITNat;
+using fITNat.DBModels;
+using SQLiteNetExtensions;
 
 namespace fITNat
 {
@@ -24,19 +21,25 @@ namespace fITNat
         private static readonly string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
         private static readonly string path = System.IO.Path.Combine(folder, "app.db");
 
+        /// <summary>
+        /// Legt die Datenbank lokal mit allen Tabellen an
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> createDatabase()
         {
             try
             {
                 var connection = new SQLiteAsyncConnection(path);
-                await connection.CreateTableAsync<UserLoginModel>();
-                Console.WriteLine("User geht");
-                await connection.CreateTableAsync<ScheduleModel>();
-                Console.WriteLine("Schedule geht");
-                //await connection.CreateTableAsync<ExerciseModel>();
+                await connection.CreateTableAsync<User>();
+                //Console.WriteLine("User geht");
+                await connection.CreateTableAsync<Schedule>();
+                //Console.WriteLine("Schedule geht");
+                await connection.CreateTableAsync<ScheduleHasExercises>();
+                await connection.CreateTableAsync<Exercise>();
                 //Console.WriteLine("Exercise geht");
-                //await connection.CreateTableAsync<PracticeModel>();
-                //Console.WriteLine("Practice geht");
+                await connection.CreateTableAsync<Practice>();
+                await CreateTestdata();
+                Console.WriteLine("Alles geht");
                 return true;
             }
             catch (SQLiteException ex)
@@ -51,6 +54,44 @@ namespace fITNat
             }
         }
 
+        private async Task CreateTestdata()
+        {
+            //User
+            User test = new User();
+            test.Password = "Test1234";
+            test.Username = "Kevin";
+            User testa = new User();
+            testa.Password = "Test1234";
+            testa.Username = "Stefan";
+            await insertUpdateUser(test);
+            await insertUpdateUser(testa);
+            //Schedules
+            Schedule test1 = new Schedule();
+            test1.Id = 1;
+            test1.Name = "Push";
+            test1.Url = "testtest";
+            test1.UserId = "Kevin";
+            await insertUpdateSchedule(test1);
+            Schedule test2 = new Schedule();
+            test2.Id = 2;
+            test2.Name = "Pull";
+            test2.Url = "test2test2";
+            test2.UserId = "Kevin";
+            await insertUpdateSchedule(test2);
+            Schedule test3 = new Schedule();
+            test3.Id = 2;
+            test3.Name = "Beine";
+            test3.Url = "test2test2";
+            test3.UserId = "Kevin";
+            await insertUpdateSchedule(test3);
+            Schedule test4 = new Schedule();
+            test4.Id = 2;
+            test4.Name = "Pull";
+            test4.Url = "test2test2";
+            test4.UserId = "Stefan";
+            await insertUpdateSchedule(test4);
+        }
+
         #region UserLogin
         /// <summary>
         /// Speichert oder updatet einen User in der lokalen DB
@@ -60,7 +101,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateUser(UserLoginModel data)
+        public async Task<int> insertUpdateUser(User data)
         {
             try
             {
@@ -86,7 +127,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteUser(UserLoginModel data)
+        public async Task<int> deleteUser(User data)
         {
             try
             {
@@ -108,12 +149,12 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findUser(UserLoginModel data)
+        public async Task<int> findUser(User data)
         {
             try
             {
                 var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<UserModel>(data);
+                await db.FindAsync<User>(data);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -129,18 +170,19 @@ namespace fITNat
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<int> findUser(string username, string password)
+        public async Task<List<User>> findUser(string username, string password)
         {
             try
             {
                 var db = new SQLiteAsyncConnection(path);
-                //await db.QueryAsync<String>("Select username from User where username=:username and password=:password", );
-                return 1;
+                var result = await db.QueryAsync<User>("Select * From User Where Username=? and Password=?", username, password);
+                
+                return result;
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
-                return -1;
+                return null;
             }
         }
 
@@ -156,10 +198,6 @@ namespace fITNat
             {
                 var db = new SQLiteAsyncConnection(path);
                 var count = await db.ExecuteScalarAsync<int>("SELECT Count(*) FROM User");
-
-                // for a non-parameterless query
-                // var count = db.ExecuteScalarAsync<int>("SELECT Count(*) FROM User WHERE Username="Amy");
-
                 return count;
             }
             catch (SQLiteException ex)
@@ -179,7 +217,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdatePractice(PracticeModel data)
+        public async Task<int> insertUpdatePractice(Practice data)
         {
             try
             {
@@ -198,6 +236,24 @@ namespace fITNat
             }
         }
 
+        public async Task<int> insertPractice(int userId, int scheduleId, int exerciseId, DateTime timestamp = default(DateTime),
+                                        double weight = 0, int repetitions = 0, int numberOfRepetitions = 0)
+        {
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                string query = "Insert into Practice (Timestamp, Weight, NumberOfRepetitions, Repetitions, ScheduleId, ExerciseId, UserId) values (" + timestamp + ", " + weight + ", " + numberOfRepetitions + ", " + repetitions + ", " + scheduleId + ", " + exerciseId + ", " + userId + ")";
+                var result = await db.QueryAsync<int>(query, null);
+                if (result != null)
+                    return 1;
+            }
+            catch(SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return -1;
+        }
+
         /// <summary>
         /// Löscht ein Training aus der lokalen DB
         /// </summary>
@@ -205,7 +261,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deletePractice(PracticeModel data)
+        public async Task<int> deletePractice(Practice data)
         {
             try
             {
@@ -227,12 +283,12 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findPractice(PracticeModel data)
+        public async Task<int> findPractice(Practice data)
         {
             try
             {
                 var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<PracticeModel>(data);
+                await db.FindAsync<Practice>(data);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -274,7 +330,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateSchedule(ScheduleModel data)
+        public async Task<int> insertUpdateSchedule(Schedule data)
         {
             try
             {
@@ -300,7 +356,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteSchedule(ScheduleModel data)
+        public async Task<int> deleteSchedule(Schedule data)
         {
             try
             {
@@ -322,12 +378,12 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findSchedule(ScheduleModel data)
+        public async Task<int> findSchedule(Schedule data)
         {
             try
             {
                 var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<ScheduleModel>(data);
+                await db.FindAsync<Schedule>(data);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -364,9 +420,19 @@ namespace fITNat
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
+        public async Task<Schedule> GetScheduleByIdAsync(int id)
         {
-            return new ScheduleModel();
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                var result = await db.QueryAsync<Schedule>("select * from Schedule where Id=?", id);
+                return result.First<Schedule>();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>
@@ -374,9 +440,19 @@ namespace fITNat
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync(int userID)
+        public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync(string userID)
         {
-            return null;
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                IEnumerable<Schedule> result = await db.QueryAsync<Schedule>("select * from Schedule where UserId=?", userID);
+                return result;
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
         #endregion
 
@@ -389,7 +465,7 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateExercise(ExerciseModel data)
+        public async Task<int> insertUpdateExercise(Exercise data)
         {
             try
             {
@@ -415,7 +491,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteExercise(ExerciseModel data)
+        public async Task<int> deleteExercise(Exercise data)
         {
             try
             {
@@ -437,12 +513,12 @@ namespace fITNat
         /// <param name="path"></param>
         /// <returns>1 -> Vorhanden</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> findExercise(ExerciseModel data)
+        public async Task<int> findExercise(Exercise data)
         {
             try
             {
                 var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<ExerciseModel>(data);
+                await db.FindAsync<Exercise>(data);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -457,9 +533,19 @@ namespace fITNat
         /// </summary>
         /// <param name="exerciseId"></param>
         /// <returns></returns>
-        public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
+        public async Task<Exercise> GetExerciseByIdAsync(int exerciseId)
         {
-            return new ExerciseModel();
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                var result = await db.QueryAsync<Exercise>("select * from Exercise where Id=?", exerciseId);
+                return result.First<Exercise>();
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
         }
 
         /// <summary>

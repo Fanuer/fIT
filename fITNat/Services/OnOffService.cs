@@ -8,10 +8,11 @@ using fIT.WebApi.Client.Data.Models.Shared.Enums;
 using System.Threading.Tasks;
 using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
-using fIT.fITNat;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Data.Models.Exercise;
-using System.Threading;
+using fIT.WebApi.Client.Data.Models.Account;
+using fITNat.DBModels;
+using fIT.WebApi.Client.Portable.Implementation;
 
 namespace fITNat
 {
@@ -21,8 +22,11 @@ namespace fITNat
         #region Variablen
         private ConnectivityService conService;
         private ManagementServiceLocal mgnService;
+        private ManagementService mgnServiceServer;
+        private const string URL = @"http://fit-bachelor.azurewebsites.net/";
         private bool online;
         private LocalDB db;
+        private string userID;
         #endregion
 
         public override IBinder OnBind(Intent intent)
@@ -31,13 +35,15 @@ namespace fITNat
         }
 
         //OnCreate -> Initialisierung
-        public override void OnCreate()
+        public async override void OnCreate()
         {
             base.OnCreate();
             conService = new ConnectivityService();
             mgnService = new ManagementServiceLocal();
-            online = false;
-            db = new LocalDB();     
+            mgnServiceServer = new ManagementService(URL);
+            online = await mgnServiceServer.PingAsync();
+            db = new LocalDB();
+            userID = "";
         }
 
         #region User
@@ -49,9 +55,11 @@ namespace fITNat
         /// <returns></returns>
         public async Task<bool> SignIn(string username, string password)
         {
-            UserLoginModel user = new UserLoginModel();
-            user.UserName = username;
+            User user = new User();
+            db = new LocalDB();
+            user.Username = username;
             user.Password = password;
+            userID = user.Username;
             if (online)
             {
                 try
@@ -60,6 +68,7 @@ namespace fITNat
                     //Benutzer abfragen, die auf dem Server liegen und mit Lokal abgleichen
                     await db.insertUpdateUser(user);
                     System.Console.WriteLine("Online eingeloggt");
+                    return true;
                 }
                 catch(ServerException ex)
                 {
@@ -76,7 +85,8 @@ namespace fITNat
                 try
                 {
                     //Lokal nachgucken
-                    if (await db.findUser(user) != 1)
+                    var result = await db.findUser(username, password);
+                    if (result.Count != 1)
                     {
                         return false;
                     }
@@ -87,7 +97,7 @@ namespace fITNat
                     System.Console.WriteLine("Fehler beim Offline-Einloggen" + exc.StackTrace);
                 }
             }
-            return true;
+            return false;
         }
 
         /// <summary>
@@ -204,7 +214,19 @@ namespace fITNat
             {
                 try
                 {
-                    return null;
+                    //Alle Trainingspläne für den User zurückgeben
+                    IEnumerable<Schedule> schedules = await db.GetAllSchedulesAsync(userID);
+                    List<ScheduleModel> resultSchedules = new List<ScheduleModel>();
+                    foreach (var schedule in schedules)
+                    {
+                        ScheduleModel temp = new ScheduleModel();
+                        temp.Id = schedule.Id;
+                        temp.UserId = schedule.UserId;
+                        temp.Name = schedule.Name;
+                        temp.Url = schedule.Url;
+                        resultSchedules.Add(temp);
+                    }
+                    return resultSchedules;
                 }
                 catch (Exception exc)
                 {
@@ -293,14 +315,14 @@ namespace fITNat
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
             Console.WriteLine("OnOffService gestartet!");
-            conService = new ConnectivityService();
             Task.Run(async () =>
             {
-                //MainActivity mainA = new MainActivity();
-                //ExerciseActivity exerciseA = new ExerciseActivity();
-                //PracticeActivity practiceA = new PracticeActivity();
-                //ScheduleActivity scheduleA = new ScheduleActivity();
+                MainActivity mainA = new MainActivity();
+                ExerciseActivity exerciseA = new ExerciseActivity();
+                PracticeActivity practiceA = new PracticeActivity();
+                ScheduleActivity scheduleA = new ScheduleActivity();
 
+                Console.WriteLine("Datenbank erstellen");
                 //Datenbank erstellen
                 db = new LocalDB();
 
@@ -309,10 +331,10 @@ namespace fITNat
                 if (task.Result)
                 {
                     //Verbindungsüberprüfung
-
+                    Console.WriteLine("Vor der While-Schleife");
                     while (true)
                     {
-                        if (await conService.IsPingReachable())
+                        if (await mgnServiceServer.PingAsync())
                         {
                             online = true;
                         }
@@ -324,10 +346,10 @@ namespace fITNat
                         System.Threading.Thread.Sleep(10000);
 
                         //Haken entsprechend der Connection setzen
-                        //mainA.setConnectivityStatus(online);
-                        //exerciseA.setConnectivityStatus(online);
-                        //practiceA.setConnectivityStatus(online);
-                        //scheduleA.setConnectivityStatus(online);
+                        mainA.setConnectivityStatus(online);
+                        exerciseA.setConnectivityStatus(online);
+                        practiceA.setConnectivityStatus(online);
+                        scheduleA.setConnectivityStatus(online);
                     }
                 }
             });

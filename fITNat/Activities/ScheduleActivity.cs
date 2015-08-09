@@ -36,9 +36,18 @@ namespace fITNat
                 lv = (ListView)FindViewById(Resource.Id.lvSchedule);
                 connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
 
+                //UserID auslesen und in die Listview-Elemente legen
+                string text = Intent.GetStringExtra("UserID") ?? "";
+                Guid userID = text.Cast<Guid>().First();
+
+
                 //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-                var task = ooService.GetAllSchedulesAsync();
+                var task = ooService.GetAllSchedulesAsync(userID);
                 schedules = task.Result.ToList();
+                foreach (var schedule in schedules)
+                {
+                    schedule.UserId = userID.ToString();
+                }
 
                 ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
                 lv.Adapter = adapter;
@@ -63,10 +72,11 @@ namespace fITNat
             //Daraus die ID des Trainingsplans holen und diesen dann abfragen + redirect auf die passende Seite!
             string selectedSchedule = schedules[e.Position].Name.ToString();
             int scheduleId = Integer.ParseInt(schedules[e.Position].Id.ToString());
+            string userID = schedules[e.Position].UserId;
 
             var exerciseActivity = new Intent(this, typeof(ExerciseActivity));
             exerciseActivity.PutExtra("Schedule", scheduleId);
-            //exerciseActivity.PutExtra("User", userID);
+            exerciseActivity.PutExtra("User", userID);
             StartActivity(exerciseActivity);
         }
 

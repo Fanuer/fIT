@@ -61,6 +61,7 @@ namespace fITNat.Services
             try
             {
                 session = await service.LoginAsync(username, password);
+                //session.
             }
             catch (ServerException e)
             {
@@ -201,7 +202,7 @@ namespace fITNat.Services
         /// <param name="repetitions"></param>
         /// <param name="numberOfRepetitions"></param>
         /// <returns></returns>
-        public async Task recordPractice(int scheduleId,
+        public async Task<bool> recordPractice(int scheduleId,
                                         int exerciseId,
                                         DateTime timestamp = default(DateTime),
                                         double weight = 0,
@@ -217,7 +218,11 @@ namespace fITNat.Services
                 practice.Weight = weight;
                 practice.Repetitions = repetitions;
                 practice.NumberOfRepetitions = numberOfRepetitions;
-                await mgnSession.CreatePracticeAsync(practice);
+                PracticeModel result = await mgnSession.CreatePracticeAsync(practice);
+                if (result != null)
+                    return true;
+                else
+                    return false;
             }
             catch (ServerException ex)
             {
@@ -227,6 +232,7 @@ namespace fITNat.Services
             {
                 Console.WriteLine("Fehler beim Eintragen eines Trainings: " + exc.StackTrace);
             }
+            return false;
         }
         #endregion
 

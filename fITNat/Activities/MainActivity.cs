@@ -87,7 +87,7 @@ namespace fITNat
                 //userId = 
             }
             var scheduleActivity = new Intent(this, typeof(ScheduleActivity));
-            scheduleActivity.PutExtra("User", userID);
+            scheduleActivity.PutExtra("UserID", userID);
             StartActivity(scheduleActivity);
         }
 

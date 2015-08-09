@@ -50,8 +50,10 @@ namespace fITNat
 
             TextView txtScheduleViewDescription = row.FindViewById<TextView>(Resource.Id.txtScheduleViewDescription);
             TextView txtID = row.FindViewById<TextView>(Resource.Id.txtScheduleViewID);
+            TextView txtUserID = row.FindViewById<TextView>(Resource.Id.txtScheduleViewUserID);
             txtScheduleViewDescription.Text = mItems[position].Name;
             txtID.Text = mItems[position].Id.ToString();
+            txtUserID.Text = mItems[position].UserId;
 
             return row;
         }

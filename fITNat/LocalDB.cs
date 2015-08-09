@@ -12,7 +12,6 @@ using Android.Widget;
 using System.Threading.Tasks;
 using SQLite;
 using fITNat.DBModels;
-using SQLiteNetExtensions;
 
 namespace fITNat
 {
@@ -175,7 +174,7 @@ namespace fITNat
             try
             {
                 var db = new SQLiteAsyncConnection(path);
-                var result = await db.QueryAsync<User>("Select * From User Where Username=? and Password=?", username, password);
+                var result = await db.QueryAsync<User>("Select * From User Where Username=?", username);
                 
                 return result;
             }
@@ -236,7 +235,7 @@ namespace fITNat
             }
         }
 
-        public async Task<int> insertPractice(int userId, int scheduleId, int exerciseId, DateTime timestamp = default(DateTime),
+        public async Task<int> insertPractice(string userId, int scheduleId, int exerciseId, DateTime timestamp = default(DateTime),
                                         double weight = 0, int repetitions = 0, int numberOfRepetitions = 0)
         {
             try
@@ -436,11 +435,31 @@ namespace fITNat
         }
 
         /// <summary>
+        /// Gibt die Verbindungen zwischen Schedules und Exercises aus der Tabelle anhand der ScheduleId zurück
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ScheduleHasExercises>> GetExercisesOfSchedule(int scheduleId)
+        {
+            try
+            {
+                var db = new SQLiteAsyncConnection(path);
+                var result = await db.QueryAsync<ScheduleHasExercises>("Select * From ScheduleHasExercises Where ScheduleId = ?", scheduleId);
+                return result;
+            }
+            catch(SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gibt alle Trainingspläne eines Users zurück
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync(string userID)
+        public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync(Guid userID)
         {
             try
             {

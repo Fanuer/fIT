@@ -5,6 +5,7 @@ using Android.OS;
 using Android.Widget;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fITNat.Services;
+using Java.Lang;
 
 namespace fITNat
 {
@@ -19,6 +20,8 @@ namespace fITNat
         private OnOffService ooService;
         private ManagementServiceLocal mgnService;
         private string userId;
+        private int exerciseId;
+        private int scheduleId;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -31,12 +34,15 @@ namespace fITNat
             txtRepetitions = FindViewById<EditText>(Resource.Id.txtRepetitions);
             txtNumberOfRepetitions = FindViewById<EditText>(Resource.Id.txtNumberOfRepetitions);
             btnSavePractice = FindViewById<Button>(Resource.Id.btnSavePractice);
+
+            //Infos aus dem Aufruf holen
+            scheduleId = Integer.ParseInt(Intent.GetStringExtra("Schedule"));
+            exerciseId = Integer.ParseInt(Intent.GetStringExtra("Exercise"));
+
             btnSavePractice.Click += (object sender, EventArgs args) =>
             {
                 try
                 {
-                    int scheduleId = 0; //über den Benutzer (aus der Session)
-                    int exerciseId = 0; //über den Weg zu dem Training
                     var session = mgnService.actualSession();
                     if (session != null)
                     {
@@ -45,24 +51,39 @@ namespace fITNat
                     else
                     {
                         //UserId aus der Exercise holen
-                        //userId = 
+                        userId = Intent.GetStringExtra("UserID") ?? "";
                     }
-                    double weight = Double.Parse(txtWeight.Text);
+                    double weight = System.Double.Parse(txtWeight.Text);
                     int repetitions = Java.Lang.Integer.ParseInt(txtRepetitions.Text);
                     int numberOfRepetitions = Java.Lang.Integer.ParseInt(txtNumberOfRepetitions.Text);
 
-                    ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions).Wait();
-                    //Zurück zu der Übungsseite
-                    OnBackPressed();
+                    var result = ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions);
+                    bool creation = result.Result;
+                    if(creation)
+                    {
+                        new AlertDialog.Builder(this)
+                           .SetMessage("Speichern erfolgreich!")
+                           .Show();
+                        //Zurück zu der Übungsseite
+                        OnBackPressed();
+                    }
+                    else
+                    {
+                        //Messagebox anzeigen, die über den Fehler informiert
+                        new AlertDialog.Builder(this)
+                           .SetMessage("Fehler beim Anlegen des Trainings")
+                           .Show();
+                        OnBackPressed();
+                    }
                 }
                 catch (ServerException ex)
                 {
-                    Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
+                    Console.WriteLine("Fehler beim Anlegen eines Trainings (Server): " + ex.StackTrace);
                     CreatePracticeFail();
                 }
-                catch (Exception exc)
+                catch (System.Exception exc)
                 {
-                    Console.WriteLine("Login-Fehler: " + exc.StackTrace);
+                    Console.WriteLine("Fehler beim Anlegen eines Trainings: " + exc.StackTrace);
                 }
             };
         }

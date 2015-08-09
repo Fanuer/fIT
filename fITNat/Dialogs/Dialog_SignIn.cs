@@ -45,7 +45,7 @@ namespace fITNat
         private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                ooService = new OnOffService();
+                //ooService = new OnOffService();
                 var t = ooService.SignIn(txtUsername.Text, txtPassword.Text);
                 bool result = t.Result;
                 if(result)
@@ -56,6 +56,7 @@ namespace fITNat
                     //Dialog will slide to the side and will disapear
                     this.Dismiss();
                     Console.WriteLine("Result");
+
 
                 }
                 else

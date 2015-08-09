@@ -13,6 +13,7 @@ using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.Account;
 using fITNat.DBModels;
 using fIT.WebApi.Client.Portable.Implementation;
+using fIT.WebApi.Client.Data.Models.Shared;
 
 namespace fITNat
 {
@@ -24,9 +25,10 @@ namespace fITNat
         private ManagementServiceLocal mgnService;
         private ManagementService mgnServiceServer;
         private const string URL = @"http://fit-bachelor.azurewebsites.net/";
-        private bool online;
         private LocalDB db;
-        private string userID;
+        private Guid userID;
+        public bool Online { get; private set; }
+        private Object thisLock = new Object();
         #endregion
 
         public override IBinder OnBind(Intent intent)
@@ -41,9 +43,8 @@ namespace fITNat
             conService = new ConnectivityService();
             mgnService = new ManagementServiceLocal();
             mgnServiceServer = new ManagementService(URL);
-            online = await mgnServiceServer.PingAsync();
+            Online = await mgnServiceServer.PingAsync();
             db = new LocalDB();
-            userID = "";
         }
 
         #region User
@@ -59,8 +60,8 @@ namespace fITNat
             db = new LocalDB();
             user.Username = username;
             user.Password = password;
-            userID = user.Username;
-            if (online)
+            userID = user.UserId;
+            if (Online)
             {
                 try
                 {
@@ -101,7 +102,7 @@ namespace fITNat
         }
 
         /// <summary>
-        /// Entsprechend des Netzwerkstatus wird lokal oder am Server angelegt
+        /// Entsprechend des Netzwerkstatus wird am Server angelegt oder ein Fehler angezeigt
         /// </summary>
         /// <param name="username"></param>
         /// <param name="email"></param>
@@ -121,7 +122,7 @@ namespace fITNat
                                         FitnessType fitness,
                                         DateTime birthdate)
         {
-            if (online)
+            if (Online)
             {
                 try
                 {
@@ -163,12 +164,14 @@ namespace fITNat
                                                 int repetitions = 0,
                                                 int numberOfRepetitions = 0)
         {
-            if (online)
+            if (Online)
             {
                 try
                 {
-                    string user = mgnService.actualSession().CurrentUserName;
-                    await mgnService.recordPractice(scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions);
+                    if (await mgnService.recordPractice(scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions))
+                        return true;
+                    else
+                        return false;
                 }
                 catch(ServerException ex)
                 {
@@ -179,7 +182,12 @@ namespace fITNat
             {
                 try
                 {
-
+                    var result = db.insertPractice(userId, scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions);
+                    int rueckgabeWert = result.Result;
+                    if (rueckgabeWert == 1)
+                        return true;
+                    else
+                        return false;
                 }
                 catch(Exception exc)
                 {
@@ -192,12 +200,12 @@ namespace fITNat
 
         #region Schedule
         /// <summary>
-        /// 
+        /// Gibt alle Trainingspläne eines Benutzers zurück
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync()
+        public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync(Guid userID = new Guid())
         {
-            if (online)
+            if (Online)
             {
                 try
                 {
@@ -245,7 +253,7 @@ namespace fITNat
         /// <returns></returns>
         public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
         {
-            if (online)
+            if (Online)
             {
                 try
                 {
@@ -279,7 +287,7 @@ namespace fITNat
         /// <returns></returns>
         public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
         {
-            if (online)
+            if (Online)
             {
                 try
                 {
@@ -288,7 +296,7 @@ namespace fITNat
                 }
                 catch (ServerException ex)
                 {
-                    System.Console.WriteLine("Fehler beim Abrufen eines Trainingsplans: " + ex.StackTrace);
+                    System.Console.WriteLine("Fehler beim Online-Abrufen eines Trainingsplans: " + ex.StackTrace);
                     throw;
                 }
             }
@@ -296,8 +304,67 @@ namespace fITNat
             {
                 try
                 {
-                    //TODO
+                    Schedule schedule = await db.GetScheduleByIdAsync(id);
+                    ScheduleModel result = new ScheduleModel();
+                    result.Id = schedule.Id;
+                    result.Name = schedule.Name;
+                    result.Url = schedule.Url;
+                    result.UserId = schedule.UserId;
+                    return result;
+                }
+                catch (Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim lokalen Abrufen eines Trainingsplans: " + exc.StackTrace);
                     return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gibt die Übungen eines Trainingsplans zurück
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
+        public async Task<List<ExerciseModel>> GetExercisesForSchedule(int scheduleId)
+        {
+            if (Online)
+            {
+                try
+                {
+                    ScheduleModel schedule = await mgnService.GetScheduleByIdAsync(scheduleId);
+                    IEnumerable<EntryModel<int>> scheduleExercises = schedule.Exercises;
+                    List<ExerciseModel> result = new List<ExerciseModel>();
+                    foreach (var exercise in scheduleExercises)
+                    {
+                        //Für jede zugewiesene Id die Exercise raussuchen und der IEnumerable hinzufügen
+                        result.Add(await mgnService.GetExerciseByIdAsync(exercise.Id));
+                    }
+                    return result;
+                }
+                catch (ServerException ex)
+                {
+                    System.Console.WriteLine("Fehler beim Online-Abrufen der Übungen eines Trainingsplans: " + ex.StackTrace);
+                    throw;
+                }
+            }
+            else
+            {
+                try
+                {
+                    //Anhand der scheduleId alle Exercises aus der ScheduleHasExercises-Tabelle holen
+                    IEnumerable<ScheduleHasExercises> scheduleHasExercises = await db.GetExercisesOfSchedule(scheduleId);
+                    List<ExerciseModel> result = new List<ExerciseModel>();
+                    foreach (var sHE in scheduleHasExercises)
+                    {
+                        Exercise exercise = await db.GetExerciseByIdAsync(sHE.ExerciseId);
+                        ExerciseModel temp = new ExerciseModel();
+                        temp.Id = exercise.Id;
+                        temp.Name = exercise.Name;
+                        temp.Url = exercise.Url;
+                        temp.Description = exercise.Description;
+                        result.Add(temp);
+                    }
+                    return result;
                 }
                 catch (Exception exc)
                 {
@@ -317,12 +384,6 @@ namespace fITNat
             Console.WriteLine("OnOffService gestartet!");
             Task.Run(async () =>
             {
-                MainActivity mainA = new MainActivity();
-                ExerciseActivity exerciseA = new ExerciseActivity();
-                PracticeActivity practiceA = new PracticeActivity();
-                ScheduleActivity scheduleA = new ScheduleActivity();
-
-                Console.WriteLine("Datenbank erstellen");
                 //Datenbank erstellen
                 db = new LocalDB();
 
@@ -331,25 +392,28 @@ namespace fITNat
                 if (task.Result)
                 {
                     //Verbindungsüberprüfung
-                    Console.WriteLine("Vor der While-Schleife");
                     while (true)
                     {
-                        if (await mgnServiceServer.PingAsync())
-                        {
-                            online = true;
-                        }
-                        else
-                        {
-                            online = false;
-                        }
-                        //Timeout 10sek.
-                        System.Threading.Thread.Sleep(10000);
-
+                        //lock (thisLock)
+                        //{
+                            //var result = mgnServiceServer.PingAsync();
+                            //if (result.Result)
+                            if(await mgnServiceServer.PingAsync())
+                            {
+                                Online = true;
+                            }
+                            else
+                            {
+                                Online = false;
+                            }
+                            //Timeout 10sek.
+                            System.Threading.Thread.Sleep(10000);
+                        //}
                         //Haken entsprechend der Connection setzen
-                        mainA.setConnectivityStatus(online);
-                        exerciseA.setConnectivityStatus(online);
-                        practiceA.setConnectivityStatus(online);
-                        scheduleA.setConnectivityStatus(online);
+                        //mainA.setConnectivityStatus(online);
+                        //exerciseA.setConnectivityStatus(online);
+                        //practiceA.setConnectivityStatus(online);
+                        //scheduleA.setConnectivityStatus(online);
                     }
                 }
             });

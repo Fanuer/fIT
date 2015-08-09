@@ -13,6 +13,7 @@ using fITNat.Services;
 using Java.Lang;
 using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.Shared;
+using fIT.WebApi.Client.Data.Models.Schedule;
 
 namespace fITNat
 {
@@ -23,6 +24,7 @@ namespace fITNat
         private ListView lv;
         private ImageView connectivityPointer;
         private OnOffService ooService;
+        private Guid userId;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -30,26 +32,24 @@ namespace fITNat
             {
                 base.OnCreate(bundle);
                 SetContentView(Resource.Layout.ExerciseLayout);
-                //ScheduleID auslesen und in die versteckten Felder der Übungen legen
+                //ScheduleID und UserID auslesen und in die versteckten Felder der Übungen legen
                 int scheduleID = Integer.ParseInt(Intent.GetStringExtra("Schedule"));
-
-                List<ExerciseModel> exercises = new List<ExerciseModel>();
+                string text = Intent.GetStringExtra("UserID") ?? "";
+                userId = text.Cast<Guid>().First();
+                
                 connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionExcercise);
                 ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
 
+
+
                 //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-                //eine foreach muss drum, um über jede Exercise in der Schedule zu iterieren
-                var schedule = ooService.GetScheduleByIdAsync(scheduleID);
-                IEnumerable<EntryModel<int>> scheduleExercises = schedule.Result.Exercises;
-
-                foreach (var item in scheduleExercises)
-                {
-                    var task = ooService.GetExerciseByIdAsync(item.Id);
-                    exercises.Add(task.Result);
-                }
-
-
-                ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises);
+                //eine foreach muss drum, um über jede Exercise der Schedule zu iterieren
+                var result = ooService.GetScheduleByIdAsync(scheduleID);
+                ScheduleModel schedule = result.Result;
+                var temp = ooService.GetExercisesForSchedule(scheduleID);
+                List<ExerciseModel> scheduleExercises = temp.Result;
+                
+                ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, scheduleExercises, userId);
                 adapter.scheduleID = scheduleID;
                 lv.Adapter = adapter;
 
@@ -80,6 +80,8 @@ namespace fITNat
             var practiceActivity = new Intent(this, typeof(PracticeActivity));
             practiceActivity.PutExtra("Exercise", exerciseId);
             practiceActivity.PutExtra("Schedule", scheduleId);
+            practiceActivity.PutExtra("UserID", userId.ToString());
+
             StartActivity(practiceActivity);
         }
 

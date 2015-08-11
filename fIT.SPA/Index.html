@@ -3,7 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html class="no-js" lang="de" >
+<html class="no-js" lang="de">
 <!--<![endif]-->
 <head>
     <meta charset="utf-8">
@@ -23,20 +23,25 @@
     </style>
 </head>
 <body data-ng-app="fIT">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="indexController">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                <button class="btn btn-success navbar-toggle" data-ng-click="navbarExpanded = !navbarExpanded">
+                    <span class="glyphicon glyphicon-chevron-down"></span>
                 </button>
-                <a class="navbar-brand" href="#">fIT.SPA</a>
+                <a class="navbar-brand" href="#/">fIT.SPA</a>
             </div>
-            <div id="navbar" class="navbar-collapse collapse">
-                <a href="#/login">Log in</a>
-                <a href="#/register">Register</a>
+            <div id="navbar" class="navbar-collapse collapse" data-collapse="!navbarExpanded">
+                <ul class="nav navbar-nav navbar-right" data-ng-show="!authentication.isAuth">
+                    <li><a href="#/login">Log in</a></li>
+                    <li><a href="#/register">Register</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" data-ng-show="authentication.isAuth">
+                    <li><a href="#">Hallo {{authentication.name}}</a></li>
+                    <li><a href="#/schedules">Schedules</a></li>
+                    <li><a href="#" data-ng-click="logOut()">Log out</a></li>
+                </ul>
+
             </div><!--/.navbar-collapse -->
         </div>
     </nav>
@@ -50,10 +55,24 @@
     </div>
     <script src="Scripts/jquery-1.9.1.min.js"></script>
     <script src="Scripts/bootstrap.min.js"></script>
+
     <script src="Scripts/angular.min.js"></script>
     <script src="Scripts/angular-route.min.js"></script>
     <script src="Scripts/angular-local-storage.js"></script>
-    <script src="App/Controllers/MainController.js"></script>
-    <script src="App/app.js"></script>
+
+    <!-- Directives-->
+    <script src="app/directive/sameAs.js"></script>
+    <!--Controllers-->
+    <script src="app/controllers/homeController.js"></script>
+    <script src="app/controllers/indexController.js"></script>
+    <script src="app/controllers/signupController.js"></script>
+    <script src="app/controllers/loginController.js"></script>
+    <!--Factories-->
+    <script src="app/factory/enumFactory.js"></script>
+    <script src="app/factory/authFactory.js"></script>
+    <script src="app/factory/scheduleFactory.js"></script>
+    <script src="app/factory/authInterceptorFactory.js"></script>
+
+    <script src="app/app.js"></script>
 </body>
 </html>

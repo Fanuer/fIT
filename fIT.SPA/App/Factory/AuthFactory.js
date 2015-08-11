@@ -1,4 +1,6 @@
-﻿function AuthFactory($http, $q, $log, localStorageService, baseUrl) {
+﻿'use strict';
+
+function authFactory($http, $q, $log, localStorageService, baseUrl) {
   var factory = {};
   var _authentication = {
     isAuth: false,
@@ -7,7 +9,7 @@
 
   var _register = function(registrationModel) {
     _logout();
-    return $http.post(baseUrl + '/api/account/register', registrationModel)
+    return $http.post(baseUrl + '/api/accounts/register', registrationModel)
       .then(function(response) {
         return response;
       })
@@ -19,7 +21,7 @@
   var _login = function (loginData) {
     var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
     var deferred = $q.defer();
-    $http.post(baseUrl + '/api/account/login', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
+    $http.post(baseUrl + 'accounts/login', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
       .success(function (response) {
       localStorageService.set('authorizationData', {
         token: response.access_token, 
@@ -60,7 +62,7 @@
     }
   }
 
-  factory.saveRegistration = _register;
+  factory.register = _register;
   factory.login = _login;
   factory.logOut = _logOut;
   factory.fillAuthData = _fillAuthData;

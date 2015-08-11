@@ -19,6 +19,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,9 +59,18 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App\Controllers\MainController.js" />
-    <Content Include="App\Factory\AuthFactory.js" />
-    <Content Include="App\Partials\Landing.html" />
+    <Content Include="app\controllers\homeController.js" />
+    <Content Include="app\controllers\indexController.js" />
+    <Content Include="app\controllers\loginController.js" />
+    <Content Include="app\controllers\signupController.js" />
+    <Content Include="app\directive\sameAs.js" />
+    <Content Include="app\factory\authFactory.js" />
+    <Content Include="app\factory\authInterceptorFactory.js" />
+    <Content Include="app\factory\enumFactory.js" />
+    <Content Include="app\factory\scheduleFactory.js" />
+    <Content Include="app\views\home.html" />
+    <Content Include="app\views\login.html" />
+    <Content Include="app\views\signup.html" />
     <Content Include="Images\apple-touch-icon.png" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Scripts\angular-local-storage.js" />
@@ -94,7 +104,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
-    <Content Include="App\app.js" />
+    <Content Include="app\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />

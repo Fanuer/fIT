@@ -1,7 +1,15 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using System.Threading;
 using System.Threading.Tasks;
 using Android.Net;
 using Java.Net;
@@ -13,13 +21,6 @@ namespace fITNat
     {
         private ConnectivityManager connectivityManager;
 
-        public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
-        {
-            Console.WriteLine("ConnectivityService gestartet!");
-            return StartCommandResult.Sticky;
-        }
-
-        /*
         public bool IsConnected
         {
             get
@@ -37,23 +38,20 @@ namespace fITNat
                 }
             }
         }
-        */
 
-        /// <summary>
-        /// Pingt den Server an, um zu kontrollieren, ob eine Verbindung dorthin besteht
-        /// </summary>
-        /// <returns></returns>
         public async Task<bool> IsPingReachable()
         {
+            string host = @"http://fit-bachelor.azurewebsites.net/";
+            int msTimeout = 10000;
+            if (!IsConnected)
+                return false;
+
             return await Task.Run(() =>
             {
-                //string host = "216.58.192.35";
-                //if (!IsConnected)
-                //return false;
                 bool reachable;
                 try
                 {
-                    reachable = InetAddress.GetByName("216.58.192.35").IsReachable(1);
+                    reachable = InetAddress.GetByName(host).IsReachable(msTimeout);
                 }
                 catch (UnknownHostException)
                 {

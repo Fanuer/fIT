@@ -27,38 +27,31 @@ namespace fITNat
 
         protected override void OnCreate(Bundle bundle)
         {
-            try
+            base.OnCreate(bundle);
+            SetContentView(Resource.Layout.ScheduleLayout);
+
+            schedules = new List<ScheduleModel>();
+            lv = (ListView)FindViewById(Resource.Id.lvSchedule);
+            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
+
+
+            //Generiert Testdaten
+            /*
+            for (int i = 1; i <= 10; i++)
             {
-                base.OnCreate(bundle);
-                SetContentView(Resource.Layout.ScheduleLayout);
-
-                schedules = new List<ScheduleModel>();
-                lv = (ListView)FindViewById(Resource.Id.lvSchedule);
-                connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
-
-                //UserID auslesen und in die Listview-Elemente legen
-                string text = Intent.GetStringExtra("UserID") ?? "";
-                Guid userID = text.Cast<Guid>().First();
-
-
-                //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-                var task = ooService.GetAllSchedulesAsync(userID);
-                schedules = task.Result.ToList();
-                foreach (var schedule in schedules)
-                {
-                    schedule.UserId = userID.ToString();
-                }
-
-                ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
-                lv.Adapter = adapter;
-
-
-                lv.ItemClick += lv_ItemClick;
+                schedules.Add(new Schedule(i, "Testplan "+i, "Kevin"));
             }
-            catch(System.Exception exc)
-            {
-                Console.WriteLine("Fehler beim Erstellen der Schedule-Übersicht: " + exc.StackTrace);
-            }
+            */
+            //Hier die Schedules des Benutzers abholen und in die Liste einfügen
+            var task = ooService.GetAllSchedulesAsync();
+            schedules = task.Result.ToList();
+
+            //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
+            ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
+            lv.Adapter = adapter;
+
+
+            lv.ItemClick += lv_ItemClick;
         }
 
         /// <summary>
@@ -72,11 +65,9 @@ namespace fITNat
             //Daraus die ID des Trainingsplans holen und diesen dann abfragen + redirect auf die passende Seite!
             string selectedSchedule = schedules[e.Position].Name.ToString();
             int scheduleId = Integer.ParseInt(schedules[e.Position].Id.ToString());
-            string userID = schedules[e.Position].UserId;
 
             var exerciseActivity = new Intent(this, typeof(ExerciseActivity));
             exerciseActivity.PutExtra("Schedule", scheduleId);
-            exerciseActivity.PutExtra("User", userID);
             StartActivity(exerciseActivity);
         }
 

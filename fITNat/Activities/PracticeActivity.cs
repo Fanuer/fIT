@@ -1,11 +1,16 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 using Android.App;
+using Android.Content;
 using Android.OS;
+using Android.Runtime;
+using Android.Views;
 using Android.Widget;
+using fIT.WebApi.Client.Data.Models.Practice;
 using fIT.WebApi.Client.Data.Models.Exceptions;
-using fITNat.Services;
-using Java.Lang;
 
 namespace fITNat
 {
@@ -18,72 +23,39 @@ namespace fITNat
         private EditText txtNumberOfRepetitions;
         private Button btnSavePractice;
         private OnOffService ooService;
-        private ManagementServiceLocal mgnService;
-        private string userId;
-        private int exerciseId;
-        private int scheduleId;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.PracticeLayout);
-            mgnService = new ManagementServiceLocal();
 
             connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionPractice);
             txtWeight = FindViewById<EditText>(Resource.Id.txtWeight);
             txtRepetitions = FindViewById<EditText>(Resource.Id.txtRepetitions);
             txtNumberOfRepetitions = FindViewById<EditText>(Resource.Id.txtNumberOfRepetitions);
             btnSavePractice = FindViewById<Button>(Resource.Id.btnSavePractice);
-
-            //Infos aus dem Aufruf holen
-            scheduleId = Integer.ParseInt(Intent.GetStringExtra("Schedule"));
-            exerciseId = Integer.ParseInt(Intent.GetStringExtra("Exercise"));
-
             btnSavePractice.Click += (object sender, EventArgs args) =>
             {
                 try
                 {
-                    var session = mgnService.actualSession();
-                    if (session != null)
-                    {
-                        userId = session.CurrentUserId.ToString();
-                    }
-                    else
-                    {
-                        //UserId aus der Exercise holen
-                        userId = Intent.GetStringExtra("UserID") ?? "";
-                    }
-                    double weight = System.Double.Parse(txtWeight.Text);
+                    int scheduleId = 0; //über den Benutzer (aus der Session)
+                    int exerciseId = 0; //über den Weg zu dem Training
+                    string userId = "Test"; //Habe ich!
+                    double weight = Double.Parse(txtWeight.Text);
                     int repetitions = Java.Lang.Integer.ParseInt(txtRepetitions.Text);
                     int numberOfRepetitions = Java.Lang.Integer.ParseInt(txtNumberOfRepetitions.Text);
 
-                    var result = ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions);
-                    bool creation = result.Result;
-                    if(creation)
-                    {
-                        new AlertDialog.Builder(this)
-                           .SetMessage("Speichern erfolgreich!")
-                           .Show();
-                        //Zurück zu der Übungsseite
-                        OnBackPressed();
-                    }
-                    else
-                    {
-                        //Messagebox anzeigen, die über den Fehler informiert
-                        new AlertDialog.Builder(this)
-                           .SetMessage("Fehler beim Anlegen des Trainings")
-                           .Show();
-                        OnBackPressed();
-                    }
+                    ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions).Wait();
+                    //Zurück zu der Übungsseite
                 }
                 catch (ServerException ex)
                 {
-                    Console.WriteLine("Fehler beim Anlegen eines Trainings (Server): " + ex.StackTrace);
+                    Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
                     CreatePracticeFail();
                 }
-                catch (System.Exception exc)
+                catch (Exception exc)
                 {
-                    Console.WriteLine("Fehler beim Anlegen eines Trainings: " + exc.StackTrace);
+                    Console.WriteLine("Login-Fehler: " + exc.StackTrace);
                 }
             };
         }
@@ -93,9 +65,6 @@ namespace fITNat
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Beim Drücken des Zurück-Knopfs
-        /// </summary>
         public override void OnBackPressed()
         {
             base.OnBackPressed();

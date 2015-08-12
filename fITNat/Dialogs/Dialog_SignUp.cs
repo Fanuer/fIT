@@ -65,12 +65,11 @@ namespace fITNat
 
             return view;
         }
-        
-        /// <summary>
-        /// Click-Event für den Registrieren-Button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+
+        //
+        //Siehe SignIn für await und asny und so!!!!
+        //
+
         private async void BtnSignUp_Click(object sender, EventArgs e)
         {
             //Types aus den Eingaben genrieren
@@ -95,13 +94,14 @@ namespace fITNat
             catch (ServerException ex)
             {
                 Console.WriteLine("Serverfehler: " + ex.StackTrace);
-                //e.Data => Alle Fehler!!
+                //Falsche Logindaten
+                //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
                 string fehler = "";
-                if (ex.Data.Equals("username"))
+                if (ex.StackTrace.Contains("username"))
                     fehler = "username";
-                else if (ex.Data.Equals("password"))
+                else if (ex.StackTrace.Contains("username"))
                     fehler = "password";
-                else if (ex.Data.Equals("birthdate"))
+                else if (ex.StackTrace.Contains("birthdate"))
                     fehler = "birthdate";
                 SignUpFail(fehler);
             }

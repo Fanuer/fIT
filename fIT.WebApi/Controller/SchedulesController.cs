@@ -26,7 +26,7 @@ namespace fIT.WebApi.Controller
         /// <summary>
         /// Gets all schedules of a user or all, if logged in as an admin
         /// </summary>
-        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<PracticeModel>))]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<ScheduleModel>))]
         [Route("")]
         [HttpGet]
         [EnableQuery]

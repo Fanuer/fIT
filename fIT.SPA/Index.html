@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="de">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
+    <title></title>
+    <link href="Content/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Content/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="Content/Site.css">
+    <script src="Scripts/modernizr-2.8.3.js"></script>
+    <style>
+        body {
+            padding-top: 50px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body data-ng-app="fIT">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="indexController">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="{{!navbarExpanded}}">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand pull-left" href="#/">fIT.SPA</a>
+                <ul class="nav pull-left">
+                    <li class="status online navbar-text" ng-hide="!onlineStatus">
+                        <span class="glyphicon glyphicon-ok "></span> Online
+                    </li>
+                    <li class="status offline navbar-text" ng-hide="onlineStatus">
+                        <span class="glyphicon glyphicon-remove"></span> Offline
+                    </li>
+                </ul>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right" data-ng-show="!authentication.isAuth">
+                    <li><a href="#/login">Log in</a></li>
+                    <li><a href="#/register">Register</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" data-ng-show="authentication.isAuth">
+                    <li><a href="#">Hallo {{authentication.userName}}</a></li>
+                    <li><a href="#/schedules">Schedules</a></li>
+                    <li><a href="#" data-ng-click="logOut()">Log out</a></li>
+                </ul>
+            </div><!--/.navbar-collapse -->
+
+        </div>
+    </nav>
+    <div class="container">
+        <div id="content" data-ng-view>
+
+        </div>
+        <footer>
+            <p>&copy; Company 2015</p>
+        </footer>
+    </div>
+    <script src="Scripts/jquery-1.9.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+
+    <script src="Scripts/angular.min.js"></script>
+    <script src="Scripts/angular-route.min.js"></script>
+    <script src="Scripts/angular-local-storage.js"></script>
+
+    <!-- Directives-->
+    <script src="app/directive/sameAs.js"></script>
+    <!--Controllers-->
+    <script src="app/controllers/homeController.js"></script>
+    <script src="app/controllers/indexController.js"></script>
+    <script src="app/controllers/signupController.js"></script>
+    <script src="app/controllers/loginController.js"></script>
+    <script src="app/controllers/scheduleController.js"></script>
+
+    <!--Factories-->
+    <script src="app/factory/enumFactory.js"></script>
+    <script src="app/factory/authFactory.js"></script>
+    <script src="app/factory/scheduleFactory.js"></script>
+    <script src="app/factory/authInterceptorFactory.js"></script>
+
+    <script src="app/app.js"></script>
+</body>
+</html>

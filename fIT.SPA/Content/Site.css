@@ -1,2 +1,14 @@
-﻿body {
+﻿.navbar-inverse .navbar-header>.nav.pull-left>li.status.online,
+.navbar-inverse .navbar-header>.nav.pull-left>li.status.offline {
+  font-weight: bold;
+}
+
+.navbar-inverse .navbar-header>.nav.pull-left>li.status.online{
+  color: #419641;
+  
+}
+
+.navbar-inverse .navbar-header>.nav.pull-left>li.status.offline
+{
+  color: red;
 }

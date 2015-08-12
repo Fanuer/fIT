@@ -175,7 +175,6 @@
   <ItemGroup>
     <Content Include="fIT.WebApi.XML" />
     <Content Include="Index.html" />
-    <Content Include="js\onComplete.js" />
     <Content Include="packages.config" />
     <None Include="Properties\PublishProfiles\fIT-Bachelor - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\fIT-Bachelor - Web Deploy.pubxml" />
@@ -188,6 +187,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controller\EnumsController.cs" />
     <Compile Include="Controller\PracticeController.cs" />
     <Compile Include="Controller\SchedulesController.cs" />
     <Compile Include="Migrations\201507150819282_AlteredModels_WeightTimeStamp.cs" />
@@ -222,6 +222,7 @@
     <Compile Include="Migrations\201508031040410_AddedModelBinder1.Designer.cs">
       <DependentUpon>201508031040410_AddedModelBinder1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\EnumValueModel.cs" />
     <Compile Include="Models\PracticeModel.cs" />
     <Compile Include="Models\RefreshTokenModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />
@@ -335,6 +336,7 @@
     <EmbeddedResource Include="Migrations\201508031040410_AddedModelBinder1.resx">
       <DependentUpon>201508031040410_AddedModelBinder1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Resources.de-DE.resx" />
     <EmbeddedResource Include="Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

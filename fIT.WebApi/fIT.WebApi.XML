@@ -4,41 +4,29 @@
         <name>fIT.WebApi</name>
     </assembly>
     <members>
+        <member name="T:fIT.WebApi.Controller.EnumsController">
+            <summary>
+            Returns all Values and Displaynames of an enumeration
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.EnumsController.GetJobValues">
+            <summary>
+            Returns all Jobs
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.EnumsController.GetGenderValues">
+            <summary>
+            Returns all Genders
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Controller.EnumsController.GetFitnessValues">
+            <summary>
+            Returns all Genders
+            </summary>
+        </member>
         <member name="T:fIT.WebApi.Controller.PracticeController">
             <summary>
             Grants access to practice data
-            </summary>
-        </member>
-        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
-            <summary>
-            Wraps the modelerrror to a request
-            </summary>
-            <param name="result"></param>
-            <returns></returns>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
-            <summary>
-            Singleton Modelfactory
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
-            <summary>
-            Returns a single User-Manager per Request
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
-            <summary>
-            Manages User Roles
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
-            <summary>
-            Repository
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Controller.BaseApiController.CurrentUserId">
-            <summary>
-            Current User Id
             </summary>
         </member>
         <member name="M:fIT.WebApi.Controller.PracticeController.GetPractices">
@@ -135,67 +123,6 @@
             <param name="exerciseId">Id of an exercise</param>
             <returns></returns>
         </member>
-        <member name="P:fIT.WebApi.Models.RefreshTokenModel.Id">
-            <summary>
-            Token Id
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.RefreshTokenModel.Subject">
-            <summary>
-            User name
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.RefreshTokenModel.ClientId">
-            <summary>
-            Client name
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.RefreshTokenModel.IssuedUtc">
-            <summary>
-            Issue date
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.RefreshTokenModel.ExpiresUtc">
-            <summary>
-            Expire Date
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.ScheduleModel">
-            <summary>
-            Trainingsplan
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Models.EntryModel`1">
-            <summary>
-            Defines one entry from the server
-            </summary>
-            <typeparam name="T">Type of id-property</typeparam>
-        </member>
-        <member name="P:fIT.WebApi.Models.EntryModel`1.Id">
-            <summary>
-            Id of an entity
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.EntryModel`1.Name">
-            <summary>
-            Name of an Entity
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.EntryModel`1.Url">
-            <summary>
-            Url to receive this entity
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.ScheduleModel.UserId">
-            <summary>
-            Nutzer, dem der Trainingsplan gehört
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Models.ScheduleModel.Exercises">
-            <summary>
-            Zugehoerige Uebungen
-            </summary>
-        </member>
         <member name="T:fIT.WebApi.Controller.AccountsController">
             <summary>
             Handles User-based Actions
@@ -260,6 +187,38 @@
             </summary>
             <param name="id">User Id</param>
             <param name="rolesToAssign">Roles to assign to the user</param>
+        </member>
+        <member name="M:fIT.WebApi.Controller.BaseApiController.GetErrorResult(Microsoft.AspNet.Identity.IdentityResult)">
+            <summary>
+            Wraps the modelerrror to a request
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.TheModelFactory">
+            <summary>
+            Singleton Modelfactory
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppUserManager">
+            <summary>
+            Returns a single User-Manager per Request
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRoleManager">
+            <summary>
+            Manages User Roles
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.AppRepository">
+            <summary>
+            Repository
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Controller.BaseApiController.CurrentUserId">
+            <summary>
+            Current User Id
+            </summary>
         </member>
         <member name="T:fIT.WebApi.Controller.ExerciseController">
             <summary>
@@ -365,168 +324,45 @@
             </summary>
             <param name="model">new settings</param>
         </member>
-        <member name="T:fIT.WebApi.Entities.Client">
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.Id">
             <summary>
-            Definiert einen UserClient (z.b. App, SPA)
+            Token Id
             </summary>
         </member>
-        <member name="T:fIT.WebApi.Entities.Enums.FitnessType">
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.Subject">
             <summary>
-            Art der Fittness eines Nutzers
+            User name
             </summary>
         </member>
-        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.NoSport">
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.ClientId">
             <summary>
-            Nutzer macht keinen Sport
+            Client name
             </summary>
         </member>
-        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.OnceAWeek">
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.IssuedUtc">
             <summary>
-            Nutzer macht ein mal die Woche Sport
+            Issue date
             </summary>
         </member>
-        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.MoreThanOnceAWeek">
+        <member name="P:fIT.WebApi.Models.RefreshTokenModel.ExpiresUtc">
             <summary>
-            Nutzer macht mehr als einmal die Woche Sport
+            Expire Date
             </summary>
         </member>
-        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.HighPerformanceAthletes">
+        <member name="T:fIT.WebApi.Models.ScheduleModel">
             <summary>
-            Hochleistungssportler
+            Trainingsplan
             </summary>
         </member>
-        <member name="T:fIT.WebApi.Entities.Enums.GenderType">
+        <member name="P:fIT.WebApi.Models.ScheduleModel.UserId">
             <summary>
-            Geschlecht
+            Nutzer, dem der Trainingsplan gehört
             </summary>
         </member>
-        <member name="F:fIT.WebApi.Entities.Enums.GenderType.Male">
+        <member name="P:fIT.WebApi.Models.ScheduleModel.Exercises">
             <summary>
-            männlich
+            Zugehoerige Uebungen
             </summary>
-        </member>
-        <member name="F:fIT.WebApi.Entities.Enums.GenderType.Female">
-            <summary>
-            weiblich
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Entities.Enums.JobTypes">
-            <summary>
-            Art der Aktivität des Nutzers
-            </summary>
-        </member>
-        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Easy">
-            <summary>
-            z.B. Schüler, Student, Büroarbeiten
-            </summary>
-        </member>
-        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Middle">
-            <summary>
-            z.B. Handwerker, Verkäufer
-            </summary>
-        </member>
-        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Hard">
-            <summary>
-            z.B. Bauarbeiter, Landwirt
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Entities.ApplicationUser">
-            <summary>
-            Entität eines Nutzers
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.ApplicationUser.Gender">
-            <summary>
-            Geschlecht
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.ApplicationUser.Job">
-            <summary>
-            Berufsfeld
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.ApplicationUser.Fitness">
-            <summary>
-            Fittness
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.ApplicationUser.DateOfBirth">
-            <summary>
-            Alter
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.ApplicationUser.Schedules">
-            <summary>
-            Trainingsplaene
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Entities.Exercise">
-            <summary>
-            Uebung fuer Trainingspläne
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.Exercise.Id">
-            <summary>
-            ID der Uebung
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.Exercise.Name">
-            <summary>
-            DisplayName
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.Exercise.Description">
-            <summary>
-            Beschreibung
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.Exercise.Schedules">
-            <summary>
-            Trainingsplaene, die diese Uebung enthalten
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Entities.Practice">
-            <summary>
-            Definiert eine Trainingseinheit
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Entities.Schedule">
-            <summary>
-            Definiert einen Trainingsplan
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.Schedule.Id">
-            <summary>
-            DB ID
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.Schedule.Name">
-            <summary>
-            DisplayName des Trainingsplans
-            </summary>
-        </member>
-        <member name="P:fIT.WebApi.Entities.Schedule.UserID">
-            <summary>
-            Fremdschlüssel zum Nutzer
-            </summary>        
-        </member>
-        <member name="P:fIT.WebApi.Entities.Schedule.Exercises">
-            <summary>
-            Uebungen
-            </summary>
-        </member>
-        <member name="T:fIT.WebApi.Manager.ApplicationUserManager">
-            <summary>
-            Gives access to Users
-            </summary>
-        </member>
-        <member name="M:fIT.WebApi.Manager.ApplicationUserManager.Create(Microsoft.AspNet.Identity.Owin.IdentityFactoryOptions{fIT.WebApi.Manager.ApplicationUserManager},Microsoft.Owin.IOwinContext)">
-            <summary>
-            Returns a new UserManager for each request
-            </summary>
-            <param name="options"></param>
-            <param name="context"></param>
-            <returns></returns>
         </member>
         <member name="T:fIT.WebApi.Models.ChangePasswordModel">
             <summary>
@@ -546,6 +382,27 @@
         <member name="P:fIT.WebApi.Models.ExerciseModel.Schedules">
             <summary>
             Zugehoerige Trainingsplaene
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Models.EntryModel`1">
+            <summary>
+            Defines one entry from the server
+            </summary>
+            <typeparam name="T">Type of id-property</typeparam>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Id">
+            <summary>
+            Id of an entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Name">
+            <summary>
+            Name of an Entity
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.EntryModel`1.Url">
+            <summary>
+            Url to receive this entity
             </summary>
         </member>
         <member name="T:fIT.WebApi.Models.CreateUserModel">
@@ -663,6 +520,208 @@
             Removed User
             </summary>
         </member>
+        <member name="T:fIT.WebApi.Repository.ApplicationDbContext">
+            <summary>
+            Communcates with the Database
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Repository.ApplicationDbContext.OnModelCreating(System.Data.Entity.DbModelBuilder)">
+            <summary>
+            Creates Bindings between objects
+            </summary>
+            <param name="modelBuilder"></param>
+        </member>
+        <member name="M:fIT.WebApi.Repository.ApplicationRepository.ScheduleRepository.AddExerciseAsync(System.Int32,System.Int32)">
+            <summary>
+            Adds an Exercise to a Schedule
+            </summary>
+            <param name="scheduleId">Id of a schedule</param>
+            <param name="exerciseId">Id of an exercise</param>
+            <returns>true, if adding was successful</returns>
+        </member>
+        <member name="M:fIT.WebApi.Repository.ApplicationRepository.ScheduleRepository.RemoveExerciseAsync(System.Int32,System.Int32)">
+            <summary>
+            Removes an Exercise to a Schedule
+            </summary>
+            <param name="scheduleId">Id of a schedule</param>
+            <param name="exerciseId">Id of an exercise</param>
+            <returns>true, if adding was successful</returns>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Client">
+            <summary>
+            Definiert einen UserClient (z.b. App, SPA)
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Enums.FitnessType">
+            <summary>
+            Art der Fitness eines Nutzers
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.NoSport">
+            <summary>
+            Nutzer macht keinen Sport
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.OnceAWeek">
+            <summary>
+            Nutzer macht ein mal die Woche Sport
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.MoreThanOnceAWeek">
+            <summary>
+            Nutzer macht mehr als einmal die Woche Sport
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.FitnessType.HighPerformanceAthletes">
+            <summary>
+            Hochleistungssportler
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Enums.GenderType">
+            <summary>
+            Geschlecht
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.GenderType.Male">
+            <summary>
+            männlich
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.GenderType.Female">
+            <summary>
+            weiblich
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.GenderType.Other">
+            <summary>
+            Rest
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Enums.JobTypes">
+            <summary>
+            Art der Aktivität des Nutzers
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Easy">
+            <summary>
+            z.B. Schüler, Student, Büroarbeiten
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Middle">
+            <summary>
+            z.B. Handwerker, Verkäufer
+            </summary>
+        </member>
+        <member name="F:fIT.WebApi.Entities.Enums.JobTypes.Hard">
+            <summary>
+            z.B. Bauarbeiter, Landwirt
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.ApplicationUser">
+            <summary>
+            Entität eines Nutzers
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Gender">
+            <summary>
+            Geschlecht
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Job">
+            <summary>
+            Berufsfeld
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Fitness">
+            <summary>
+            Fittness
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.DateOfBirth">
+            <summary>
+            Alter
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.ApplicationUser.Schedules">
+            <summary>
+            Trainingsplaene
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Exercise">
+            <summary>
+            Uebung fuer Trainingspläne
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Id">
+            <summary>
+            ID der Uebung
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Name">
+            <summary>
+            DisplayName
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Description">
+            <summary>
+            Beschreibung
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Exercise.Schedules">
+            <summary>
+            Trainingsplaene, die diese Uebung enthalten
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Practice">
+            <summary>
+            Definiert eine Trainingseinheit
+            </summary>
+        </member>
+        <member name="T:fIT.WebApi.Entities.Schedule">
+            <summary>
+            Definiert einen Trainingsplan
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.Id">
+            <summary>
+            DB ID
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.Name">
+            <summary>
+            DisplayName des Trainingsplans
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.UserID">
+            <summary>
+            Fremdschlüssel zum Nutzer
+            </summary>        
+        </member>
+        <member name="P:fIT.WebApi.Entities.Schedule.Exercises">
+            <summary>
+            Uebungen
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Helpers.Helper.GetDisplayName(System.Object)">
+            <summary>
+            Returns an objects displayname or the string-representation
+            </summary>
+            <param name="obj">calling object</param>
+            <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Manager.ApplicationUserManager">
+            <summary>
+            Gives access to Users
+            </summary>
+        </member>
+        <member name="M:fIT.WebApi.Manager.ApplicationUserManager.Create(Microsoft.AspNet.Identity.Owin.IdentityFactoryOptions{fIT.WebApi.Manager.ApplicationUserManager},Microsoft.Owin.IOwinContext)">
+            <summary>
+            Returns a new UserManager for each request
+            </summary>
+            <param name="options"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
         <member name="T:fIT.WebApi.Provider.CustomJwtFormat">
             <summary>
             Authorization- and Resource Server
@@ -705,33 +764,6 @@
             <param name="context"></param>
             <returns></returns>
         </member>
-        <member name="T:fIT.WebApi.Repository.ApplicationDbContext">
-            <summary>
-            Communcates with the Database
-            </summary>
-        </member>
-        <member name="M:fIT.WebApi.Repository.ApplicationDbContext.OnModelCreating(System.Data.Entity.DbModelBuilder)">
-            <summary>
-            Creates Bindings between objects
-            </summary>
-            <param name="modelBuilder"></param>
-        </member>
-        <member name="M:fIT.WebApi.Repository.ApplicationRepository.ScheduleRepository.AddExerciseAsync(System.Int32,System.Int32)">
-            <summary>
-            Adds an Exercise to a Schedule
-            </summary>
-            <param name="scheduleId">Id of a schedule</param>
-            <param name="exerciseId">Id of an exercise</param>
-            <returns>true, if adding was successful</returns>
-        </member>
-        <member name="M:fIT.WebApi.Repository.ApplicationRepository.ScheduleRepository.RemoveExerciseAsync(System.Int32,System.Int32)">
-            <summary>
-            Removes an Exercise to a Schedule
-            </summary>
-            <param name="scheduleId">Id of a schedule</param>
-            <param name="exerciseId">Id of an exercise</param>
-            <returns>true, if adding was successful</returns>
-        </member>
         <member name="T:fIT.WebApi.Resources">
             <summary>
               Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
@@ -746,6 +778,56 @@
             <summary>
               Überschreibt die CurrentUICulture-Eigenschaft des aktuellen Threads für alle
               Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Fitness_HighPerformanceAthletes">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die High performance athletes ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Fitness_MoreThanOnceAWeek">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die More than once a week ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Fitness_NoSport">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die No Sport ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Fitness_OnceAWeek">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Once A Week ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Gender_Female">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Female ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Gender_Male">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Male ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Gender_Others">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Other ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Job_Easy">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Easy (e.g. Pupil, student, office work) ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Job_Hard">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Hard (e.g. Construction worker, farmer) ähnelt.
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Resources.Enum_Job_Middle">
+            <summary>
+              Sucht eine lokalisierte Zeichenfolge, die Middle (e.g. craftsmen, retailers) ähnelt.
             </summary>
         </member>
         <member name="P:fIT.WebApi.Resources.Error_CreateScheduleOnlyForYourself">

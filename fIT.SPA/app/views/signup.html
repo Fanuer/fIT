@@ -1,0 +1,59 @@
+﻿<form class="form-login form-horizontal" role="form">
+    <div data-ng-hide="message == ''" data-ng-class="(savedSuccessfully) ? 'alert alert-success' : 'alert alert-danger'">
+        {{message}}
+    </div>
+    <h2 class="form-login-heading">Register</h2>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Anmeldenamen</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" data-ng-model="vm.register.username" placeholder="Username" required autofocus />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-10">
+            <input type="email" class="form-control" data-ng-model="vm.register.email" placeholder="Email" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Passwort</label>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" data-ng-model="vm.register.password" placeholder="Password" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Passwort wiederholen</label>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" data-ng-model="vm.register.confirmPassword" same-as="register.password" placeholder="Passwort wiederholen" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Geschlecht</label>
+        <div class="col-sm-10">
+            <select class="form-control" ng-model="vm.register.gender" ng-options="item.value as item.displayName for item in vm.genderTypes" required placeholder="Geschlecht"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Job</label>
+        <div class="col-sm-10">
+            <select class="form-control" ng-model="vm.register.job" ng-options="item.value as item.displayName for item in vm.jobTypes" required placeholder="Job"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Fitness</label>
+        <div class="col-sm-10">
+            <select class="form-control" ng-model="vm.register.fitness" ng-options="item.value as item.displayName for item in vm.fitnessTypes" required placeholder="Fitness"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Gebrutsdatum</label>
+        <div class="col-sm-10">
+            <input class="form-control" type="date" data-ng-model="vm.register.dateOfBirth" placeholder="Geburtsdatum" required />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button class="btn btn-info" type="submit" data-ng-click="signUp()">Register</button>
+        </div>
+    </div>
+</form>

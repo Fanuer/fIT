@@ -117,132 +117,100 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Enum_Fitness_HighPerformanceAthletes" xml:space="preserve">
+    <value>Hochleistungssportler</value>
+  </data>
+  <data name="Enum_Fitness_MoreThanOnceAWeek" xml:space="preserve">
+    <value>Nutzer macht mehr als einmal die Woche Sport</value>
+  </data>
+  <data name="Enum_Fitness_NoSport" xml:space="preserve">
+    <value>Nutzer macht keinen Sport</value>
+  </data>
+  <data name="Enum_Fitness_OnceAWeek" xml:space="preserve">
+    <value>Nutzer macht ein mal die Woche Sport</value>
+  </data>
+  <data name="Enum_Gender_Female" xml:space="preserve">
+    <value>weiblich</value>
+  </data>
+  <data name="Enum_Gender_Male" xml:space="preserve">
+    <value>männlich</value>
+  </data>
+  <data name="Enum_Gender_Others" xml:space="preserve">
+    <value>andere</value>
+  </data>
+  <data name="Enum_Job_Easy" xml:space="preserve">
+    <value>Leichte Arbeit (z.B. Schüler, Student, Büroarbeiten)</value>
+  </data>
+  <data name="Enum_Job_Hard" xml:space="preserve">
+    <value>Harte Arbeit (z.B. Bauarbeiter, Landwirt)</value>
+  </data>
+  <data name="Enum_Job_Middle" xml:space="preserve">
+    <value>Mittleschwere Arbeit (z.B. Handwerker, Verkäufer)</value>
+  </data>
+  <data name="Error_CreateScheduleOnlyForYourself" xml:space="preserve">
+    <value>Du kannst nur für dich selber Trainingspläne erstellen</value>
+  </data>
   <data name="Error_PasswordsNotEqual" xml:space="preserve">
-    <value>The password and confirmation password do not match.</value>
-    <comment>Passwörter sind nicht gleich</comment>
+    <value>Passwörter sind nicht gleich</value>
   </data>
   <data name="Error_Required" xml:space="preserve">
-    <value>The field '{0}' is required.</value>
-    <comment>Feld ist pflicht</comment>
+    <value>Feld ist pflicht</value>
   </data>
   <data name="Error_StringLength" xml:space="preserve">
-    <value>The {0} must be at least {2} characters long.</value>
-    <comment>Länge der Eingabe stimmt nicht</comment>
+    <value>Länge der Eingabe stimmt nicht</value>
   </data>
   <data name="Label_ConfirmPassword" xml:space="preserve">
-    <value>Confirm Password</value>
-    <comment>Vergleichspasswort zur Verifikation der Eingabe</comment>
+    <value>Vergleichspasswort zur Verifikation der Eingabe</value>
   </data>
   <data name="Label_CurrentPassword" xml:space="preserve">
-    <value>Old Password</value>
-    <comment>Altes Passwort</comment>
+    <value>Altes Passwort</value>
   </data>
   <data name="Label_DateOfBirth" xml:space="preserve">
-    <value>Date Of Birth</value>
-    <comment>Alter des Nutzers</comment>
+    <value>Alter des Nutzers</value>
   </data>
   <data name="Label_Description" xml:space="preserve">
-    <value>Description</value>
-    <comment>Beschreibung</comment>
+    <value>Beschreibung</value>
   </data>
   <data name="Label_Email" xml:space="preserve">
-    <value>Email</value>
-    <comment>Email-Adesse des Nutzers</comment>
+    <value>Email-Adesse des Nutzers</value>
   </data>
   <data name="Label_Fitness" xml:space="preserve">
-    <value>Fitness</value>
-    <comment>Fitness-Level des Nutzers</comment>
+    <value>Fitness-Level des Nutzers</value>
   </data>
   <data name="Label_Gender" xml:space="preserve">
-    <value>Gender</value>
-    <comment>Geschlecht</comment>
+    <value>Geschlecht</value>
   </data>
   <data name="Label_Id" xml:space="preserve">
-    <value>Id</value>
-    <comment>Object Id</comment>
+    <value>Object Id</value>
   </data>
   <data name="Label_JobType" xml:space="preserve">
-    <value>Kind of Job</value>
-    <comment>Art der beruflichen Tätigkeit (körperlich oder vorwiegend sitzen)</comment>
+    <value>Art der beruflichen Tätigkeit (körperlich oder vorwiegend sitzen)</value>
   </data>
   <data name="Label_Name" xml:space="preserve">
     <value>Name</value>
-    <comment>Name</comment>
   </data>
   <data name="Label_NewPassword" xml:space="preserve">
-    <value>New Password</value>
-    <comment>Neues Passwort</comment>
+    <value>Neues Passwort</value>
   </data>
   <data name="Label_Password" xml:space="preserve">
-    <value>Password</value>
-    <comment>Passwort des Nutzers</comment>
+    <value>Passwort des Nutzers</value>
   </data>
   <data name="Label_RoleName" xml:space="preserve">
-    <value>Role Name</value>
-    <comment>Name einer Rolle</comment>
+    <value>Name einer Rolle</value>
   </data>
   <data name="Label_Schedules" xml:space="preserve">
-    <value>Schedules</value>
-    <comment>Trainingspläne</comment>
+    <value>Trainingspläne</value>
   </data>
   <data name="Label_Url" xml:space="preserve">
-    <value>Url</value>
-    <comment>Url to receive this object</comment>
+    <value>Url to receive this object</value>
   </data>
   <data name="Label_Username" xml:space="preserve">
-    <value>Username</value>
-    <comment>Name des Nutzers</comment>
+    <value>Name des Nutzers</value>
   </data>
   <data name="Label_UsersEnrolledToRole" xml:space="preserve">
-    <value>Enrolled Users</value>
-    <comment>Nutzer, die diese Rolle haben</comment>
+    <value>Nutzer, die diese Rolle haben</value>
   </data>
   <data name="Label_UsersRemovedFromRole" xml:space="preserve">
-    <value>Removed Users</value>
-    <comment>Nutzer, die von der Rolle entfernt wurden</comment>
-  </data>
-  <data name="Error_CreateScheduleOnlyForYourself" xml:space="preserve">
-    <value>You can only create Schedules for yourself</value>
-    <comment>Du kannst nur für dich selber Trainingspläne erstellen</comment>
-  </data>
-  <data name="Enum_Gender_Male" xml:space="preserve">
-    <value>Male</value>
-    <comment>männlich</comment>
-  </data>
-  <data name="Enum_Gender_Female" xml:space="preserve">
-    <value>Female</value>
-    <comment>weiblich</comment>
-  </data>
-  <data name="Enum_Gender_Others" xml:space="preserve">
-    <value>Other</value>
-    <comment>andere</comment>
-  </data>
-  <data name="Enum_Job_Easy" xml:space="preserve">
-    <value>Easy (e.g. Pupil, student, office work)</value>
-    <comment>Leichte Arbeit (z.B. Schüler, Student, Büroarbeiten)</comment>
-  </data>
-  <data name="Enum_Job_Middle" xml:space="preserve">
-    <value>Middle (e.g. craftsmen, retailers)</value>
-    <comment>Mittleschwere Arbeit (z.B. Handwerker, Verkäufer)</comment>
-  </data>
-  <data name="Enum_Job_Hard" xml:space="preserve">
-    <value>Hard (e.g. Construction worker, farmer)</value>
-    <comment>Harte Arbeit (z.B. Bauarbeiter, Landwirt)</comment>
-  </data>
-  <data name="Enum_Fitness_NoSport" xml:space="preserve">
-    <value>No Sport</value>
-    <comment>Nutzer macht keinen Sport</comment>
-  </data>
-  <data name="Enum_Fitness_OnceAWeek" xml:space="preserve">
-    <value>Once A Week</value>
-    <comment>Nutzer macht ein mal die Woche Sport</comment>
-  </data>
-  <data name="Enum_Fitness_MoreThanOnceAWeek" xml:space="preserve">
-    <value>More than once a week</value>
-    <comment>Nutzer macht mehr als einmal die Woche Sport</comment>
-  </data>
-  <data name="Enum_Fitness_HighPerformanceAthletes" xml:space="preserve">
-    <value>High performance athletes</value>
-    <comment>Hochleistungssportler</comment>
+    <value>Nutzer, die von der Rolle entfernt wurden</value>
   </data>
 </root>

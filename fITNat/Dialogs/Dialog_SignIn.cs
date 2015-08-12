@@ -45,9 +45,8 @@ namespace fITNat
         private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                //ooService = new OnOffService();
                 var t = ooService.SignIn(txtUsername.Text, txtPassword.Text);
-                bool result = t.Result;
+                bool result = true;
                 if(result)
                 {
                     //User has clicked the Login-Button

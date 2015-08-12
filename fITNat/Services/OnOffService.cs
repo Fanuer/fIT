@@ -10,7 +10,6 @@ using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Data.Models.Exercise;
-using fIT.WebApi.Client.Data.Models.Account;
 using fITNat.DBModels;
 using fIT.WebApi.Client.Portable.Implementation;
 using fIT.WebApi.Client.Data.Models.Shared;
@@ -18,32 +17,31 @@ using fIT.WebApi.Client.Data.Models.Shared;
 namespace fITNat
 {
     [Service]
-    class OnOffService : Service
+    public class OnOffService : Service
     {
         #region Variablen
-        private ConnectivityService conService;
         private ManagementServiceLocal mgnService;
         private ManagementService mgnServiceServer;
         private const string URL = @"http://fit-bachelor.azurewebsites.net/";
         private LocalDB db;
         private Guid userID;
-        public bool Online { get; private set; }
+        public static bool Online { get; private set; }
         private Object thisLock = new Object();
+        private IBinder mBinder;
         #endregion
 
-        public override IBinder OnBind(Intent intent)
+
+        public static void setzeStatus(bool data)
         {
-            return null;
+            Online = data;
         }
 
         //OnCreate -> Initialisierung
-        public async override void OnCreate()
+        public override void OnCreate()
         {
-            base.OnCreate();
-            conService = new ConnectivityService();
-            mgnService = new ManagementServiceLocal();
+            base.OnCreate(); 
             mgnServiceServer = new ManagementService(URL);
-            Online = await mgnServiceServer.PingAsync();
+            mgnService = new ManagementServiceLocal();
             db = new LocalDB();
         }
 
@@ -61,11 +59,14 @@ namespace fITNat
             user.Username = username;
             user.Password = password;
             userID = user.UserId;
+            mgnService = new ManagementServiceLocal();
+            Console.WriteLine("Online vor der Entscheidung: " + Online);
             if (Online)
             {
                 try
                 {
                     await mgnService.SignIn(username, password);
+                    Console.WriteLine("läuft!");
                     //Benutzer abfragen, die auf dem Server liegen und mit Lokal abgleichen
                     await db.insertUpdateUser(user);
                     System.Console.WriteLine("Online eingeloggt");
@@ -73,7 +74,7 @@ namespace fITNat
                 }
                 catch(ServerException ex)
                 {
-                    System.Console.WriteLine("Fehler beim Online-Einloggen" + ex.StackTrace);
+                    System.Console.WriteLine("Fehler beim Online-Einloggen (Server)" + ex.StackTrace);
                     throw;
                 }
                 catch(Exception exc)
@@ -122,6 +123,7 @@ namespace fITNat
                                         FitnessType fitness,
                                         DateTime birthdate)
         {
+            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -164,6 +166,7 @@ namespace fITNat
                                                 int repetitions = 0,
                                                 int numberOfRepetitions = 0)
         {
+            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -205,6 +208,7 @@ namespace fITNat
         /// <returns></returns>
         public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync(Guid userID = new Guid())
         {
+            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -253,6 +257,7 @@ namespace fITNat
         /// <returns></returns>
         public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
         {
+            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -287,6 +292,7 @@ namespace fITNat
         /// <returns></returns>
         public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
         {
+            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -327,6 +333,7 @@ namespace fITNat
         /// <returns></returns>
         public async Task<List<ExerciseModel>> GetExercisesForSchedule(int scheduleId)
         {
+            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -382,6 +389,7 @@ namespace fITNat
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
             Console.WriteLine("OnOffService gestartet!");
+            mgnService = new ManagementServiceLocal();
             Task.Run(async () =>
             {
                 //Datenbank erstellen
@@ -400,14 +408,18 @@ namespace fITNat
                             //if (result.Result)
                             if(await mgnServiceServer.PingAsync())
                             {
-                                Online = true;
+                                //Online = true;
+                                setzeStatus(true);
                             }
                             else
                             {
-                                Online = false;
+                                //Online = false;
+                                setzeStatus(true);
                             }
-                            //Timeout 10sek.
-                            System.Threading.Thread.Sleep(10000);
+
+                        Console.WriteLine("Online: " + Online);
+                        //Timeout 10sek.
+                        System.Threading.Thread.Sleep(10000);
                         //}
                         //Haken entsprechend der Connection setzen
                         //mainA.setConnectivityStatus(online);
@@ -427,6 +439,11 @@ namespace fITNat
         {
             base.OnDestroy();
             // cleanup code
+        }
+
+        public override IBinder OnBind(Intent intent)
+        {
+            throw new NotImplementedException();
         }
     }
 }

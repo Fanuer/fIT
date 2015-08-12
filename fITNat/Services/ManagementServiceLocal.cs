@@ -16,18 +16,24 @@ using fIT.WebApi.Client.Data.Models.Exercise;
 namespace fITNat.Services
 {
     [Service]
-    class ManagementServiceLocal : Service
+    public class ManagementServiceLocal : Service
     {
         #region Variablen
         private const string URL = @"http://fit-bachelor.azurewebsites.net/";
-        private ManagementService service;
-        private ManagementSession mgnSession;
+        public ManagementService service;
         private string folder;
         private string username { get; set; }
         private string password { get; set; }
         private IManagementSession session;
+        private IBinder mBinder;
         #endregion
 
+        public override IBinder OnBind(Intent intent)
+        {
+            return mBinder;
+        }
+
+        //OnCreate -> Initialisierung
         public override void OnCreate()
         {
             base.OnCreate();
@@ -40,11 +46,6 @@ namespace fITNat.Services
         public IManagementSession actualSession()
         {
             return session;
-        }
-
-        public override IBinder OnBind(Intent intent)
-        {
-            throw new NotImplementedException();
         }
 
         #region User
@@ -60,8 +61,8 @@ namespace fITNat.Services
             this.password = password;
             try
             {
+                service = new ManagementService(URL);
                 session = await service.LoginAsync(username, password);
-                //session.
             }
             catch (ServerException e)
             {
@@ -128,7 +129,7 @@ namespace fITNat.Services
         {
             try
             {
-                IEnumerable<ScheduleModel> schedules = await mgnSession.Users.GetAllSchedulesAsync();
+                IEnumerable<ScheduleModel> schedules = await session.Users.GetAllSchedulesAsync();
                 return schedules;
             }
             catch (ServerException ex)
@@ -151,7 +152,7 @@ namespace fITNat.Services
         {
             try
             {
-                ScheduleModel schedule = await mgnSession.Users.GetScheduleByIdAsync(id);
+                ScheduleModel schedule = await session.Users.GetScheduleByIdAsync(id);
                 return schedule;
             }
             catch (ServerException ex)
@@ -176,7 +177,7 @@ namespace fITNat.Services
         {
             try
             {
-                ExerciseModel exercise = await mgnSession.Users.GetExerciseByIdAsync(exerciseId);
+                ExerciseModel exercise = await session.Users.GetExerciseByIdAsync(exerciseId);
                 return exercise;
             }
             catch (ServerException ex)
@@ -218,7 +219,7 @@ namespace fITNat.Services
                 practice.Weight = weight;
                 practice.Repetitions = repetitions;
                 practice.NumberOfRepetitions = numberOfRepetitions;
-                PracticeModel result = await mgnSession.CreatePracticeAsync(practice);
+                PracticeModel result = await session.Users.CreatePracticeAsync(practice);
                 if (result != null)
                     return true;
                 else

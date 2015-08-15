@@ -67,6 +67,7 @@
     <Content Include="app\directive\sameAs.js" />
     <Content Include="app\factory\authFactory.js" />
     <Content Include="app\factory\authInterceptorFactory.js" />
+    <Content Include="app\factory\cachedHttpFactory.js" />
     <Content Include="app\factory\enumFactory.js" />
     <Content Include="app\factory\scheduleFactory.js" />
     <Content Include="app\views\home.html" />

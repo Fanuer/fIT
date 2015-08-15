@@ -117,6 +117,25 @@ namespace fIT.WebApi.Client.Portable.Tests
             }
         }
 
+
+      [TestMethod]
+      public void Ping()
+      {
+        using (var service = new ManagementService(ServiceUrl))
+        {
+          var peng = false;
+          try
+          {
+            peng = service.PingAsync().Result;
+            Assert.IsTrue(peng);
+
+          }
+          catch (Exception e)
+          {
+            throw e;
+          }
+        }
+      }
         #endregion
 
         #region Helper

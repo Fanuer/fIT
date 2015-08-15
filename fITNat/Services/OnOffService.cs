@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using fITNat.DBModels;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -10,9 +11,9 @@ using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using fIT.WebApi.Client.Data.Models.Exercise;
-using fITNat.DBModels;
 using fIT.WebApi.Client.Portable.Implementation;
 using fIT.WebApi.Client.Data.Models.Shared;
+using System.Threading;
 
 namespace fITNat
 {
@@ -20,20 +21,28 @@ namespace fITNat
     public class OnOffService : Service
     {
         #region Variablen
-        private ManagementServiceLocal mgnService;
+        public static ManagementServiceLocal mgnService { get; private set; }
         private ManagementService mgnServiceServer;
         private const string URL = @"http://fit-bachelor.azurewebsites.net/";
-        private LocalDB db;
-        private Guid userID;
+        public static LocalDB db { get; private set; }
         public static bool Online { get; private set; }
         private Object thisLock = new Object();
         private IBinder mBinder;
         #endregion
 
+        public static void setzeManagementServiceLocal(ManagementServiceLocal data)
+        {
+            mgnService = data;
+        }
 
         public static void setzeStatus(bool data)
         {
             Online = data;
+        }
+
+        public static void setzeDb(LocalDB data)
+        {
+            db = data;
         }
 
         //OnCreate -> Initialisierung
@@ -41,8 +50,14 @@ namespace fITNat
         {
             base.OnCreate(); 
             mgnServiceServer = new ManagementService(URL);
-            mgnService = new ManagementServiceLocal();
-            db = new LocalDB();
+            setzeManagementServiceLocal(new ManagementServiceLocal());
+            setzeDb(new LocalDB());
+            ThreadStart myThreadDelegate = new ThreadStart(LocalDB.createDatabase);
+            Thread myThread = new Thread(myThreadDelegate);
+            myThread.Start();
+            //LocalDB.createDatabase();
+            myThread.Join();
+            Console.WriteLine("DB erstellt");
         }
 
         #region User
@@ -52,25 +67,29 @@ namespace fITNat
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task<bool> SignIn(string username, string password)
+        public async Task<Guid> SignIn(string username, string password)
         {
-            User user = new User();
-            db = new LocalDB();
+            User user = new fITNat.DBModels.User();
+            Guid userId;
             user.Username = username;
             user.Password = password;
-            userID = user.UserId;
-            mgnService = new ManagementServiceLocal();
             Console.WriteLine("Online vor der Entscheidung: " + Online);
             if (Online)
             {
                 try
                 {
-                    await mgnService.SignIn(username, password);
-                    Console.WriteLine("läuft!");
-                    //Benutzer abfragen, die auf dem Server liegen und mit Lokal abgleichen
-                    await db.insertUpdateUser(user);
-                    System.Console.WriteLine("Online eingeloggt");
-                    return true;
+                    bool success = await mgnService.SignIn(username, password);
+                    if(success)
+                    {
+                        userId = mgnService.actualSession().CurrentUserId;
+                        user.UserId = userId.ToString();
+                        if(db != null)
+                        {
+                            db.insertUpdateUser(user);
+                        }
+                        System.Console.WriteLine("Online eingeloggt");
+                        return userId;
+                    }
                 }
                 catch(ServerException ex)
                 {
@@ -87,19 +106,16 @@ namespace fITNat
                 try
                 {
                     //Lokal nachgucken
-                    var result = await db.findUser(username, password);
-                    if (result.Count != 1)
-                    {
-                        return false;
-                    }
-                    System.Console.WriteLine("Offline eingeloggt");
+                    Guid result = db.findUser(username, password);
+                    if (result != null)
+                        return result;
                 }
                 catch(Exception exc)
                 {
                     System.Console.WriteLine("Fehler beim Offline-Einloggen" + exc.StackTrace);
                 }
             }
-            return false;
+            return new Guid();
         }
 
         /// <summary>
@@ -123,7 +139,6 @@ namespace fITNat
                                         FitnessType fitness,
                                         DateTime birthdate)
         {
-            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -166,13 +181,27 @@ namespace fITNat
                                                 int repetitions = 0,
                                                 int numberOfRepetitions = 0)
         {
-            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
                 {
                     if (await mgnService.recordPractice(scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions))
+                    {
+                        Practice p = new Practice();
+                        p.UserId = userId;
+                        p.ScheduleId = scheduleId;
+                        p.ExerciseId = exerciseId;
+                        p.Timestamp = timestamp;
+                        p.Weight = weight;
+                        p.Repetitions = repetitions;
+                        p.NumberOfRepetitions = numberOfRepetitions;
+                        int result = db.insertUpdatePractice(p);
+                        if(result == 1)
+                        {
+                            Console.WriteLine("Training auch lokal angelegt");
+                        }
                         return true;
+                    }
                     else
                         return false;
                 }
@@ -185,9 +214,16 @@ namespace fITNat
             {
                 try
                 {
-                    var result = db.insertPractice(userId, scheduleId, exerciseId, timestamp, weight, repetitions, numberOfRepetitions);
-                    int rueckgabeWert = result.Result;
-                    if (rueckgabeWert == 1)
+                    Practice p = new Practice();
+                    p.UserId = userId;
+                    p.ScheduleId = scheduleId;
+                    p.ExerciseId = exerciseId;
+                    p.Timestamp = timestamp;
+                    p.Weight = weight;
+                    p.Repetitions = repetitions;
+                    p.NumberOfRepetitions = numberOfRepetitions;
+                    int result = db.insertUpdatePractice(p);
+                    if (result == 1)
                         return true;
                     else
                         return false;
@@ -208,13 +244,16 @@ namespace fITNat
         /// <returns></returns>
         public async Task<IEnumerable<ScheduleModel>> GetAllSchedulesAsync(Guid userID = new Guid())
         {
-            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
                 {
                     IEnumerable<ScheduleModel> schedules = await mgnService.GetAllSchedulesAsync();
-                    return schedules;
+                    if(schedules != null)
+                    {
+                        return schedules;
+                    }
+                    return null;
                 }
                 catch (ServerException ex)
                 {
@@ -227,18 +266,22 @@ namespace fITNat
                 try
                 {
                     //Alle Trainingspläne für den User zurückgeben
-                    IEnumerable<Schedule> schedules = await db.GetAllSchedulesAsync(userID);
+                    IEnumerable<Schedule> schedules = db.GetAllSchedules(userID);
                     List<ScheduleModel> resultSchedules = new List<ScheduleModel>();
-                    foreach (var schedule in schedules)
+                    if(schedules != null)
                     {
-                        ScheduleModel temp = new ScheduleModel();
-                        temp.Id = schedule.Id;
-                        temp.UserId = schedule.UserId;
-                        temp.Name = schedule.Name;
-                        temp.Url = schedule.Url;
-                        resultSchedules.Add(temp);
+                        foreach (var schedule in schedules)
+                        {
+                            ScheduleModel temp = new ScheduleModel();
+                            temp.Id = schedule.Id;
+                            temp.UserId = schedule.UserId;
+                            temp.Name = schedule.Name;
+                            temp.Url = schedule.Url;
+                            resultSchedules.Add(temp);
+                        }
+                        return resultSchedules;
                     }
-                    return resultSchedules;
+                    return null;
                 }
                 catch (Exception exc)
                 {
@@ -257,12 +300,17 @@ namespace fITNat
         /// <returns></returns>
         public async Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId)
         {
-            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
                 {
                     ExerciseModel exercise = await mgnService.GetExerciseByIdAsync(exerciseId);
+                    Exercise insert = new Exercise();
+                    insert.Id = exercise.Id;
+                    insert.Name = exercise.Name;
+                    insert.Url = exercise.Url;
+                    insert.Description = exercise.Description;
+                    db.insertUpdateExercise(insert);
                     return exercise;
                 }
                 catch (ServerException ex)
@@ -275,7 +323,21 @@ namespace fITNat
             {
                 try
                 {
-                    return null;
+                    Exercise exercise = db.GetExerciseById(exerciseId);
+                    ExerciseModel output = new ExerciseModel();
+                    output.Id = exercise.Id;
+                    output.Name = exercise.Name;
+                    output.Url = exercise.Url;
+                    output.Description = exercise.Description;
+                    List<EntryModel<int>> temp = new List<EntryModel<int>>();
+                    foreach (var item in db.GetAllSchedulesByExercise(output.Id))
+                    {
+                        EntryModel<int> e = new EntryModel<int>();
+                        e.Id = item;
+                        temp.Add(e);
+                    }
+                    output.Schedules = temp;
+                    return output;
                 }
                 catch(Exception exc)
                 {
@@ -292,7 +354,6 @@ namespace fITNat
         /// <returns></returns>
         public async Task<ScheduleModel> GetScheduleByIdAsync(int id)
         {
-            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -310,12 +371,20 @@ namespace fITNat
             {
                 try
                 {
-                    Schedule schedule = await db.GetScheduleByIdAsync(id);
+                    Schedule schedule = db.GetScheduleById(id);
                     ScheduleModel result = new ScheduleModel();
                     result.Id = schedule.Id;
                     result.Name = schedule.Name;
                     result.Url = schedule.Url;
                     result.UserId = schedule.UserId;
+                    List<EntryModel<int>> temp = new List<EntryModel<int>>();
+                    foreach (var item in db.GetAllExercisesBySchedule(result.Id))
+                    {
+                        EntryModel<int> e = new EntryModel<int>();
+                        e.Id = item;
+                        temp.Add(e);
+                    }
+                    result.Exercises = temp;
                     return result;
                 }
                 catch (Exception exc)
@@ -333,7 +402,6 @@ namespace fITNat
         /// <returns></returns>
         public async Task<List<ExerciseModel>> GetExercisesForSchedule(int scheduleId)
         {
-            mgnService = new ManagementServiceLocal();
             if (Online)
             {
                 try
@@ -359,19 +427,24 @@ namespace fITNat
                 try
                 {
                     //Anhand der scheduleId alle Exercises aus der ScheduleHasExercises-Tabelle holen
-                    IEnumerable<ScheduleHasExercises> scheduleHasExercises = await db.GetExercisesOfSchedule(scheduleId);
-                    List<ExerciseModel> result = new List<ExerciseModel>();
-                    foreach (var sHE in scheduleHasExercises)
+                    IEnumerable<ScheduleHasExercises> scheduleHasExercises = db.GetExercisesOfSchedule(scheduleId);
+                    if(scheduleHasExercises != null)
                     {
-                        Exercise exercise = await db.GetExerciseByIdAsync(sHE.ExerciseId);
-                        ExerciseModel temp = new ExerciseModel();
-                        temp.Id = exercise.Id;
-                        temp.Name = exercise.Name;
-                        temp.Url = exercise.Url;
-                        temp.Description = exercise.Description;
-                        result.Add(temp);
+                        List<ExerciseModel> result = new List<ExerciseModel>();
+                        foreach (var sHE in scheduleHasExercises)
+                        {
+                            Exercise exercise = db.GetExerciseById(sHE.ExerciseId);
+                            ExerciseModel temp = new ExerciseModel();
+                            temp.Id = exercise.Id;
+                            temp.Name = exercise.Name;
+                            temp.Url = exercise.Url;
+                            temp.Description = exercise.Description;
+                            result.Add(temp);
+                        }
+                        return result;
                     }
-                    return result;
+                    Console.WriteLine("Keine Übungen zu dem Trainingsplan vorhanden");
+                    return null;
                 }
                 catch (Exception exc)
                 {
@@ -389,44 +462,35 @@ namespace fITNat
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
             Console.WriteLine("OnOffService gestartet!");
-            mgnService = new ManagementServiceLocal();
             Task.Run(async () =>
             {
-                //Datenbank erstellen
-                db = new LocalDB();
-
-                //Erstellen der lokalen DB macht Probleme!!!
-                var task = db.createDatabase();
-                if (task.Result)
+                //Verbindungsüberprüfung
+                while (true)
                 {
-                    //Verbindungsüberprüfung
-                    while (true)
-                    {
-                        //lock (thisLock)
-                        //{
-                            //var result = mgnServiceServer.PingAsync();
-                            //if (result.Result)
-                            if(await mgnServiceServer.PingAsync())
-                            {
-                                //Online = true;
-                                setzeStatus(true);
-                            }
-                            else
-                            {
-                                //Online = false;
-                                setzeStatus(true);
-                            }
+                    //lock (thisLock)
+                    //{
+                        //var result = mgnServiceServer.PingAsync();
+                        //if (result.Result)
+                        if(await mgnServiceServer.PingAsync())
+                        {
+                            //Online = true;
+                            setzeStatus(true);
+                        }
+                        else
+                        {
+                            //Online = false;
+                            setzeStatus(true);
+                        }
 
-                        Console.WriteLine("Online: " + Online);
-                        //Timeout 10sek.
-                        System.Threading.Thread.Sleep(10000);
-                        //}
-                        //Haken entsprechend der Connection setzen
-                        //mainA.setConnectivityStatus(online);
-                        //exerciseA.setConnectivityStatus(online);
-                        //practiceA.setConnectivityStatus(online);
-                        //scheduleA.setConnectivityStatus(online);
-                    }
+                    Console.WriteLine("Online: " + Online);
+                    //Timeout 10sek.
+                    System.Threading.Thread.Sleep(10000);
+                    //}
+                    //Haken entsprechend der Connection setzen
+                    //mainA.setConnectivityStatus(online);
+                    //exerciseA.setConnectivityStatus(online);
+                    //practiceA.setConnectivityStatus(online);
+                    //scheduleA.setConnectivityStatus(online);
                 }
             });
 

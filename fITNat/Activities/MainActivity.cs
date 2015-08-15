@@ -1,19 +1,10 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
 using Android.OS;
 using System.Threading;
-using System.Collections.Generic;
-using System.Net;
-using System.IO;
-using Android.Graphics.Drawables;
-using fIT.WebApi.Client.Data;
-using fIT.WebApi.Client.Portable.Implementation;
 using fITNat.Services;
-using fIT.WebApi.Client.Data.Models.Shared.Enums;
 
 namespace fITNat
 {
@@ -24,21 +15,25 @@ namespace fITNat
         private Button mBtnSignIn;
         private ProgressBar progressBar;
         private ImageView connectivityPointer;
+        private Guid userId;
+        private int connectivity;
 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             //Services starten
-            StartService(new Intent(this, typeof(OnOffService)));
-            StartService(new Intent(this, typeof(ManagementServiceLocal)));
-            StartService(new Intent(this, typeof(ConnectivityService)));
+            ThreadPool.QueueUserWorkItem(o => StartService(new Intent(this, typeof(OnOffService))));
+            ThreadPool.QueueUserWorkItem(o => StartService(new Intent(this, typeof(ManagementServiceLocal))));
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             mBtnSignUp = FindViewById<Button>(Resource.Id.btnSignUp);
             mBtnSignIn = FindViewById<Button>(Resource.Id.btnSignIn);
-            progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
+            //progressBar = FindViewById<ProgressBar>(Resource.Id.progressBar1);
             connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnection);
+            //ConnectivityPointer belegen
+            setConnectivityStatus(OnOffService.Online);
+
             mBtnSignUp.Click += (object sender, EventArgs args) =>
                 {
                     //Pull up SignUp-dialog
@@ -61,10 +56,8 @@ namespace fITNat
 
         private void SignUpDialog_onSignUpComplete(object sender, OnSignUpEventArgs e)
         {
-            //Show the Loader
-            //progressBar.Visibility = ViewStates.Visible;
-            //Hide the Loader
-            //progressBar.Visibility = ViewStates.Invisible;
+            //ConnectivityPointer belegen
+            setConnectivityStatus(OnOffService.Online);
 
             var intent = new Intent(this, typeof(ScheduleActivity));
             StartActivity(intent);
@@ -74,10 +67,13 @@ namespace fITNat
 
         private void SignInDialog_onSignInComplete(object sender, OnSignInEventArgs e)
         {
-            //Show the Loader
-            //progressBar.Visibility = ViewStates.Visible;
+            //ConnectivityPointer belegen
+            setConnectivityStatus(OnOffService.Online);
 
             var intent = new Intent(this, typeof(ScheduleActivity));
+            //Userinformationen mit übergeben
+            userId = e.UserId;
+            intent.PutExtra("User", userId.ToString());
             StartActivity(intent);
         }
 
@@ -88,9 +84,10 @@ namespace fITNat
         public void setConnectivityStatus(bool online)
         {
             if(online)
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+                connectivity = Resource.Drawable.CheckDouble;
             else
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
+                connectivity = Resource.Drawable.Check;
+            connectivityPointer.SetBackgroundResource(connectivity);
         }
     }
 }

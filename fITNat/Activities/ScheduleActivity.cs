@@ -24,34 +24,37 @@ namespace fITNat
         private ListView lv;
         private ImageView connectivityPointer;
         private OnOffService ooService;
+        private int connectivity;
 
         protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.ScheduleLayout);
-
-            schedules = new List<ScheduleModel>();
-            lv = (ListView)FindViewById(Resource.Id.lvSchedule);
-            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
-
-
-            //Generiert Testdaten
-            /*
-            for (int i = 1; i <= 10; i++)
+            try
             {
-                schedules.Add(new Schedule(i, "Testplan "+i, "Kevin"));
+                base.OnCreate(bundle);
+                SetContentView(Resource.Layout.ScheduleLayout);
+
+                schedules = new List<ScheduleModel>();
+                lv = (ListView)FindViewById(Resource.Id.lvSchedule);
+                connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
+                string user = Intent.GetStringExtra("User");
+                Guid userId = new Guid(user);
+                setConnectivityStatus(OnOffService.Online);
+
+                //Hier die Schedules des Benutzers abholen und in die Liste einfügen
+                //var task = ooService.GetAllSchedulesAsync(userId); <= Fehler
+                //schedules = task.Result.ToList();
+
+                //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
+                ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
+                lv.Adapter = adapter;
+
+
+                lv.ItemClick += lv_ItemClick;
             }
-            */
-            //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-            var task = ooService.GetAllSchedulesAsync();
-            schedules = task.Result.ToList();
-
-            //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
-            ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
-            lv.Adapter = adapter;
-
-
-            lv.ItemClick += lv_ItemClick;
+            catch(ArgumentNullException ex)
+            {
+                Console.WriteLine("Keine UserId übergeben: " + ex.StackTrace);
+            }
         }
 
         /// <summary>
@@ -84,9 +87,10 @@ namespace fITNat
         public void setConnectivityStatus(bool online)
         {
             if (online)
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+                connectivity = Resource.Drawable.CheckDouble;
             else
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
+                connectivity = Resource.Drawable.Check;
+            connectivityPointer.SetBackgroundResource(connectivity);
         }
     }
 }

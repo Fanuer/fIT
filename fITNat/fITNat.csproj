@@ -60,6 +60,7 @@
     <Compile Include="Activities\PracticeActivity.cs" />
     <Compile Include="Adapters\ExerciseListViewAdapter.cs" />
     <Compile Include="Activities\ScheduleActivity.cs" />
+    <Compile Include="DBModels.cs" />
     <Compile Include="LocalDB.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Dialogs\Dialog_SignIn.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="UserLoginModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\app.sqlite" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />

@@ -70,17 +70,24 @@
     <Content Include="app\factory\cachedHttpFactory.js" />
     <Content Include="app\factory\enumFactory.js" />
     <Content Include="app\factory\scheduleFactory.js" />
+    <Content Include="app\tests\cacheTests.js" />
     <Content Include="app\views\home.html" />
     <Content Include="app\views\login.html" />
     <Content Include="app\views\schedules.html" />
     <Content Include="app\views\signup.html" />
+    <Content Include="Content\jasmine\jasmine.css" />
+    <Content Include="Content\jasmine\jasmine_favicon.png" />
     <Content Include="Images\apple-touch-icon.png" />
     <Content Include="Images\favicon.ico" />
+    <Content Include="Scripts\angular-indexed-db.js" />
+    <Content Include="Scripts\angular-indexed-db.min.js" />
     <Content Include="Scripts\angular-local-storage.js" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="packages.config" />
     <Content Include="Scripts\angular-route.min.js.map" />
     <None Include="Properties\PublishProfiles\fITSPA.pubxml" />
+    <Content Include="Scripts\angular-indexed-db.js.map" />
+    <Content Include="Scripts\angular-indexed-db.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -111,6 +118,14 @@
     <Content Include="app\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jasmine-samples\Player.js" />
+    <Content Include="Scripts\jasmine-samples\PlayerSpec.js" />
+    <Content Include="Scripts\jasmine-samples\Song.js" />
+    <Content Include="Scripts\jasmine-samples\SpecHelper.js" />
+    <Content Include="Scripts\jasmine\boot.js" />
+    <Content Include="Scripts\jasmine\console.js" />
+    <Content Include="Scripts\jasmine\jasmine-html.js" />
+    <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
@@ -118,6 +133,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Tests.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>

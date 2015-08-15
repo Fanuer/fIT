@@ -20,7 +20,6 @@
         this.data = data;
     }
 
-    // 
     var localDataEntry = function (serverModel, status, serverId, verb, url, data) {
         /// <summary>Erweitert ein servermodel um Daten fuer die lokale Haltung</summary> 
         /// <param name="serverModel" optional="false" type="object">Model mit Stammdaten vom/fuer den Server. Diese werden um eine lokale ID und den aktuellen Synchronisationsstatus</param>

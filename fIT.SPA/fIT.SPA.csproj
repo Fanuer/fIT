@@ -73,6 +73,7 @@
     <Content Include="app\tests\cacheTests.js" />
     <Content Include="app\views\home.html" />
     <Content Include="app\views\login.html" />
+    <Content Include="app\views\schedule.html" />
     <Content Include="app\views\schedules.html" />
     <Content Include="app\views\signup.html" />
     <Content Include="Content\jasmine\jasmine.css" />

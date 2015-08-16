@@ -2,14 +2,14 @@
 
 function signupController($scope, enumFactory, $location, $timeout, authFactory) {
     $scope.vm = {};
-    enumFactory.getFitnessTypes().success(function (data, status) {
-        $scope.vm.fitnessTypes = data;
+    enumFactory.getFitnessTypes().then(function (response) {
+        $scope.vm.fitnessTypes = response.data;
     });
-    enumFactory.getGenderTypes().success(function (data, status) {
-        $scope.vm.genderTypes = data;
+    enumFactory.getGenderTypes().then(function (response) {
+        $scope.vm.genderTypes = response.data;
     });
-    enumFactory.getJobTypes().success(function (data, status) {
-        $scope.vm.jobTypes = data;
+    enumFactory.getJobTypes().then(function(response) {
+        $scope.vm.jobTypes = response.data;
     });
 
     $scope.savedSuccessfully = false;

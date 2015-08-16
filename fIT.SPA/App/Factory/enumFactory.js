@@ -1,14 +1,14 @@
-﻿function enumFactory($http, baseUrl) {
+﻿function enumFactory(cachedHttp, baseUrl, entityNames) {
     var factory = {};
-
+    
     factory.getFitnessTypes = function () {
-        return $http.get(baseUrl + "enums/fitnessTypes");
+        return cachedHttp.get(baseUrl + "enums/fitnessTypes", entityNames.fitness);
     }
     factory.getJobTypes = function () {
-        return $http.get(baseUrl + "enums/jobTypes");
+        return cachedHttp.get(baseUrl + "enums/jobTypes", entityNames.jobs);
     }
     factory.getGenderTypes = function () {
-        return $http.get(baseUrl + "enums/genderTypes");
+        return cachedHttp.get(baseUrl + "enums/genderTypes", entityNames.gender);
     }
 
     return factory;

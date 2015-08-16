@@ -3,7 +3,7 @@ function indexController($scope, $location, $interval, authFactory) {
 
   $scope.logOut = function () {
     authFactory.logOut();
-    $location.path('/home');
+    $location.path('/');
   }
 
   $scope.onlineStatus = 'offline';

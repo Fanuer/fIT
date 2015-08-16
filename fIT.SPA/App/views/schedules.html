@@ -7,10 +7,14 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="schedule in vm.schedules">
+    <tr ng-repeat="schedule in vm">
         <td>{{schedule.id}}</td>
         <td>{{schedule.name}}</td>
-        <td></td>
+        <td>
+            <button class="btn" ng-click="update(schedule.id)">&Auml;ndern</button>
+            <button class="btn" ng-click="delete(schedule.id)">L&ouml;schen</button>
+        </td>
     </tr>
     </tbody>
 </table>
+<button class="btn" ng-click="add()">Hinzuf&uuml;gen</button>

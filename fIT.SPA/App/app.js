@@ -4,16 +4,25 @@ var fIT = angular.module("fIT", ["ngRoute", "LocalStorageModule", "indexedDB"]);
 
 fIT.value("nextLocalId", 1);
 
-fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites1.net/api/");
+fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites.net/api/");
+//fIT.constant("baseUrl", "http://localhost:62816/api/");
 fIT.constant("localStorageAuthIndex", "fIT.SPA.auth");
+fIT.constant("resetDB", true);
+fIT.constant("entityNames", {
+    jobs: 'jobs',
+    gender: 'genders',
+    user: 'users',
+    schedule: 'schedules',
+    fitness: 'fitness'
+})
 fIT.constant("dbConfig", {
     dbName: 'fIT_SPADB',
-    version: 1,
+    version: 2,
     tableConfigs: [
       {
-          name: 'Schedules',
+          name: 'Entities',
           additional: {
-              keyPath: ['localId', 'status']
+              keyPath: ['localId', 'status', 'entityName']
           },
           indexes: [
             {
@@ -25,11 +34,13 @@ fIT.constant("dbConfig", {
                 name: 'status_idx',
                 column: 'status',
                 additionalData: { unique: false }
+            },
+            {
+                name: 'entityName_idx',
+                column: 'entityName',
+                additionalData: { unique: false }
             }
           ]
-      },
-      {
-          name: 'syncQueue'
       }
     ]
 });
@@ -43,6 +54,9 @@ fIT.config(["$routeProvider", function ($routeProvider) {
     $routeProvider.when("/", {
         controller: "scheduleController",
         templateUrl: "app/views/schedules.html"
+    }).when("/schedule/:id", {
+        controller: "scheduleController",
+        templateUrl: "app/views/schedule.html"
     }).when("/login", {
         controller: "loginController",
         templateUrl: "app/views/login.html"
@@ -56,11 +70,19 @@ fIT.config(["$routeProvider", function ($routeProvider) {
 fIT.config(function ($httpProvider) {
     $httpProvider.interceptors.push('authInterceptorFactory');
 });
-fIT.config(function ($indexedDBProvider, dbConfig) {
+
+fIT.config(function ($indexedDBProvider, dbConfig, resetDB) {
     $indexedDBProvider
       .connection(dbConfig.dbName)
       .upgradeDatabase(dbConfig.version, function (event, database, transaction) {
           dbConfig.tableConfigs.forEach(function (entry) {
+              if (resetDB) {
+                  try {
+                      database.deleteObjectStore(entry.name);
+                  } catch (e) {
+                      //$log.warn("No Objectstore to delete found: " + e);
+                  }
+              }
               var myStore = database.createObjectStore(entry.name, entry.additional);
               if (entry.indexes != null && entry.indexes.length > 0) {
                   entry.indexes.forEach(function (index) {
@@ -81,6 +103,7 @@ fIT.factory("authFactory", authFactory);
 fIT.factory("enumFactory", enumFactory);
 fIT.factory("scheduleFactory", scheduleFactory);
 fIT.factory("authInterceptorFactory", authInterceptorFactory);
+fIT.factory("cachedHttp", cachedHttp);
 
 // controllers
 fIT.controller("homeController", homeController);

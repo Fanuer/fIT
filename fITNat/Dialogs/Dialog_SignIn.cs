@@ -12,6 +12,7 @@ using Android.Widget;
 using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace fITNat
 {
@@ -22,6 +23,7 @@ namespace fITNat
         private Button btnSignIn;
         private OnOffService ooService;
         private ScheduleActivity scheduleActivity;
+        private Guid userId;
 
         public event EventHandler<OnSignInEventArgs> onSignInComplete;
 
@@ -45,18 +47,15 @@ namespace fITNat
         private void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                var t = ooService.SignIn(txtUsername.Text, txtPassword.Text);
-                bool result = true;
-                if(result)
+                userId = ooService.SignIn(txtUsername.Text, txtPassword.Text).Result;
+                if(userId != null)
                 {
                     //User has clicked the Login-Button
                     onSignInComplete.Invoke(this, new OnSignInEventArgs
-                        (txtUsername.Text, txtPassword.Text));
+                        (txtUsername.Text, txtPassword.Text, userId));
                     //Dialog will slide to the side and will disapear
                     this.Dismiss();
                     Console.WriteLine("Result");
-
-
                 }
                 else
                 {
@@ -95,6 +94,7 @@ namespace fITNat
     {
         private string username;
         private string password;
+        private Guid userId;
 
         public string Username
         {
@@ -108,10 +108,17 @@ namespace fITNat
             set { password = value; }
         }
 
-        public OnSignInEventArgs(string username, string password) : base()
+        public Guid UserId
+        {
+            get { return userId; }
+            set { userId = value; }
+        }
+
+        public OnSignInEventArgs(string username, string password, Guid userId) : base()
         {
             Username = username;
             Password = password;
+            UserId = userId;
         }
     }
 }

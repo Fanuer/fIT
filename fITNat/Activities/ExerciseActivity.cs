@@ -22,6 +22,7 @@ namespace fITNat
         private ListView lv;
         private ImageView connectivityPointer;
         private OnOffService ooService;
+        private int connectivity;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -33,7 +34,8 @@ namespace fITNat
             List<ExerciseModel> exercises = new List<ExerciseModel>();
             connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionExcercise);
             ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
-            
+
+            setConnectivityStatus(OnOffService.Online);
             //Hier die Schedules des Benutzers abholen und in die Liste einfügen
             //eine foreach muss drum, um über jede Exercise in der Schedule zu iterieren
             //var task = ooService.GetExerciseByIdAsync();
@@ -81,9 +83,10 @@ namespace fITNat
         public void setConnectivityStatus(bool online)
         {
             if (online)
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+                connectivity = Resource.Drawable.CheckDouble;
             else
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
+                connectivity = Resource.Drawable.Check;
+            connectivityPointer.SetBackgroundResource(connectivity);
         }
     }
 }

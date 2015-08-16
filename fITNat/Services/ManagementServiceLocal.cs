@@ -12,6 +12,7 @@ using fIT.WebApi.Client.Data.Models.Practice;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using System.Collections.Generic;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using System.Threading;
 
 namespace fITNat.Services
 {
@@ -20,13 +21,18 @@ namespace fITNat.Services
     {
         #region Variablen
         private const string URL = @"http://fit-bachelor.azurewebsites.net/";
-        public ManagementService service;
+        public static ManagementService service { get; private set; }
         private string folder;
         private string username { get; set; }
         private string password { get; set; }
         private IManagementSession session;
         private IBinder mBinder;
         #endregion
+
+        public static void setzeManagementService(ManagementService data)
+        {
+            service = data;
+        }
 
         public override IBinder OnBind(Intent intent)
         {
@@ -37,6 +43,19 @@ namespace fITNat.Services
         public override void OnCreate()
         {
             base.OnCreate();
+            try
+            {
+                setzeManagementService(new ManagementService(URL));
+                Console.WriteLine("ManagementServiceLocal gestartet!");
+            }
+            catch (ServerException e)
+            {
+                Console.WriteLine("Serverfehler: " + e.StackTrace);
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Fehler bei OnCreate in ManagementServiceLocal");
+            }
         }
 
         /// <summary>
@@ -55,14 +74,16 @@ namespace fITNat.Services
         /// <param name="username"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public async Task SignIn(string username, string password)
+        public async Task<bool> SignIn(string username, string password)
         {
+            bool result = false;
             this.username = username;
             this.password = password;
             try
             {
-                service = new ManagementService(URL);
+                //Muss auf irgendwas warten => im Debug geht es dann!
                 session = await service.LoginAsync(username, password);
+                result = true;
             }
             catch (ServerException e)
             {
@@ -73,6 +94,7 @@ namespace fITNat.Services
             {
                 Console.WriteLine("Login-Fehler: " + exc.StackTrace);
             }
+            return result;
         }
 
         /// <summary>
@@ -240,20 +262,6 @@ namespace fITNat.Services
 
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)
         {
-
-            try
-            {
-                service = new ManagementService(URL);
-                Console.WriteLine("ManagementServiceLocal gestartet!");
-            }
-            catch (ServerException e)
-            {
-                Console.WriteLine("Serverfehler: " + e.StackTrace);
-            }
-            catch (Exception exc)
-            {
-                Console.WriteLine("Fehler bei OnCreate in ManagementServiceLocal");
-            }
             return StartCommandResult.Sticky;
         }
     }

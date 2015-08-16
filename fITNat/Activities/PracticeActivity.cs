@@ -23,6 +23,7 @@ namespace fITNat
         private EditText txtNumberOfRepetitions;
         private Button btnSavePractice;
         private OnOffService ooService;
+        private int connectivity;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -34,6 +35,7 @@ namespace fITNat
             txtRepetitions = FindViewById<EditText>(Resource.Id.txtRepetitions);
             txtNumberOfRepetitions = FindViewById<EditText>(Resource.Id.txtNumberOfRepetitions);
             btnSavePractice = FindViewById<Button>(Resource.Id.btnSavePractice);
+            setConnectivityStatus(OnOffService.Online);
             btnSavePractice.Click += (object sender, EventArgs args) =>
             {
                 try
@@ -77,9 +79,10 @@ namespace fITNat
         public void setConnectivityStatus(bool online)
         {
             if (online)
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+                connectivity = Resource.Drawable.CheckDouble;
             else
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
+                connectivity = Resource.Drawable.Check;
+            connectivityPointer.SetBackgroundResource(connectivity);
         }
     }
 }

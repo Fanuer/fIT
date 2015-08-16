@@ -8,7 +8,7 @@ function loginController($scope, $location, authFactory) {
             $location.path('/schedule');
         },
          function (err) {
-             $scope.message = err.error_description;
+             $scope.message = err;
          });
 
         $scope.message = "Login wird verarbeitet";

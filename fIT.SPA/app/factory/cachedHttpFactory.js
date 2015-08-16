@@ -1,7 +1,7 @@
 ﻿function cachedHttp($http, $indexedDB, $q, $log, dbConfig, nextLocalId, cacheStatus) {
     var factory = {};
     var alreadySetUp = false;
-    
+
     // model fuer post data
     function isNotNullOrUndefined(object) {
         return object !== null && typeof object !== "undefined";
@@ -55,6 +55,10 @@
         if (typeof verb !== "undefined" && typeof url !== "undefined") {
             serverModel.syncData = new syncData(serverModel.localId, verb, url, data);
         }
+
+        serverModel.getPrimaryKey = function () {
+            return [serverModel.localId, status, entityName];
+        }
         return serverModel;
     }
 
@@ -107,10 +111,10 @@
                                 //setze status um
                                 prom.then(function () {
                                     entry.status = cacheStatus.Server;
-                                    $indexedDB.openStore(dbConfig.dbName, function() {
-                                         mystore.put(entry);
+                                    $indexedDB.openStore(dbConfig.dbName, function () {
+                                        mystore.put(entry);
                                     });
-                                   
+
                                 });
                             }
                         } catch (e) {
@@ -140,14 +144,24 @@
               }
 
               $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (store) {
-                    array.forEach(function (value, index) {
-                        var localEntity = new localDataEntry(value, cacheStatus.Server, entityName, value.id);
-                        store.upsert(localEntity);
-                    });
-                  })
-              .catch(function(response) {
-                      $log.error(response);
+                  array.forEach(function (value, index) {
+                      var localEntity = new localDataEntry(value, cacheStatus.Server, entityName, value.id);
+                      store.findBy('localId_idx', localEntity.localId).then(function (dbReponse) {
+                          $log.info(dbReponse);
+                      }).catch(function (dbReponse) {
+                          $log.error(dbReponse);
+                      });
+                      
+                      store.upsert(localEntity).then(function(dbReponse) {
+                          $log.info(dbReponse);
+                      }).catch(function (dbReponse) {
+                          $log.error(dbReponse);
+                      });
                   });
+              })
+              .catch(function (response) {
+                  $log.error(response);
+              });
               _sync();
               deferred.resolve(response);
           })
@@ -166,7 +180,7 @@
                       });
                   });
               }
-              deferred.reject(message);
+              deferred.reject(response.statusText);
           });
         return deferred.promise;
     }
@@ -176,15 +190,24 @@
 
         $http.post(url, data)
           .then(function (response) {
-              var id = response.id;
-              _get(url, id);
+              var id = response.data.id;
+              _get(url, entityName, id);
+              deferred.resolve(response.data);
           })
           .catch(function (response) {
-              var localData = new localDataEntry(response, cacheStatus.Local, entityName, undefined, 'post', url, response);
+              if (response.status === 0) {
+                  var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'post', url, response.data);
 
-              $indexedDB.openStore(dbConfig.dbName, function(mystore) {
-                  mystore.add(localData);
-              });
+                  $indexedDB.openStore(dbConfig.dbName, function (mystore) {
+                      mystore.add(localData);
+                      deferred.resolve(localData);
+                  }).catch(function (response) {
+                      $log.error(response);
+                      deferred.reject(response);
+                  });
+              } else {
+                  deferred.reject(response);
+              }
           });
         return deferred.promise;
     }
@@ -194,32 +217,48 @@
 
         $http.put(url, data)
           .then(function (response) {
-              var id = response.id;
-              _get(url, id);
+              var id = data.id;
+              _get(url, entityName, id);
+              deferred.resolve();
           })
           .catch(function (response) {
-              var localData = new localDataEntry(response, cacheStatus.Local, entityName, undefined, 'put', url, response);
-              $indexedDB.openStore(dbConfig.dbName, function(mystore) {
-                  mystore.put(localData);
-              });
-              
+              if (response.status === 0) {
+                  var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'put', url, response.data);
+                  $indexedDB.openStore(dbConfig.dbName, function (mystore) {
+                      mystore.put(localData);
+                      deferred.resolve();
+                  })
+                  .catch(function (dbresponse) {
+                      $log.error(dbresponse);
+                      deferred.reject(dbresponse);
+                  });
+              } else {
+                  deferred.reject(response);
+              }
           });
         return deferred.promise;
     }
 
-    var _delete = function (url, entityName) {
+    var _delete = function (url, entityName, localId) {
         var deferred = $q.defer();
 
         $http.delete(url)
             .then(function (response) {
-                var localData = new localDataEntry(response, cacheStatus.Local, entityName);
-                $indexedDB.openStore(dbConfig.dbName, function(mystore) {
-                    mystore.delete(localData);
+                var localData = new localDataEntry({}, cacheStatus.Server, entityName, localId);
+                $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
+                    mystore.delete(localData.getPrimaryKey());
+                    deferred.resolve();
+                })
+                .catch(function (response) {
+                    $log.error(response);
+                    deferred.reject(response);
                 });
+            }).catch(function (response) {
+                deferred.reject(response);
             });
         return deferred.promise;
     }
-    
+
     factory.get = _get;
     factory.post = _post;
     factory.put = _put;

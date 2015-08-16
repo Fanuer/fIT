@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-function scheduleController($scope, scheduleFactory, $location, $routeParams) {
+function scheduleController($scope, scheduleFactory, authFactory, $location, $routeParams) {
     $scope.vm = {};
     function init() {
         if ($routeParams.id) {
@@ -8,6 +8,8 @@ function scheduleController($scope, scheduleFactory, $location, $routeParams) {
                 scheduleFactory.getSchedule($routeParams.id).then(function (response) {
                     $scope.vm = response.data;
                 });
+            } else {
+                $scope.vm.userId = authFactory.authentication.userId;
             }
         }
         else {

@@ -17,7 +17,7 @@ fIT.constant("entityNames", {
 })
 fIT.constant("dbConfig", {
     dbName: 'fIT_SPADB',
-    version: 2,
+    version: 1,
     tableConfigs: [
       {
           name: 'Entities',

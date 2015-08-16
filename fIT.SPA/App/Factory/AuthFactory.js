@@ -41,7 +41,13 @@ function authFactory($http, $q, $log, localStorageService, baseUrl, localStorage
           })
           .error(function (err, status) {
               _logOut();
-              deferred.reject(err);
+              if (err && err.error_description) {
+                  $log.error(err.error_description);
+                  deferred.reject(err.error_description);
+              } else {
+                  deferred.reject(err);
+              }
+              
           });
 
         return deferred.promise;

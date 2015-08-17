@@ -16,6 +16,18 @@
             throw new Error("Parameter 'url' is required.");
         }
 
+        if (data) {
+            if (data.localId) {
+                delete data.localId;
+            }
+            if (data.syncData) {
+                delete data.syncData;
+            }
+            if (data.status) {
+                delete data.status;
+            }
+        }
+
         this.localId = localId;
         this.verb = verb.toLowerCase();
         this.url = url;
@@ -33,9 +45,15 @@
         /// <param name="verb" type="string" optional="false">Daten fuer spaetere Synchronisation: Http Verb</param>
         /// <param name="url" type="string" optional="false">URL , welche mit dem Verb an den Server gesandt wird</param>
         /// <param name="data" type="object" optional="true">Daten, welche als Content zum Server gesendet werden</param>
-        if (!isNotNullOrUndefined(serverModel)) {
-            throw new Error("No server model to transform to local model passed");
+        var result = new Object();
+        if (isNotNullOrUndefined(serverModel)) {
+            for (var k in serverModel) {
+                if (serverModel.hasOwnProperty(k)) {
+                    result[k] = serverModel[k];
+                }
+            }
         }
+
         if (!isNotNullOrUndefined(status)) {
             throw new Error("Status for local cache object have to be passed");
         }
@@ -43,18 +61,22 @@
             throw new Error("Entityname for local cache object have to be passed");
         }
 
-        serverModel.status = status;
-        serverModel.entityName = entityName;
+        result.status = status;
+        result.entityName = entityName;
         if (serverId === null || typeof serverId !== "undefined") {
-            serverModel.localId = serverId;
+            result.localId = serverId;
         } else {
-            serverModel.localId = nextLocalId++;
+            result.localId = nextLocalId++;
         }
 
-        if (typeof verb !== "undefined" && typeof url !== "undefined") {
-            serverModel.syncData = new syncData(serverModel.localId, verb, url, data);
+        if (typeof result.syncData === "undefined") {
+            result.syncData = new Object();
         }
-        return serverModel;
+        if (typeof verb !== "undefined" && typeof url !== "undefined") {
+            var newSyncData = new syncData(result.localId, verb, url, data);
+            result.syncData[verb] = newSyncData;
+        }
+        return result;
     }
 
     // verarbeitet alle offenen lokalen aenderungen
@@ -120,6 +142,13 @@
     }
 
     var _get = function (url, entityName, localId) {
+        if (localId) {
+            localId = parseInt(localId);
+            if (isNaN(localId)) {
+                throw new Error('The local id must be a numeric value');
+            }
+        }
+
         var deferred = $q.defer();
         $http.get(url)
           .then(function (response) {
@@ -152,12 +181,12 @@
                   if (typeof localId !== "undefined") {
                       $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
                           //mystore.find([81, 0, "schedules"]).then(function (dbresult) {
-                          mystore.find([parseInt(localId), cacheStatus.Server, entityName]).then(function (dbresult) {
+                          mystore.find([localId, cacheStatus.Server, entityName]).then(function (dbresult) {
                               deferred.resolve(dbresult);
                           }).catch(function (dbresult) {
                               mystore.find([localId, cacheStatus.Local, entityName]).then(function (localDbResult) {
                                   deferred.resolve(localDbResult);
-                              }).catch(function(localDbResult) {
+                              }).catch(function (localDbResult) {
                                   deferred.reject(localDbResult);
                               });
                           });
@@ -166,7 +195,7 @@
                       $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
                           mystore.eachBy('entityName_idx', entityName).then(function (dbresult) {
                               deferred.resolve(dbresult.filter(function (obj) {
-                                  return !isNotNullOrUndefined(obj.syncData) || obj.syncData.verb !== 'delete';
+                                  return !isNotNullOrUndefined(obj.syncData) || !isNotNullOrUndefined(obj.syncData.delete);
                               }));
                           }).catch(function (dbresult) {
                               deferred.reject(dbresult);
@@ -191,12 +220,10 @@
           })
           .catch(function (response) {
               if (response.status === 0) {
-                  var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'post', url, response.data);
+                  var localData = new localDataEntry(data, cacheStatus.Local, entityName, undefined, 'post', url, data);
 
                   $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
-                      mystore.delete([localId, cacheStatus.Server, entityName]).then(function (result) {
-                          return mystore.upsert(localData);
-                      }).then(function (result) {
+                      mystore.upsert(localData).then(function (result) {
                           deferred.resolve(localData);
                       });
                   }).catch(function (response) {
@@ -263,10 +290,8 @@
                             localData = dbresult;
                             localData.status = cacheStatus.Local;
                             localData.syncData = new syncData(localId, 'delete', url);
-                            return localData;
                         }).catch(function () {
                             localData = new localDataEntry({}, cacheStatus.Local, entityName, localId, 'delete', url);
-                            return localData;
                         }).finally(function () {
                             mystore.delete([localId, cacheStatus.Server, entityName]).then(function (result) {
                                 return mystore.upsert(localData);

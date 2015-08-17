@@ -8,6 +8,14 @@ function authFactory($http, $q, $log, localStorageService, baseUrl, localStorage
         this.userName = userName || "";
         this.userId = userId || "";
     }
+
+    var updateAuthData = function (newAuthdata) {
+        var defaultAuth = new modelConstructor();
+        newAuthdata = newAuthdata || defaultAuth;
+        factory.authentication.isAuth = newAuthdata.isAuth || defaultAuth.isAuth;
+        factory.authentication.userName = newAuthdata.userName || defaultAuth.userName;
+        factory.authentication.userId = newAuthdata.userId || defaultAuth.userId;
+    }
     var _register = function (registrationModel) {
         _logout();
         return $http.post(baseUrl + '/api/accounts/register', registrationModel)
@@ -22,30 +30,30 @@ function authFactory($http, $q, $log, localStorageService, baseUrl, localStorage
         var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
         var deferred = $q.defer();
         $http.post(baseUrl + 'accounts/login', data, { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } })
-          .success(function (response) {
+          .then(function (response) {
               try {
                   localStorageService.set(localStorageAuthIndex, {
-                      token: response.access_token,
+                      token: response.data.access_token,
                       userName: loginData.userName,
-                      userId: response.UserId,
-                      expireDate: new Date(response['.expires']),
-                      refreshToken: response.refresh_token
+                      userId: response.data.UserId,
+                      expireDate: new Date(response.data['.expires']),
+                      refreshToken: response.data.refresh_token
                   });
               } catch (e) {
                   $log.error('Error: ' + e.message);
                   deferred.reject(e);
               }
 
-              factory.authentication = new modelConstructor(true, loginData.userName, response.UserId);
-              deferred.resolve(response);
+              updateAuthData(new modelConstructor(true, loginData.userName, response.data.UserId));
+              deferred.resolve(response.data);
           })
-          .error(function (err, status) {
+          .catch(function (response) {
               _logOut();
-              if (err && err.error_description) {
+              if (response.data && response.data.error_description) {
                   $log.error(err.error_description);
-                  deferred.reject(err.error_description);
+                  deferred.reject(response.data.error_description);
               } else {
-                  deferred.reject(err);
+                  deferred.reject(response);
               }
               
           });
@@ -55,7 +63,7 @@ function authFactory($http, $q, $log, localStorageService, baseUrl, localStorage
     var _logOut = function () {
 
         localStorageService.remove(localStorageAuthIndex);
-        factory.authentication = new modelConstructor();
+        updateAuthData();
 
     }
     var _fillAuthData = function () {
@@ -65,7 +73,9 @@ function authFactory($http, $q, $log, localStorageService, baseUrl, localStorage
             var expireDate = new Date(authData.expireDate);
             var now = new Date();
             if (expireDate > now) {
-                factory.authentication = new modelConstructor(true, authData.userName, authData.userId);
+                updateAuthData(new modelConstructor(true, authData.userName, authData.userId));
+            } else {
+                _logOut();
             }
         }
     }

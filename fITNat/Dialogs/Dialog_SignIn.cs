@@ -44,16 +44,16 @@ namespace fITNat
             return view;
         }
 
-        private void BtnSignIn_Click(object sender, EventArgs e)
+        private async void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                userId = ooService.SignIn(txtUsername.Text, txtPassword.Text).Result;
-                if(userId != null)
+                userId = await ooService.SignIn(txtUsername.Text, txtPassword.Text);
+                if(userId != new Guid())
                 {
-                    //User has clicked the Login-Button
+                    //User clicked the Login-Button
                     onSignInComplete.Invoke(this, new OnSignInEventArgs
                         (txtUsername.Text, txtPassword.Text, userId));
-                    //Dialog will slide to the side and will disapear
+                    //Dialog will slide to the side and will disappear
                     this.Dismiss();
                     Console.WriteLine("Result");
                 }
@@ -68,10 +68,12 @@ namespace fITNat
             catch(ServerException ex)
             {
                 Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
+                SignInFail();
             }
             catch(Exception exc)
             {
                 Console.WriteLine("Login-Fehler: " + exc.StackTrace + "" + exc.GetType());
+                SignInFail();
             }
         }
 

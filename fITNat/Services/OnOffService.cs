@@ -26,6 +26,7 @@ namespace fITNat
         private const string URL = @"http://fit-bachelor.azurewebsites.net/";
         public static LocalDB db { get; private set; }
         public static bool Online { get; private set; }
+        public static bool WasOffline { get; private set; }
         private Object thisLock = new Object();
         private IBinder mBinder;
         #endregion
@@ -43,6 +44,11 @@ namespace fITNat
         public static void setzeDb(LocalDB data)
         {
             db = data;
+        }
+
+        public static void setzeWasOffline(bool data)
+        {
+            WasOffline = data;
         }
 
         //OnCreate -> Initialisierung
@@ -79,11 +85,11 @@ namespace fITNat
                 try
                 {
                     bool success = await mgnService.SignIn(username, password);
-                    if(success)
+                    if (success)
                     {
                         userId = mgnService.actualSession().CurrentUserId;
                         user.UserId = userId.ToString();
-                        if(db != null)
+                        if (db != null)
                         {
                             db.insertUpdateUser(user);
                         }
@@ -100,6 +106,7 @@ namespace fITNat
                 {
                     System.Console.WriteLine("Fehler beim Online-Einloggen" + exc.StackTrace);
                 }
+                return new Guid();
             }
             else
             {
@@ -113,9 +120,10 @@ namespace fITNat
                 catch(Exception exc)
                 {
                     System.Console.WriteLine("Fehler beim Offline-Einloggen" + exc.StackTrace);
+                    throw;
                 }
+                return new Guid();
             }
-            return new Guid();
         }
 
         /// <summary>
@@ -248,7 +256,7 @@ namespace fITNat
             {
                 try
                 {
-                    IEnumerable<ScheduleModel> schedules = await mgnService.GetAllSchedulesAsync();
+                    IEnumerable<ScheduleModel> schedules = await mgnService.GetAllSchedulesAsync().ConfigureAwait(continueOnCapturedContext: false);
                     if(schedules != null)
                     {
                         return schedules;
@@ -412,8 +420,14 @@ namespace fITNat
                     foreach (var exercise in scheduleExercises)
                     {
                         //Für jede zugewiesene Id die Exercise raussuchen und der IEnumerable hinzufügen
-                        result.Add(await mgnService.GetExerciseByIdAsync(exercise.Id));
+                        ExerciseModel temp = await mgnService.GetExerciseByIdAsync(exercise.Id);
+                        result.Add(temp);
                     }
+                    /*IEnumerable<ExerciseModel> temp = await mgnService.GetAllExercisesAsync();
+                    foreach (var item in temp)
+                    {
+                        Console.WriteLine(item.ToString());
+                    }*/
                     return result;
                 }
                 catch (ServerException ex)
@@ -466,37 +480,39 @@ namespace fITNat
             {
                 //Verbindungsüberprüfung
                 while (true)
-                {
-                    //lock (thisLock)
-                    //{
-                        //var result = mgnServiceServer.PingAsync();
-                        //if (result.Result)
-                        if(await mgnServiceServer.PingAsync())
-                        {
-                            //Online = true;
-                            setzeStatus(true);
-                        }
-                        else
-                        {
-                            //Online = false;
-                            setzeStatus(true);
-                        }
-
+                { 
+                    if(await mgnServiceServer.PingAsync())
+                    {
+                        //Online = true;
+                        setzeStatus(true);
+                        //vorher Offline => jetzt die Aktionen ausführen, die nur lokal gemacht werden konnten
+                        if (WasOffline)
+                            checkSync();
+                        setzeWasOffline(true);
+                    }
+                    else
+                    {
+                        //Online = false;
+                        setzeStatus(false);
+                        setzeWasOffline(false);
+                    }
                     Console.WriteLine("Online: " + Online);
                     //Timeout 10sek.
                     System.Threading.Thread.Sleep(10000);
-                    //}
-                    //Haken entsprechend der Connection setzen
-                    //mainA.setConnectivityStatus(online);
-                    //exerciseA.setConnectivityStatus(online);
-                    //practiceA.setConnectivityStatus(online);
-                    //scheduleA.setConnectivityStatus(online);
                 }
             });
-
-
             return StartCommandResult.Sticky;
         }
+
+        /// <summary>
+        /// Überprüft die lokale DB nach Änderungen, die zum Server hochgeladen werden müssen (besitzen den lokalen Stempel)
+        /// Über die Daten wird iteriert, um minimal viele nur zu verlieren
+        /// </summary>
+        private void checkSync()
+        {
+            throw new NotImplementedException();
+        }
+
 
         //OnDestroy -> Nach Beendigung
         public override void OnDestroy()

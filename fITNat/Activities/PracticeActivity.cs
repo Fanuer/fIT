@@ -25,7 +25,7 @@ namespace fITNat
         private OnOffService ooService;
         private int connectivity;
 
-        protected override void OnCreate(Bundle bundle)
+        protected async override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
             SetContentView(Resource.Layout.PracticeLayout);
@@ -47,7 +47,7 @@ namespace fITNat
                     int repetitions = Java.Lang.Integer.ParseInt(txtRepetitions.Text);
                     int numberOfRepetitions = Java.Lang.Integer.ParseInt(txtNumberOfRepetitions.Text);
 
-                    ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions).Wait();
+                    //bool result = await ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions);
                     //Zurück zu der Übungsseite
                 }
                 catch (ServerException ex)

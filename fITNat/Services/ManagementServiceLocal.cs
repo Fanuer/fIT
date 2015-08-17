@@ -13,6 +13,7 @@ using fIT.WebApi.Client.Data.Models.Schedule;
 using System.Collections.Generic;
 using fIT.WebApi.Client.Data.Models.Exercise;
 using System.Threading;
+using fIT.WebApi.Client.Data.Models.Shared;
 
 namespace fITNat.Services
 {
@@ -28,6 +29,75 @@ namespace fITNat.Services
         private IManagementSession session;
         private IBinder mBinder;
         #endregion
+
+        public async static Task createTestdata(IManagementSession session)
+        {
+            
+            Guid userId = session.CurrentUserId;
+            ScheduleModel s = new ScheduleModel();
+            s.Name = "Arbeitstraining";
+            s.UserId = userId.ToString();
+            ScheduleModel back = await session.Users.CreateScheduleAsync(s);
+            Console.WriteLine("Schedule angelegt");
+            var e1 = new ExerciseModel()
+            {
+                Name = "Bankdrücken",
+                Description = "Stange von der Brust wegdrücken"
+            };
+            var e2 = new ExerciseModel()
+            {
+                Name = "Kniebeuge",
+                Description = "Ordentlich aus den Oberschnkeln drücken"
+            };
+            var e3 = new ExerciseModel()
+            {
+                Name = "Beinpresse",
+                Description = "Schweres Gewicht"
+            };
+            ExerciseModel temp1 = await session.Admins.CreateExerciseAsync(e1);
+            ExerciseModel temp2 = await session.Admins.CreateExerciseAsync(e2);
+            ExerciseModel temp3 = await session.Admins.CreateExerciseAsync(e3);
+            await session.Users.AddExerciseToScheduleAsync(back.Id, temp1.Id);
+            await session.Users.AddExerciseToScheduleAsync(back.Id, temp2.Id);
+            await session.Users.AddExerciseToScheduleAsync(back.Id, temp3.Id);
+            Console.WriteLine("Übungen hinzugefügt");
+
+
+            /*EntryModel<int> a1 = new EntryModel<int>();
+            a1.Id = temp1.Id;
+            exercises.Add(a1);
+            ExerciseModel temp2 = await session.Admins.CreateExerciseAsync(e2);
+            EntryModel<int> a2 = new EntryModel<int>();
+            a2.Id = temp2.Id;
+            exercises.Add(a2);
+            ExerciseModel temp3 = await session.Admins.CreateExerciseAsync(e3);
+            EntryModel<int> a3 = new EntryModel<int>();
+            a3.Id = temp3.Id;
+            exercises.Add(a3);
+            ScheduleModel sUpdate = back;
+            sUpdate.Exercises = exercises;
+            var t = session.Users.UpdateScheduleAsync(sUpdate.Id, sUpdate);
+            Console.WriteLine("Exercises angelegt");
+            /*PracticeModel p = new PracticeModel();
+            p.ExerciseId = temp1.Id;
+            p.ScheduleId = back.Id;
+            p.NumberOfRepetitions = 4;
+            p.Repetitions = 12;
+            p.Timestamp = DateTime.Now;
+            p.UserId = userId.ToString();
+            p.Weight = 120.9;
+            PracticeModel tempP = await session.Users.CreatePracticeAsync(p);
+            PracticeModel p2 = new PracticeModel();
+            p2.ExerciseId = temp2.Id;
+            p2.ScheduleId = back.Id;
+            p2.NumberOfRepetitions = 5;
+            p2.Repetitions = 15;
+            p2.Timestamp = DateTime.Now;
+            p2.UserId = userId.ToString();
+            p2.Weight = 40;
+            PracticeModel tempP2 = await session.Users.CreatePracticeAsync(p2);
+            Console.WriteLine("Practices angelegt");*/
+        }
 
         public static void setzeManagementService(ManagementService data)
         {
@@ -82,7 +152,9 @@ namespace fITNat.Services
             try
             {
                 //Muss auf irgendwas warten => im Debug geht es dann!
-                session = await service.LoginAsync(username, password);
+                var v = await Task.WhenAny(service.LoginAsync(username, password));
+                session = v.Result; //Exception bei falschem Login
+                //await createTestdata(session);
                 result = true;
             }
             catch (ServerException e)
@@ -201,6 +273,24 @@ namespace fITNat.Services
             {
                 ExerciseModel exercise = await session.Users.GetExerciseByIdAsync(exerciseId);
                 return exercise;
+            }
+            catch (ServerException ex)
+            {
+                throw;
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Fehler beim Online-Abrufen einer Übung: " + exc.StackTrace);
+                return null;
+            }
+        }
+
+        public async Task<IEnumerable<ExerciseModel>> GetAllExercisesAsync()
+        {
+            try
+            {
+                IEnumerable<ExerciseModel> exercises = await session.Users.GetAllExercisesAsync();
+                return exercises;
             }
             catch (ServerException ex)
             {

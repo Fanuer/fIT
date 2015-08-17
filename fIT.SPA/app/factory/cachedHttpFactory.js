@@ -152,7 +152,7 @@
         if (response.status === 0) {
           if (typeof localId !== "undefined") {
             $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
-              mystore.find(localId).then(function (dbresult) {
+              mystore.findBy('localId_idx', localId).then(function (dbresult) {
                 deferred.resolve(dbresult);
               }).catch(function (dbresult) {
                 deferred.reject(dbresult);
@@ -160,7 +160,7 @@
             });
           } else {
             $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
-              var dbrequest = mystore.eachBy('entityName_idx', entityName).then(function (dbresult) {
+              mystore.eachBy('entityName_idx', entityName).then(function (dbresult) {
                 deferred.resolve(dbresult.filter(function (obj) {
                   return !isNotNullOrUndefined(obj.syncData) || obj.syncData.verb !== 'delete';
                 }));
@@ -190,8 +190,11 @@
           var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'post', url, response.data);
 
           $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
-            mystore.add(localData);
-            deferred.resolve(localData);
+            mystore.delete([localId, cacheStatus.Server, entityName]).then(function (result) {
+              return mystore.upsert(localData);
+            }).then(function (result) {
+              deferred.resolve(localData);
+            });
           }).catch(function (response) {
             $log.error(response);
             deferred.reject(response);
@@ -216,8 +219,11 @@
         if (response.status === 0) {
           var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'put', url, response.data);
           $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
-            mystore.put(localData);
-            deferred.resolve();
+            mystore.delete([localId, cacheStatus.Server, entityName]).then(function (result) {
+              return mystore.upsert(localData);
+            }).then(function (result) {
+              deferred.resolve(localData);
+            });
           })
           .catch(function (dbresponse) {
             $log.error(dbresponse);

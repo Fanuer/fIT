@@ -12,6 +12,7 @@ using Android.Widget;
 using fITNat.Services;
 using Java.Lang;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using System.Threading.Tasks;
 
 namespace fITNat
 {
@@ -23,31 +24,39 @@ namespace fITNat
         private ImageView connectivityPointer;
         private OnOffService ooService;
         private int connectivity;
+        private int scheduleId;
 
-        protected override void OnCreate(Bundle bundle)
+        protected async override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.ExerciseLayout);
-            //ScheduleID auslesen und in die versteckten Felder der Übungen legen
-            string schedule = Intent.GetStringExtra("Schedule");
+            try
+            {
+                base.OnCreate(bundle);
+                SetContentView(Resource.Layout.ExerciseLayout);
+                
+                List<ExerciseModel> exercises = new List<ExerciseModel>();
+                connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionExcercise);
+                ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
 
-            List<ExerciseModel> exercises = new List<ExerciseModel>();
-            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionExcercise);
-            ListView lv = (ListView)FindViewById(Resource.Id.lvExercise);
+                setConnectivityStatus(OnOffService.Online);
 
-            setConnectivityStatus(OnOffService.Online);
-            //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-            //eine foreach muss drum, um über jede Exercise in der Schedule zu iterieren
-            //var task = ooService.GetExerciseByIdAsync();
-            //exercises = task.Result.ToList();
+                //ScheduleID auslesen und damit die Übungen auslesen
+                scheduleId = Intent.GetIntExtra("Schedule", 0);
+                ooService = new OnOffService();
+                exercises = await ooService.GetExercisesForSchedule(scheduleId);
 
-
-            ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises);
-            adapter.scheduleID = schedule;
-            lv.Adapter = adapter;
-
-
-            lv.ItemClick += lv_ItemClick;
+                ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises, scheduleId);
+                lv.Adapter = adapter;
+                
+                lv.ItemClick += lv_ItemClick;
+            }
+            catch(ArgumentNullException ex)
+            {
+                Console.WriteLine("Keine UserId übergeben: " + ex.StackTrace);
+            }
+            catch(System.Exception exc)
+            {
+                Console.WriteLine("Fehler beim Erstellen des ScheduleViews: " + exc.StackTrace);
+            }
         }
 
         /// <summary>
@@ -62,8 +71,8 @@ namespace fITNat
             string selectedExerciseName = exercises[e.Position].Name.ToString();
             int exerciseId = Integer.ParseInt(exercises[e.Position].Id.ToString());
             //ScheduleId aus dem versteckten Feld auslesen
-            string scheduleId = "";//txtExerciseViewScheduleID
             string selectedExerciseDescription = exercises[e.Position].Description.ToString();
+            Console.WriteLine(scheduleId);
 
             var practiceActivity = new Intent(this, typeof(PracticeActivity));
             practiceActivity.PutExtra("Exercise", exerciseId);

@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using fITNat.Services;
 using Java.Lang;
 using fIT.WebApi.Client.Data.Models.Schedule;
-using System.Threading.Tasks;
 
 namespace fITNat
 {
@@ -26,7 +21,7 @@ namespace fITNat
         private OnOffService ooService;
         private int connectivity;
 
-        protected override void OnCreate(Bundle bundle)
+        protected async override void OnCreate(Bundle bundle)
         {
             try
             {
@@ -36,13 +31,14 @@ namespace fITNat
                 schedules = new List<ScheduleModel>();
                 lv = (ListView)FindViewById(Resource.Id.lvSchedule);
                 connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
-                string user = Intent.GetStringExtra("User");
-                Guid userId = new Guid(user);
                 setConnectivityStatus(OnOffService.Online);
 
                 //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-                //var task = ooService.GetAllSchedulesAsync(userId); <= Fehler
-                //schedules = task.Result.ToList();
+                ooService = new OnOffService();
+                string user = Intent.GetStringExtra("User");
+                Guid userId = new Guid(user);
+                IEnumerable<ScheduleModel> temp = await ooService.GetAllSchedulesAsync(userId);
+                schedules = temp.ToList<ScheduleModel>();
 
                 //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
                 ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
@@ -54,6 +50,10 @@ namespace fITNat
             catch(ArgumentNullException ex)
             {
                 Console.WriteLine("Keine UserId übergeben: " + ex.StackTrace);
+            }
+            catch(System.Exception exc)
+            {
+                Console.WriteLine("Fehler beim Erstellen des ScheduleViews: " + exc.StackTrace);
             }
         }
 
@@ -90,6 +90,7 @@ namespace fITNat
                 connectivity = Resource.Drawable.CheckDouble;
             else
                 connectivity = Resource.Drawable.Check;
+            connectivityPointer.SetBackgroundResource(0);
             connectivityPointer.SetBackgroundResource(connectivity);
         }
     }

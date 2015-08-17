@@ -221,8 +221,8 @@
           })
           .catch(function (response) {
               if (response.status === 0) {
-                  var localId = response.data.localId;
-                  var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'put', url, response.data);
+                  var localId = data.localId;
+                  var localData = new localDataEntry(data, cacheStatus.Local, entityName, localId, 'put', url, data);
                   $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
                       mystore.delete([localId, cacheStatus.Server, entityName]).then(function (result) {
                           return mystore.upsert(localData);

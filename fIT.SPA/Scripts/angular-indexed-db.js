@@ -612,9 +612,19 @@
            */
 
           ObjectStore.prototype.findBy = function(index, key) {
-            var defer;
+              var defer, req;
             defer = this.defer();
-            defer.resolveWith(this.store.index(index).get(key));
+            req = this.store.index(index).get(key);
+            defer.rejectWith(req);
+            req.onsuccess = (function (_this) {
+                return function (e) {
+                    if (e.target.result) {
+                        return defer.resolve(e.target.result);
+                    } else {
+                        return defer.reject("" + _this.storeName + ":" + key + " not found.");
+                    }
+                };
+            })(this);
             return defer.promise;
           };
 

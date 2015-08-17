@@ -55,10 +55,6 @@
         if (typeof verb !== "undefined" && typeof url !== "undefined") {
             serverModel.syncData = new syncData(serverModel.localId, verb, url, data);
         }
-
-        serverModel.getPrimaryKey = function () {
-            return [serverModel.localId, status, entityName];
-        }
         return serverModel;
     }
 
@@ -146,12 +142,6 @@
               $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (store) {
                   array.forEach(function (value, index) {
                       var localEntity = new localDataEntry(value, cacheStatus.Server, entityName, value.id);
-                      store.findBy('localId_idx', localEntity.localId).then(function (dbReponse) {
-                          $log.info(dbReponse);
-                      }).catch(function (dbReponse) {
-                          $log.error(dbReponse);
-                      });
-                      
                       store.upsert(localEntity).then(function(dbReponse) {
                           $log.info(dbReponse);
                       }).catch(function (dbReponse) {
@@ -246,7 +236,7 @@
             .then(function (response) {
                 var localData = new localDataEntry({}, cacheStatus.Server, entityName, localId);
                 $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
-                    mystore.delete(localData.getPrimaryKey());
+                    mystore.delete([localData.localId, localData.status, localData.entityName]);
                     deferred.resolve();
                 })
                 .catch(function (response) {

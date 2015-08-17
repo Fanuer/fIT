@@ -13,7 +13,7 @@
     if (!isNotNullOrUndefined(verb)) {
       throw new Error("Parameter 'verb' is required.");
     }
-    if (!!isNotNullOrUndefined(url)) {
+    if (!isNotNullOrUndefined(url)) {
       throw new Error("Parameter 'url' is required.");
     }
 
@@ -62,68 +62,61 @@
   var _sync = function () {
     var promises = [];
     //alle offenen Aenderungen holen
-
-    function afterSync(localId, data) {
-      $indexedDB.openStore(dbConfig.dbName, function (mystore) {
-        mystore.delete(localId);
-        mystore.add(new localDataEntry(data, cacheStatus.Server, data.id));
+    function afterSync(localId, data, entityName) {
+      $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
+        mystore.delete([localId, entityName, cacheStatus.Local]).then(function () {
+          mystore.add(new localDataEntry(data || {}, cacheStatus.Server, data.id));
+        });
       });
     }
-
-    $indexedDB.openStore(dbConfig.dbName, function (mystore) {
-      var dbrequest = mystore.openCursor(IDBKeyRange.only(cacheStatus.Local));
-      dbrequest.onsuccess(function (ev) {
-        if (isNotNullOrUndefined(ev.target.result) && ev.target.result.length > 0) {
-          ev.target.result.forEach(function (entry) {
+    $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
+      mystore.eachBy('status_idx', cacheStatus.Local).then(function (dbresult) {
+        if (dbresult.length > 0) {
+          dbresult.forEach(function (entry) {
             try {
               if (isNotNullOrUndefined(entry) && isNotNullOrUndefined(entry.syncData)) {
+                var prom;
                 switch (entry.syncData.verb) {
                   case 'get':
                   case 'delete':
                   case 'head':
                   case 'jsonp':
-                    var prom = $http[entry.syncData.verb](entry.syncData.url);
+                    prom = $http[entry.syncData.verb](entry.syncData.url, entry.entityName);
                     break;
                   case 'post':
-                    var prom = $http[entry.syncData.verb](entry.syncData.url, entry.syncData.data);
+                    prom = $http[entry.syncData.verb](entry.syncData.url, entry.syncData.data, entry.entityName);
                     prom.then(function (response) {
                       return $http.get(entry.syncData.url + response.id);
                     })
-                    .then(function (response) { afterSync(localId, response) });
+                    .then(function (response) { afterSync(localId, response, entry.entityName) });
                     break;
                   case 'put':
                   case 'patch':
-                    var prom = $http[entry.syncData.verb](entry.syncData.url, entry.syncData.data);
+                    prom = $http[entry.syncData.verb](entry.syncData.url, entry.syncData.data, entry.entityName);
                     prom.then(function () {
                       return $http.get(entry.syncData.url);
                     })
-                    .then(function (response) { afterSync(localId, response) });
+                    .then(function (response) { afterSync(localId, response, entry.entityName) });
                     break;
                 }
-                if (prom && !prom.isRejected) {
+                if (isNotNullOrUndefined(prom) && !prom.isRejected) {
                   promises.push(prom);
-                }
-
-                //setze status um
-                prom.then(function () {
-                  entry.status = cacheStatus.Server;
-                  $indexedDB.openStore(dbConfig.dbName, function () {
-                    mystore.put(entry);
+                  //setze status um
+                  prom.then(function () {
+                    entry.status = cacheStatus.Server;
+                    $indexedDB.openStore(dbConfig.tableConfigs[0].name, function () {
+                      mystore.put(entry);
+                    });
                   });
-
-                });
+                }
               }
             } catch (e) {
               $log.error('Error on sync: ' + e);
             }
           });
         }
-        return $q.all(promises);
       });
-      dbrequest.onerror(function (msg) {
-        $log.error('Unable to open sync-cursor: ' + msg);
-      });
-
+      return $q.all(promises);
     });
   }
 
@@ -168,7 +161,9 @@
           } else {
             $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
               var dbrequest = mystore.eachBy('entityName_idx', entityName).then(function (dbresult) {
-                deferred.resolve(dbresult);
+                deferred.resolve(dbresult.filter(function (obj) {
+                  return !isNotNullOrUndefined(obj.syncData) || obj.syncData.verb !== 'delete';
+                }));
               }).catch(function (dbresult) {
                 deferred.reject(dbresult);
               });
@@ -194,7 +189,7 @@
         if (response.status === 0) {
           var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'post', url, response.data);
 
-          $indexedDB.openStore(dbConfig.dbName, function (mystore) {
+          $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
             mystore.add(localData);
             deferred.resolve(localData);
           }).catch(function (response) {
@@ -220,7 +215,7 @@
       .catch(function (response) {
         if (response.status === 0) {
           var localData = new localDataEntry(response.data, cacheStatus.Local, entityName, undefined, 'put', url, response.data);
-          $indexedDB.openStore(dbConfig.dbName, function (mystore) {
+          $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
             mystore.put(localData);
             deferred.resolve();
           })
@@ -250,7 +245,29 @@
             deferred.reject(response);
           });
         }).catch(function (response) {
-          deferred.reject(response);
+          if (response.status === 0) {
+            $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
+              var localData = null;
+              mystore.find([localId, cacheStatus.Server, entityName]).then(function (dbresult) {
+                localData = dbresult;
+                localData.status = cacheStatus.Local;
+                localData.syncData = new syncData(localId, 'delete', url);
+                return localData;
+              }).catch(function () {
+                localData = new localDataEntry({}, cacheStatus.Local, entityName, localId, 'delete', url);
+                return localData;
+              }).finally(function () {
+                mystore.delete([localId, cacheStatus.Server, entityName]).then(function (result) {
+                  return mystore.upsert(localData);
+                }).then(function (result) {
+                  deferred.resolve(localData);
+                });
+              });
+            }).catch(function (response) {
+              $log.error(response);
+              deferred.reject(response);
+            });
+          }
         });
     return deferred.promise;
   }

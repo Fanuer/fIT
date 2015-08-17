@@ -14,7 +14,7 @@ function scheduleController($scope, scheduleFactory, authFactory, $location, $ro
         }
         else {
             scheduleFactory.getSchedules().then(function (response) {
-                $scope.vm = response.data;
+              $scope.vm = response.data || response;
             });
         }
     }

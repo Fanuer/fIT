@@ -43,14 +43,12 @@
                 </ul>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right" data-ng-show="!authentication.isAuth">
-                    <li><a href="#/login">Log in</a></li>
-                    <li><a href="#/register">Register</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right" data-ng-show="authentication.isAuth">
-                    <li><a href="#">Hallo {{authentication.userName}}</a></li>
-                    <li><a href="#/schedules">Schedules</a></li>
-                    <li><a href="#" data-ng-click="logOut()">Log out</a></li>
+                <ul class="nav navbar-nav navbar-right">
+                    <li data-ng-show="!authentication.isAuth"><a href="#/login">Log in</a></li>
+                    <li data-ng-show="!authentication.isAuth"><a href="#/register">Register</a></li>
+                    <li data-ng-show="authentication.isAuth"><a href="#">Hallo {{authentication.userName}}</a></li>
+                    <li data-ng-show="authentication.isAuth"><a href="#/schedules">Schedules</a></li>
+                    <li data-ng-show="authentication.isAuth"><a href="#" data-ng-click="logOut()">Log out</a></li>
                 </ul>
             </div><!--/.navbar-collapse -->
 

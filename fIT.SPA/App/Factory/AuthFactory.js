@@ -72,8 +72,9 @@ function authFactory($http, $q, $log, localStorageService, baseUrl, localStorage
     var _checkOnlineStatus = function () {
         var deferred = $q.defer();
         $http.get(baseUrl + 'accounts/ping')
-          .success(function () { return true; })
-          .error(function () { return false; });
+          .success(function () {
+            deferred.resolve(); })
+          .error(function () { deferred.reject(); });
         return deferred.promise;
     }
 

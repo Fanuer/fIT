@@ -4,7 +4,8 @@ var fIT = angular.module("fIT", ["ngRoute", "LocalStorageModule", "indexedDB"]);
 
 fIT.value("nextLocalId", 1);
 
-fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites.net/api/");
+//fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites.net/api/");
+fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites123.net/api/");
 //fIT.constant("baseUrl", "http://localhost:62816/api/");
 fIT.constant("localStorageAuthIndex", "fIT.SPA.auth");
 fIT.constant("resetDB", true);

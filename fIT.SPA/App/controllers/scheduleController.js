@@ -6,7 +6,7 @@ function scheduleController($scope, scheduleFactory, authFactory, $location, $ro
         if ($routeParams.id) {
             if (!isNaN($routeParams.id)) {
                 scheduleFactory.getSchedule($routeParams.id).then(function (response) {
-                    $scope.vm = response.data;
+                    $scope.vm = typeof response !== "undefined" ? response.data || response : {};
                 });
             } else {
                 $scope.vm.userId = authFactory.authentication.userId;

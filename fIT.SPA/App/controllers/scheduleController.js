@@ -3,10 +3,6 @@
 function scheduleController($scope, scheduleFactory, authFactory, $location, $routeParams) {
     $scope.vm = {};
     function init() {
-        if (!authFactory.authentication.isAuth) {
-            $location.path('/login');
-        }
-
         if ($routeParams.id) {
             if (!isNaN($routeParams.id)) {
                 scheduleFactory.getSchedule($routeParams.id).then(function (response) {
@@ -42,10 +38,10 @@ function scheduleController($scope, scheduleFactory, authFactory, $location, $ro
     var _saveChanges = function () {
         $scope.vm.userId = authFactory.authentication.userId;
 
-        if (typeof $scope.vm.id === "undefined") {
+        if (typeof $scope.vm.localId === "undefined") {
             scheduleFactory.createSchedule($scope.vm).then(_redirectToList);
         } else {
-            scheduleFactory.updateSchedule($scope.vm.id, $scope.vm).then(_redirectToList);
+          scheduleFactory.updateSchedule($scope.vm.localId, $scope.vm).then(_redirectToList);
         }
     }
 

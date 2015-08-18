@@ -81,14 +81,21 @@
 
   // verarbeitet alle offenen lokalen aenderungen
   var _sync = function () {
-    
+
     var promises = [];
     //alle offenen Aenderungen holen
 
     var afterSync = function (localId, data, entityName) {
       $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
         mystore.delete([localId, entityName, cacheStatus.Local]).then(function () {
-          mystore.add(new localDataEntry(data || {}, cacheStatus.Server, data.id));
+          var serverObject = new localDataEntry(data || {}, cacheStatus.Server, entityName, data.id);
+          mystore.upsert(serverObject).then(function () {
+            $log.info('DBEntry "' + data.id+ '" synchronisiert');
+          }).catch(function () {
+            $log.info('DBEntry "' + data.id + '" konnte nicht synchronisiert werden (Fehler beim Neuerstellen)');
+          });
+        }).catch(function () {
+          $log.info('DBEntry "' + data.id + '" konnte nicht synchronisiert werden (Fehler beim lokalen loeschen)');
         });
       });
     }
@@ -107,7 +114,7 @@
               if (entry.syncData.delete) {
                 entry.syncData.delete.url = entry.syncData.delete.url.replace("123", "");
                 prom = $http.delete(entry.syncData.delete.url).then(function (response) {
-                  $indexedDB.openStore(dbConfig.tableConfigs[0].name, function(mystore) {
+                  $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
                     mystore.delete([entry.localId, entry.status, entry.entityName]).then(function (dbresponse) {
                       $log.info('Lokaler DbEntry erfoglreich gelöscht');
                     }).catch(function (dbresponse) {
@@ -116,10 +123,10 @@
                   });
                 }).catch(function (response) {
                   if (response.status === 404) {
-                    $indexedDB.openStore(dbConfig.tableConfigs[0].name, function(mystore) {
+                    $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
                       mystore.delete([entry.localId, entry.status, entry.entityName]).then(function (dbresponse) {
                         $log.info('Lokaler DbEntry erfoglreich gelöscht');
-                      }).catch(function(dbresponse) {
+                      }).catch(function (dbresponse) {
                         $log.error('Lokaler DBEntry konnte nicht gelöscht werden: ' + dbresponse);
                       });
                     });
@@ -135,20 +142,16 @@
                 if (entry.syncData.post) {
                   entry.syncData.post.url = entry.syncData.post.url.replace("123", "");
 
-                  prom = $http.post(entry.syncData.post.url, entry.syncData.data);
-                  prom.then(function (response) {
+                  prom = $http.post(entry.syncData.post.url, entry.syncData.data).then(function (response) {
                     return $http.get(entry.syncData.post.url + response.id);
-                  })
-                  .then(function (response) { afterSync(entry.localId, response, entry.entityName) });;
+                  }).then(function (response) { afterSync(entry.localId, response.data, entry.entityName) });;
                   promises.push(prom);
                 }
                 if (entry.syncData.put) {
                   entry.syncData.put.url = entry.syncData.put.url.replace("123", "");
-                  prom = $http.put(entry.syncData.put.url, entry.syncData.put.data);
-                  prom.then(function (response) {
-                    return $http.get(entry.syncData.put.url + response.id);
-                  })
-                  .then(function (response) { afterSync(entry.localId, response, entry.entityName) });
+                  prom = $http.put(entry.syncData.put.url, entry.syncData.put.data).then(function (response) {
+                    return $http.get(entry.syncData.put.url);
+                  }).then(function (response) { afterSync(entry.localId, response.data, entry.entityName) });
                   promises.push(prom);
                 }
               }

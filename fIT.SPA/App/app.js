@@ -4,8 +4,8 @@ var fIT = angular.module("fIT", ["ngRoute", "LocalStorageModule", "indexedDB"]);
 
 fIT.value("nextLocalId", 1);
 
-//fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites.net/api/");
-fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites123.net/api/");
+fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites.net/api/");
+//fIT.constant("baseUrl", "http://fit-bachelor.azurewebsites123.net/api/");
 //fIT.constant("baseUrl", "http://localhost:62816/api/");
 fIT.constant("localStorageAuthIndex", "fIT.SPA.auth");
 fIT.constant("resetDB", true);
@@ -15,7 +15,7 @@ fIT.constant("entityNames", {
   user: 'users',
   schedule: 'schedules',
   fitness: 'fitness'
-})
+});
 fIT.constant("dbConfig", {
   dbName: 'fIT_SPADB',
   version: 1,
@@ -104,8 +104,13 @@ var setFirstLocalId = function ($indexedDB, dbConfig, cacheStatus, nextLocalId) 
   $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
     mystore.eachBy('status_idx', cacheStatus.Local).then(function (dbResult) {
       // fix weil eachBy immer alle einträge zurückliefert
-      var realResult = dbResult.filter(function (obj) { return obj.status === cacheStatus.Local; });
-      nextLocalId = realResult.length + 1;
+      var maxId = 0;
+      dbResult.forEach(function (value) {
+        if (value.status === cacheStatus.Local && value.id > maxId) {
+          maxId = value.id;
+        }
+      });
+      nextLocalId = maxId + 1;
     });
   });
 }

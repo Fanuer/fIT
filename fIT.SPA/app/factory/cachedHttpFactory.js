@@ -5,6 +5,19 @@
   function isNotNullOrUndefined(object) {
     return object !== null && typeof object !== "undefined";
   }
+
+  if (!String.prototype.endsWith) {
+    String.prototype.endsWith = function(searchString, position) {
+      var subjectString = this.toString();
+      if (position === undefined || position > subjectString.length) {
+        position = subjectString.length;
+      }
+      position -= searchString.length;
+      var lastIndex = subjectString.indexOf(searchString, position);
+      return lastIndex !== -1 && lastIndex === position;
+    };
+  }
+
   function syncData(localId, verb, url, data) {
     if (!isNotNullOrUndefined(localId)) {
       throw new Error("Parameter 'localId' is required.");
@@ -85,17 +98,41 @@
     var promises = [];
     //alle offenen Aenderungen holen
 
-    var afterSync = function (localId, data, entityName) {
+    var afterSync = function (localId, data, entityName, verb) {
+      var remove = true;
+
       $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
-        mystore.delete([localId, entityName, cacheStatus.Local]).then(function () {
-          var serverObject = new localDataEntry(data || {}, cacheStatus.Server, entityName, data.id);
-          mystore.upsert(serverObject).then(function () {
-            $log.info('DBEntry "' + data.id+ '" synchronisiert');
-          }).catch(function () {
-            $log.info('DBEntry "' + data.id + '" konnte nicht synchronisiert werden (Fehler beim Neuerstellen)');
-          });
-        }).catch(function () {
-          $log.info('DBEntry "' + data.id + '" konnte nicht synchronisiert werden (Fehler beim lokalen loeschen)');
+        mystore.find([localId, cacheStatus.Local, entityName]).then(function (dbresult) {
+          if (dbresult && dbresult.syncData) {
+            delete dbresult.syncData[verb];
+
+            for (var prop in dbresult.syncData) {
+              if (dbresult.hasOwnProperty(prop)) {
+                remove = false;
+                break;
+              }
+            }
+            return mystore.upsert(dbresult);
+          }
+          return null;
+        }).then(function() {
+          if (remove) {
+            return mystore.delete([localId, cacheStatus.Local, entityName]);
+          }
+          return null;
+        }).then(function (result) {
+          // nach löschen wird 'undefined als result zurückgeliefert 
+          if (typeof result=== "undefined") {
+            var serverObject = new localDataEntry(data || {}, cacheStatus.Server, entityName, data.id);
+            mystore.upsert(serverObject).then(function() {
+              $log.info('DBEntry "' + data.id + '" synchronisiert');
+            }).catch(function() {
+              $log.info('DBEntry "' + data.id + '" konnte nicht synchronisiert werden (Fehler beim Neuerstellen)');
+            });
+          }
+        })
+        .catch(function(error) {
+          $log.error(error);
         });
       });
     }
@@ -139,19 +176,28 @@
                 return;
               }
               else {
+                var oldlocalId;
                 if (entry.syncData.post) {
-                  entry.syncData.post.url = entry.syncData.post.url.replace("123", "");
-
-                  prom = $http.post(entry.syncData.post.url, entry.syncData.data).then(function (response) {
-                    return $http.get(entry.syncData.post.url + response.id);
-                  }).then(function (response) { afterSync(entry.localId, response.data, entry.entityName) });;
+                  oldlocalId = entry.syncData.post.localId;
+                  entry.syncData.post.url = entry.syncData.post.url.replace("fit-bachelor.azurewebsites123.net", "localhost:62816");
+                  
+                  prom = $http.post(entry.syncData.post.url, entry.syncData.post.data).then(function (response) {
+                    return $http.get(entry.syncData.post.url + (entry.syncData.post.url.endsWith("/") ? "" : "/") + response.data.id);
+                  }).then(function (response) { afterSync(oldlocalId, response.data, entry.entityName, "post") }).then(function () {
+                    if (entry.syncData.put) {
+                      entry.syncData.put.url = entry.syncData.put.url.replace("fit-bachelor.azurewebsites123.net", "localhost:62816");
+                      prom = $http.put(entry.syncData.put.url.replace('/' + oldlocalId, "/" + entry.localId), entry.syncData.put.data).then(function (response) {
+                        return $http.get(entry.syncData.put.url);
+                      }).then(function (response) { afterSync(oldlocalId, response.data, entry.entityName, "put") });
+                    }
+                  });
                   promises.push(prom);
-                }
-                if (entry.syncData.put) {
-                  entry.syncData.put.url = entry.syncData.put.url.replace("123", "");
+                } else if (entry.syncData.put) {
+                  oldlocalId = entry.syncData.put.localId;
+                  entry.syncData.put.url = entry.syncData.put.url.replace("fit-bachelor.azurewebsites123.net", "localhost:62816");
                   prom = $http.put(entry.syncData.put.url, entry.syncData.put.data).then(function (response) {
                     return $http.get(entry.syncData.put.url);
-                  }).then(function (response) { afterSync(entry.localId, response.data, entry.entityName) });
+                  }).then(function (response) { afterSync(oldlocalId, response.data, entry.entityName, "put") });
                   promises.push(prom);
                 }
               }
@@ -189,7 +235,6 @@
         $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (store) {
           array.forEach(function (value, index) {
             var localEntity = new localDataEntry(value, cacheStatus.Server, entityName, value.id);
-
             store.upsert(localEntity).then(function (dbReponse) {
               $log.info(dbReponse);
             }).catch(function (dbReponse) {

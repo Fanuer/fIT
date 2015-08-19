@@ -251,23 +251,23 @@
 
                       // wenn nicht mit einer id gesucht wurde
                       if (typeof localId === "undefined") {
-                          dbResult.filter(function(obj) {
+                          dbResult.filter(function (obj) {
                               return obj.entityName === entityName && $.inArray(serverIds, obj.localId) === -1;
-                          }).forEach(function(value) {
+                          }).forEach(function (value) {
                               deleteEntries.push([value.localId, value.status, value.entityName]);
                           });
                       }
-                  }).then(function() {
-                      array.forEach(function(value, index) {
+                  }).then(function () {
+                      array.forEach(function (value, index) {
                           var localEntity = new localDataEntry(value, cacheStatus.Server, entityName, value.id);
-                          store.upsert(localEntity).then(function(dbReponse) {
+                          store.upsert(localEntity).then(function (dbReponse) {
                               $log.info(dbReponse);
-                          }).catch(function(dbReponse) {
+                          }).catch(function (dbReponse) {
                               $log.error(dbReponse);
                           });
                       });
-                      deleteEntries.forEach(function(value) {
-                          store.delete(value).then(function() {
+                      deleteEntries.forEach(function (value) {
+                          store.delete(value).then(function () {
                               $log.info("Lokalen Eintrag, welcher nicht mehr auf dem Server vorhanden ist, wurde gelöscht");
                           }).catch(function (error) {
                               $log.info("Lokalen Eintrag, welcher nicht mehr auf dem Server vorhanden ist, konnte nicht gelöscht werden: " + error);
@@ -405,29 +405,35 @@
             }).catch(function (response) {
                 if (response.status === 0) {
                     var noUpsert = false;
+                    var dbFoundElement = null;
                     $indexedDB.openStore(dbConfig.tableConfigs[0].name, function (mystore) {
                         var localData = null;
                         var findpormise = $q.defer();
-                        mystore.find([localId, cacheStatus.Server, entityName]).then(function (dbresult) {
-                            localData = dbresult;
-                            localData.status = cacheStatus.Local;
-                            localData.syncData = localData.syncData || {};
-                            // if an object is created and deleted locally, there is no need to store the data to send them to the Server
-                            localData.syncData.delete = new syncData(localId, 'delete', url);
-                            findpormise.resolve(localData);
-                        }).catch(function () {
-                            mystore.find([localId, cacheStatus.Local, entityName]).then(function (dbresult) {
-                                localData = dbresult;
+                        mystore.find([localId, cacheStatus.Server, entityName])
+                            .then(function (dbResult) {
+                                dbFoundElement = dbResult;
+                                return mystore.delete([dbResult.localId, dbResult.status, dbResult.entityName]);
+                            })
+                            .then(function () {
+                                localData = dbFoundElement;
                                 localData.status = cacheStatus.Local;
                                 localData.syncData = localData.syncData || {};
                                 // if an object is created and deleted locally, there is no need to store the data to send them to the Server
                                 localData.syncData.delete = new syncData(localId, 'delete', url);
                                 findpormise.resolve(localData);
                             }).catch(function () {
-                                localData = new localDataEntry({}, cacheStatus.Local, entityName, localId, 'delete', url);
-                                findpormise.resolve(localData);
+                                mystore.find([localId, cacheStatus.Local, entityName]).then(function (dbresult) {
+                                    localData = dbresult;
+                                    localData.status = cacheStatus.Local;
+                                    localData.syncData = localData.syncData || {};
+                                    // if an object is created and deleted locally, there is no need to store the data to send them to the Server
+                                    localData.syncData.delete = new syncData(localId, 'delete', url);
+                                    findpormise.resolve(localData);
+                                }).catch(function () {
+                                    localData = new localDataEntry({}, cacheStatus.Local, entityName, localId, 'delete', url);
+                                    findpormise.resolve(localData);
+                                });
                             });
-                        });
 
                         findpormise.promise.then(function (localData) {
                             if (typeof localData.syncData.post !== "undefined") {

@@ -254,7 +254,7 @@
                           dbResult.filter(function(obj) {
                               return obj.entityName === entityName && $.inArray(serverIds, obj.localId) === -1;
                           }).forEach(function(value) {
-                              deleteEntries.push(value.localId, value.status, value.entityName);
+                              deleteEntries.push([value.localId, value.status, value.entityName]);
                           });
                       }
                   }).then(function() {
@@ -267,7 +267,11 @@
                           });
                       });
                       deleteEntries.forEach(function(value) {
-                          store.delete(value);
+                          store.delete(value).then(function() {
+                              $log.info("Lokalen Eintrag, welcher nicht mehr auf dem Server vorhanden ist, wurde gelöscht");
+                          }).catch(function (error) {
+                              $log.info("Lokalen Eintrag, welcher nicht mehr auf dem Server vorhanden ist, konnte nicht gelöscht werden: " + error);
+                          });
                       });
 
                       _sync();

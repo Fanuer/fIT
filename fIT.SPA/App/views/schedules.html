@@ -7,7 +7,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="schedule in vm">
+    <tr ng-repeat="schedule in vm track by $index">
         <td>{{schedule.localId}}</td>
         <td>{{schedule.name}}</td>
         <td>

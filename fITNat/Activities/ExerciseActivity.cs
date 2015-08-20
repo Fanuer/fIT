@@ -19,12 +19,18 @@ namespace fITNat
     [Activity(Label = "fITNat")]
     public class ExerciseActivity : Activity
     {
-        private List<ExerciseModel> exercises;
+        public static List<ExerciseModel> exercises { get; private set; }
         private ListView lv;
         private ImageView connectivityPointer;
         private OnOffService ooService;
         private int connectivity;
         private int scheduleId;
+        private string userId;
+
+        public static void SetExercises(List<ExerciseModel> data)
+        {
+            exercises = data;
+        }
 
         protected async override void OnCreate(Bundle bundle)
         {
@@ -41,8 +47,10 @@ namespace fITNat
 
                 //ScheduleID auslesen und damit die Übungen auslesen
                 scheduleId = Intent.GetIntExtra("Schedule", 0);
+                userId = Intent.GetStringExtra("User");
                 ooService = new OnOffService();
                 exercises = await ooService.GetExercisesForSchedule(scheduleId);
+                SetExercises(exercises);
 
                 ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises, scheduleId);
                 lv.Adapter = adapter;
@@ -77,6 +85,7 @@ namespace fITNat
             var practiceActivity = new Intent(this, typeof(PracticeActivity));
             practiceActivity.PutExtra("Exercise", exerciseId);
             practiceActivity.PutExtra("Schedule", scheduleId);
+            practiceActivity.PutExtra("User", userId);
             StartActivity(practiceActivity);
         }
 

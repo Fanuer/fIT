@@ -20,6 +20,7 @@ namespace fITNat
         private ImageView connectivityPointer;
         private OnOffService ooService;
         private int connectivity;
+        private string userID;
 
         protected async override void OnCreate(Bundle bundle)
         {
@@ -35,8 +36,8 @@ namespace fITNat
 
                 //Hier die Schedules des Benutzers abholen und in die Liste einfügen
                 ooService = new OnOffService();
-                string user = Intent.GetStringExtra("User");
-                Guid userId = new Guid(user);
+                userID = Intent.GetStringExtra("User");
+                Guid userId = new Guid(userID);
                 IEnumerable<ScheduleModel> temp = await ooService.GetAllSchedulesAsync(userId);
                 schedules = temp.ToList<ScheduleModel>();
 
@@ -71,6 +72,7 @@ namespace fITNat
 
             var exerciseActivity = new Intent(this, typeof(ExerciseActivity));
             exerciseActivity.PutExtra("Schedule", scheduleId);
+            exerciseActivity.PutExtra("User", userID);
             StartActivity(exerciseActivity);
         }
 

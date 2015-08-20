@@ -24,47 +24,83 @@ namespace fITNat
         private Button btnSavePractice;
         private OnOffService ooService;
         private int connectivity;
+        private int scheduleId;
+        private int exerciseId;
+        private string userId;
 
-        protected async override void OnCreate(Bundle bundle)
+        protected override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.PracticeLayout);
-
-            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionPractice);
-            txtWeight = FindViewById<EditText>(Resource.Id.txtWeight);
-            txtRepetitions = FindViewById<EditText>(Resource.Id.txtRepetitions);
-            txtNumberOfRepetitions = FindViewById<EditText>(Resource.Id.txtNumberOfRepetitions);
-            btnSavePractice = FindViewById<Button>(Resource.Id.btnSavePractice);
-            setConnectivityStatus(OnOffService.Online);
-            btnSavePractice.Click += (object sender, EventArgs args) =>
+            try
             {
-                try
-                {
-                    int scheduleId = 0; //über den Benutzer (aus der Session)
-                    int exerciseId = 0; //über den Weg zu dem Training
-                    string userId = "Test"; //Habe ich!
-                    double weight = Double.Parse(txtWeight.Text);
-                    int repetitions = Java.Lang.Integer.ParseInt(txtRepetitions.Text);
-                    int numberOfRepetitions = Java.Lang.Integer.ParseInt(txtNumberOfRepetitions.Text);
+                base.OnCreate(bundle);
+                SetContentView(Resource.Layout.PracticeLayout);
+                ooService = new OnOffService();
 
-                    //bool result = await ooService.createPractice(scheduleId, exerciseId, userId, new DateTime(), weight, repetitions, numberOfRepetitions);
+                connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionPractice);
+                txtWeight = FindViewById<EditText>(Resource.Id.txtWeight);
+                txtRepetitions = FindViewById<EditText>(Resource.Id.txtRepetitions);
+                txtNumberOfRepetitions = FindViewById<EditText>(Resource.Id.txtNumberOfRepetitions);
+                btnSavePractice = FindViewById<Button>(Resource.Id.btnSavePractice);
+                setConnectivityStatus(OnOffService.Online);
+                btnSavePractice.Click += bt_ItemClick;
+            }
+            catch(ArgumentNullException e)
+            {
+                Console.WriteLine("Fehler bei der Datenübertragung zwischen den Activities: " + e.StackTrace);
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Fehler in der PracticeActivity: " + exc.StackTrace);
+            }
+            
+        }
+
+        private async void bt_ItemClick(object sender, EventArgs e)
+        {
+            try
+            {
+                scheduleId = Intent.GetIntExtra("Schedule", 0);
+                exerciseId = Intent.GetIntExtra("Exercise", 0);
+                userId = Intent.GetStringExtra("User");
+                double weight = Double.Parse(txtWeight.Text);
+                int repetitions = Java.Lang.Integer.ParseInt(txtRepetitions.Text);
+                int numberOfRepetitions = Java.Lang.Integer.ParseInt(txtNumberOfRepetitions.Text);
+
+                bool result = await ooService.createPracticeAsync(scheduleId, exerciseId, userId, DateTime.Now, weight, repetitions, numberOfRepetitions);
+                if(result)
+                { 
                     //Zurück zu der Übungsseite
+                    OnBackPressed();
                 }
-                catch (ServerException ex)
+                else
                 {
-                    Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
-                    CreatePracticeFail();
+                    new AlertDialog.Builder(this)
+                        .SetMessage("Anlegen ist schiefgegangen")
+                        .SetTitle("Error")
+                        .Show();
                 }
-                catch (Exception exc)
-                {
-                    Console.WriteLine("Login-Fehler: " + exc.StackTrace);
-                }
-            };
+            }
+            catch (ServerException ex)
+            {
+                Console.WriteLine("Fehler beim Speichern des Trainings(Server): " + ex.StackTrace);
+                CreatePracticeFail();
+            }
+            catch(FormatException exc)
+            {
+                Console.WriteLine("Fehler beim Parsen in der PracticeActivity: " + exc.StackTrace);
+            }
+            catch (Exception exce)
+            {
+                Console.WriteLine("Login-Fehler: " + exce.StackTrace);
+            }
         }
 
         private void CreatePracticeFail()
         {
-            throw new NotImplementedException();
+            new AlertDialog.Builder(this)
+                        .SetMessage("Anlegen ist schiefgegangen")
+                        .SetTitle("Error")
+                        .Show();
         }
 
         public override void OnBackPressed()

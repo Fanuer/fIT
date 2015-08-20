@@ -181,7 +181,7 @@ namespace fITNat.Services
         /// <param name="fitness"></param>
         /// <param name="birthdate"></param>
         /// <returns></returns>
-        public async Task SignUp(
+        public async Task<string> SignUp(
                                 string username,
                                 string email,
                                 string password,
@@ -191,6 +191,7 @@ namespace fITNat.Services
                                 FitnessType fitness,
                                 DateTime birthdate)
         {
+            string userId = "";
             try
             {
                 CreateUserModel user = new CreateUserModel();
@@ -202,6 +203,7 @@ namespace fITNat.Services
                 user.Fitness = fitness;
                 user.DateOfBirth = birthdate;
                 await service.RegisterAsync(user);
+                userId = (await session.Admins.GetUserByUsernameAsync(username)).Id;
             }
             catch (ServerException ex)
             {
@@ -211,6 +213,7 @@ namespace fITNat.Services
             {
                 Console.WriteLine("Fehler beim Registrieren: " + exc.StackTrace);
             }
+            return userId;
         }
         #endregion
 
@@ -317,6 +320,7 @@ namespace fITNat.Services
         /// <returns></returns>
         public async Task<bool> recordPractice(int scheduleId,
                                         int exerciseId,
+                                        string userId,
                                         DateTime timestamp = default(DateTime),
                                         double weight = 0,
                                         int repetitions = 0,
@@ -327,6 +331,7 @@ namespace fITNat.Services
                 PracticeModel practice = new PracticeModel();
                 practice.ScheduleId = scheduleId;
                 practice.ExerciseId = exerciseId;
+                practice.UserId = userId;
                 practice.Timestamp = timestamp;
                 practice.Weight = weight;
                 practice.Repetitions = repetitions;

@@ -252,20 +252,23 @@
                       // wenn nicht mit einer id gesucht wurde
                       if (typeof localId === "undefined") {
                           dbResult.filter(function (obj) {
-                              return obj.entityName === entityName && $.inArray(serverIds, obj.localId) === -1;
+                            return obj.entityName === entityName && serverIds.filter(function (value) { return value === obj.localId; }).length === 0;
                           }).forEach(function (value) {
                               deleteEntries.push([value.localId, value.status, value.entityName]);
                           });
                       }
-                  }).then(function () {
-                      array.forEach(function (value, index) {
-                          var localEntity = new localDataEntry(value, cacheStatus.Server, entityName, value.id);
-                          store.upsert(localEntity).then(function (dbReponse) {
-                              $log.info(dbReponse);
-                          }).catch(function (dbReponse) {
-                              $log.error(dbReponse);
-                          });
+                  }).then(function() {
+                    array.forEach(function(value, index) {
+                      var localEntity = new localDataEntry(value, cacheStatus.Server, entityName, value.id);
+                      store.upsert(localEntity).then(function(dbReponse) {
+                        $log.info(dbReponse);
+                      }).catch(function(dbReponse) {
+                        $log.error(dbReponse);
                       });
+                    });
+                  }).then(function() {
+                    return _sync();
+                  }).then(function () {
                       deleteEntries.forEach(function (value) {
                           store.delete(value).then(function () {
                               $log.info("Lokalen Eintrag, welcher nicht mehr auf dem Server vorhanden ist, wurde gelöscht");
@@ -273,8 +276,6 @@
                               $log.info("Lokalen Eintrag, welcher nicht mehr auf dem Server vorhanden ist, konnte nicht gelöscht werden: " + error);
                           });
                       });
-
-                      _sync();
                   });
 
 

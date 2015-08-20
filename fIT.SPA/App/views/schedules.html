@@ -3,18 +3,18 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <td></td>
+        <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="schedule in vm track by $index">
-        <td>{{schedule.localId}}</td>
-        <td>{{schedule.name}}</td>
-        <td>
-            <button class="btn" ng-click="update(schedule.localId)">&Auml;ndern</button>
-            <button class="btn" ng-click="delete(schedule.localId)">L&ouml;schen</button>
-        </td>
-    </tr>
+        <tr ng-repeat="schedule in vm | orderBy:'name' track by $index  ">
+            <td>{{schedule.localId}}</td>
+            <td>{{schedule.name}}</td>
+            <td>
+                <button class="btn" ng-click="update(schedule.localId)">&Auml;ndern</button>
+                <button class="btn" ng-click="delete(schedule.localId)">L&ouml;schen</button>
+            </td>
+        </tr>
     </tbody>
 </table>
 <button class="btn" ng-click="add()">Hinzuf&uuml;gen</button>

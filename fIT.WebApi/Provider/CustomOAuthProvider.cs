@@ -111,7 +111,7 @@ namespace fIT.WebApi.Provider
 
             using (IRepository repo = new ApplicationRepository())
             {
-                var oldtokens = repo.RefreshTokens.GetAllAsync().Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(user.UserName)).ToList();
+                var oldtokens = (await repo.RefreshTokens.GetAllAsync()).Where(x => x.ExpiresUtc < DateTime.UtcNow || x.Subject.Equals(user.UserName)).ToList();
                 foreach (var token in oldtokens)
                 {
                     await repo.RefreshTokens.RemoveAsync(token);

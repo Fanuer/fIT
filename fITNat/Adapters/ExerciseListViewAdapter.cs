@@ -17,11 +17,13 @@ namespace fITNat
     {
         private List<ExerciseModel> mItems;
         private Context mContext;
+        public int mScheduleId { get; set; }
 
-        public ExerciseListViewAdapter(Context context, List<ExerciseModel> items)
+        public ExerciseListViewAdapter(Context context, List<ExerciseModel> items, int scheduleId)
         {
             mItems = items;
             mContext = context;
+            mScheduleId = scheduleId;
         }
 
         public override int Count
@@ -51,9 +53,11 @@ namespace fITNat
             TextView txtExerciseViewName = row.FindViewById<TextView>(Resource.Id.txtExerciseViewName);
             TextView txtID = row.FindViewById<TextView>(Resource.Id.txtExerciseViewID);
             TextView txtExerciseViewDescription = row.FindViewById<TextView>(Resource.Id.txtExerciseViewDescription);
+            TextView txtExerciseViewScheduleID = row.FindViewById<TextView>(Resource.Id.txtExerciseViewScheduleID);
             txtExerciseViewName.Text = mItems[position].Name;
             txtID.Text = mItems[position].Id.ToString();
             txtExerciseViewDescription.Text = mItems[position].Description;
+            txtExerciseViewScheduleID.Text = mScheduleId.ToString();
 
             return row;
         }

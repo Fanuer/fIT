@@ -63,7 +63,7 @@ namespace fIT.WebApi.Models
                 Name = datamodel.Name,
                 Url = _UrlHelper.Link("GetExerciseById", new { id = datamodel.Id })
             };
-            if (datamodel.Schedules != null)
+            if (datamodel.Schedules != null && datamodel.Schedules.Any())
             {
                 result.Schedules = datamodel.Schedules.Select(x => new EntryModel<int>()
                 {
@@ -87,13 +87,13 @@ namespace fIT.WebApi.Models
                 Url = _UrlHelper.Link("GetScheduleById", new { id = datamodel.Id })
             };
 
-            if (datamodel.Exercises != null)
+            if (datamodel.Exercises != null && datamodel.Exercises.Any())
             {
                 result.Exercises = datamodel.Exercises.Select(x => new EntryModel<int>()
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    Url = _UrlHelper.Link("GetExcerciseById", new { id = x.Id }),
+                    Url = _UrlHelper.Link("GetExerciseById", new { id = x.Id }),
                 });
             }
 

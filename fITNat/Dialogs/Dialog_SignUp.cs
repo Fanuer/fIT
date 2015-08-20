@@ -1,16 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Android.App;
-using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using fIT.WebApi.Client.Data.Models.Shared.Enums;
-using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 
 namespace fITNat
@@ -29,7 +25,7 @@ namespace fITNat
         private List<GenderType> genderItems;
         private List<JobTypes> jobItems;
         private List<FitnessType> fitnessItems;
-        private ManagementServiceLocal mgnService;
+        private OnOffService ooService;
 
         public event EventHandler<OnSignUpEventArgs> onSignUpComplete;
 
@@ -69,11 +65,7 @@ namespace fITNat
 
             return view;
         }
-
-        //
-        //Siehe SignIn für await und asny und so!!!!
-        //
-
+        
         private async void BtnSignUp_Click(object sender, EventArgs e)
         {
             //Types aus den Eingaben genrieren
@@ -83,21 +75,39 @@ namespace fITNat
             DateTime birthdate = getSelectedBirthdate(txtBirthdate.Text);
             try
             {
-                await mgnService.SignUp(txtUsername.Text,
-                txtEmail.Text,
-                txtPassword.Text,
-                txtPasswordConfirm.Text,
-                geschlecht,
-                job,
-                fitness,
-                birthdate
-                ); //hier knallts
+                await ooService.SignUp( txtUsername.Text,
+                                        txtEmail.Text,
+                                        txtPassword.Text,
+                                        txtPasswordConfirm.Text,
+                                        geschlecht,
+                                        job,
+                                        fitness,
+                                        birthdate
+                                      );
                 //Dialog will slide to the side and will disapear
                 this.Dismiss();
             }
-            catch(Exception ex)
+            catch (ServerException ex)
+            {
+                Console.WriteLine("Serverfehler: " + ex.StackTrace);
+                //Falsche Logindaten
+                //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
+                string fehler = "";
+                if (ex.StackTrace.Contains("username"))
+                    fehler = "username";
+                else if (ex.StackTrace.Contains("username"))
+                    fehler = "password";
+                else if (ex.StackTrace.Contains("birthdate"))
+                    fehler = "birthdate";
+                SignUpFail(fehler);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine("Fehler (Registrierung): " + ex.StackTrace);
+                new AlertDialog.Builder(this.Activity)
+                        .SetMessage("Registrierung nur Online möglich")
+                        .SetTitle("Error")
+                        .Show();
             }
             
             

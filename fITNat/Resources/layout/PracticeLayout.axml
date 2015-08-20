@@ -21,19 +21,114 @@
         android:text="Training"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:layout_weight="80"
         android:textColor="#BBB"
         android:gravity="center"
         android:textStyle="bold"
         android:textSize="25sp"
         android:layout_centerHorizontal="true" />
-    <ListView
-        android:id="@+id/lvPractice"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="fill_parent"
+    <TextView
+        android:id="@+id/txtPracticeActual"
+        android:layout_below="@id/txtTitlePractice"
+        android:text="Übung"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_weight="80"
+        android:textColor="#BBB"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp" />
+    <TextView
+        android:id="@+id/txtWeightLabel"
+        android:layout_below="@id/txtPracticeActual"
+        android:text="Gewicht"
+        android:textSize="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="5dp" />
+    <EditText
+        android:id="@+id/txtWeight"
+        android:layout_toRightOf="@id/txtWeightLabel"
+        android:layout_below="@id/txtPracticeActual"
+        android:inputType="numberDecimal"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="#ddd" />
+    <TextView
+        android:id="@+id/txtWeightLabelSmall"
+        android:layout_toRightOf="@id/txtWeight"
+        android:layout_below="@id/txtPracticeActual"
+        android:text="kg"
+        android:textSize="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginLeft="10dp" />
+    <TextView
+        android:id="@+id/txtRepetitionsLabel"
+        android:layout_below="@id/txtWeightLabel"
+        android:text="Wiederholungen"
+        android:textSize="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="5dp" />
+    <EditText
+        android:id="@+id/txtRepetitions"
+        android:layout_toRightOf="@id/txtRepetitionsLabel"
+        android:layout_below="@id/txtWeightLabel"
+        android:inputType="number"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="#ddd" />
+    <TextView
+        android:id="@+id/txtNumberOfRepetitionsLabel"
+        android:layout_below="@id/txtRepetitionsLabel"
+        android:text="Sätze"
+        android:textSize="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:textColor="#000"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="5dp" />
+    <EditText
+        android:id="@+id/txtNumberOfRepetitions"
+        android:layout_toRightOf="@id/txtNumberOfRepetitionsLabel"
+        android:layout_below="@id/txtRepetitionsLabel"
+        android:inputType="number"
+        android:layout_width="50dp"
+        android:layout_height="30dp"
+        android:background="#ddd" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtNumberOfRepetitionsLabel"
+        android:layout_marginTop="50dp">
+        <Button
+            android:id="@+id/btnSavePractice"
+            android:text="Speichern"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20dp"
+            android:textColor="#fff"
+            android:textStyle="bold"
+            android:paddingLeft="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="5dp"
+            android:height="70dp"
+            android:paddingTop="2dp"
+            android:background="@drawable/ButtonSignInStyle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="30dp" />
+    </RelativeLayout>
 </RelativeLayout>

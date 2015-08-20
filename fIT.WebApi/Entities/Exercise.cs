@@ -19,7 +19,7 @@ namespace fIT.WebApi.Entities
             this.Id = id;
             this.Name = name;
             this.Description = description;
-            this.Schedules = Schedules;
+            this.Schedules = schedules ?? new List<Schedule>();
         }
 
         public Exercise()

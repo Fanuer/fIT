@@ -99,6 +99,29 @@ namespace fIT.WebApi.Client.Portable.Implementation
         {
             await PutAsJsonAsync(model, "api/schedule/" + scheduleId);
         }
+
+        /// <summary>
+        /// Adds an exercise to a schedule
+        /// </summary>
+        /// <param name="scheduleId">id of a schedule</param>
+        /// <param name="exerciseId">Id of a exercise</param>
+        /// <returns></returns>
+        public async Task AddExerciseToScheduleAsync(int scheduleId, int exerciseId)
+        {
+            await PutAsync("/api/schedule/{0}/Exercise/{1}", scheduleId, exerciseId);
+        }
+
+        /// <summary>
+        /// Removes an exercise from a schedule
+        /// </summary>
+        /// <param name="scheduleId">id of a schedule</param>
+        /// <param name="exerciseId">Id of a exercise</param>
+        /// <returns></returns>
+        public async Task RemoveExerciseFromScheduleAsync(int scheduleId, int exerciseId)
+        {
+            await DeleteAsync("/api/schedule/{0}/Exercise/{1}", scheduleId, exerciseId);
+        }
+
         #endregion
 
         #region Exercise

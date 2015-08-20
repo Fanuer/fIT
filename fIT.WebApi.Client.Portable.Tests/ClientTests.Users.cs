@@ -27,6 +27,7 @@ namespace fIT.WebApi.Client.Portable.Tests
             }
         }
 
+
         [TestMethod]
         public void UpdateCurrentUserData()
         {
@@ -71,21 +72,35 @@ namespace fIT.WebApi.Client.Portable.Tests
                 NewPassword = PASSWORD,
                 ConfirmPassword = PASSWORD
             };
-
+            var pwChanged = false;
             using (var service = new ManagementService(ServiceUrl))
             using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
             {
                 try
                 {
                     session.Users.UpdatePasswordAsync(new_password).Wait();
+                    pwChanged = true;
                     using (IManagementSession newsession = service.LoginAsync(USERNAME, NEW_PASSWORD).Result)
                     {
                         var user = newsession.Users.GetUserDataAsync();
                     }
                 }
+                catch (AggregateException e)
+                {
+                    if (e.InnerException is ServerException)
+                    {
+                        var inner = e.InnerException as ServerException;
+                    }
+                }
                 finally
                 {
-                    session.Users.UpdatePasswordAsync(old_password).Wait();
+                    if (pwChanged)
+                    {
+                        using (IManagementSession newsession = service.LoginAsync(USERNAME, NEW_PASSWORD).Result)
+                        {
+                            newsession.Users.UpdatePasswordAsync(old_password).Wait();
+                        }
+                    }
                 }
             }
         }
@@ -285,5 +300,35 @@ namespace fIT.WebApi.Client.Portable.Tests
             }
         }
 
+        [TestMethod]
+        public void AddAndRemoveExerciseToSchedule()
+        {
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            using (var schedule = EnsureSchedule(session))
+            using (var exercise = EnsureExercise(session))
+            {
+                var scheduleId = schedule.Model.Id;
+                var exerciseId = exercise.Model.Id;
+
+                var s = session.Users.GetScheduleByIdAsync(scheduleId).Result;
+                Assert.AreEqual(0, s.Exercises.Count());
+
+                session.Users.AddExerciseToScheduleAsync(scheduleId, exerciseId).Wait();
+                s = session.Users.GetScheduleByIdAsync(scheduleId).Result;
+                Assert.AreEqual(1, s.Exercises.Count());
+                Assert.AreEqual(exerciseId, s.Exercises.ElementAt(0).Id);
+
+                var scheduleExercise = session.Users.GetExerciseByIdAsync(s.Exercises.ElementAt(0).Id).Result;
+                Assert.AreEqual(exercise.Model.Name, scheduleExercise.Name);
+                Assert.AreEqual(exercise.Model.Id, scheduleExercise.Id);
+                Assert.AreEqual(exercise.Model.Url, scheduleExercise.Url);
+                Assert.AreEqual(exercise.Model.Description, scheduleExercise.Description);
+
+                session.Users.RemoveExerciseFromScheduleAsync(scheduleId, exerciseId).Wait();
+                s = session.Users.GetScheduleByIdAsync(scheduleId).Result;
+                Assert.AreEqual(0, s.Exercises.Count());
+            }
+        }
     }
 }

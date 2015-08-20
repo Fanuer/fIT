@@ -1,15 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Views;
 using Android.Widget;
-using fITNat.Services;
 using Java.Lang;
 using fIT.WebApi.Client.Data.Models.Schedule;
 
@@ -22,35 +18,44 @@ namespace fITNat
         private List<ScheduleModel> schedules;
         private ListView lv;
         private ImageView connectivityPointer;
-        private ManagementServiceLocal mgnService;
+        private OnOffService ooService;
+        private int connectivity;
+        private string userID;
 
-        protected override void OnCreate(Bundle bundle)
+        protected async override void OnCreate(Bundle bundle)
         {
-            base.OnCreate(bundle);
-            SetContentView(Resource.Layout.ScheduleLayout);
-
-            schedules = new List<ScheduleModel>();
-            lv = (ListView)FindViewById(Resource.Id.lvSchedule);
-            connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
-
-
-            //Generiert Testdaten
-            /*
-            for (int i = 1; i <= 10; i++)
+            try
             {
-                schedules.Add(new Schedule(i, "Testplan "+i, "Kevin"));
+                base.OnCreate(bundle);
+                SetContentView(Resource.Layout.ScheduleLayout);
+
+                schedules = new List<ScheduleModel>();
+                lv = (ListView)FindViewById(Resource.Id.lvSchedule);
+                connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
+                setConnectivityStatus(OnOffService.Online);
+
+                //Hier die Schedules des Benutzers abholen und in die Liste einfügen
+                ooService = new OnOffService();
+                userID = Intent.GetStringExtra("User");
+                Guid userId = new Guid(userID);
+                IEnumerable<ScheduleModel> temp = await ooService.GetAllSchedulesAsync(userId);
+                schedules = temp.ToList<ScheduleModel>();
+
+                //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
+                ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
+                lv.Adapter = adapter;
+
+
+                lv.ItemClick += lv_ItemClick;
             }
-            */
-            //Hier die Schedules des Benutzers abholen und in die Liste einfügen
-            //await mgnService
-
-
-            //ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Resource.Layout.ScheduleView, Resource.Id.txtScheduleViewDescription, schedules);
-            ScheduleListViewAdapter adapter = new ScheduleListViewAdapter(this, schedules);
-            lv.Adapter = adapter;
-
-
-            lv.ItemClick += lv_ItemClick;
+            catch(ArgumentNullException ex)
+            {
+                Console.WriteLine("Keine UserId übergeben: " + ex.StackTrace);
+            }
+            catch(System.Exception exc)
+            {
+                Console.WriteLine("Fehler beim Erstellen des ScheduleViews: " + exc.StackTrace);
+            }
         }
 
         /// <summary>
@@ -63,11 +68,12 @@ namespace fITNat
         {
             //Daraus die ID des Trainingsplans holen und diesen dann abfragen + redirect auf die passende Seite!
             string selectedSchedule = schedules[e.Position].Name.ToString();
-            int tid = Integer.ParseInt(schedules[e.Position].Id.ToString());
-            //Schedule schedule = new Schedule(tid, selectedSchedule, session.ID);
-            //schedule.FindSingle(id);
+            int scheduleId = Integer.ParseInt(schedules[e.Position].Id.ToString());
 
-            SetContentView(Resource.Layout.ExerciseLayout);
+            var exerciseActivity = new Intent(this, typeof(ExerciseActivity));
+            exerciseActivity.PutExtra("Schedule", scheduleId);
+            exerciseActivity.PutExtra("User", userID);
+            StartActivity(exerciseActivity);
         }
 
         public override void OnBackPressed()
@@ -83,9 +89,11 @@ namespace fITNat
         public void setConnectivityStatus(bool online)
         {
             if (online)
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.CheckDouble);
+                connectivity = Resource.Drawable.CheckDouble;
             else
-                connectivityPointer.SetBackgroundResource(Resource.Drawable.Check);
+                connectivity = Resource.Drawable.Check;
+            connectivityPointer.SetBackgroundResource(0);
+            connectivityPointer.SetBackgroundResource(connectivity);
         }
     }
 }

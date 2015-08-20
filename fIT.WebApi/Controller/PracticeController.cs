@@ -30,12 +30,11 @@ namespace fIT.WebApi.Controller
         [EnableQuery]
         [Route("")]
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<PracticeModel>))]
-        public IQueryable<PracticeModel> GetPractices()
+        public async Task<IQueryable<PracticeModel>> GetPractices()
         {
-            return this
-                   .AppRepository
-                   .Practices
-                   .GetAllAsync()
+            var all = await this.AppRepository.Practices.GetAllAsync();
+
+            return all
                    .Where(x=> CurrentUserId.Equals(x.UserId))
                    .Select(this.TheModelFactory.Create)
                    .AsQueryable();
@@ -96,7 +95,7 @@ namespace fIT.WebApi.Controller
             }
 
             
-            bool exists = this.AppRepository.Exercise.Exists(id);
+            bool exists = await this.AppRepository.Exercise.ExistsAsync(id);
             
             try
             {

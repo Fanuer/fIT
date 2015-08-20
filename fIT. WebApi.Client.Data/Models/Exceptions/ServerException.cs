@@ -55,7 +55,7 @@ namespace fIT.WebApi.Client.Data.Models.Exceptions
                         var error = JsonConvert.DeserializeObject<Dictionary<string, string>>(httpErrorObject);
 
                         foreach (var kvp in error)
-                        {
+                        { 
                             // Wrap the errors up into the base Exception.Data Dictionary:
                             this.Data.Add(kvp.Key, kvp.Value);
                         }

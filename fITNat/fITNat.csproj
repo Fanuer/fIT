@@ -42,6 +42,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
+    <Reference Include="SQLite">
+      <HintPath>..\..\..\..\Downloads\sqlite-net-1.0.8.3\lib\android\SQLite.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
@@ -56,8 +59,8 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\PracticeActivity.cs" />
     <Compile Include="Adapters\ExerciseListViewAdapter.cs" />
-    <Compile Include="Adapters\PracticeListViewAdapter.cs" />
     <Compile Include="Activities\ScheduleActivity.cs" />
+    <Compile Include="DBModels.cs" />
     <Compile Include="LocalDB.cs" />
     <Compile Include="Services\ConnectivityService.cs" />
     <Compile Include="Dialogs\Dialog_SignIn.cs" />
@@ -67,12 +70,11 @@
     <Compile Include="Adapters\ScheduleListViewAdapter.cs" />
     <Compile Include="Services\ManagementServiceLocal.cs" />
     <Compile Include="Services\OnOffService.cs" />
-    <Compile Include="SQLite.cs" />
-    <Compile Include="SQLiteAsync.cs" />
+    <Compile Include="UserLoginModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\app.sqlite" />
     <None Include="GettingStarted.Xamarin" />
-    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <AndroidResource Include="Resources\layout\Dialog_sign_up.axml" />
@@ -82,7 +84,6 @@
     <AndroidResource Include="Resources\layout\ExerciseLayout.axml" />
     <AndroidResource Include="Resources\layout\ExerciseView.axml" />
     <AndroidResource Include="Resources\layout\PracticeLayout.axml" />
-    <AndroidResource Include="Resources\layout\PracticeView.axml" />
     <AndroidResource Include="Resources\layout\ScheduleLayout.axml" />
     <AndroidResource Include="Resources\layout\ScheduleView.axml" />
   </ItemGroup>

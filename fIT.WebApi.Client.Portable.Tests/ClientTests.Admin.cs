@@ -8,6 +8,7 @@ using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.Roles;
 using fIT.WebApi.Client.Portable.Implementation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using fIT.WebApi.Client.Data.Models.Shared;
 
 namespace fIT.WebApi.Client.Portable.Tests
 {
@@ -31,8 +32,7 @@ namespace fIT.WebApi.Client.Portable.Tests
             using (var service = new ManagementService(ServiceUrl))
             using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
             {
-                var guid = new Guid("7b815457-a918-438d-9697-c1c2b4905648");
-                var user = session.Admins.GetUserByIdAsync(guid).Result;
+                var user = session.Admins.GetUserByIdAsync(session.CurrentUserId).Result;
                 Assert.IsNotNull(user);
                 Assert.AreEqual(USERNAME, user.UserName);
             }
@@ -122,7 +122,7 @@ namespace fIT.WebApi.Client.Portable.Tests
         {
             var newExercise = new ExerciseModel()
             {
-                
+
                 Name = "Test Name",
                 Description = "Test Description"
             };
@@ -158,6 +158,63 @@ namespace fIT.WebApi.Client.Portable.Tests
                     newExercises = session.Users.GetAllExercisesAsync().Result;
                     Assert.AreEqual(exercises.Count(), newExercises.Count());
                     myNewExercise = null;
+                }
+                catch (AggregateException e)
+                {
+                    if (e.InnerException is ServerException)
+                    {
+                        var innerExc = e.InnerException as ServerException;
+                        foreach (KeyValuePair<string, string> data in innerExc.Data)
+                        {
+                            Console.WriteLine(String.Format("Fehler '{0}': {1}", data.Key, data.Value));
+                        }
+                    }
+                }
+                finally
+                {
+                    if (myNewExercise != null)
+                    {
+                        session.Users.DeleteScheduleAsync(myNewExercise.Id).Wait();
+                    }
+                }
+            }
+        }
+
+        [TestMethod]
+        public void GetUpdateExercises()
+        {
+            var newSchedules = new EntryModel<int>()
+            {
+                Id = 106
+            };
+            List<EntryModel<int>> schedules = new List<EntryModel<int>>();
+            schedules.Add(newSchedules);
+            var newExercise = new ExerciseModel()
+            {
+
+                Name = "Test Name",
+                Description = "Test Description",
+                Schedules = schedules
+            };
+
+            using (var service = new ManagementService(ServiceUrl))
+            using (IManagementSession session = service.LoginAsync(USERNAME, PASSWORD).Result)
+            {
+                ExerciseModel myNewExercise = null;
+                ExerciseModel testExercise = null;
+
+                try
+                {
+                    var exercises = session.Users.GetAllExercisesAsync().Result;
+
+                    myNewExercise = session.Admins.CreateExerciseAsync(newExercise).Result;
+                    testExercise = session.Users.GetExerciseByIdAsync(myNewExercise.Id).Result; //mein Aufruf
+                    Assert.IsNotNull(testExercise);
+                    Assert.AreEqual(testExercise.Id, myNewExercise.Id);
+                    Assert.AreEqual(testExercise.Description, myNewExercise.Description);
+                    Assert.AreEqual(testExercise.Name, myNewExercise.Name);
+                    var newExercises = session.Users.GetAllExercisesAsync().Result;
+                    Assert.AreEqual(exercises.Count() + 1, newExercises.Count());
                 }
                 catch (AggregateException e)
                 {

@@ -12,6 +12,7 @@ using Android.Widget;
 using fITNat.Services;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace fITNat
 {
@@ -20,13 +21,16 @@ namespace fITNat
         private EditText txtUsername;
         private EditText txtPassword;
         private Button btnSignIn;
-        private ManagementServiceLocal mgnService;
+        private OnOffService ooService;
+        private ScheduleActivity scheduleActivity;
+        private Guid userId;
 
         public event EventHandler<OnSignInEventArgs> onSignInComplete;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreateView(inflater, container, savedInstanceState);
+            ooService = new OnOffService();
 
             var view = inflater.Inflate(Resource.Layout.Dialog_sign_in, container, false);
 
@@ -40,26 +44,37 @@ namespace fITNat
             return view;
         }
 
-        private void BtnSignIn_Click(object sender, EventArgs e)
+        private async void BtnSignIn_Click(object sender, EventArgs e)
         {
             try{
-                mgnService.SignIn(txtUsername.Text, txtPassword.Text).Wait();
-                
+                userId = await ooService.SignIn(txtUsername.Text, txtPassword.Text);
+                if(userId != new Guid())
+                {
+                    //User clicked the Login-Button
+                    onSignInComplete.Invoke(this, new OnSignInEventArgs
+                        (txtUsername.Text, txtPassword.Text, userId));
+                    //Dialog will slide to the side and will disappear
+                    this.Dismiss();
+                    Console.WriteLine("Result");
+                }
+                else
+                {
+                    Console.WriteLine("Result falsch");
+                    //Falsche Logindaten
+                    //Rückmeldung an den Login-Dialog, dass die Kombination User+PW nicht passt
+                    SignInFail();
+                }
             }
             catch(ServerException ex)
             {
-                Console.WriteLine("Login-Fehler: " + ex.StackTrace);
+                Console.WriteLine("Login-Fehler(Server): " + ex.StackTrace);
+                SignInFail();
             }
             catch(Exception exc)
             {
-                Console.WriteLine("Login-Fehler: " + exc.StackTrace);
+                Console.WriteLine("Login-Fehler: " + exc.StackTrace + "" + exc.GetType());
+                SignInFail();
             }
-            
-            //User has clicked the Login-Button
-            onSignInComplete.Invoke(this, new OnSignInEventArgs
-                (txtUsername.Text, txtPassword.Text));
-            //Dialog will slide to the side and will disapear
-            this.Dismiss();
         }
 
         public override void OnActivityCreated(Bundle savedInstanceState)
@@ -72,8 +87,8 @@ namespace fITNat
         public void SignInFail()
         {
             txtPassword.Text = "";
-            txtUsername.SetError("Logindaten falsch",null);
-            txtPassword.SetError("", null);
+            //txtUsername.SetError("Logindaten falsch",null);
+            txtPassword.SetError("Logindaten falsch", null);
         }
     }
 
@@ -81,6 +96,7 @@ namespace fITNat
     {
         private string username;
         private string password;
+        private Guid userId;
 
         public string Username
         {
@@ -94,10 +110,17 @@ namespace fITNat
             set { password = value; }
         }
 
-        public OnSignInEventArgs(string username, string password) : base()
+        public Guid UserId
+        {
+            get { return userId; }
+            set { userId = value; }
+        }
+
+        public OnSignInEventArgs(string username, string password, Guid userId) : base()
         {
             Username = username;
             Password = password;
+            UserId = userId;
         }
     }
 }

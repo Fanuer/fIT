@@ -1,50 +1,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
 using System.Threading.Tasks;
 using SQLite;
-using fIT.WebApi.Client.Data.Models.Account;
-using fIT.WebApi.Client.Data.Models.Practice;
-using fIT.WebApi.Client.Data.Models.Schedule;
-using fIT.WebApi.Client.Data.Models.Exercise;
-using fIT.fITNat;
+using fITNat.DBModels;
 
 namespace fITNat
 {
-    class LocalDB
+    public class LocalDB
     {
         private static readonly string folder = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
-        private static readonly string path = System.IO.Path.Combine(folder, "app.db");
+        private static readonly string path = System.IO.Path.Combine(folder, "app.sqlite");
 
-        public async Task<bool> createDatabase()
+        /// <summary>
+        /// Erstellt die lokale Datenbank aus den DBModels
+        /// </summary>
+        public static void createDatabase()
         {
             try
             {
-                var connection = new SQLiteAsyncConnection(path);
-                await connection.CreateTableAsync<UserLoginModel>();
-                await connection.CreateTableAsync<PracticeModel>();
-                await connection.CreateTableAsync<ScheduleModel>();
-                await connection.CreateTableAsync<ExerciseModel>();
-                Console.WriteLine("UserLogin-Table created!");
-                return true;
+                var con2 = new SQLiteConnection(path);
+                bool test = con2.StoreDateTimeAsTicks;
+                var user = con2.CreateTable<User>();
+                var practice = con2.CreateTable<Practice>();
+                var schedule = con2.CreateTable<Schedule>();
+                var exercise = con2.CreateTable<Exercise>();
+                var sHe = con2.CreateTable<ScheduleHasExercises>();
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine("Fehler beim Anlegen der DB: " + ex.StackTrace);
-                return false;
             }
-            catch(Exception exc)
+            catch (Exception exc)
             {
                 Console.WriteLine("Fehler beim Anlegen der DB: " + exc.StackTrace);
-                return false;
             }
         }
 
@@ -57,14 +46,14 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateUser(UserLoginModel data)
+        public int insertUpdateUser(User data)
         {
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                if (await db.InsertAsync(data) != 0)
+                var db = new SQLiteConnection(path);
+                if (db.Insert(data) != 0)
                 {
-                    await db.UpdateAsync(data);
+                    db.Update(data);
                     return 0;
                 }
                 return 1;
@@ -77,168 +66,47 @@ namespace fITNat
         }
 
         /// <summary>
-        /// Löscht einen User aus der lokalen DB
+        /// Sucht einen User anhand von Username und PW in der lokalen DB
         /// </summary>
-        /// <param name="data">User</param>
-        /// <param name="path">SQLite Connection String</param>
-        /// <returns>1 -> Delete</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteUser(UserLoginModel data)
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public Guid findUser(string username, string password)
         {
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                await db.DeleteAsync(data);
-                return 1;
+                var db = new SQLiteConnection(path);
+                List<User> result = db.Query<User>("Select * From User Where username=?", username);
+                User user = result.First<User>();
+                if (user.Password == password)
+                    return Guid.Parse(user.UserId);
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
-                return -1;
             }
+            return new Guid();
         }
 
+        /*
         /// <summary>
-        /// Sucht einen User in der lokalen DB
+        /// Gibt für die Methode OnOffService.checkSync() alle User zurück, die im Offline-Modus angelegt wurden
         /// </summary>
-        /// <param name="data">User</param>
-        /// <param name="path"></param>
-        /// <returns>1 -> Vorhanden</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findUser(UserLoginModel data)
+        /// <returns></returns>
+        public IEnumerable<User> getOfflineUser()
         {
+            List<User> result = null;
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<UserModel>(data);
-                return 1;
+                var db = new SQLiteConnection(path);
+                result = db.Query<User>("Select * From User Where wasOffline=?", true);
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
-                return -1;
             }
-        }
-
-        /// <summary>
-        /// Gibt die Anzahl der gespeicherten User der lokalen DB zurück
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns>Anzahl der User</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfUsers()
-        {
-            try
-            {
-                var db = new SQLiteAsyncConnection(path);
-                var count = await db.ExecuteScalarAsync<int>("SELECT Count(*) FROM User");
-
-                // for a non-parameterless query
-                // var count = db.ExecuteScalarAsync<int>("SELECT Count(*) FROM User WHERE Username="Amy");
-
-                return count;
-            }
-            catch (SQLiteException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return -1;
-            }
-        }
-        #endregion
-
-        #region Practice
-        /// <summary>
-        /// Speichert oder updatet ein Training in der lokalen DB
-        /// </summary>
-        /// <param name="data">Prcatice</param>
-        /// <param name="path">SQLite Connection String</param>
-        /// <returns>0 -> Update</returns>
-        /// <returns>1 -> Insert</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdatePractice(PracticeModel data)
-        {
-            try
-            {
-                var db = new SQLiteAsyncConnection(path);
-                if (await db.InsertAsync(data) != 0)
-                {
-                    await db.UpdateAsync(data);
-                    return 0;
-                }
-                return 1;
-            }
-            catch (SQLiteException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return -1;
-            }
-        }
-
-        /// <summary>
-        /// Löscht ein Training aus der lokalen DB
-        /// </summary>
-        /// <param name="data">Practice</param>
-        /// <param name="path">SQLite Connection String</param>
-        /// <returns>1 -> Delete</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> deletePractice(PracticeModel data)
-        {
-            try
-            {
-                var db = new SQLiteAsyncConnection(path);
-                await db.DeleteAsync(data);
-                return 1;
-            }
-            catch (SQLiteException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return -1;
-            }
-        }
-
-        /// <summary>
-        /// Sucht ein Training in der lokalen DB
-        /// </summary>
-        /// <param name="data">Practice</param>
-        /// <param name="path"></param>
-        /// <returns>1 -> Vorhanden</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findPractice(PracticeModel data)
-        {
-            try
-            {
-                var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<PracticeModel>(data);
-                return 1;
-            }
-            catch (SQLiteException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return -1;
-            }
-        }
-
-        /// <summary>
-        /// Gibt die Anzahl der gespeicherten Trainings der lokalen DB zurück
-        /// </summary>
-        /// <param name="path"></param>
-        /// <returns>Anzahl der Trainings</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfPractices()
-        {
-            try
-            {
-                var db = new SQLiteAsyncConnection(path);
-                var count = await db.ExecuteScalarAsync<int>("SELECT Count(*) FROM Practice");
-
-                return count;
-            }
-            catch (SQLiteException ex)
-            {
-                Console.WriteLine(ex.Message);
-                return -1;
-            }
-        }
+            return result;
+        }*/
         #endregion
 
         #region Schedule
@@ -250,16 +118,27 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateSchedule(ScheduleModel data)
+        public int insertUpdateSchedule(Schedule data)
         {
+            SQLiteConnection db;
+            List<Schedule> tempList;
+            Schedule temp;
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                if (await db.InsertAsync(data) != 0)
+                db = new SQLiteConnection(path);
+                tempList = db.Query<Schedule>("Select * From Schedule Where Id=?", data.Id);
+                if(tempList.Count != 0)
                 {
-                    await db.UpdateAsync(data);
+                    temp = tempList.First<Schedule>();
+                    //Bei temp alles updaten außer Id und LocalId und dann ein Update darauf fahren
+                    temp.Name = data.Name;
+                    temp.Url = data.Url;
+                    temp.UserId = data.UserId;
+                    temp.WasOffline = false;
+                    db.Update(temp);
                     return 0;
                 }
+                db.Insert(data);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -276,7 +155,7 @@ namespace fITNat
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteSchedule(ScheduleModel data)
+        public async Task<int> deleteSchedule(Schedule data)
         {
             try
             {
@@ -292,47 +171,76 @@ namespace fITNat
         }
 
         /// <summary>
-        /// Sucht einen Trainingsplan in der lokalen DB
+        /// Gibt einen Trainingsplan anhand der Id aus der lokalen DB zurück
         /// </summary>
-        /// <param name="data">Schedule</param>
-        /// <param name="path"></param>
-        /// <returns>1 -> Vorhanden</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findSchedule(ScheduleModel data)
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Schedule GetScheduleById(int id)
         {
+            Schedule result = null;
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<ScheduleModel>(data);
-                return 1;
+                var db = new SQLiteConnection(path);
+                List<Schedule> schedules = db.Query<Schedule>("Select * From Schedule Where id=?", id);
+                Schedule schedule = schedules.First<Schedule>();
+                if (schedule != null)
+                {
+                    result = schedule;
+                }
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
-                return -1;
             }
+            return result;
         }
 
         /// <summary>
-        /// Gibt die Anzahl der gespeicherten Trainingspläne der lokalen DB zurück
+        /// Gibt alle Trainingspläne eines Users aus der lokalen DB zurück
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>Anzahl der Trainingspläne</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfSchedules()
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public IEnumerable<Schedule> GetAllSchedules(Guid userId)
         {
+            IEnumerable<Schedule> result = null;
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                var count = await db.ExecuteScalarAsync<int>("SELECT Count(*) FROM Schedule");
-
-                return count;
+                var db = new SQLiteConnection(path);
+                List<Schedule> schedules = db.Query<Schedule>("Select * From Schedule Where UserId=?", userId.ToString());
+                if (schedules != null)
+                {
+                    result = schedules;
+                }
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
-                return -1;
             }
+            return result;
+        }
+
+        /// <summary>
+        /// Gibt alle zugehörigen Trainingspläne zu einer Übung zurück (wird zum Anlegen eines ExerciseModel benötigt)
+        /// </summary>
+        /// <param name="exerciseId"></param>
+        /// <returns></returns>
+        public IEnumerable<int> GetAllSchedulesByExercise(int exerciseId)
+        {
+            IEnumerable<int> result = null;
+            try
+            {
+                var db = new SQLiteConnection(path);
+                List<int> schedules = db.Query<int>("Select ScheduleId From ScheduleHasExercises Where ExerciseId = ?", exerciseId);
+                if (schedules != null)
+                {
+                    result = schedules;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
         }
         #endregion
 
@@ -345,16 +253,27 @@ namespace fITNat
         /// <returns>0 -> Update</returns>
         /// <returns>1 -> Insert</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> insertUpdateExercise(ExerciseModel data)
+        public int insertUpdateExercise(Exercise data)
         {
+            SQLiteConnection db;
+            List<Exercise> tempList;
+            Exercise temp;
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                if (await db.InsertAsync(data) != 0)
+                db = new SQLiteConnection(path);
+                tempList = db.Query<Exercise>("Select * From Exercise Where Id=?", data.Id);
+                if (tempList.Count != 0)
                 {
-                    await db.UpdateAsync(data);
+                    temp = tempList.First<Exercise>();
+                    //Bei temp alles updaten außer Id und LocalId und dann ein Update darauf fahren
+                    temp.Name = data.Name;
+                    temp.Url = data.Url;
+                    temp.Description = data.Description;
+                    temp.WasOffline = false;
+                    db.Update(temp);
                     return 0;
                 }
+                db.Insert(data);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -365,18 +284,191 @@ namespace fITNat
         }
 
         /// <summary>
-        /// Löscht eine Übung aus der lokalen DB
+        /// Gibt eine Exercise anhand der Id aus der lokalen DB zurück
         /// </summary>
-        /// <param name="data">Exercise</param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Exercise GetExerciseById(int id)
+        {
+            Exercise result = null;
+            SQLiteConnection db;
+            List<Exercise> exercises;
+            Exercise exercise;
+            try
+            {
+                db = new SQLiteConnection(path);
+                exercises = db.Query<Exercise>("Select * From Exercise Where Id=?", id);
+                exercise = exercises.First<Exercise>();
+                if (exercise != null)
+                {
+                    result = exercise;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Gibt alle Übungen zu einem Trainingsplan aus der lokalen DB zurück
+        /// </summary>
+        /// <param name="scheduleID"></param>
+        /// <returns></returns>
+        public List<Exercise> GetExercisesOfSchedule(int scheduleID)
+        {
+            List<ScheduleHasExercises> scheduleHasExercises = null;
+            SQLiteConnection db;
+            List<Exercise> result = new List<Exercise>();
+            try
+            {
+                db = new SQLiteConnection(path);
+                scheduleHasExercises = db.Query<ScheduleHasExercises>("Select * From ScheduleHasExercises Where ScheduleId = ?", scheduleID);
+                if (scheduleHasExercises.Count != 0)
+                {
+                    foreach (var sHE in scheduleHasExercises)
+                    {
+                        Exercise exercise = GetExerciseById(sHE.ExerciseId);
+                        result.Add(exercise);
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
+
+        /*
+        /// <summary>
+        /// Gibt alle Übungen zu einem Trainingsplan aus der lokalen DB zurück (benötigt für Anlegen eines ScheduleModel)
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <returns></returns>
+        public IEnumerable<int> GetAllExercisesBySchedule(int scheduleId)
+        {
+            IEnumerable<int> result = null;
+            try
+            {
+                var db = new SQLiteConnection(path);
+                List<int> exercises = db.Query<int>("Select ExerciseId From ScheduleHasExercises Where ScheduleId = ?", scheduleId);
+                if (exercises != null)
+                {
+                    result = exercises;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
+        */
+        #endregion
+
+        #region Practice
+        /// <summary>
+        /// Speichert oder updatet ein Training in der lokalen DB
+        /// </summary>
+        /// <param name="data">Prcatice</param>
+        /// <param name="path">SQLite Connection String</param>
+        /// <returns>0 -> Update</returns>
+        /// <returns>1 -> Insert</returns>
+        /// <returns>-1 -> Exception</returns>
+        public int insertUpdatePracticeOffline(Practice data)
+        {
+            SQLiteConnection db;
+            List<Practice> tempList;
+            Practice temp;
+            try
+            {
+                db = new SQLiteConnection(path);
+                tempList = db.Query<Practice>("Select * From Practice Where Id=?", data.Id);
+                if (tempList.Count != 0)
+                {
+                    temp = tempList.First<Practice>();
+                    //Bei temp alles updaten außer Id und LocalId und dann ein Update darauf fahren
+                    temp.ExerciseId = data.ExerciseId;
+                    temp.NumberOfRepetitions = data.NumberOfRepetitions;
+                    temp.Repetitions = data.Repetitions;
+                    temp.ScheduleId = data.ScheduleId;
+                    temp.Timestamp = data.Timestamp;
+                    temp.Url = data.Url;
+                    temp.UserId = data.UserId;
+                    temp.Weight = data.Weight;
+                    temp.WasOffline = data.WasOffline;
+                    db.Update(temp);
+                    return 0;
+                }
+                db.Insert(data);
+                return 1;
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Speichert oder updatet ein Training in der lokalen DB vom Online-Status
+        /// </summary>
+        /// <param name="data">Prcatice</param>
+        /// <param name="path">SQLite Connection String</param>
+        /// <returns>0 -> Update</returns>
+        /// <returns>1 -> Insert</returns>
+        /// <returns>-1 -> Exception</returns>
+        public int insertUpdatePracticeOnline(Practice data)
+        {
+            SQLiteConnection db;
+            List<Practice> tempList;
+            Practice temp;
+            try
+            {
+                db = new SQLiteConnection(path);
+                tempList = db.Query<Practice>("Select * From Practice Where Id=?", data.Id);
+                if (tempList.Count != 0)
+                {
+                    temp = tempList.First<Practice>();
+                    //Bei temp alles updaten außer LocalId und dann ein Update darauf fahren
+                    temp.ExerciseId = data.ExerciseId;
+                    temp.NumberOfRepetitions = data.NumberOfRepetitions;
+                    temp.Repetitions = data.Repetitions;
+                    temp.ScheduleId = data.ScheduleId;
+                    temp.Timestamp = data.Timestamp;
+                    temp.Url = data.Url;
+                    temp.UserId = data.UserId;
+                    temp.Weight = data.Weight;
+                    temp.Id = data.Id;
+                    temp.WasOffline = false;
+                    db.Update(temp);
+                    return 0;
+                }
+                db.Insert(data);
+                return 1;
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+        }
+
+        /// <summary>
+        /// Löscht ein Training aus der lokalen DB
+        /// </summary>
+        /// <param name="data">Practice</param>
         /// <param name="path">SQLite Connection String</param>
         /// <returns>1 -> Delete</returns>
         /// <returns>-1 -> Exception</returns>
-        public async Task<int> deleteExercise(ExerciseModel data)
+        public int deletePractice(Practice data)
         {
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                await db.DeleteAsync(data);
+                var db = new SQLiteConnection(path);
+                db.Delete(data);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -387,48 +479,103 @@ namespace fITNat
         }
 
         /// <summary>
-        /// Sucht eine Übung in der lokalen DB
+        /// Gibt ein Training anhand der Id zurück
         /// </summary>
-        /// <param name="data">Exercise</param>
-        /// <param name="path"></param>
-        /// <returns>1 -> Vorhanden</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findExercise(ExerciseModel data)
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Practice GetPracticeById(int id)
         {
+            Practice result = null;
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                await db.FindAsync<ExerciseModel>(data);
-                return 1;
+                var db = new SQLiteConnection(path);
+                List<Practice> practices = db.Query<Practice>("Select * From Practice Where Id=?", id);
+                Practice practice = practices.First<Practice>();
+                if (practice != null)
+                {
+                    result = practice;
+                }
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
-                return -1;
             }
+            return result;
         }
 
         /// <summary>
-        /// Gibt die Anzahl der gespeicherten Übungen der lokalen DB zurück
+        /// Gibt alle Trainings zurück, die Offline angelegt wurden
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns>Anzahl der Übungen</returns>
-        /// <returns>-1 -> Exception</returns>
-        public async Task<int> findNumberOfExercises()
+        /// <returns>Liste mit Offline-Trainings</returns>
+        public List<Practice> GetOfflinePractice()
         {
+            List<Practice> result = null;
+            SQLiteConnection db;
             try
             {
-                var db = new SQLiteAsyncConnection(path);
-                var count = await db.ExecuteScalarAsync<int>("SELECT Count(*) FROM Exercise");
-
-                return count;
+                db = new SQLiteConnection(path);
+                result = db.Query<Practice>("Select * From Practice Where wasOffline=?", true);
             }
             catch (SQLiteException ex)
             {
                 Console.WriteLine(ex.Message);
-                return -1;
             }
+            return result;
         }
+
+        /// <summary>
+        /// Setzt den Status des Trainings auf Online
+        /// </summary>
+        /// <param name="data"></param>
+        public bool setPracticeOnline(Practice data)
+        {
+            SQLiteConnection db;
+            List<Practice> practice;
+            Practice p;
+            try
+            {
+                db = new SQLiteConnection(path);
+                practice = db.Query<Practice>("Select * From Practice Where LocalId=?", data.LocalId);
+                p = practice.First<Practice>();
+                p.WasOffline = false;
+                if (db.Update(p, typeof(Practice)) != -1)
+                    return true;
+                else
+                    return false;
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
+
+        /*
+        /// <summary>
+        /// Gibt alle Trainings zu einem User mit dem Trainingsplan und der Übung zurück
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="scheduleId"></param>
+        /// <param name="exerciseId"></param>
+        /// <returns></returns>
+        public IEnumerable<Practice> GetAllPracticesByUserScheduleExercise(string userId, int scheduleId, int exerciseId)
+        {
+            IEnumerable<Practice> result = null;
+            try
+            {
+                var db = new SQLiteConnection(path);
+                List<Practice> practices = db.Query<Practice>("Select * From Practice Where UserId = ? and ScheduleId=? and ExerciseId=?", userId, scheduleId, exerciseId);
+                if (practices != null)
+                {
+                    result = practices;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }*/
         #endregion
     }
 }

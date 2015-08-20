@@ -53,7 +53,7 @@ namespace fIT.WebApi.Controller
                 return NotFound();
             }
 
-            return Ok(exercise);
+            return Ok(this.TheModelFactory.Create(exercise));
         }
 
         /// <summary>

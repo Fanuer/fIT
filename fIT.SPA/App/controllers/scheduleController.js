@@ -36,10 +36,12 @@ function scheduleController($scope, scheduleFactory, authFactory, $location, $ro
     }
 
     var _saveChanges = function () {
-        if (typeof $scope.vm.id === "undefined") {
+        $scope.vm.userId = authFactory.authentication.userId;
+
+        if (typeof $scope.vm.localId === "undefined") {
             scheduleFactory.createSchedule($scope.vm).then(_redirectToList);
         } else {
-            scheduleFactory.updateSchedule($scope.vm.id, $scope.vm).then(_redirectToList);
+          scheduleFactory.updateSchedule($scope.vm.localId, $scope.vm).then(_redirectToList);
         }
     }
 

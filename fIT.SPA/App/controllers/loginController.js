@@ -7,7 +7,7 @@ function loginController($scope, $location, authFactory) {
     authFactory.login($scope.loginData).then(function (response) {
       $location.path('/schedule');
     }).catch(function (err) {
-      $scope.message = err || "Error on logging in";
+      $scope.message = "Error on logging in";
       $scope.messageClass = "danger";
     });
 

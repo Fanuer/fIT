@@ -21,7 +21,7 @@
         </member>
         <member name="M:fIT.WebApi.Controller.EnumsController.GetFitnessValues">
             <summary>
-            Returns all Genders
+            Returns all Fitness Types
             </summary>
         </member>
         <member name="T:fIT.WebApi.Controller.PracticeController">

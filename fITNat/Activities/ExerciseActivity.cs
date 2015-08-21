@@ -50,12 +50,23 @@ namespace fITNat
                 userId = Intent.GetStringExtra("User");
                 ooService = new OnOffService();
                 exercises = await ooService.GetExercisesForSchedule(scheduleId);
-                SetExercises(exercises);
+                if(exercises != null)
+                {
+                    SetExercises(exercises);
 
-                ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises, scheduleId);
-                lv.Adapter = adapter;
-                
-                lv.ItemClick += lv_ItemClick;
+                    ExerciseListViewAdapter adapter = new ExerciseListViewAdapter(this, exercises, scheduleId);
+                    lv.Adapter = adapter;
+
+                    lv.ItemClick += lv_ItemClick;
+                }
+                else
+                {
+                    new AlertDialog.Builder(this)
+                            .SetMessage("Keine Übungen vorhanden")
+                            .SetTitle("Warning")
+                            .Show();
+                    OnBackPressed();
+                }
             }
             catch(ArgumentNullException ex)
             {

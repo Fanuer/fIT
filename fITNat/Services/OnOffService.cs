@@ -195,21 +195,26 @@ namespace fITNat
                                                 int repetitions = 0,
                                                 int numberOfRepetitions = 0)
         {
+            Practice pOff;
+            Practice pOn;
+            int id;
             if (Online)
             {
                 try
                 {
-                    if (await mgnService.recordPractice(scheduleId, exerciseId, userId, timestamp, weight, repetitions, numberOfRepetitions))
+                    id = await mgnService.recordPractice(scheduleId, exerciseId, userId, timestamp, weight, repetitions, numberOfRepetitions);
+                    if (id != 0)
                     {
-                        Practice p = new Practice();
-                        p.UserId = userId;
-                        p.ScheduleId = scheduleId;
-                        p.ExerciseId = exerciseId;
-                        p.Timestamp = timestamp;
-                        p.Weight = weight;
-                        p.Repetitions = repetitions;
-                        p.NumberOfRepetitions = numberOfRepetitions;
-                        int result = db.insertUpdatePracticeOnline(p);
+                        pOn = new Practice();
+                        pOn.UserId = userId;
+                        pOn.Id = id;
+                        pOn.ScheduleId = scheduleId;
+                        pOn.ExerciseId = exerciseId;
+                        pOn.Timestamp = timestamp;
+                        pOn.Weight = weight;
+                        pOn.Repetitions = repetitions;
+                        pOn.NumberOfRepetitions = numberOfRepetitions;
+                        int result = db.insertUpdatePracticeOnline(pOn);
                         if(result != -1)
                         {
                             Console.WriteLine("Training auch lokal angelegt");
@@ -228,16 +233,16 @@ namespace fITNat
             {
                 try
                 {
-                    Practice p = new Practice();
-                    p.UserId = userId;
-                    p.ScheduleId = scheduleId;
-                    p.ExerciseId = exerciseId;
-                    p.Timestamp = timestamp;
-                    p.Weight = weight;
-                    p.Repetitions = repetitions;
-                    p.NumberOfRepetitions = numberOfRepetitions;
-                    p.WasOffline = true;
-                    int result = db.insertUpdatePracticeOffline(p);
+                    pOff = new Practice();
+                    pOff.UserId = userId;
+                    pOff.ScheduleId = scheduleId;
+                    pOff.ExerciseId = exerciseId;
+                    pOff.Timestamp = timestamp;
+                    pOff.Weight = weight;
+                    pOff.Repetitions = repetitions;
+                    pOff.NumberOfRepetitions = numberOfRepetitions;
+                    pOff.WasOffline = true;
+                    int result = db.insertUpdatePracticeOffline(pOff);
                     if (result != -1)
                         return true;
                     else
@@ -275,6 +280,10 @@ namespace fITNat
                             s.Url = item.Url;
                             s.WasOffline = false;
                             db.insertUpdateSchedule(s);
+                            foreach (var data in item.Exercises)
+                            {
+                                bool a = db.InsertScheduleHasExercises(item.Id, data.Id, false);
+                            }
                         }
                         return schedules;
                     }
@@ -450,6 +459,7 @@ namespace fITNat
                         e.Url = item.Url;
                         e.WasOffline = false;
                         db.insertUpdateExercise(e);
+                        //db.InsertScheduleHasExercises(scheduleId, e.Id, false);
                     }
                     return result;
                 }
@@ -465,6 +475,7 @@ namespace fITNat
                 {
                     List<ExerciseModel> result = new List<ExerciseModel>();
                     //Anhand der scheduleId alle Exercises aus der ScheduleHasExercises-Tabelle holen
+                    Schedule test = db.GetScheduleById(scheduleId);
                     List<Exercise> exercises = db.GetExercisesOfSchedule(scheduleId);
                     foreach (var item in exercises)
                     {
@@ -507,27 +518,39 @@ namespace fITNat
             {
                 //Verbindungsüberprüfung
                 while (true)
-                { 
-                    if(await mgnServiceServer.PingAsync())
+                {
+                    bool status = false;
+                    try
                     {
-                        //Online = true;
-                        setzeStatus(true);
-                        //vorher Offline => jetzt die Aktionen ausführen, die nur lokal gemacht werden konnten
-                        if (WasOffline)
+                        status = await mgnServiceServer.PingAsync();
+                    }
+                    catch(Exception ex)
+                    {
+                        status = false;
+                    }
+                    finally
+                    {
+                        if (status)
                         {
-                            await checkSync();
-                            setzeWasOffline(false);
+                            //Online = true;
+                            setzeStatus(true);
+                            //vorher Offline => jetzt die Aktionen ausführen, die nur lokal gemacht werden konnten
+                            if (WasOffline)
+                            {
+                                await checkSync();
+                                setzeWasOffline(false);
+                            }
                         }
+                        else
+                        {
+                            //Online = false;
+                            setzeStatus(false);
+                            setzeWasOffline(true);
+                        }
+                        Console.WriteLine("Online: " + Online);
+                        //Timeout 10sek.
+                        System.Threading.Thread.Sleep(10000);
                     }
-                    else
-                    {
-                        //Online = false;
-                        setzeStatus(false);
-                        setzeWasOffline(true);
-                    }
-                    Console.WriteLine("Online: " + Online);
-                    //Timeout 10sek.
-                    System.Threading.Thread.Sleep(10000);
                 }
             });
             return StartCommandResult.Sticky;
@@ -540,14 +563,16 @@ namespace fITNat
         private async Task checkSync()
         {
             List<Practice> offPractices = db.GetOfflinePractice();
-            bool result;
+            int result;
             if(offPractices.Count != 0)
             {
                 foreach (var item in offPractices)
                 {
-                    result = await mgnService.recordPractice(item.ScheduleId, item.ExerciseId, item.UserId, item.Timestamp, item.Weight, item.Repetitions, item.NumberOfRepetitions);
-                    if(result)
+                    User u = db.findUser(item.UserId);
+                    result = await mgnService.recordPractice(item.ScheduleId, item.ExerciseId, item.UserId, item.Timestamp, item.Weight, item.Repetitions, item.NumberOfRepetitions, u.Username, u.Password);
+                    if(result != 0)
                     {
+                        item.Id = result;
                         if (db.setPracticeOnline(item))
                             Console.WriteLine("Offline angelegtes Training " + item.Id + " ist hochgeladen");
                     }

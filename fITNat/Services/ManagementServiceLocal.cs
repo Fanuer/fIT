@@ -151,9 +151,7 @@ namespace fITNat.Services
             this.password = password;
             try
             {
-                //Muss auf irgendwas warten => im Debug geht es dann!
-                var v = await Task.WhenAny(service.LoginAsync(username, password));
-                session = v.Result; //Exception bei falschem Login
+                session = await getSession(username, password);//Exception bei falschem Login
                 //await createTestdata(session);
                 result = true;
             }
@@ -318,13 +316,15 @@ namespace fITNat.Services
         /// <param name="repetitions"></param>
         /// <param name="numberOfRepetitions"></param>
         /// <returns></returns>
-        public async Task<bool> recordPractice(int scheduleId,
+        public async Task<int> recordPractice(int scheduleId,
                                         int exerciseId,
                                         string userId,
                                         DateTime timestamp = default(DateTime),
                                         double weight = 0,
                                         int repetitions = 0,
-                                        int numberOfRepetitions = 0)
+                                        int numberOfRepetitions = 0,
+                                        string username = "",
+                                        string password = "")
         {
             try
             {
@@ -336,11 +336,15 @@ namespace fITNat.Services
                 practice.Weight = weight;
                 practice.Repetitions = repetitions;
                 practice.NumberOfRepetitions = numberOfRepetitions;
+                if(session == null)
+                {
+                    session = await getSession(username, password);
+                }
                 PracticeModel result = await session.Users.CreatePracticeAsync(practice);
-                if (result != null)
-                    return true;
+                if (result.Id != 0)
+                    return result.Id;
                 else
-                    return false;
+                    return 0;
             }
             catch (ServerException ex)
             {
@@ -350,7 +354,12 @@ namespace fITNat.Services
             {
                 Console.WriteLine("Fehler beim Eintragen eines Trainings: " + exc.StackTrace);
             }
-            return false;
+            return 0;
+        }
+
+        private async Task<IManagementSession> getSession(string username, string password)
+        {
+            return await(service.LoginAsync(username, password));
         }
         #endregion
 

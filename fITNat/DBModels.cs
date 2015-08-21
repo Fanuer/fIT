@@ -6,7 +6,7 @@ namespace fITNat.DBModels
     [Table("User")]
     public class User
     {
-        [PrimaryKey, AutoIncrement, Column("_id")]
+        [PrimaryKey, AutoIncrement]
         public int LocalId { get; set; }
         public bool wasOffline { get; set; }
         public string UserId { get; set; }
@@ -21,7 +21,7 @@ namespace fITNat.DBModels
     [Table("Schedule")]
     public class Schedule
     {
-        [PrimaryKey, AutoIncrement, Column("_id")]
+        [PrimaryKey, AutoIncrement]
         public int LocalId { get; set; }
         public bool WasOffline { get; set; }
         public int Id { get; set; }
@@ -37,7 +37,7 @@ namespace fITNat.DBModels
     [Table("ScheduleHasExercises")]
     public class ScheduleHasExercises
     {
-        [PrimaryKey, AutoIncrement, Column("_id")]
+        [PrimaryKey, AutoIncrement]
         public int LocalId { get; set; }
         public bool WasOffline { get; set; }
         public int ScheduleId { get; set; }
@@ -51,7 +51,7 @@ namespace fITNat.DBModels
     [Table("Exercise")]
     public class Exercise
     {
-        [PrimaryKey, AutoIncrement, Column("_id")]
+        [PrimaryKey, AutoIncrement]
         public int LocalId { get; set; }
         public bool WasOffline { get; set; }
         public int Id { get; set; }
@@ -67,7 +67,7 @@ namespace fITNat.DBModels
     [Table("Practice")]
     public class Practice
     {
-        [PrimaryKey, AutoIncrement, Column("_id")]
+        [PrimaryKey, AutoIncrement]
         public int LocalId { get; set; }
         public bool WasOffline { get; set; }
         public int Id { get; set; }

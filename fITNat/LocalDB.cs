@@ -66,6 +66,29 @@ namespace fITNat
         }
 
         /// <summary>
+        /// Gibt einen User anhand seiner userId zurück
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public User findUser(string userId)
+        {
+            User result = null;
+            try
+            {
+                var db = new SQLiteConnection(path);
+                List<User> t = db.Query<User>("Select * From User Where UserId=?", userId);
+                User user = t.First<User>();
+                if (user != null)
+                    result = user;
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return result;
+        }
+
+        /// <summary>
         /// Sucht einen User anhand von Username und PW in der lokalen DB
         /// </summary>
         /// <param name="username"></param>
@@ -242,6 +265,48 @@ namespace fITNat
             }
             return result;
         }
+
+        public bool InsertScheduleHasExercises(int scheduleId, int exerciseId, bool wasOffline)
+        {
+            SQLiteConnection db;
+            int result;
+            try
+            {
+                db = new SQLiteConnection(path);
+                ScheduleHasExercises sHe = new ScheduleHasExercises();
+                sHe.ExerciseId = exerciseId;
+                sHe.ScheduleId = scheduleId;
+                sHe.WasOffline = wasOffline;
+                List<ScheduleHasExercises> bestand = db.Query<ScheduleHasExercises>("Select * From ScheduleHasExercises Where ScheduleId=?", scheduleId);
+                if(bestand.Count != 0)
+                {
+                    foreach (var data in bestand)
+                    {
+                        if (data.ExerciseId == sHe.ExerciseId && data.ScheduleId == sHe.ScheduleId)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            result = db.Insert(sHe, typeof(ScheduleHasExercises));
+                            if (result != -1)
+                                return true;
+                        }
+                    }
+                }
+                else
+                {
+                    result = db.Insert(sHe, typeof(ScheduleHasExercises));
+                    if (result != -1)
+                        return true;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return false;
+        }
         #endregion
 
         #region Exercise
@@ -385,7 +450,7 @@ namespace fITNat
             try
             {
                 db = new SQLiteConnection(path);
-                tempList = db.Query<Practice>("Select * From Practice Where Id=?", data.Id);
+                tempList = db.Query<Practice>("Select * From Practice Where LocalId=?", data.LocalId);
                 if (tempList.Count != 0)
                 {
                     temp = tempList.First<Practice>();
@@ -428,7 +493,7 @@ namespace fITNat
             try
             {
                 db = new SQLiteConnection(path);
-                tempList = db.Query<Practice>("Select * From Practice Where Id=?", data.Id);
+                tempList = db.Query<Practice>("Select * From Practice Where LocalId=?", data.LocalId);
                 if (tempList.Count != 0)
                 {
                     temp = tempList.First<Practice>();
@@ -536,6 +601,7 @@ namespace fITNat
             {
                 db = new SQLiteConnection(path);
                 practice = db.Query<Practice>("Select * From Practice Where LocalId=?", data.LocalId);
+                List<Practice> res = db.Query<Practice>("Update Practice Set WasOffline='false' Where LocalId=?", data.LocalId);
                 p = practice.First<Practice>();
                 p.WasOffline = false;
                 if (db.Update(p, typeof(Practice)) != -1)

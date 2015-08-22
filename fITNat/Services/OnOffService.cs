@@ -568,13 +568,21 @@ namespace fITNat
             {
                 foreach (var item in offPractices)
                 {
-                    User u = db.findUser(item.UserId);
-                    result = await mgnService.recordPractice(item.ScheduleId, item.ExerciseId, item.UserId, item.Timestamp, item.Weight, item.Repetitions, item.NumberOfRepetitions, u.Username, u.Password);
-                    if(result != 0)
+                    try
                     {
-                        item.Id = result;
-                        if (db.setPracticeOnline(item))
-                            Console.WriteLine("Offline angelegtes Training " + item.Id + " ist hochgeladen");
+                        User u = db.findUser(item.UserId);
+                        result = await mgnService.recordPractice(item.ScheduleId, item.ExerciseId, item.UserId, item.Timestamp, item.Weight, item.Repetitions, item.NumberOfRepetitions, u.Username, u.Password);
+                        if (result != 0)
+                        {
+                            item.Id = result;
+                            if (db.setPracticeOnline(item))
+                                Console.WriteLine("Offline angelegtes Training " + item.Id + " ist hochgeladen");
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine("Fehler im Sync: " + ex.StackTrace);
+                        break;
                     }
                 }
             }

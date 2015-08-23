@@ -13,6 +13,7 @@ using fITNat.Services;
 using Java.Lang;
 using fIT.WebApi.Client.Data.Models.Exercise;
 using System.Threading.Tasks;
+using fITNat.Activities;
 
 namespace fITNat
 {
@@ -58,6 +59,7 @@ namespace fITNat
                     lv.Adapter = adapter;
 
                     lv.ItemClick += lv_ItemClick;
+                    lv.ItemLongClick += lv_ItemLongClick;
                 }
                 else
                 {
@@ -79,6 +81,22 @@ namespace fITNat
         }
 
         /// <summary>
+        /// Clickevent bei langem Drücken auf ein Element des ListViews, um die Statistik anzuzeigen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void lv_ItemLongClick(object sender, AdapterView.ItemLongClickEventArgs e)
+        {
+            int exerciseId = Integer.ParseInt(exercises[e.Position].Id.ToString());
+            var statisticActivity = new Intent(this, typeof(StatisticActivity));
+            statisticActivity.PutExtra("Exercise", exerciseId);
+            statisticActivity.PutExtra("Schedule", scheduleId);
+            statisticActivity.PutExtra("User", userId);
+            StartActivity(statisticActivity);
+        }
+
+
+        /// <summary>
         /// Clickevent auf ein Element des ListViews
         /// Geht zu dem ausgewählten Training
         /// </summary>
@@ -86,12 +104,9 @@ namespace fITNat
         /// <param name="e"></param>
         private void lv_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            //Daraus die ID der Übung holen und diesen dann abfragen + redirect auf die passende Seite!
             string selectedExerciseName = exercises[e.Position].Name.ToString();
             int exerciseId = Integer.ParseInt(exercises[e.Position].Id.ToString());
-            //ScheduleId aus dem versteckten Feld auslesen
             string selectedExerciseDescription = exercises[e.Position].Description.ToString();
-            Console.WriteLine(scheduleId);
 
             var practiceActivity = new Intent(this, typeof(PracticeActivity));
             practiceActivity.PutExtra("Exercise", exerciseId);

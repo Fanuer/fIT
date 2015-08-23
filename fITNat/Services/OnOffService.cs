@@ -14,6 +14,7 @@ using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Portable.Implementation;
 using fIT.WebApi.Client.Data.Models.Shared;
 using System.Threading;
+using fIT.WebApi.Client.Data.Models.Practice;
 
 namespace fITNat
 {
@@ -254,6 +255,68 @@ namespace fITNat
                 }
             }
             return true;
+        }
+
+        public async Task<List<Practice>> getAllPracticesAsync(string userId, int scheduleId, int exerciseId)
+        {
+            List<Practice> resultListe = new List<Practice>();
+            Practice pOn;
+            if (Online)
+            {
+                try
+                {
+                    List<PracticeModel> practices;
+                    practices = await mgnService.getAllPracticesAsync(scheduleId, exerciseId);
+                    foreach (var item in practices)
+                    {
+                        if (item.Id != 0)
+                        {
+                            pOn = new Practice();
+                            pOn.UserId = item.UserId;
+                            pOn.Id = item.Id;
+                            pOn.ScheduleId = item.ScheduleId;
+                            pOn.ExerciseId = item.ExerciseId;
+                            pOn.Timestamp = item.Timestamp;
+                            pOn.Weight = item.Weight;
+                            pOn.Repetitions = item.Repetitions;
+                            pOn.NumberOfRepetitions = item.NumberOfRepetitions;
+                            resultListe.Add(pOn);
+                            int result = db.insertUpdatePracticeOnline(pOn);
+                            if (result != -1)
+                            {
+                                Console.WriteLine("Training auch lokal angelegt");
+                            }
+                        }
+                    }
+                    return resultListe;
+                }
+                catch (ServerException ex)
+                {
+                    System.Console.WriteLine("Fehler beim Holen aller Trainings: " + ex.StackTrace);
+                    throw;
+                }
+            }
+            else
+            {
+                try
+                {
+                    List<Practice> practices;
+                    practices = db.GetAllPracticesByUserScheduleExercise(userId, scheduleId, exerciseId);
+                    foreach (var item in practices)
+                    {
+                        if (item.Id != 0)
+                        {
+                            resultListe.Add(item);
+                        }
+                    }
+                    return resultListe;
+                }
+                catch (Exception exc)
+                {
+                    System.Console.WriteLine("Fehler beim offline Abrufen der Trainings: " + exc.StackTrace);
+                }
+            }
+            return resultListe;
         }
         #endregion
 

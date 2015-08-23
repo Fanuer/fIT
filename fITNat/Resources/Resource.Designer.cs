@@ -102,6 +102,9 @@ namespace fITNat
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f07002c
+			public const int barChart = 2131165228;
+			
 			// aapt resource value: 0x7f07000c
 			public const int btnDialogEmail = 2131165196;
 			
@@ -270,6 +273,9 @@ namespace fITNat
 			
 			// aapt resource value: 0x7f030007
 			public const int ScheduleView = 2130903047;
+			
+			// aapt resource value: 0x7f030008
+			public const int StatisticLayout = 2130903048;
 			
 			static Layout()
 			{

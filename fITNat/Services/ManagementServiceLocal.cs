@@ -357,11 +357,40 @@ namespace fITNat.Services
             return 0;
         }
 
+        /// <summary>
+        /// Gibt alle Trainings eines Nutzers zu einer Übung in einem Trainingsplan (für die Statistik)
+        /// </summary>
+        /// <param name="scheduleId"></param>
+        /// <param name="exerciseId"></param>
+        /// <returns></returns>
+        public async Task<List<PracticeModel>> getAllPracticesAsync(int scheduleId, int exerciseId)
+        {
+            List<PracticeModel> result = new List<PracticeModel>();
+            try
+            {
+                IEnumerable<PracticeModel> practicesServer = await session.Users.GetAllPracticesAsync();
+                foreach (var item in practicesServer)
+                {
+                    if (item.ExerciseId == exerciseId && item.ScheduleId == scheduleId)
+                        result.Add(item);
+                }
+            }
+            catch(ServerException ex)
+            {
+                throw;
+            }
+            catch(Exception exc)
+            {
+                Console.WriteLine("Fehler beim Abrufen der Trainings für eine Übung: " + exc.StackTrace);
+            }
+            return result;
+        }
+        #endregion
+
         private async Task<IManagementSession> getSession(string username, string password)
         {
             return await(service.LoginAsync(username, password));
         }
-        #endregion
 
 
         public override StartCommandResult OnStartCommand(Android.Content.Intent intent, StartCommandFlags flags, int startId)

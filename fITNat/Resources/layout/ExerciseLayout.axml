@@ -35,7 +35,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:longClickable="true" />
     <ListView
         android:id="@+id/lvSchedule"
         android:minWidth="25px"
@@ -43,5 +44,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:longClickable="true" />
 </RelativeLayout>

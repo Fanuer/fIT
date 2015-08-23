@@ -53,11 +53,15 @@
     <Reference Include="System.Threading.Tasks" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="Xamarin.Controls.BarChart.Android">
+      <HintPath>..\..\..\..\Desktop\Xamarin.Controls.BarChart.Android.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\ExerciseActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\PracticeActivity.cs" />
+    <Compile Include="Activities\StatisticActivity.cs" />
     <Compile Include="Adapters\ExerciseListViewAdapter.cs" />
     <Compile Include="Activities\ScheduleActivity.cs" />
     <Compile Include="DBModels.cs" />
@@ -86,6 +90,9 @@
     <AndroidResource Include="Resources\layout\PracticeLayout.axml" />
     <AndroidResource Include="Resources\layout\ScheduleLayout.axml" />
     <AndroidResource Include="Resources\layout\ScheduleView.axml" />
+    <AndroidResource Include="Resources\layout\StatisticLayout.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml" />

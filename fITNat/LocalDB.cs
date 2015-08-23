@@ -616,7 +616,7 @@ namespace fITNat
             return false;
         }
 
-        /*
+        
         /// <summary>
         /// Gibt alle Trainings zu einem User mit dem Trainingsplan und der Übung zurück
         /// </summary>
@@ -624,9 +624,9 @@ namespace fITNat
         /// <param name="scheduleId"></param>
         /// <param name="exerciseId"></param>
         /// <returns></returns>
-        public IEnumerable<Practice> GetAllPracticesByUserScheduleExercise(string userId, int scheduleId, int exerciseId)
+        public List<Practice> GetAllPracticesByUserScheduleExercise(string userId, int scheduleId, int exerciseId)
         {
-            IEnumerable<Practice> result = null;
+            List<Practice> result = null;
             try
             {
                 var db = new SQLiteConnection(path);
@@ -641,7 +641,7 @@ namespace fITNat
                 Console.WriteLine(ex.Message);
             }
             return result;
-        }*/
+        }
         #endregion
     }
 }

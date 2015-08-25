@@ -1,8 +1,21 @@
 \chapter{Realisierung der serverseitigen Implementierung}
 \label{cha:server-impl}
+In diesem Kapitel wird näher auf die Implementierung des in Kapitel \ref{cha:architektur} besprochenen Webservices eingegangen. Es enthält eine Übersicht über die genutzten Komponenten und die konkreten Techniken, welche für die Implementierung genutzt wurden. Anschließend werden nochmal besonders auf Sicherheitsaspekte in Verbindung mit RESTful-Architekturen eingegangen. 
 
 \section{Was ist ein Webservice?}
 \label{sec:definition-webservice}
+Um verteilte Systeme aufzubauen ist es nötig, eine Struktur zu implementieren, mit der Maschinen untereinander kommunizieren können. Diese Aufgabe übernehmen Webservices. Sie stellen innerhalb eines Netzwerkes Schnittstellen bereit, damit Maschinen plattformübergreifend Daten austauschen können. Hierbei wird meistens HTTP als Träger-Protokoll genutzt um eine einfache Interoperabilität zu gewährleisten.\footcite{Definition-Webservice}Die angeforderten Daten werden in der Regel im XML- oder JSON-Format übermittelt. 
+
+\subsection{RESTful Webservices}
+\label{sec:definition-rest}
+Da Webservices in der Regel \ac{HTTP} als Protokol verwenden, wurde die Idee zur Implementierung eines Webservices erweitert, um die Möglichkeiten des Protokolls vollständig zu benutzen. Mit einem Rest-Server bzw. einem RESTful Webservice bezeichnet man einen Webservices, welcher dies als Programmierparadigma umsetzt. REST bedeutet \textit{Representational State Transfer}. Dies meint, dass sich, wie im Internet üblich, hinter einer \ac{URI}, genau eine einzige Resource verbirgt. Bei einer Resource geht man von Daten aus. Im Gegensatz zu anderen Webservice-Implementierungen stellen Restful Webserver keine Methoden zu Verfügung. Diese Daten werden vom Rest-Server über eine eindeutige URL bereitgestellt. Dies hat den Vorteil, dass die Schnittstele leicht und eindeutig beschrieben werden kann, da ein Aufruf einer URL an den Rest-Server immer die gleichen Daten liefert. 
+
+% Abschnitt über HTTP Verbs
+
+Da das statuslose Protokoll HTTP zum Datenaustausch genutzt wird, muss ein Restful Webservice so implementiert werden, dass alle Informationen, welche für die Kommunikation benötigt werden, bei jeder Kommunikation mitgesendet werden. Was vordergründig als Nachteil erscheint ist ein wesentlicher Vorteil. Dadurch, dass jeder Request alle nötigen Informationen mitliefert, ist es nicht nötig, Sitzungen auf dem Server zu verwalten. Dadurch kann ein Restful Webservice sehr leicht skaliert werden. 
+
+% Abschnitt über unterschiedliche Repräsentationen
+
 
 \section{Aufbau der Komponenten}
 \label{sec:aufbau-Komponenten}

@@ -92,7 +92,7 @@
 
 \input{preamble/packages}
 \input{preamble/commands}
-
+\input{preamble/glossary}
 
 % Umbenennung von "Listings"
 \addto\captionsngerman{%
@@ -107,7 +107,6 @@
 \renewcommand{\familydefault}{\sfdefault}	%sorgt für einheitliche Schriftart im gesamten Dokument
 \setcounter{secnumdepth}{5} %legt die Ebene fest, bis zu der nummeriert wird
 \setcounter{tocdepth}{5} %legt fest wieviele Ebenen im Inhaltsverzeichnis vorkommen
-
 
 \begin{document}
 
@@ -146,18 +145,22 @@
 	
 
 	%Verzeichnisse erstellen
-  \input{preamble/acronyms}
+	\chapter*{Glossar}
+	\printglossaries	
+  	\input{preamble/acronyms}
 	\listoffigures
 	\listoftables
 	\lstlistoflistings
 	
 	\appendix
 	\nocite{*} 
-	
+
+
 	%Literaturverzeichnis erstellen
 	\bibliography{bib/bib}
 	\bibliographystyle{jurabib}
 
+	
 	%\input{content/anhang}
 	\input{content/eidesstattliche_erklaerung}
 \end{document}

@@ -25,10 +25,23 @@ Da das statuslose Protokoll HTTP zum Datenaustausch genutzt wird, muss ein RESTf
 Das RESTful-Paradigma besagt, dass Daten losgelöst von einer Repräsentation bereit gestellt werden. Darum ist ein RESTful Webservice so zu implementieren, dass der Client das gewünschte Datenformat anfragen kann. Bei Nutzung des Protokolls HTTP wird dies in der Regel über die Header-Eigenschaft \textit{accept} realisiert, welche gewünschten Datenformate angibt. Wird dieses nicht vom Server unterstützt, werden die angeforderten Daten in einem Standard-Format zurückgegeben. 
 \section{Aufbau der Komponenten}
 \label{sec:aufbau-Komponenten}
-In diesem Kapitel wird beschrieben, wie der zuvor theoretisch beschriebene REST-Ansatz für das Projekt umgesetzt wurde. Der Server besteht aus zwei Teilen: Der Datenbank und der WebApi, welche jeweils gesondert vorgestellt werden.
+In diesem Kapitel wird beschrieben, wie der zuvor theoretisch beschriebene REST-Ansatz für das Projekt umgesetzt wurde. Der Server besteht aus zwei Teilen: Der Datenbank und der WebApi, welche jeweils gesondert vorgestellt werden.\\
+Die WebApi wurde nach dem Design-Pattern \ac{MVVM} aufgebaut. Hierbei dienen die Objekte, welche aus Tupeln der Datenbank erstellt werden als Model-Klassen. Bevor diese Daten dann über WebApi ausgespielt werden, werden sie vom Model in ein ViewModel übertragen. Durch diese Kapselung kann, im Sinne des Design-Pattern Hierbei wird nach dem Grundgedanken des \ac{Seperation of Concerns}, klar zwischen den Models für die Datendank und denen für die WebApi unterschieden werden. 
 \subsection{Aufbau der Datenbank}
 \label{ssec:aufbau-server-db}
-
+Da bei der Umsetzung des Projekts konsequent auf Produkte von Microsoft gesetzt wurde, wurde als Datenbanksystem MS SQL gewählt. Dies hat den den Vorteil, dass das \ac{Microsoft Entity Framework} als \ac{OR-Mapper} genutzt werden kann. Dieser Bietet das Design-Pattern \textit{Code First}. Das bedeutet, dass anhand präparierter Model-Klassen die benötigten Relationen ((Richtiges Wort?!))in der Datenbank automatisch erzeugt wird. \\
+Grundlage für Datenbankklassen ist das Interface IEntity(Quellcode \ref{lst:IEntity}):
+\lstinputlisting[caption=Basisinterface für DB-Repräsentationen, label=lst:Entity, style=sharpc]{content/listings/IEntity.cs}
+Das Interface gewährleistet, dass jede Datenbank-Entität einen eindeutigen Schlüssel besitzt.
+Eine konkrete Implementierung für die Trainingspläne sieht man im Quellcode-Beispiel \ref{lst:Schedule}:
+\lstinputlisting[caption=Modelklasse für Trainingspläne, label=lst:Schedule, style=sharpc]{content/listings/Schedule.cs}
+Hierbei zeigt sich gut, was mit einer präparierten Klasse gemeint ist. Über die Annotation \emph{Required} wird definiert, dass die Eigenschaft \emph{Name} zwingend bei Insert- und Update-Operationen gesetzt werden muss. \\
+Gleichzeitig sieht man an diesem Beispiel gut, wie das Entity Framework über Namenskonventionen Verbindungen zwischen Entitäten auflöst. Auf Grund des Aufbaus der Klasse \emph{Schedule} wird eine Fremdschüssel-Beziehung zu der Model-Klasse \emph{User} erzeugt, da folgende Bedingungen erfüllt sind:
+\begin{itemize}
+\item Die Klasse \emph{User} besitzt eine Eigenschaft ID vom Datentyp string
+\item Die Klasse \emph{Schedule} besitzt eine Eigenschaft UserID vom Datentyp string
+\end{itemize}
+Die andere Seite dieser 
 \subsection{Aufbau der WebApi}
 \label{ssec:aufbau-webapi}
 

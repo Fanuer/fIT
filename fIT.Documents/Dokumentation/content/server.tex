@@ -1,30 +1,42 @@
 \chapter{Realisierung der serverseitigen Implementierung}
 \label{cha:server-impl}
 In diesem Kapitel wird näher auf die Implementierung des in Kapitel \ref{cha:architektur} besprochenen Webservices eingegangen. Es enthält eine Übersicht über die genutzten Komponenten und die konkreten Techniken, welche für die Implementierung genutzt wurden. Anschließend werden nochmal besonders auf Sicherheitsaspekte in Verbindung mit RESTful-Architekturen eingegangen. 
-
 \section{Was ist ein Webservice?}
 \label{sec:definition-webservice}
-Um verteilte Systeme aufzubauen ist es nötig, eine Struktur zu implementieren, mit der Maschinen untereinander kommunizieren können. Diese Aufgabe übernehmen Webservices. Sie stellen innerhalb eines Netzwerkes Schnittstellen bereit, damit Maschinen plattformübergreifend Daten austauschen können. Hierbei wird meistens HTTP als Träger-Protokoll genutzt um eine einfache Interoperabilität zu gewährleisten.\footcite{Definition-Webservice}Die angeforderten Daten werden in der Regel im XML- oder JSON-Format übermittelt. 
-
+Um verteilte Systeme aufzubauen ist es nötig, eine Struktur zu implementieren, mit der Maschinen untereinander kommunizieren können. Diese Aufgabe übernehmen Webservices. Sie stellen innerhalb eines Netzwerkes Schnittstellen bereit, damit Maschinen plattformübergreifend Daten austauschen können. Hierbei wird meistens HTTP als Träger-Protokoll genutzt um eine einfache Interoperabilität zu gewährleisten.\footcite{Definition-Webservice} Die dabei angeforderten Daten werden in der Regel im XML- oder JSON-Format übermittelt. 
 \subsection{RESTful Webservices}
 \label{sec:definition-rest}
-Da Webservices in der Regel \ac{HTTP} als Protokol verwenden, wurde die Idee zur Implementierung eines Webservices erweitert, um die Möglichkeiten des Protokolls vollständig zu benutzen. Mit einem Rest-Server bzw. einem RESTful Webservice bezeichnet man einen Webservices, welcher die strikte Nutzung von HTTP als Programmierparadigma umsetzt. REST bedeutet \textit{Representational State Transfer}. Dies meint, dass sich, wie im Internet üblich, hinter einer \ac{URI}, genau eine einzige Resource verbirgt. Bei einer Resource geht man von Daten aus. Im Gegensatz zu anderen Webservice-Implementierungen stellen Restful Webserver keine Methoden oder aufrufbare Funktionalitäten zu Verfügung. Diese Daten werden vom Rest-Server über eine eindeutige URL bereitgestellt. Dies hat den Vorteil, dass die Schnittstele leicht und eindeutig beschrieben werden kann, da ein Aufruf einer URL an den Rest-Server immer die gleichen Daten liefert. 
+Da Webservices in der Regel \ac{HTTP} als Protokoll verwenden, wurde die Idee zur Implementierung eines Webservices erweitert, um die Möglichkeiten des Protokolls vollständig zu benutzen. Heraus kam das Programmierparadigma REST (\textit{Representational State Transfer}). Mit einem REST-Server bzw. einem RESTful Webservice bezeichnet man einen Webservices, welcher die strikte Nutzung von HTTP als Programmierparadigma umsetzt.  Dies meint, dass sich, wie im Internet üblich, hinter einer \ac{URI}, genau eine einzige Ressource verbirgt. Bei einer Ressource geht man von Daten aus. Im Gegensatz zu anderen Webservice-Implementierungen stellen RESTful Webserver keine Methoden oder aufrufbare Funktionalitäten zu Verfügung. Diese Daten werden vom REST-Service über eine eindeutige URL bereitgestellt. Dies hat den Vorteil, dass die Schnittstele leicht und eindeutig beschrieben werden kann, da ein Aufruf einer URL an den REST-Service immer die gleichen Daten liefert. \\
+In den meisten Fällen, wie auch in den Anwendungsfällen dieser Arbeit, soll der Webservice \ac{CRUD}-Funktionalitäten bereitstellen. Damit die Schnittstelle nicht durch unnötig viele unterschiedliche URLs aufgebläht wird, sieht der RESTful-Ansatz die Verwendung der verschiedenen HTTP-Verben vor. Hierbei werden zwei Arten von URLs unterschieden, um in Kombination mit HTTP-Verben verschiedene Aufgaben zu erfüllen. Zur Veranschaulichung sollen uns folgende zwei URLs dienen:
+\begin{itemize}
+\item http://myRestService.de/Schedule
+\item http://myRestService.de/Schedule/123
+\end{itemize}
+Es fällt auf, dass die beiden URLs sich bis auf das letzte Segment unterscheiden. Im ersten Fall wird die URI als Collection URI bezeichnet, da hiermit die Gesamtheit aller Trainingspläne angesprochen wird. Im zweiten Fall wird die ID einer Trainingsplans benutzt und mit einen konkreten Trainingsplan zu interagieren. Man spricht hier von einer Element URI.\cite[S. 12ff.]{Building-a-REST-Service}
 
-In den meisten Fällen, wie auch in den Anwendungsfällen dieser Arbeit, soll der Webservice \ac{CRUD}-Funtionalitäten
+Um den Rahmen der Arbeit nicht zu sprengen, wird sich hier nur auf die Vorstellung der vier meistverwendeten HTTP-Verben beschränkt:\\
+Das Verb GET ruft eine Ressource vom Server ab, wobei diese nicht verändert wird. Bei Nutzung einer Collection URI, werden alle Einträge dieser Entität als Verbundstruktur abgerufen. Jedes Element der Struktur beinhaltet die Element URI auf das konkrete Element. Wird GET auf eine Element URI aufgerufen, wird das konkrete Element aufgerufen. Hierbei antwortet der Server dem HTTP-Standard folgend mit dem Status-Code 200 bei erfolgreicher Suche oder 404, wenn keine Ressource gefunden wurde.\\
+Das POST wird zur Erstellung neuer Inhalte verwendet. Bei Nutzung von Element URIs wird versucht die ID für das neue Element zu benutzten. In der Regel wird das ID Mamagement aber auf dem Server implementiert, so dass in der Regel eine Collection URI zur Erstellung von Elementen zum Einsatz kommt.\\
+Mit dem HTTP-Verb PUT wird eine vorhandene Ressource geändert oder hinzugefügt. Obwohl es REST-conform wäre, eine Collection URI per PUT aufzurufen, wird dies selten Implementiert, da der normale Anwendungsfall ist, dass ein einzelnes Objekt geändert werden soll. Stattdessen wird sich auf Element URIs beschränkt. Ist eine Ressource mit der übergebenen ID nicht vorhanden, wird je nach Implementierung entweder ein neues Objekt mit der ID erstellt (Statuscode 201 (Created)) oder die Verarbeitung verweigert. Der Server gibt dann den Statuscode 400 (Bad Request) oder 404 (Not found)  zurück. \\
+Das letzte HTTP-Verb, welches hier vorgestellt werden soll, ist DELETE. Wie der Name vermuten lässt, wird damit eine Ressource vom Server entfernt. Wie auch bei PUT wird in der Regel auf eine Implementierung von DELETE als Collection URI verzichtet, da sonst alle Einträge einer Entität gelöscht werden können. Im Erfolgsfall wird mit dem Statuscode 200 (OK) geantwortet und bei Fehlern mit 400 (Bad Request) oder 404 (Not found).
 
-Da das statuslose Protokoll HTTP zum Datenaustausch genutzt wird, muss ein Restful Webservice so implementiert werden, dass alle Informationen, welche für die Kommunikation benötigt werden, bei jeder Kommunikation mitgesendet werden. Was vordergründig als Nachteil erscheint ist ein wesentlicher Vorteil. Dadurch, dass jeder Request alle nötigen Informationen mitliefert, ist es nicht nötig, Sitzungen auf dem Server zu verwalten. Dadurch kann ein Restful Webservice sehr leicht skaliert werden. 
+Da das statuslose Protokoll HTTP zum Datenaustausch genutzt wird, muss ein RESTful Webservice so implementiert werden, dass alle Informationen, welche für die Kommunikation benötigt werden, bei jeder Kommunikation mitgesendet werden. Was vordergründig als Nachteil erscheint ist ein wesentlicher Vorteil. Dadurch, dass jeder Request alle nötigen Informationen mitliefert, ist es nicht nötig, Sitzungen auf dem Server zu verwalten. Dadurch kann ein RESTful Webservice sehr leicht skaliert werden.
 
-% Abschnitt über unterschiedliche Repräsentationen
-
-
+Das RESTful-Paradigma besagt, dass Daten losgelöst von einer Repräsentation bereit gestellt werden. Darum ist ein RESTful Webservice so zu implementieren, dass der Client das gewünschte Datenformat anfragen kann. Bei Nutzung des Protokolls HTTP wird dies in der Regel über die Header-Eigenschaft \textit{accept} realisiert, welche gewünschten Datenformate angibt. Wird dieses nicht vom Server unterstützt, werden die angeforderten Daten in einem Standard-Format zurückgegeben. 
 \section{Aufbau der Komponenten}
 \label{sec:aufbau-Komponenten}
-
+In diesem Kapitel wird beschrieben, wie der zuvor theoretisch beschriebene REST-Ansatz für das Projekt umgesetzt wurde. Der Server besteht aus zwei Teilen: Der Datenbank und der WebApi, welche jeweils gesondert vorgestellt werden.
 \subsection{Aufbau der Datenbank}
 \label{ssec:aufbau-server-db}
 
 \subsection{Aufbau der WebApi}
 \label{ssec:aufbau-webapi}
+
+
+((HTTP-Verben POST))
+Im vorliegend Server wurden nur Collection URIs verwendet, um einen neuen Eintrag zu einer Entität anzulegen. Der Server antwortet mit den Daten des neu erstellten Objekts. Dies enthält die ID und die URI zum neu erstellten Objekt.\\
+Mit dem HTTP-Verb PUT wird eine vorhandene Ressource geändert. Wird das Management von IDs clientseitig implementiert, können Anfragen mit dem PUT-Verb auch zur Erstellung einer neuen Ressource benutzt werden, wenn die ID bisher nicht auf dem Server vorhanden ist. Da die Verwaltung der IDs im vorliegenden Projekt ausschließlich serverseitig durchgeführt wird, wurde das Anlegen von Objekten ausschließlich per POST-Anfrage realisiert. 
+
 
 \subsubsection*{Swagger}
 \label{sssec:Swagger}

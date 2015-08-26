@@ -8,9 +8,9 @@ Um verteilte Systeme aufzubauen ist es nötig, eine Struktur zu implementieren, 
 
 \subsection{RESTful Webservices}
 \label{sec:definition-rest}
-Da Webservices in der Regel \ac{HTTP} als Protokol verwenden, wurde die Idee zur Implementierung eines Webservices erweitert, um die Möglichkeiten des Protokolls vollständig zu benutzen. Mit einem Rest-Server bzw. einem RESTful Webservice bezeichnet man einen Webservices, welcher dies als Programmierparadigma umsetzt. REST bedeutet \textit{Representational State Transfer}. Dies meint, dass sich, wie im Internet üblich, hinter einer \ac{URI}, genau eine einzige Resource verbirgt. Bei einer Resource geht man von Daten aus. Im Gegensatz zu anderen Webservice-Implementierungen stellen Restful Webserver keine Methoden zu Verfügung. Diese Daten werden vom Rest-Server über eine eindeutige URL bereitgestellt. Dies hat den Vorteil, dass die Schnittstele leicht und eindeutig beschrieben werden kann, da ein Aufruf einer URL an den Rest-Server immer die gleichen Daten liefert. 
+Da Webservices in der Regel \ac{HTTP} als Protokol verwenden, wurde die Idee zur Implementierung eines Webservices erweitert, um die Möglichkeiten des Protokolls vollständig zu benutzen. Mit einem Rest-Server bzw. einem RESTful Webservice bezeichnet man einen Webservices, welcher die strikte Nutzung von HTTP als Programmierparadigma umsetzt. REST bedeutet \textit{Representational State Transfer}. Dies meint, dass sich, wie im Internet üblich, hinter einer \ac{URI}, genau eine einzige Resource verbirgt. Bei einer Resource geht man von Daten aus. Im Gegensatz zu anderen Webservice-Implementierungen stellen Restful Webserver keine Methoden oder aufrufbare Funktionalitäten zu Verfügung. Diese Daten werden vom Rest-Server über eine eindeutige URL bereitgestellt. Dies hat den Vorteil, dass die Schnittstele leicht und eindeutig beschrieben werden kann, da ein Aufruf einer URL an den Rest-Server immer die gleichen Daten liefert. 
 
-% Abschnitt über HTTP Verbs
+In den meisten Fällen, wie auch in den Anwendungsfällen dieser Arbeit, soll der Webservice \ac{CRUD}-Funtionalitäten
 
 Da das statuslose Protokoll HTTP zum Datenaustausch genutzt wird, muss ein Restful Webservice so implementiert werden, dass alle Informationen, welche für die Kommunikation benötigt werden, bei jeder Kommunikation mitgesendet werden. Was vordergründig als Nachteil erscheint ist ein wesentlicher Vorteil. Dadurch, dass jeder Request alle nötigen Informationen mitliefert, ist es nicht nötig, Sitzungen auf dem Server zu verwalten. Dadurch kann ein Restful Webservice sehr leicht skaliert werden. 
 
@@ -27,7 +27,7 @@ Da das statuslose Protokoll HTTP zum Datenaustausch genutzt wird, muss ein Restf
 \label{ssec:aufbau-webapi}
 
 \subsubsection*{Swagger}
-\label{sssec:{Swagger}
+\label{sssec:Swagger}
 
 \section{Authentifizierung \& Autorisierung}
 \label{sec:server-authorisierung}

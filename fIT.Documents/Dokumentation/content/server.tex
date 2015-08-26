@@ -12,7 +12,7 @@ In den meisten Fällen, wie auch in den Anwendungsfällen dieser Arbeit, soll de
 \item http://myRestService.de/Schedule
 \item http://myRestService.de/Schedule/123
 \end{itemize}
-Es fällt auf, dass die beiden URLs sich bis auf das letzte Segment unterscheiden. Im ersten Fall wird die URI als Collection URI bezeichnet, da hiermit die Gesamtheit aller Trainingspläne angesprochen wird. Im zweiten Fall wird die ID einer Trainingsplans benutzt und mit einen konkreten Trainingsplan zu interagieren. Man spricht hier von einer Element URI.\cite[S. 12ff.]{Building-a-REST-Service}
+Es fällt auf, dass die beiden URLs sich bis auf das letzte Segment unterscheiden. Im ersten Fall wird die URI als Collection URI bezeichnet, da hiermit die Gesamtheit aller Trainingspläne angesprochen wird. Im zweiten Fall wird die ID einer Trainingsplans benutzt und mit einen konkreten Trainingsplan zu interagieren. Man spricht hier von einer Element URI.\footcite[S. 12ff.]{Building-a-REST-Service}
 
 Um den Rahmen der Arbeit nicht zu sprengen, wird sich hier nur auf die Vorstellung der vier meistverwendeten HTTP-Verben beschränkt:\\
 Das Verb GET ruft eine Ressource vom Server ab, wobei diese nicht verändert wird. Bei Nutzung einer Collection URI, werden alle Einträge dieser Entität als Verbundstruktur abgerufen. Jedes Element der Struktur beinhaltet die Element URI auf das konkrete Element. Wird GET auf eine Element URI aufgerufen, wird das konkrete Element aufgerufen. Hierbei antwortet der Server dem HTTP-Standard folgend mit dem Status-Code 200 bei erfolgreicher Suche oder 404, wenn keine Ressource gefunden wurde.\\
@@ -22,7 +22,7 @@ Das letzte HTTP-Verb, welches hier vorgestellt werden soll, ist DELETE. Wie der 
 
 Da das statuslose Protokoll HTTP zum Datenaustausch genutzt wird, muss ein RESTful Webservice so implementiert werden, dass alle Informationen, welche für die Kommunikation benötigt werden, bei jeder Kommunikation mitgesendet werden. Was vordergründig als Nachteil erscheint ist ein wesentlicher Vorteil. Dadurch, dass jeder Request alle nötigen Informationen mitliefert, ist es nicht nötig, Sitzungen auf dem Server zu verwalten. Dadurch kann ein RESTful Webservice sehr leicht skaliert werden.
 
-Das RESTful-Paradigma besagt, dass Daten losgelöst von einer Repräsentation bereit gestellt werden. Darum ist ein RESTful Webservice so zu implementieren, dass der Client das gewünschte Datenformat anfragen kann. Bei Nutzung des Protokolls HTTP wird dies in der Regel über die Header-Eigenschaft \textit{accept} realisiert, welche gewünschten Datenformate angibt. Wird dieses nicht vom Server unterstützt, werden die angeforderten Daten in einem Standard-Format zurückgegeben. 
+Das RESTful-Paradigma besagt, dass Daten losgelöst von einer Repräsentation bereit gestellt werden. Darum ist ein RESTful Webservice so zu implementieren, dass der Client das gewünschte Datenformat anfragen kann. Bei Nutzung des Protokolls HTTP wird dies in der Regel über die Header-Eigenschaft \textit{accept} realisiert, welche gewünschten Datenformate angibt. Wird dieses nicht vom Server unterstützt, werden die angeforderten Daten in einem Standard-Format zurückgegeben. \footcite[S. 26ff.]{REST-und-HTTP}
 \section{Aufbau der Komponenten}
 \label{sec:aufbau-Komponenten}
 In diesem Kapitel wird beschrieben, wie der zuvor theoretisch beschriebene REST-Ansatz für das Projekt umgesetzt wurde. Der Server besteht aus zwei Teilen: Der Datenbank und der WebApi, welche jeweils gesondert vorgestellt werden.\\

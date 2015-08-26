@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using fIT.WebApi.Repository.Interfaces.CRUD;
 
 namespace fIT.WebApi.Entities
@@ -13,7 +9,6 @@ namespace fIT.WebApi.Entities
     /// </summary>
     public class Schedule: IEntity<int>
     {
-        #region ctor
         public Schedule(int id, string name = "", string userId = "", ICollection<Exercise> exercises = null)
         {
             this.Id = id;
@@ -22,14 +17,8 @@ namespace fIT.WebApi.Entities
             this.Exercises = exercises;
         }
 
-        public Schedule()
-            : this(-1)
-        {
-
-        }
-        #endregion
-
-        #region Properties
+        public Schedule(): this(-1){}
+        
         /// <summary>
         /// DB ID
         /// </summary>
@@ -41,15 +30,13 @@ namespace fIT.WebApi.Entities
         public string Name { get; set; }
 
         /// <summary>
-        /// Fremdschlüssel zum Nutzer (per Namens-Konvention) 
+        /// Fremdschluessel zum Nutzer (per Namenskonvention) 
         /// </summary>        
         public string UserID { get; set; }
 
         /// <summary>
-        /// Uebungen (per Namens-Konvention) 
+        /// Uebungen (per Namenskonvention) 
         /// </summary>
         public virtual ICollection<Exercise> Exercises { get; set; }
-
-        #endregion
     }
 }

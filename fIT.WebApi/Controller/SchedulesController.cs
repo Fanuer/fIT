@@ -33,7 +33,7 @@ namespace fIT.WebApi.Controller
         public async Task<IQueryable<ScheduleModel>> GetSchedules()
         {
             var all = await this.AppRepository.Schedules.GetAllAsync();
-            return all.Where(x => IsValidSchedule(x.UserID)).Select(this.TheModelFactory.Create).AsQueryable();
+            return all.Where(x => IsValidSchedule(x.UserID)).Select(this.TheModelFactory.CreateViewModel).AsQueryable();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace fIT.WebApi.Controller
             {
                 return BadRequest(ModelState);
             }
-            return Ok(this.TheModelFactory.Create(schedule));
+            return Ok(this.TheModelFactory.CreateViewModel(schedule));
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace fIT.WebApi.Controller
             try
             {
                 var orig = await this.AppRepository.Schedules.FindAsync(id);
-                orig = this.TheModelFactory.Update(schedule, orig);
+                orig = this.TheModelFactory.CreateModel(schedule, orig);
                 await this.AppRepository.Schedules.UpdateAsync(orig);
             }
             catch (DbUpdateConcurrencyException)
@@ -126,9 +126,9 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var datamodel = this.TheModelFactory.Update(schedule);
+            var datamodel = this.TheModelFactory.CreateModel(schedule);
             await this.AppRepository.Schedules.AddAsync(datamodel);
-            var result = this.TheModelFactory.Create(datamodel);
+            var result = this.TheModelFactory.CreateViewModel(datamodel);
             return CreatedAtRoute("GetScheduleById", new { id = schedule.Id }, result);
         }
 

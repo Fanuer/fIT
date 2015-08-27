@@ -34,7 +34,7 @@ namespace fIT.WebApi.Controller
         public async Task<IQueryable<ExerciseModel>> GetExercises()
         {
             var all = await this.AppRepository.Exercise.GetAllAsync();
-            return all.Select(this.TheModelFactory.Create).AsQueryable();
+            return all.Select(this.TheModelFactory.CreateViewModel).AsQueryable();
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace fIT.WebApi.Controller
                 return NotFound();
             }
 
-            return Ok(this.TheModelFactory.Create(exercise));
+            return Ok(this.TheModelFactory.CreateViewModel(exercise));
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace fIT.WebApi.Controller
             try
             {
                 var orig = await this.AppRepository.Exercise.FindAsync(id);
-                orig = this.TheModelFactory.Update(exercise, orig);
+                orig = this.TheModelFactory.CreateModel(exercise, orig);
                 await this.AppRepository.Exercise.UpdateAsync(orig);
             }
             catch (DbUpdateConcurrencyException)
@@ -117,9 +117,9 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var datamodel = this.TheModelFactory.Update(exercise);
+            var datamodel = this.TheModelFactory.CreateModel(exercise);
             await this.AppRepository.Exercise.AddAsync(datamodel);
-            exercise = this.TheModelFactory.Create(datamodel);
+            exercise = this.TheModelFactory.CreateViewModel(datamodel);
             return CreatedAtRoute("GetExerciseById", new { id = exercise.Id }, exercise);
         }
 

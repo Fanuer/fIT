@@ -1,12 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using fIT.WebApi.Repository.Interfaces.CRUD;
-
-namespace fIT.WebApi.Entities
-{
-    /// <summary>
-    /// Definiert einen Trainingsplan
-    /// </summary>
+﻿    // Definiert einen Trainingsplan
     public class Schedule: IEntity<int>
     {
         public Schedule(int id, string name = "", string userId = "", ICollection<Exercise> exercises = null)
@@ -16,27 +8,17 @@ namespace fIT.WebApi.Entities
             this.UserID = userId;
             this.Exercises = exercises;
         }
-
+		
         public Schedule(): this(-1){}
         
-        /// <summary>
-        /// DB ID
-        /// </summary>
+        // DB ID
         public int Id { get; set; }
-        /// <summary>
-        /// DisplayName des Trainingsplans
-        /// </summary>
+        // DisplayName des Trainingsplans
         [Required]
         public string Name { get; set; }
-
-        /// <summary>
-        /// Fremdschluessel zum Nutzer (per Namenskonvention) 
-        /// </summary>        
+        // Fremdschluessel zum Nutzer (per Namenskonvention) 
         public string UserID { get; set; }
-
-        /// <summary>
-        /// Uebungen (per Namenskonvention) 
-        /// </summary>
+        // Uebungen (per Namenskonvention) 
         public virtual ICollection<Exercise> Exercises { get; set; }
     }
 }

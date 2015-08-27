@@ -30,10 +30,10 @@ Ein Intent ist ein Nachrichtenobjekt innerhalb von Android, welches zur Kommunik
 
 Eine \textit{Activity} kann drei Stati in einem \textit{Lifecycle} einnehmen. Zum einen kann die \textit{Activity} im Status \textit{Resumed} - oft auch \textit{Running} genannt - sein und damit momentan im User-Fokus stehen, also im Vordergrund der App sein und die Interaktionen entgegennehmen. Des Weiteren kann eine \textit{Activity} pausieren, wenn eine andere im User-Fokus steht. Dabei ist der \textit{View} der betrachteten \textit{Activity} jedoch immer noch teilweise sichtbar, da der darüberliegende \textit{View} zu Beispiel nicht den gesamten Bildschirm in Anspruch nimmt. Anders verhält es sich, wenn der \textit{View} der betrachteten \textit{Activity} komplett überdeckt ist. Dann befindet sich die \textit{Activity} nämlich im Status \textit{Stopped}. Sowohl im Status \textit{Stopped} als auch im Status \textit{Paused} lebt die \textit{Activity} noch. Das bedeutet, dass das \textit{Activity}-Objekt zusammen mit allen Objekt-Stati und Memberinformationen im Arbeitsspeicher liegt. Der einzige Unterschied dieser beiden Stati liegt darin, dass eine \textit{Activity} im Status \textit{Paused} noch eine Verbindung zum \textit{WindowManager} besitzt, die im Status \textit{Stopped} nicht mehr vorhanden ist. Gemeinsam haben diese beiden Stati jedoch noch, dass sie bei mangelndem Arbeitsspeicher vom Betriebssystem zerstört werden können. 
 
-%Lifecycle-Bild
+%ActivityLifecycle-Bild
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\linewidth]{Bilder/Android-ActivityLifecycle}
+\includegraphics[width=0.8\linewidth]{content/images/Android-ActivityLifecycle}
 \caption{Android Activity-Lifecycle}
 Quelle: https://developer.android.com/guide/components/activities.html
 \label{pic:androidActivityLifecycle}
@@ -43,13 +43,33 @@ Die Ausführung der internen Methoden einer \textit{Activity} ist abhängig von 
 
 Zusammenfassend lässt sich daraus ableiten, dass die Persistierung von Eingaben in den Methoden \textit{OnPause()}, \textit{OnStop()} und \textit{OnDestroy()} durchgeführt werden sollten, da diese Zustände zerstört werden können. Die weiteren Methoden sollten aus Performancegründen jedoch minimal und agil gehalten werden.
 
-
-
 \subsection{Services}
 \label{ssec:android-services}
+\textit{Services} sind, genauso wie \textit{Activities}, App-Komponenten, die zu den Grundbausteinen einer Android-App gehören. \textit{Services} unterscheiden sich jedoch hinsichtlich ihrer Aufgaben stark von \textit{Activities}. So sind sie dazu da, Aufgaben im Hintergrund zu erledigen. Zudem besitzen sie keinen zugehörigen \textit{View}, sondern werden von anderen App-Komponenten, wie beispielsweise einer \textit{Activity} gestartet. Sie laufen im \textit{Main-Thread} des Prozesses der aufrufenden Komponente. Ein \textit{Service} erstellt keinen eigenen \textit{Thread}, noch einen eigenen Prozess zur Abarbeitung der Aufgaben. Diese Eigenschaft der \textit{Services} muss vom Entwickler bedacht werden. Denn daraus kann man ableiten, dass rechenintensive Aufgaben in einem explizit gestarteten \textit{Thread} arbeiten sollten, um Fehler der Art \textit{Application Not Rsponding} (ANR) zu vermeiden und die Benutzeroberfläche nicht unnötig zu verlangsamen. Ein Vorteil besteht jedoch darin, dass \textit{Services} Aufgaben auch dann noch ausführen können, wenn die App, zu der sie gehören, geschlossen wurde. So können noch nicht abgeschlossene \textit{Up-} oder \textit{Downloads} noch beendet werden oder das Abspielen von Musik bei ausgeschaltetem Bildschirm fortgeführt werden.
+
+Bei Android wird grundsätzlich zwischen zewi Arten von \textit{Services} unterschieden. Zum einen gibt es \textit{Started-Services}, die durch eine App-Komponente mit dem Befehl \textit{StartService()} gestartet werden. Grundsätzlich ist dieser Aufruf uneingeschränkt von allen App-Komponenten möglich, soweit die Einstellungen im Android-Manifest diese zulassen. Weiterhin laufen \textit{Started-Services} im Hintergrund der App weiter, auch wenn die Komponente, die den \textit{Service} gestartet hat, zerstört oder beendet wurde. Deshalb führt diese Art des \textit{Services} im Normalfall eine Aufgabe aus und stoppt sich anschließend nach der Fertigstellung selbstständig. Auf der anderen Seite gibt es \textit{Bound-Services}, die durch einen Aufruf von \textit{BindServcice()} einer anderen App-Komponente gestartet werden. In diesem Schritt verbinden sich die Komponente und der \textit{Service} über eine Art \textit{Client-Server Interface}, das zur Kommunikation bereitgestellt wird. Dieses \textit{Interface} ist vom Typ \textit{IBind} und sorgt für den Austausch von \textit{Request} und \textit{Results}. Des Weiteren verläuft eine mögliche Interprozess-Kommunikation zwischen Komponente und \textit{Service} über dieses \textit{Interface}. Die größte Besonderheit eines \textit{Bound-Services} besteht darin, dass der \textit{Service} nur so lange besteht, wie mindestens eine Komponente an diesen gebunden ist. Natürlich ist es möglich, dass sich mehrere Komponenten gleichzeitig an diesen \textit{Service} binden können. Löst sich jedoch die letzte Komponente wieder, wird der \textit{Service} zerstört. Natürlich gibt es Mischformen dieser beiden \textit{Service}-Arten, die abhängig von der zu leistenden Aufgabe gewählt werden sollten. 
+
+%ServiceLifecycle-Bild
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{content/images/Android-ServiceLifecycle}
+\caption{Android Service-Lifecycle}
+Quelle: https://developer.android.com/guide/components/services.html
+\label{pic:androidServiceLifecycle}
+\end{figure}
+
+Zum Erstellen eines \textit{Services} muss von der Klasse \textit{Service}, oder davon abgeleitete Klassen, geerbt werden. Danach müssen die vorgegebenen Methoden überschrieben werden, denn \textit{Services} besitzen, genauso wie \textit{Activities}, einen Lebenszyklus. Dabei muss jedoch wieder zwischen den beiden Arten von \textit{Services} unterschieden werden.
+
+\textit{Started-Services} werden die Methode \textit{OnCreate()} nach dem Start durch eine Komponente ausführen, wenn der \textit{Service} noch nicht läuft. Darin sollten dann die Initialisierungen und einmaligen Aufgaben zum Start des \textit{Services} durchgeführt werden. \textit{OnStartCommand()} wird immer dann aufgerufen, wenn der \textit{Service} wieder von einer Komponente aufgerufen wird. Dann befindet er sich im Zustand \textit{Running} und führt die ihm zugewiesenen Aufgaben durch. Wenn der \textit{Service} zerstört wird, sei es durch Speichermangel des \textit{Devices} oder das Beenden durch eine Komponente oder den \textit{Service} selbst, wird \textit{OnDestroy()} ausgeführt, um abschließende Aufgaben durchzuführen. Dazu zählen beispielsweise das Beenden von Datenbankverbindungen oder \textit{Threads}.
+
+\textit{Bound-Services} werden, wie oben genannt, über \textit{BindService()} von einer Komponente gestartet und führen dann, genauso wie die \textit{Started-Services}, die \textit{OnCreate()}-Methode zum Initialisieren aus. Gefolgt vom aktiven Status, in dem anfangs \textit{OnBind()} aufgerufen wird und die von den Komponenten verlangten Aufgaben ausgeführt werden. Anschließend lösen sich die Komponenten wieder vom \textit{Service}. Haben sich alle Komponenten gelöst, wird auch beim \textit{Bound-Service} \textit{OnDestroy()} ausgeführt.
+
 
 \subsection{Threading/Asynchronität}
 \label{ssec:android-threading-async}
+
+\subsection{SQLite}
+\label{ssec:android-sqlite}
 
 \section{Was ist XAMARIN?}
 \label{sec:defintion-xamarin}
@@ -59,7 +79,7 @@ Zusammenfassend lässt sich daraus ableiten, dass die Persistierung von Eingaben
 
 \subsection{Besonderheiten der Android-Umsetzung}
 \label{ssec:xamarin-android}
-Man muss Activities nicht manuell im Manifest eintragen -> macht XAMARIN für einen!
+Man muss z.B. Activities nicht manuell im Manifest eintragen -> macht XAMARIN für einen!
 
 \section{Eigene Umsetzung}
 \label{sec:nat-umsetzung}

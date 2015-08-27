@@ -44,7 +44,6 @@ Gleichzeitig sieht man an diesem Beispiel gut, wie das Entity Framework über Na
 Auch die Erstellung einer \ac{mehrwertigen} Beziehung lässt sich aus dem Code-Beispiel \ref{lst:Schedule} ablesen: Da es eine Entität gibt, welche Exercise heißt und die Model-Klasse \textit{Schedule} eine Verbundstruktur besitzt, welche \textit{Exercises} heißt, wird implizit eine Verbindung zwischen den Relationen in der Datenbank angelegt. \footcite{entity-framework-code-first}
 \subsection{Aufbau der WebApi}
 \label{ssec:aufbau-webapi}
-
 Zur Umsetzung der REST-Schnittstelle wurde mit Hilfe des Microsoft-Frameworks \ac{ASP.NET Web API 2} umgesetzt. Dieses ermöglicht es, Controller-Methoden zu schreiben, welche über definierte Routen per HTTP aufgerufen werden können. Hierbei wurde wird die Umsetzung im Sinne des Rest-Paradigmas durch vorhandene Funktionen unterstützt.\footcite[S. 2ff.]{Building-a-REST-Service}\\
 Dies wird im Code-Beispiel \ref{lst:ScheduleController} gezeigt:
 \lstinputlisting[caption=POST-Methode zur Erstellung eines Trainingsplans, label=lst:ScheduleController, style=sharpc]{content/listings/SchedulesController.cs}
@@ -52,12 +51,11 @@ Hierbei fällt sofort auf, dass das WebApi-Framework die Nutzung von Annotatione
 Das Framework versucht die empfangenen Daten in einem ViewModel-Object zu kapseln. Dabei werden die Daten validiert. Die dafür genutzten Validatoren werden direkt im View-Model als Annotationen angegeben.\footcite{webApi-Validation} Die Klasse \textit{EntryModel} (Beispiel \ref{lst:EntryModel}) zeigt die Möglichkeit in Zeile 7 und 11. \\ 
 Schlägt die Validierung fehl, werden die Fehler mit dem passenden Statuscode zurückgegeben. Andernfalls werden die Daten per \ac{Factory}-Klasse in ein Model konvertiert und per \ac{Repository}-Klasse in der Datenbank persistiert. Anschließend wird dem Viewmodel, im Sinne des REST-Gedankens, ein URL zur GET-Methode mit der ID des neu erstellten Objekts übergeben. 
 \lstinputlisting[caption=Basis-Model-Klasse, label=lst:EntryModel, style=sharpc]{content/listings/EntryModel.cs}
-
 \subsubsection*{Swagger}
 \label{sssec:Swagger}
 Da die WebApi parallel zu Clients entwickelt wurde, wurde schnell die Notwendigkeit einer Dokumentation des aktuellen Stands nötig. \\
 Aus diesem Grund wurde Swagger in die WebApi integriert. Swagger ist ein quelloffenes Framework zur Dokumentation von RESTful WebApis, welche von vielen großen Konzernen genutzt wird\footcite{swagger}. Durch Nutzung des \ac{NuGet}-Packets \textit{Swashbuckle} konnte durch hinzufügen von Kommentaren und Annotationen eine vollständige und übersichtliche Dokumentation erstellt werden\footcite{implementing-Swagger}. \\
-Da das Authorisierungsprotokoll OAUTH in Version 2 zum Durchführungszeitpunkt des Projekts noch nicht von Swagger unterstützt wird, kann das Ausführen von API-Request aus Swagger heraus nur für Methoden durchgeführt werden, für die keine Autorisierung des Nutzers benötigt wird. \\
+Da das Authorisierungsprotokoll \ac{OAuth} in Version 2 zum Durchführungszeitpunkt des Projekts noch nicht von Swagger unterstützt wird, kann das Ausführen von API-Request aus Swagger heraus nur für Methoden durchgeführt werden, für die keine Autorisierung des Nutzers benötigt wird. \\
 Die Dokumentation ist unter \href{http://fit-bachelor.azurewebsites.net/swagger}{http://fit-bachelor.azurewebsites.net/swagger} aufrufbar. 
 \begin{figure}[h]
 \centering
@@ -67,12 +65,44 @@ Die Dokumentation ist unter \href{http://fit-bachelor.azurewebsites.net/swagger}
 \end{figure}
 \section{Authentifizierung \& Autorisierung}
 \label{sec:server-authorisierung}
-
+Wie bereits in Kapitel ((Da wo die Rollen definiert werden)) beschrieben, darf nicht jeder Nutzer auf alle Daten zugreifen können. Um dies zu bewerkstelligen, wurde ein Login-Mechanismus implementiert, welcher bekannte Nutzer authentifiziert. Da jedoch nicht alle Nutzer alle bereitgestellten WebApi-Methoden benutzen dürfen wurden auf Basis des \ac{Role-Based Access Models} Rollen implementiert, welche den Nutzer zur Nutzung verschiedener Aufrufe autorisieren. Zur Umsetzung dieser Anforderungen wurde das Protokoll OAuth2 implementiert.\footcite{online:WebApi_Authorize}
 \subsection{OAuth2}
 \label{ssec:oauth2}
+OAuth2 ist ein Protokoll zur Authentifikation und zur Delegation von Zugriffsrollen. Die Struktur von OAuth2 kennt vier Instanzen, welche diesem Vorgang miteinander kommunizieren, nämlich Client, Resource Owner, Authorization Owner und Resource Server.\footcite[S. 286]{book:AngularJs:Steyer2015} 
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{content/images/OAuth2}
+\caption{Resourcenzugriff durch OAuth2}
+\label{pic:OAuth2}
+\end{figure}
+\subsubsection*{Client}
+Der \textit{Client} ist ein Endpunkt, welcher eine Ressource (beispielsweise Trainingspläne) abrufen möchte. In unseren Fall ist das die Web- oder die native App. Diese kommunizieren jeweils mit den anderen Instanzen.
+\subsubsection*{Resource Owner}
+Der \textit{Resource Owner} ist, wie der Name schon sagt, der Besitzer der geforderten Ressource. Der \textit{Client} erfragt im ersten Schritt beim \textit{Resource Owner} den Zugriff zu einer Ressource.\\
+Im diesem Projekt registriert sich der Nutzer an der WebApi. Anschließend kann er unter seinem Account Daten(Trainingspläne und Trainings) anlegen. Diese angelegten Daten sind die geforderten Ressourcen. Da diese vom Nutzer selbst angelegt wurden, erhält er automatisch die Erlaubnis (\ac{Grant})zur Anfrage am \textit{Authorization Server}\footcite{online:Implemented_OAuth_WebToken}.
+\subsubsection*{Authorization Server}
+\label{sssec:authorization-server}
+Der Nutzer meldet sich nun mit der erhaltenen Erlaubnis am \textit{Authorization Server} an. Dieser hat Kenntnis über alle vorhandenen Nutzer und deren Rollen\footcite{online:Implemented_OAuth_Roles}. Bei erfolgreicher Anmeldung erhält der Nutzer ein kurzlebiges \textit{Access-Token}, dem Typen des Access-Tokens und dessen Ablaufdatum und ein langlebiges \textit{Refresh-Token}. Das Access-Token wird im nächsten Schritt benutzt, um die gewünschte Ressource anzufordern. Das \textit{Refreh-Token} wird benutzt, um ein neues \textit{Access-Token} anzufordern. Die beiden Token-Arten werden nochmal genauer in Abschnitt \ref{ssec:jwt-bearer} besprochen.\footcite[S. 287]{book:AngularJs:Steyer2015} 
+\subsubsection*{Resource Server}
+Der \textit{Resource Server} enthält die geforderten Ressourcen. Bei ihrer Anfrage muss das Access-Token in der Anfrage mitgesendet werden. Konkret passiert dies, indem im Header der Anfrage um den Schlüssel \textit{authorization} erweitert wird.
 
+Durch diese strikte Trennung dieser Instanzen ist es ohne weiteres möglich, dass unterschiedliche Systeme die jeweiligen Aufgaben übernehmen. Daraus hat sich in letzter Zeit etabliert, dass es immer häufiger \ac{Single-Sign-On}-Szenarien implementiert werden. Dabei muss ich der Nutzer nur an einer Stelle registrieren (z.B. Bei Facebook oder Twitter). Will der Nutzer nun auf eine andere Ressource zugreifen, kann der Ressource-Server ein Access-Token vom Facebook-Authorisierungsserver akzeptieren. Dies hat für den Nutzer den Vorteil, dass er sich nicht bei mehreren Seiten registrieren muss, sondern jedes mal Zugriff über den Authorisierungsserver mithilfe seiner Credentials erhält. \footcite[S. 294]{book:AngularJs:Steyer2015} 
 \subsection{JWT and Bearer Token}
 \label{ssec:jwt-bearer}
-
+Sowohl das Access-Token als auch das Refresh-Token sind JWTs (JSON Web Tokens). Das sind codierte und meistens auch signierte Repräsentationen von Daten. Zur genaueren Betrachtung des Aufbaus, wird folgend ein Access-Token näher beschrieben. Sie bestehen aus 3 Teilen\footcite[S. 289]{book:AngularJs:Steyer2015}, welche jeweils als \ac{base64}-String codiert wurden und mit einem Punkt getrennt sind:
+\begin{itemize}
+\item \textbf{Header}\\Hier wird der Typ des Tokens und der Algorithmus, welcher für die Verschlüsselung benutzt wurde, angegeben. 
+\item \textbf{Payload} \\Die zu übermittelnden Daten werden als JSON-Objekt bereitgestellt. Das Objekt enthält sowohl die Informationen für die Kommunikation, wie beispielsweise den Nutzername und Rollen, als auch Meta-Daten über das Token (z.B. Ablauf-Datum)
+\item \textbf{Signatur}\\Damit gewährleistet ist, dass die Daten unverändert wurden, werden Sie mit einem Client-Secret verschlüsselt. Dies bedeutet aber auch, dass der Server jeden Client kennen muss, welcher sich beim \textit{Authorization Server} anmelden will. \\Da es sich bei diesem Projekt um einen Prototypen handelt, wurde die Implementierung der Client-Verwaltung nicht durchgeführt, da es für den Ablauf nicht zwingend benötigt wird. Der Server lässt alle gültigen Access-Token und alle bekannten Refresh-Tokens zu. Im produktiven Einsatz müsste diese Komponente dringend nachträglich implementiert werden, da sonst eine Sicherheitslücke entsteht.
+\end{itemize}
+Wie bereits im Abschnitt zum \textit{Authorization Server} (siehe \ref{sssec:authorization-server}) beschrieben, wird für das \textit{Access-Token} eine recht kurze- und für das \textit{Refresh-Token} eine sehr lange Lebenszeit gewählt. Dies hat zwei Vorteile:\\
+Das Access-Token wird bei Request an den Server mitgesendet. Sollte das Token von Dritten abgefangen werden, können diese nur für kurze Zeit im Namen des Nutzers Aktionen durchführen. Das Abgreifen eines solchen Tokens wird im produktiven Gebrauch durch zusätzliche Sicherheitsmaßnahmen, wie die Nutzung von \ac{HTTPS} erschwert. \\Da das Refresh-Token nur zum Erneuern des Access-Tokens benutzt wird, ist die Gefahr, dass es abgefangen wird wesentlich geringer, wodurch die lange Lebensdauer vertretbar ist. \\
+Außerdem bleiben durch die kurze Lebensdauer des Access-Tokens die Daten immer aktuell. Sollte sich an den Daten des Nutzers etwas ändern (z.B. wird eine Rolle hinzugefügt oder entzogen) wird diese Änderungen beim nächsten Abrufen eines Access-Tokens in die Payload codiert\footcite{online:Implemented_OAuth_RefreshToken}. Somit ist immer gewährleistet, das der Nutzer nur die Funktionalität nutzt, für die er auch autorisiert ist. 
 \subsection{Zugriff per CORS}
 \label{ssec:cors}
+Im letzten Abschnitt wurden Maßnahmen beschrieben, damit nur autorisierte Nutzer an geschützte Daten herankommen. Mit \ac{CORS} wird ein weiterer Mechanismus vorgestellt, welcher den Zugriff auf die Daten per \ac{Ajax} beschränkt. \\
+Um den Nutzer davor zu schützen, dass eine Webseite im Hintergrund Daten von anderen Quellen nachläd, ist in jedem Browser eine \ac{Same-Origin-Policy} implementiert. Diese besagt, dass nur Daten aus der gleichen Domäne, aus der der AJAX-Aufruf abgesetzt wurde, abgerufen werden dürfen. \\
+Da es trotzdem häufig nötig ist, von fremden Domains zuzugreifen wurden schnell Workarounds wie das Vorgehensmodell \ac{JSONP} eingeführt. Da diese jedoch von vielen Entwicklern als Hack empfunden wurden\footcite[S. 102]{book:AngularJs:Steyer2015}, wurde mit CORS ein standardisierter Weg entwickelt, um Daten von fremden Domains abzurufen. Hierbei wird beim Server eine Liste an gültigen Domains für eine Cross-Domain-Anfrage hinterlegt. Bei Ajax-Antworten senden der Server bei gültigen Anfragen nun im Header den Key \textit{Access-Control-Allow-Origin} mit der aufrufenden Domäne mit. \\
+Soll nun vom Browser eine Anfrage an den Server gesendet werden, wird über das HTTP Verb unterschieden, ob durch diese Anfrage eine Server-Datum verändert wird. Dies geschieht bei PUT, DELETE und POST, wobei letzteres eine Ausnahme bildet. Werden per POST Daten in einem Format übermittelt, welches beim Absenden eines Formulars genutzt wird(z.B. application/x-www-form-urlencoded), wird die Anfrage wie ein nicht-ändernder Aufruf behandelt. \\
+Wenn nun eine Daten-Änderung im Sinne von CORS durch den Aufruf angestoßen wurde oder wenn der Aufruf zusätzliche Schlüssel im Header enthält, wird vor der Ausführung ein \ac{Preflight} gesendet. Dies ist eine OPTIONS-Anfrage, welche genutzt wird, um die Durchführung der bevorstehenden Anfrage zu validieren.
+Enthält die Antwort im Header nicht den Schlüssel \textit{Access-Control-Allow-Origin} mit der aufrufenden Domäne, wird vom Browser ein Fehler erzeugt. Andernfalls wird die Abfrage an den Server gesendet\footcite[S. 102]{book:AngularJs:Steyer2015}. CORS kann in allen modernen Browsern genutzt werden\footcite{online:can-i-use:cors}.

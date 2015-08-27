@@ -35,7 +35,7 @@ namespace fIT.WebApi.Controller
                             .RefreshTokens
                             .GetAllAsync();
 
-            return all.Select(x => this.TheModelFactory.Create(x)).AsQueryable();
+            return all.Select(x => this.TheModelFactory.CreateViewModel(x)).AsQueryable();
         }
 
         /// <summary>

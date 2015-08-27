@@ -26,7 +26,7 @@ namespace fIT.WebApi.Models
         #endregion
 
         #region Method
-        public UserModel Create(ApplicationUser datamodel)
+        public UserModel CreateViewModel(ApplicationUser datamodel)
         {
             if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
             return new UserModel
@@ -42,7 +42,7 @@ namespace fIT.WebApi.Models
             };
         }
 
-        public RoleModel Create(IdentityRole datamodel)
+        public RoleModel CreateViewModel(IdentityRole datamodel)
         {
             if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
             return new RoleModel
@@ -53,7 +53,7 @@ namespace fIT.WebApi.Models
             };
         }
 
-        public ExerciseModel Create(Exercise datamodel)
+        public ExerciseModel CreateViewModel(Exercise datamodel)
         {
             if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
             var result = new ExerciseModel()
@@ -75,7 +75,7 @@ namespace fIT.WebApi.Models
             return result;
         }
 
-        public ScheduleModel Create(Schedule datamodel)
+        public ScheduleModel CreateViewModel(Schedule datamodel)
         {
             if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
 
@@ -100,7 +100,7 @@ namespace fIT.WebApi.Models
             return result;
         }
 
-        public PracticeModel Create(Practice datamodel)
+        public PracticeModel CreateViewModel(Practice datamodel)
         {
             if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
 
@@ -117,7 +117,7 @@ namespace fIT.WebApi.Models
             };
         }
 
-        public RefreshTokenModel Create(RefreshToken datamodel)
+        public RefreshTokenModel CreateViewModel(RefreshToken datamodel)
         {
             if (datamodel == null) { throw new ArgumentNullException("datamodel"); }
 
@@ -131,7 +131,7 @@ namespace fIT.WebApi.Models
             };
         }
 
-        public Schedule Update(ScheduleModel model, Schedule datamodel = null)
+        public Schedule CreateModel(ScheduleModel model, Schedule datamodel = null)
         {
             var result = datamodel ?? new Schedule();
             result.UserID = model.UserId;
@@ -140,7 +140,7 @@ namespace fIT.WebApi.Models
             return result;
         }
 
-        public Exercise Update(ExerciseModel model, Exercise datamodel = null)
+        public Exercise CreateModel(ExerciseModel model, Exercise datamodel = null)
         {
             var result = datamodel ?? new Exercise();
             result.Description = model.Description;
@@ -149,7 +149,7 @@ namespace fIT.WebApi.Models
             return result;
         }
 
-        public Practice Update(PracticeModel model, Practice datamodel = null)
+        public Practice CreateModel(PracticeModel model, Practice datamodel = null)
         {
             var result = datamodel ?? new Practice();
             result.Timestamp = model.Timestamp;
@@ -163,7 +163,7 @@ namespace fIT.WebApi.Models
             return result;
         }
 
-        internal ApplicationUser Update(UserModel model, ApplicationUser datamodel = null)
+        internal ApplicationUser CreateModel(UserModel model, ApplicationUser datamodel = null)
         {
             var result = datamodel ?? new ApplicationUser();
             result.DateOfBirth = model.DateOfBirth;

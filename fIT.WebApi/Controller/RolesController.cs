@@ -39,7 +39,7 @@ namespace fIT.WebApi.Controller
 
             if (role != null)
             {
-                return Ok(TheModelFactory.Create(role));
+                return Ok(TheModelFactory.CreateViewModel(role));
             }
             return NotFound();
         }
@@ -60,7 +60,7 @@ namespace fIT.WebApi.Controller
 
           if (role != null)
           {
-            return Ok(TheModelFactory.Create(role));
+            return Ok(TheModelFactory.CreateViewModel(role));
           }
           return NotFound();
         }
@@ -75,7 +75,7 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<RoleModel>))]
         public IQueryable<RoleModel> GetAllRoles()
         {
-            return this.AppRoleManager.Roles.ToList().Select(role => TheModelFactory.Create(role)).AsQueryable();
+            return this.AppRoleManager.Roles.ToList().Select(role => TheModelFactory.CreateViewModel(role)).AsQueryable();
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace fIT.WebApi.Controller
 
             Uri locationHeader = new Uri(Url.Link("GetRoleById", new { id = role.Id }));
 
-            return Created(locationHeader, TheModelFactory.Create(role));
+            return Created(locationHeader, TheModelFactory.CreateViewModel(role));
 
         }
 

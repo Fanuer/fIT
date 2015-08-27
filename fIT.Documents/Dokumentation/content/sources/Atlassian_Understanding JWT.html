@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<!-- saved from url=(0090)https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html -->
+<html lang="en" style=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+    <title>
+        Atlassian Connect Documentation
+    </title>
+    <link rel="icon" type="image/png" href="https://developer.atlassian.com/static/connect/docs/latest/assets/images/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.19.0/codemirror.min.css" media="all">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/3.19.0/theme/neat.min.css" media="all">
+    <link rel="stylesheet" href="https://aui-cdn.atlassian.com/aui-adg/5.7.16/css/aui.css" media="all">
+    <link rel="stylesheet" href="https://aui-cdn.atlassian.com/aui-adg/5.7.16/css/aui-experimental.css" media="all">
+    <!--[if IE 9]><link rel="stylesheet" href="//aui-cdn.atlassian.com/aui-adg/5.7.16/css/aui-ie9.css" media="all"><![endif]-->
+    <link rel="stylesheet" href="https://developer.atlassian.com/static/connect/docs/latest/assets/css/connect-host.css" media="all">
+    <link rel="stylesheet" href="https://developer.atlassian.com/static/connect/docs/latest/assets/css/styles.css" media="all">
+    <script type="text/javascript" async="" src="./Atlassian_Understanding JWT_files/ga.js"></script><script src="./Atlassian_Understanding JWT_files/jquery-1.8.3.min.js"></script><style type="text/css"></style>
+    <script src="./Atlassian_Understanding JWT_files/raphael-min.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/lodash.min.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/marked.min.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/almond.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/aui.min.js"></script><style></style>
+    <script src="./Atlassian_Understanding JWT_files/aui-soy.min.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/aui-experimental.min.js"></script><style type="text/css"></style>
+
+    <script src="./Atlassian_Understanding JWT_files/codemirror.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/javascript.min.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/clike.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/sequence-diagram-min.js"></script>
+    <script type="text/javascript">
+        // The context path is the first n - (current document depth) segments of the path
+        window.contextPath = window.contextPath || _.once(function() {
+            var depth = 2;
+            // Get rid of double slashes
+            var pathname = window.location.pathname.replace(/\/+/g,'/');
+            return '/' + _(pathname.split('/')).compact().initial(depth - pathname.endsWith('/')).join('/');
+        });
+    </script>
+<style type="text/css">.atlwdg-blanket {background: black;height: 100%;left: 0;opacity: .5;position: fixed;top: 0;width: 100%;z-index: 1000000;}.atlwdg-popup {background: white;border: 1px solid #ccc;position: fixed;top: 0;right: 0;bottom: 0;left: 0;margin: auto;z-index: 10000011;border-radius: 5px;background-clip: padding-box;overflow: hidden;width: 810px;height: 0;max-height: calc(100% - 100px);}#atlwdg-frame {height: 100%;width: 100%;}.atlwdg-hidden {visibility: hidden;}.atlwdg-trigger {position: fixed;background: #205081;padding: 5px;border: 2px solid white;border-top: none;font-weight: bold;color: white !important;display: block;white-space: nowrap;text-decoration: none !important;font-family: Arial, Helvetica, sans-serif;font-size: 12px;-webkit-box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);border-radius: 0 0 5px 5px;}.atlwdg-trigger.atlwdg-TOP {left: 45%;top: 0;}.atlwdg-trigger.atlwdg-RIGHT {left: 100%;top: 40%;-webkit-transform: rotate(90deg);-webkit-transform-origin: top left;-moz-transform: rotate(90deg);-moz-transform-origin: top left;-ms-transform: rotate(90deg);-ms-transform-origin: top left;transform: rotate(90deg);transform-origin: top left;}.atlwdg-trigger.atlwdg-SUBTLE {right: 0;bottom: 0;border: 1px solid #ccc;border-bottom: none;border-right: none;background-color: #f5f5f5;color: #444 !important;font-size: 11px;padding: 6px;-webkit-box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.5);box-shadow: -1px -1px 2px rgba(0, 0, 0, 0.5);border-radius: 2px 0 0 0;}.atlwdg-loading {position: fixed;top: 0;right: 0;bottom: 0;left: 0;margin: auto;height: 40px;width: 40px;z-index: 1000001;border-radius: 5px;background-color: #fff;background-image: url('data:image/gif;base64,R0lGODlhEAAQAMQAAP///+7u7t3d3bu7u6qqqpmZmYiIiHd3d2ZmZlVVVURERDMzMyIiIhEREQARAAAAAP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQFBwAQACwAAAAAEAAQAAAFdyAkQgGJJOWoQgIjBM8jkKsoPEzgyMGsCjPDw7ADpkQBxRDmSCRetpRA6Rj4kFBkgLC4IlUGhbNQIwXOYYWCXDufzYPDMaoKGBoKb886OjAKdgZAAgQkfCwzAgsDBAUCgl8jAQkHEAVkAoA1AgczlyIDczUDA2UhACH5BAUHABAALAAAAAAPABAAAAVjICSO0IGIATkqIiMKDaGKC8Q49jPMYsE0hQdrlABCGgvT45FKiRKQhWA0mPKGPAgBcTjsspBCAoH4gl+FmXNEUEBVAYHToJAVZK/XWoQQDAgBZioHaX8igigFKYYQVlkCjiMhACH5BAUHABAALAAAAAAQAA8AAAVgICSOUGGQqIiIChMESyo6CdQGdRqUENESI8FAdFgAFwqDISYwPB4CVSMnEhSej+FogNhtHyfRQFmIol5owmEta/fcKITB6y4choMBmk7yGgSAEAJ8JAVDgQFmKUCCZnwhACH5BAUHABAALAAAAAAQABAAAAViICSOYkGe4hFAiSImAwotB+si6Co2QxvjAYHIgBAqDoWCK2Bq6A40iA4yYMggNZKwGFgVCAQZotFwwJIF4QnxaC9IsZNgLtAJDKbraJCGzPVSIgEDXVNXA0JdgH6ChoCKKCEAIfkEBQcAEAAsAAAAABAADgAABUkgJI7QcZComIjPw6bs2kINLB5uW9Bo0gyQx8LkKgVHiccKVdyRlqjFSAApOKOtR810StVeU9RAmLqOxi0qRG3LptikAVQEh4UAACH5BAUHABAALAAAAAAQABAAAAVxICSO0DCQKBQQonGIh5AGB2sYkMHIqYAIN0EDRxoQZIaC6bAoMRSiwMAwCIwCggRkwRMJWKSAomBVCc5lUiGRUBjO6FSBwWggwijBooDCdiFfIlBRAlYBZQ0PWRANaSkED1oQYHgjDA8nM3kPfCmejiEAIfkEBQcAEAAsAAAAABAAEAAABWAgJI6QIJCoOIhFwabsSbiFAotGMEMKgZoB3cBUQIgURpFgmEI0EqjACYXwiYJBGAGBgGIDWsVicbiNEgSsGbKCIMCwA4IBCRgXt8bDACkvYQF6U1OADg8mDlaACQtwJCEAIfkEBQcAEAAsAAABABAADwAABV4gJEKCOAwiMa4Q2qIDwq4wiriBmItCCREHUsIwCgh2q8MiyEKODK7ZbHCoqqSjWGKI1d2kRp+RAWGyHg+DQUEmKliGx4HBKECIMwG61AgssAQPKA19EAxRKz4QCVIhACH5BAUHABAALAAAAAAQABAAAAVjICSOUBCQqHhCgiAOKyqcLVvEZOC2geGiK5NpQBAZCilgAYFMogo/J0lgqEpHgoO2+GIMUL6p4vFojhQNg8rxWLgYBQJCASkwEKLC17hYFJtRIwwBfRAJDk4ObwsidEkrWkkhACH5BAUHABAALAAAAQAQAA8AAAVcICSOUGAGAqmKpjis6vmuqSrUxQyPhDEEtpUOgmgYETCCcrB4OBWwQsGHEhQatVFhB/mNAojFVsQgBhgKpSHRTRxEhGwhoRg0CCXYAkKHHPZCZRAKUERZMAYGMCEAIfkEBQcAEAAsAAABABAADwAABV0gJI4kFJToGAilwKLCST6PUcrB8A70844CXenwILRkIoYyBRk4BQlHo3FIOQmvAEGBMpYSop/IgPBCFpCqIuEsIESHgkgoJxwQAjSzwb1DClwwgQhgAVVMIgVyKCEAIfkECQcAEAAsAAAAABAAEAAABWQgJI5kSQ6NYK7Dw6xr8hCw+ELC85hCIAq3Am0U6JUKjkHJNzIsFAqDqShQHRhY6bKqgvgGCZOSFDhAUiWCYQwJSxGHKqGAE/5EqIHBjOgyRQELCBB7EAQHfySDhGYQdDWGQyUhADs=');background-repeat: no-repeat;background-position: center center;}@media print {.atlwdg-trigger { display: none; }}</style><script async="true" type="text/javascript" src="https://s.adroll.com/j/roundtrip.js"></script></head>
+
+<body id="ac" class="aui-layout aui-theme-default aui-page-hybrid" data-baseurl="../" data-aui-version="5.7.16" cz-shortcut-listen="true">
+    <div id="page">
+        <header id="header" role="banner">
+            <nav class="aui-header aui-dropdown2-trigger-group" role="navigation" data-aui-responsive="true">
+                <div class="aui-header-inner">
+                    <div class="aui-header-primary">
+                        <h1 id="logo" class="aui-header-logo aui-header-logo-ac">
+                            <a href="https://developer.atlassian.com/static/connect/docs/latest/index.html">
+                                <span class="aui-header-logo-device">Atlassian Connect</span>
+                            </a>
+                        </h1>
+                    </div>
+                    <div class="aui-header-secondary">
+                        <ul class="aui-nav __skate">
+                            <li>
+                                <a href="https://ecosystem.atlassian.net/browse/AC" class="issue-collector-feedback">
+                                    <span class="aui-icon aui-icon-small aui-iconfont-help">Help</span>
+                                    Feedback
+                                </a>
+                            </li>
+                            <li>
+                                <form action="https://developer.atlassian.com/static/connect/docs/latest/resources/search.html" method="get" class="aui-quicksearch">
+                                    <label for="search" class="assistive">Search</label>
+                                    <input id="search" class="search" type="text" placeholder="Search..." name="q">
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- #header -->
+        <section id="content" role="main">
+            <header class="aui-page-header">
+                <div class="aui-page-header-inner">
+                    <div class="aui-page-header-main">
+                        <h1>
+                            Documentation
+                        </h1>
+                    </div>
+                </div>
+            </header>
+
+            <div class="aui-page-panel">
+                <div class="aui-page-panel-inner">
+                    
+
+<div class="aui-page-panel-nav">
+    <nav class="aui-navgroup aui-navgroup-vertical">
+        <div class="aui-navgroup-inner">
+            
+
+<ul class="aui-nav __skate">
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/guides/introduction.html">Introduction
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/guides/getting-started.html">Getting started
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/guides/project-activity-tutorial.html">Tutorial: JIRA activity
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/guides/confluence-gardener-tutorial.html">Tutorial: Confluence Gardener
+            
+                <span class="aui-lozenge aui-lozenge-success">new!</span>
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/guides/connect-cookbook.html">Connect cookbook
+            
+            </a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <strong>Core Concepts</strong>
+            </div>
+            
+
+<ul class="aui-nav __skate">
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/security.html">Security
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/authentication.html">Authentication
+            
+            </a>
+        </li>
+    
+        <li class="&#39;aui-nav-selected&#39;">
+            <a href="./Atlassian_Understanding JWT_files/Atlassian_Understanding JWT.html">Understanding JWT
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/conditions.html">Conditions
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/context-parameters.html">Context parameters
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/styling-with-aui.html">Styling add-ons with AUI
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/licensing.html">Licensing
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/cloud-development.html">Cloud development
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/hosted-data-storage.html">Hosted data storage
+            
+                <span class="aui-lozenge aui-lozenge-success">new!</span>
+            
+            </a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <strong>Developing and Deploying</strong>
+            </div>
+            
+
+<ul class="aui-nav __skate">
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/developing/developing-locally.html">Developing locally
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/developing/cloud-installation.html">Installing in the cloud
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/developing/selling-on-marketplace.html">Selling on Marketplace
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/developing/operations.html">Operations guide
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/developing/upgrades.html">Upgrading your add-on
+            
+            </a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/">Addon Descriptor</a>
+            </div>
+            
+
+<ul class="aui-nav __skate">
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/authentication.html">Authentication
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/lifecycle.html">Lifecycle
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/plugin-vendor.html">Plugin Vendor
+            
+            </a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <strong>Common Modules</strong>
+            </div>
+            
+<ul class="aui-nav __skate">
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/common/page.html">Page</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/common/web-item.html">Web Item</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/common/web-panel.html">Web Panel</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/common/web-section.html">Web Section</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/common/webhook.html">Webhook</a>
+        </li>
+    
+</ul>
+
+
+            
+    <div class="aui-nav-heading">
+        <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/index.html">JIRA Modules</a>
+    </div>
+
+<ul class="aui-nav __skate">
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/dashboard-item.html">Dashboard Item</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/entity-property.html">Entity Property</a>
+        </li>
+    
+        
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/project-admin-tab-panel.html">Project Admin Tab Panel</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/report.html">Report</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/search-request-view.html">Search Request View</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/tab-panel.html">Tab Panel</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/jira/workflow-post-function.html">Workflow Post Function</a>
+        </li>
+    
+</ul>
+
+
+            
+    <div class="aui-nav-heading">
+        <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/confluence/index.html">Confluence Modules</a>
+    </div>
+
+<ul class="aui-nav __skate">
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/confluence/blueprints.html">Blueprints</a>
+        </li>
+    
+        
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/confluence/content-property.html">Content Property</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/confluence/dynamic-content-macro.html">Dynamic Content Macro</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/confluence/space-tools-tab.html">Space Tools Tab</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/modules/confluence/static-content-macro.html">Static Content Macro</a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/javascript-api.html">Javascript API</a>
+            </div>
+            
+<ul class="aui-nav __skate">
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-AP.html">AP</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-confluence.html">Confluence</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-cookie.html">Cookie</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-Dialog.html">Dialog</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-Events.html">Events</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-history.html">History</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-inline-dialog.html">Inline-dialog</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-jira.html">Jira</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-messages.html">Messages</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-request.html">Request</a>
+        </li>
+    
+        
+        
+        
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/javascript/module-User.html">User</a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <a href="https://developer.atlassian.com/static/connect/docs/latest/rest-apis/index.html">REST APIs</a> <span class="aui-lozenge aui-lozenge-success">new!</span>
+            </div>
+            
+
+<ul class="aui-nav __skate">
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/rest-apis/product-api-browser.html">Product API Browser
+            
+            </a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/scopes.html">Product API Scopes</a>
+            </div>
+            
+
+<ul class="aui-nav __skate">
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/jira-rest-scopes.html">JIRA REST
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/jira-jsonrpc-scopes.html">JIRA JSON-RPC
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/jira-soap-scopes.html">JIRA SOAP
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/jira-agile-rest-scopes.html">JIRA Agile REST
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/confluence-rest-scopes.html">Confluence REST
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/confluence-jsonrpc-scopes.html">Confluence JSON-RPC
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/scopes/confluence-xmlrpc-scopes.html">Confluence XML-RPC
+            
+            </a>
+        </li>
+    
+</ul>
+
+
+            <div class="aui-nav-heading">
+                <strong>Resources</strong>
+            </div>
+            
+
+<ul class="aui-nav __skate">
+    
+        <li>
+            <a href="https://developer.atlassian.com/display/MARKET/Atlassian+Connect+Status">Atlassian Connect status
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/resources/release-notes.html">Release notes
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/resources/deprecations.html">Deprecation notices
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/resources/samples.html">Sample add-ons
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/resources/faqs.html">FAQ
+            
+            </a>
+        </li>
+    
+        <li>
+            <a href="https://developer.atlassian.com/static/connect/docs/latest/resources/getting-help.html">Getting help
+            
+            </a>
+        </li>
+    
+</ul>
+
+
+        </div>
+    </nav>
+</div>
+
+                    <section class="aui-page-panel-content ac-page">
+                        
+
+                        
+                            <h1>Understanding JWT</h1>
+<p>There is a <a href="http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html">nicely presented copy</a> of the specification.
+JSON Web Token (JWT) is a compact URL-safe means of representing claims to be transferred between two parties.
+The claims in a JWT are encoded as a JavaScript Object Notation (JSON) object that is used as the payload of a
+JSON Web Signature (JWS) structure or as the plaintext of a JSON Web Encryption (JWE) structure, enabling the claims to
+be digitally signed or MACed and/or encrypted.</p>
+<h2>Table of contents</h2>
+<ul>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#token-structure">Structure of a JWT token</a><ul>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#token-structure-header">Header</a></li>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#token-structure-claims">Claims</a></li>
+</ul>
+</li>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#libraries">JWT libraries</a></li>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#creating-token">Creating a JWT token</a></li>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#decoding-and-verifying-token">Decoding and verifying a JWT token</a><ul>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#decoding-token">Decoding a JWT token</a></li>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#verifying-token">Verifying a JWT token</a></li>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#qsh">Creating a query string hash</a></li>
+</ul>
+</li>
+<li><a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#creating-token-manually">Advanced: Creating a JWT token manually</a></li>
+</ul>
+<h2><a name="token-structure"></a>Structure of a JWT token</h2>
+<p>A JWT token looks like this:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 5px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 62px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><pre><span class="cm-variable">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9</span>.<span class="cm-variable">eyJleHAiOjEzODY4OTkxMzEsImlzcyI6ImppcmE6MTU0ODk1OTUiLCJxc2giOiI4MDYzZmY0Y2ExZTQxZGY3YmM5MGM4YWI2ZDBmNjIwN2Q0OTFjZjZkYWQ3YzY2ZWE3OTdiNDYxNGI3MTkyMmU5IiwiaWF0IjoxMzg2ODk4OTUxfQ</span>.<span class="cm-variable">uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo</span></pre></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 62px;"></div><div class="CodeMirror-gutters" style="display: none; height: 62px;"></div></div></div></pre>
+<p>Once you understand the format, it's actually pretty simple:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 5px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 26px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><pre><span class="cm-operator">&lt;</span><span class="cm-variable">base64</span><span class="cm-operator">-</span><span class="cm-variable">encoded</span> <span class="cm-variable">header</span><span class="cm-operator">&gt;</span>.<span class="cm-operator">&lt;</span><span class="cm-variable">base64</span><span class="cm-operator">-</span><span class="cm-variable">encoded</span> <span class="cm-variable">claims</span><span class="cm-operator">&gt;</span>.<span class="cm-operator">&lt;</span><span class="cm-variable">base64</span><span class="cm-operator">-</span><span class="cm-variable">encoded</span> <span class="cm-variable">signature</span><span class="cm-operator">&gt;</span></pre></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+<p>In other words:</p>
+<ul>
+<li>You create a header object, with the JSON format. Then you encode it as a base64</li>
+<li>You create a claims object, with the JSON format. Then you encode it in base64</li>
+<li>You create a signature for the URI (we'll get into that later). Then you encode it in base64</li>
+<li>You concatenate the three items, with the "." separator</li>
+</ul>
+<p>You shouldn't actually have to do this manually, as there are libraries available in most languages, as we describe in the <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#jwtlib">JWT libraries</a> section.
+However it is important you understand the fields in the JSON header and claims objects described in the next sections:</p>
+<h3><a name="token-structure-header"></a>Header</h3>
+<p>The JWT Header declares that the encoded object is a JSON Web Token (JWT) and the JWT is a JWS that is MACed using the HMAC SHA-256 algorithm. For example:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 80px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre>{</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre> &nbsp;  <span class="cm-string">"typ"</span>:<span class="cm-string">"JWT"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre> &nbsp;  <span class="cm-string">"alg"</span>:<span class="cm-string">"HS256"</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 80px;"></div><div class="CodeMirror-gutters" style="height: 80px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+<table class="aui">
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody><tr>
+        <td>"typ" (mandatory)</td><td>String</td><td>Type for the token, defaulted to "JWT". Specifies that this is a JWT token</td>
+    </tr>
+    <tr>
+        <td>"alg" (mandatory)</td><td>String</td><td>Algorithm. specifies the algorithm used to sign the token.
+            In atlassian-connect version 1.0 we support the HMAC SHA-256 algorithm, which the
+            <a href="http://tools.ietf.org/html/draft-ietf-oauth-json-web-token-13">JWT specification</a> identifies using the string <a href="http://tools.ietf.org/html/draft-ietf-jose-json-web-algorithms-18#section-3.1">"HS256"</a>.</td>
+    </tr>
+</tbody></table>
+
+<div class="aui-message warning">
+    <p class="title">
+        <span class="aui-icon icon-warning"></span>
+        <strong>Important</strong>
+    </p>
+    Your JWT library or implementation should discard any tokens which specify <code>alg: none</code> as this can provide a bypass of the token verification.
+</div>
+
+<p><a name="claims"></a></p>
+<h3><a name="token-structure-claims"></a>Claims</h3>
+<p>The JWT claims object contains security information about the message. For example:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 260px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code" style=""><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre>{</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre> &nbsp;  <span class="cm-string">"iss"</span>: <span class="cm-string">"jira:1314039"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre> &nbsp;  <span class="cm-string">"iat"</span>: <span class="cm-number">1300819370</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre> &nbsp;  <span class="cm-string">"exp"</span>: <span class="cm-number">1300819380</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre> &nbsp;  <span class="cm-string">"qsh"</span>: <span class="cm-string">"8063ff4ca1e41df7bc90c8ab6d0f6207d491cf6dad7c66ea797b4614b71922e9"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre> &nbsp;  <span class="cm-string">"sub"</span>: <span class="cm-string">"batman"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">7</div></div><pre> &nbsp;  <span class="cm-string">"context"</span>: {</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">8</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-string">"user"</span>: {</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">9</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-string">"userKey"</span>: <span class="cm-string">"batman"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">10</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-string">"username"</span>: <span class="cm-string">"bwayne"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">11</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-string">"displayName"</span>: <span class="cm-string">"Bruce Wayne"</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">12</div></div><pre> &nbsp; &nbsp; &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">13</div></div><pre> &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">14</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 260px;"></div><div class="CodeMirror-gutters" style="height: 260px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+<table class="aui">
+    <thead>
+        <tr>
+            <th>Attribute</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody><tr>
+        <td><code>iss</code> (mandatory)</td>
+        <td>String</td>
+        <td>the issuer of the claim. Connect uses it to identify the application making the call. for example:
+            <ul>
+                <li>If the Atlassian product is the calling application: contains the unique identifier of the tenant.
+             This is the <code>clientKey</code> that you receive in the <code>installed</code> callback. You should reject unrecognised issuers.
+                </li><li>If the add-on is the calling application: the add-on key specified in the add-on descriptor
+            </li></ul>
+        </td>
+    </tr>
+    <tr>
+        <td><code>iat</code> (mandatory)</td>
+        <td>Long</td>
+        <td>Issued-at time. Contains the UTC Unix time at which this token was issued. There are no hard
+            requirements around this claim but it does not make sense for it to be significantly in the future.
+            Also, significantly old issued-at times may indicate the replay of suspiciously old tokens. </td>
+    </tr>
+    <tr>
+        <td><code>exp</code> (mandatory)</td>
+        <td>Long</td>
+        <td>Expiration time. It contains the UTC Unix time after which you should no longer accept this token.
+            It should be after the issued-at time.</td>
+    </tr>
+    <tr>
+        <td><code>qsh</code> (mandatory)</td>
+        <td>String</td>
+        <td>query string hash. A custom Atlassian claim that prevents URL tampering.</td>
+    </tr>
+    <tr>
+        <td><code>sub</code> (optional)</td>
+        <td>String</td>
+        <td>The subject of this token. This is the user associated with the relevant action, and may not be 
+            present if there is no logged in user.</td>
+    </tr>
+    <tr>
+        <td><code>aud</code> (optional)</td>
+        <td>String or String[]</td>
+        <td>The audience(s) of this token. For REST API calls from an add-on to a product, the audience claim can be
+        used to disambiguate the intended recipients. This attribute is not used for JIRA and Confluence at the moment,
+        but will become mandatory when making REST calls from an add-on to e.g. the bitbucket.org domain.</td>
+    </tr>
+    <tr>
+        <td><code>context</code> (optional)</td>
+        <td>Object</td>
+        <td>The context claim is an extension added by Atlassian Connect which may contain useful context for outbound requests (from the product to your add-on).
+
+            The current user (the same user in the <code>sub</code> claim) is added to the context. This contains the userKey, username and display name for the subject.
+
+            <pre>"context": {
+    "user": {
+        "userKey": "batman",
+        "username": "bwayne",
+        "displayName": "Bruce Wayne"
+    }
+}
+            </pre>
+
+            <ul>
+                <li><code>userKey</code> — the primary key of the user. Anytime you want to store a reference to a user in long term storage (eg a database or index) you should use the key because it can never change. The user key should never be displayed to the user as it may be a non human readable value.</li>
+                <li><code>username</code> — a unique secondary key, but should not be stored in long-term storage because it can change over time. This is the value that the user logs into the application with, and may be displayed to the user.</li>
+                <li><code>displayName</code> — the user's name.</li>
+            </ul>
+
+        </td>
+    </tr>
+
+</tbody></table>
+
+<p>You should use a little leeway when processing time-based claims, as clocks may drift apart.
+The JWT specification suggests no more than a few minutes.
+Judicious use of the time-based claims allows for replays within a limited window.
+This can be useful when all or part of a page is refreshed or when it is valid for a user to
+repeatedly perform identical actions (e.g. clicking the same button).</p>
+<p><a name="jwtlib"></a></p>
+<h2><a name="libraries"></a>JWT libraries</h2>
+<p>Most modern languages have JWT libraries available. We recommend you use one of these libraries
+(or other JWT-compatible libraries) before trying to hand-craft the JWT token.</p>
+<table class="aui">
+    <thead>
+        <tr>
+            <th>Language</th>
+            <th>Library</th>
+        </tr>
+    </thead>
+    <tbody><tr><td>Java</td><td><a href="https://bitbucket.org/atlassian/atlassian-jwt/">atlassian-jwt</a> and <a href="https://code.google.com/p/jsontoken/">jsontoken</a></td></tr>
+    <tr><td>Python</td><td><a href="https://github.com/jpadilla/pyjwt">pyjwt</a></td></tr>
+    <tr><td>Node.js</td><td><a href="https://github.com/hokaccha/node-jwt-simple">node-jwt-simple</a></td></tr>
+    <tr><td>Ruby</td><td><a href="https://github.com/progrium/ruby-jwt">ruby-jwt</a></td></tr>
+    <tr><td>PHP</td><td><a href="https://github.com/firebase/php-jwt">firebase php-jwt</a> and <a href="https://github.com/luciferous/jwt">luciferous jwt</a></td></tr>
+    <tr><td>.NET</td><td><a href="https://github.com/johnsheehan/jwt">jwt</a></td></tr>
+    <tr><td>Haskell</td><td><a href="http://hackage.haskell.org/package/jwt">haskell-jwt</a></td></tr>
+</tbody></table>
+
+<p>The <a href="http://jwt-decoder.herokuapp.com/jwt/decode">JWT decoder</a> is a handy web based decoder for Atlassian Connect JWT tokens.</p>
+<p><a name="create"></a></p>
+<h2><a name="creating-token"></a>Creating a JWT token</h2>
+<p>Here is an example of creating a JWT token, in Java, using atlassian-jwt and nimbus-jwt:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 746px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">io</span>.<span class="cm-variable">UnsupportedEncodingException</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">security</span>.<span class="cm-variable">NoSuchAlgorithmException</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">util</span>.<span class="cm-variable">HashMap</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">core</span>.<span class="cm-variable">writer</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">httpclient</span>.<span class="cm-variable">CanonicalHttpUriRequest</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">7</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">writer</span>.<span class="cm-variable">JwtJsonBuilder</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">8</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">writer</span>.<span class="cm-variable">JwtWriterFactory</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">9</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">10</div></div><pre><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-variable">JWTSample</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">11</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">12</div></div><pre> &nbsp;  <span class="cm-keyword">public</span> <span class="cm-variable">String</span> <span class="cm-variable">createUriWithJwt</span>()</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">13</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">throws</span> <span class="cm-variable">UnsupportedEncodingException</span>, <span class="cm-variable">NoSuchAlgorithmException</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">14</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">long</span> <span class="cm-variable">issuedAt</span> <span class="cm-operator">=</span> <span class="cm-variable">System</span>.<span class="cm-variable">currentTimeMillis</span>() <span class="cm-operator">/</span> <span class="cm-number">1000L</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">15</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">long</span> <span class="cm-variable">expiresAt</span> <span class="cm-operator">=</span> <span class="cm-variable">issuedAt</span> <span class="cm-operator">+</span> <span class="cm-number">180L</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">16</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">key</span> <span class="cm-operator">=</span> <span class="cm-string">"atlassian-connect-addon"</span>; <span class="cm-comment">//the key from the add-on descriptor</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">17</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">sharedSecret</span> <span class="cm-operator">=</span> <span class="cm-string">"..."</span>; &nbsp;  <span class="cm-comment">//the sharedsecret key received</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">18</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-comment">//during the addon installation handshake</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">19</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">method</span> <span class="cm-operator">=</span> <span class="cm-string">"GET"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">20</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">baseUrl</span> <span class="cm-operator">=</span> <span class="cm-string">"http://localhost:2990/jira"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">21</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">contextPath</span> <span class="cm-operator">=</span> <span class="cm-string">"/jira"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">22</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">apiPath</span> <span class="cm-operator">=</span> <span class="cm-string">"/rest/api/latest/serverInfo"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">23</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">24</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">JwtJsonBuilder</span> <span class="cm-variable">jwtBuilder</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JsonSmartJwtJsonBuilder</span>()</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">25</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  .<span class="cm-variable">issuedAt</span>(<span class="cm-variable">issuedAt</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">26</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  .<span class="cm-variable">expirationTime</span>(<span class="cm-variable">expiresAt</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">27</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  .<span class="cm-variable">issuer</span>(<span class="cm-variable">key</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">28</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">29</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">CanonicalHttpUriRequest</span> <span class="cm-variable">canonical</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">CanonicalHttpUriRequest</span>(<span class="cm-variable">method</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">30</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-variable">apiPath</span>, <span class="cm-variable">contextPath</span>, <span class="cm-keyword">new</span> <span class="cm-variable">HashMap</span>());</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">31</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">JwtClaimsBuilder</span>.<span class="cm-variable">appendHttpRequestClaims</span>(<span class="cm-variable">jwtBuilder</span>, <span class="cm-variable">canonical</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">32</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">33</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">JwtWriterFactory</span> <span class="cm-variable">jwtWriterFactory</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">NimbusJwtWriterFactory</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">34</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">jwtbuilt</span> <span class="cm-operator">=</span> <span class="cm-variable">jwtBuilder</span>.<span class="cm-variable">build</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">35</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">jwtToken</span> <span class="cm-operator">=</span> <span class="cm-variable">jwtWriterFactory</span>.<span class="cm-variable">macSigningWriter</span>(<span class="cm-variable">SigningAlgorithm</span>.<span class="cm-variable">HS256</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">36</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-variable">sharedSecret</span>).<span class="cm-variable">jsonToJwt</span>(<span class="cm-variable">jwtbuilt</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">37</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">38</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">apiUrl</span> <span class="cm-operator">=</span> <span class="cm-variable">baseUrl</span> <span class="cm-operator">+</span> <span class="cm-variable">apiPath</span> <span class="cm-operator">+</span> <span class="cm-string">"?jwt="</span> <span class="cm-operator">+</span> <span class="cm-variable">jwtToken</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">39</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">return</span> <span class="cm-variable">apiUrl</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">40</div></div><pre> &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">41</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 746px;"></div><div class="CodeMirror-gutters" style="height: 746px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+
+<p><a name="decode"></a></p>
+<h2><a name="decoding-and-verifying-token"></a>Decoding and verifying a JWT token</h2>
+<p>Here is a minimal example of decoding and verifying a JWT token, in Java, using atlassian-jwt and nimbus-jwt.
+<strong>NOTE:</strong> This example does not include any error handling.
+See <a href="https://bitbucket.org/atlassian/atlassian-jwt/src/master/core/src/main/java/com/atlassian/jwt/core/http/auth/AbstractJwtAuthenticator.java"><code>AbstractJwtAuthenticator</code></a>
+from atlassian-jwt for recommendations of how to handle the different error cases.</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 512px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">core</span>.<span class="cm-variable">http</span>.<span class="cm-variable">JavaxJwtRequestExtractor</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">core</span>.<span class="cm-variable">reader</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">exception</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">atlassian</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">reader</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">javax</span>.<span class="cm-variable">servlet</span>.<span class="cm-variable">http</span>.<span class="cm-variable">HttpServletRequest</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">7</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">io</span>.<span class="cm-variable">UnsupportedEncodingException</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">8</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">security</span>.<span class="cm-variable">NoSuchAlgorithmException</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">9</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">util</span>.<span class="cm-variable">Map</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">10</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">11</div></div><pre><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-variable">JWTVerificationSample</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">12</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">13</div></div><pre> &nbsp;  <span class="cm-keyword">public</span> <span class="cm-variable">Jwt</span> <span class="cm-variable">verifyRequest</span>(<span class="cm-variable">HttpServletRequest</span> <span class="cm-variable">request</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">14</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">JwtIssuerValidator</span> <span class="cm-variable">issuerValidator</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">15</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">JwtIssuerSharedSecretService</span> <span class="cm-variable">issuerSharedSecretService</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">16</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">throws</span> <span class="cm-variable">UnsupportedEncodingException</span>, <span class="cm-variable">NoSuchAlgorithmException</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">17</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">JwtVerificationException</span>, <span class="cm-variable">JwtIssuerLacksSharedSecretException</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">18</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">JwtUnknownIssuerException</span>, <span class="cm-variable">JwtParseException</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">19</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">JwtReaderFactory</span> <span class="cm-variable">jwtReaderFactory</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">NimbusJwtReaderFactory</span>(</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">20</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-variable">issuerValidator</span>, <span class="cm-variable">issuerSharedSecretService</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">21</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">JavaxJwtRequestExtractor</span> <span class="cm-variable">jwtRequestExtractor</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JavaxJwtRequestExtractor</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">22</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">CanonicalHttpRequest</span> <span class="cm-variable">canonicalHttpRequest</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">23</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-operator">=</span> <span class="cm-variable">jwtRequestExtractor</span>.<span class="cm-variable">getCanonicalHttpRequest</span>(<span class="cm-variable">request</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">24</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">Map</span> <span class="cm-variable">requiredClaims</span> <span class="cm-operator">=</span> <span class="cm-variable">JwtClaimVerifiersBuilder</span>.<span class="cm-variable">build</span>(<span class="cm-variable">canonicalHttpRequest</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">25</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">jwt</span> <span class="cm-operator">=</span> <span class="cm-variable">jwtRequestExtractor</span>.<span class="cm-variable">extractJwt</span>(<span class="cm-variable">request</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">26</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">return</span> <span class="cm-variable">jwtReaderFactory</span>.<span class="cm-variable">getReader</span>(<span class="cm-variable">jwt</span>).<span class="cm-variable">readAndVerify</span>(<span class="cm-variable">jwt</span>, <span class="cm-variable">requiredClaims</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">27</div></div><pre> &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">28</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 512px;"></div><div class="CodeMirror-gutters" style="height: 512px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+
+<h3><a name="decoding-token"></a>Decoding a JWT token</h3>
+<p>Decoding the JWT token reverses the steps followed during the creation of the token,
+to extract the header, claims and signature. Here is an example in Java:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 134px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre><span class="cm-variable">String</span> <span class="cm-variable">jwtToken</span> <span class="cm-operator">=</span> ...;<span class="cm-comment">//e.g. extracted from the request</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre><span class="cm-variable">String</span>[] <span class="cm-variable">base64EncodedSegments</span> <span class="cm-operator">=</span> <span class="cm-variable">jwtToken</span>.<span class="cm-variable">split</span>(<span class="cm-string">'.'</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre><span class="cm-variable">String</span> <span class="cm-variable">base64EncodedHeader</span> <span class="cm-operator">=</span> <span class="cm-variable">base64EncodedSegments</span>[<span class="cm-number">0</span>];</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre><span class="cm-variable">String</span> <span class="cm-variable">base64EncodedClaims</span> <span class="cm-operator">=</span> <span class="cm-variable">base64EncodedSegments</span>[<span class="cm-number">1</span>];</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre><span class="cm-variable">String</span> <span class="cm-variable">signature</span> <span class="cm-operator">=</span> <span class="cm-variable">base64EncodedSegments</span>[<span class="cm-number">2</span>];</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre><span class="cm-variable">String</span> <span class="cm-variable">header</span> <span class="cm-operator">=</span> <span class="cm-variable">base64decode</span>(<span class="cm-variable">base64EncodedHeader</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">7</div></div><pre><span class="cm-variable">String</span> <span class="cm-variable">claims</span> <span class="cm-operator">=</span> <span class="cm-variable">base64decode</span>(<span class="cm-variable">base64EncodedClaims</span>);</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 134px;"></div><div class="CodeMirror-gutters" style="height: 134px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+
+<p>This gives us the following:</p>
+<p>Header:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 80px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre>{</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre> &nbsp;  <span class="cm-string">"alg"</span>: <span class="cm-string">"HS256"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre> &nbsp;  <span class="cm-string">"typ"</span>: <span class="cm-string">"JWT"</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 80px;"></div><div class="CodeMirror-gutters" style="height: 80px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+<p>Claims:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 116px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre>{</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre> &nbsp;  <span class="cm-string">"iss"</span>: <span class="cm-string">"jira:15489595"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre> &nbsp;  <span class="cm-string">"iat"</span>: <span class="cm-number">1386898951</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre> &nbsp;  <span class="cm-string">"qsh"</span>: <span class="cm-string">"8063ff4ca1e41df7bc90c8ab6d0f6207d491cf6dad7c66ea797b4614b71922e9"</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre> &nbsp;  <span class="cm-string">"exp"</span>: <span class="cm-number">1386899131</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 116px;"></div><div class="CodeMirror-gutters" style="height: 116px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+<p>Signature:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 5px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 26px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><pre><span class="cm-variable">uKqU9dTB6gKwG6jQCuXYAiMNdfNRw98Hw_IWuA5MaMo</span></pre></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+<p><a name="verify"></a></p>
+<h3><a name="verifying-token"></a>Verifying a JWT token</h3>
+<p>JWT libraries typically provide methods to be able to verify a received JWT token.
+Here is an example using nimbus-jose-jwt and json-smart:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 332px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">nimbusds</span>.<span class="cm-variable">jose</span>.<span class="cm-variable">JOSEException</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">nimbusds</span>.<span class="cm-variable">jose</span>.<span class="cm-variable">JWSObject</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">3</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">nimbusds</span>.<span class="cm-variable">jose</span>.<span class="cm-variable">JWSVerifier</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">4</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">nimbusds</span>.<span class="cm-variable">jwt</span>.<span class="cm-variable">JWTClaimsSet</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">5</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">net</span>.<span class="cm-variable">minidev</span>.<span class="cm-variable">json</span>.<span class="cm-variable">JSONObject</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">6</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">7</div></div><pre><span class="cm-keyword">public</span> <span class="cm-variable">JWTClaimsSet</span> <span class="cm-variable">read</span>(<span class="cm-variable">String</span> <span class="cm-variable">jwt</span>, <span class="cm-variable">JWSVerifier</span> <span class="cm-variable">verifier</span>) <span class="cm-keyword">throws</span> <span class="cm-variable">ParseException</span>, <span class="cm-variable">JOSEException</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">8</div></div><pre>{</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">9</div></div><pre> &nbsp;  <span class="cm-variable">JWSObject</span> <span class="cm-variable">jwsObject</span> <span class="cm-operator">=</span> <span class="cm-variable">JWSObject</span>.<span class="cm-variable">parse</span>(<span class="cm-variable">jwt</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">10</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">11</div></div><pre> &nbsp;  <span class="cm-keyword">if</span> (<span class="cm-operator">!</span><span class="cm-variable">jwsObject</span>.<span class="cm-variable">verify</span>(<span class="cm-variable">verifier</span>))</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">12</div></div><pre> &nbsp;  {</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">13</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">throw</span> <span class="cm-keyword">new</span> <span class="cm-variable">IllegalArgumentException</span>(<span class="cm-string">"Fraudulent JWT token: "</span> <span class="cm-operator">+</span> <span class="cm-variable">jwt</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">14</div></div><pre> &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">15</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">16</div></div><pre> &nbsp;  <span class="cm-variable">JSONObject</span> <span class="cm-variable">jsonPayload</span> <span class="cm-operator">=</span> <span class="cm-variable">jwsObject</span>.<span class="cm-variable">getPayload</span>().<span class="cm-variable">toJSONObject</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">17</div></div><pre> &nbsp;  <span class="cm-keyword">return</span> <span class="cm-variable">JWTClaimsSet</span>.<span class="cm-variable">parse</span>(<span class="cm-variable">jsonPayload</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">18</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 332px;"></div><div class="CodeMirror-gutters" style="height: 332px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+
+<p><a name="qsh"></a></p>
+<h3><a name="qsh"></a>Creating a query string hash</h3>
+<p>A query string hash is a signed canonical request for the URI of the API you want to call.</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 42px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 37px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 37px; min-height: 44px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">1</div></div><pre><span class="cm-variable">qsh</span> <span class="cm-operator">=</span> <span class="cm-variable">`sign</span>(<span class="cm-variable">canonical</span><span class="cm-operator">-</span><span class="cm-variable">request</span>)<span class="cm-variable">`</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -37px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 20px;">2</div></div><pre><span class="cm-variable">canonical</span><span class="cm-operator">-</span><span class="cm-variable">request</span> <span class="cm-operator">=</span> <span class="cm-variable">`canonical</span><span class="cm-operator">-</span><span class="cm-variable">method</span> <span class="cm-operator">+</span> <span class="cm-string">'&amp;'</span> <span class="cm-operator">+</span> <span class="cm-variable">canonical</span><span class="cm-operator">-</span><span class="cm-variable">URI</span> <span class="cm-operator">+</span> <span class="cm-string">'&amp;'</span> <span class="cm-operator">+</span> <span class="cm-variable">canonical</span><span class="cm-operator">-</span><span class="cm-variable">query</span><span class="cm-operator">-</span><span class="cm-variable">string`</span></pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 44px;"></div><div class="CodeMirror-gutters" style="height: 44px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 28px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+<p>A canonical request is a normalised representation of the URI. Here is an example. For the following URL,
+assuming you want to do a "GET" operation:</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 5px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 26px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><pre><span class="cm-string">"http://localhost:2990/path/to/service?zee_last=param&amp;repeated=parameter 1&amp;first=param&amp;repeated=parameter 2"</span></pre></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+<p>The canonical request is</p>
+<pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 5px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 0px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 26px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><pre><span class="cm-string">"GET&amp;/path/to/service&amp;first=param&amp;repeated=parameter%201,parameter%202&amp;zee_last=param"</span></pre></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 26px;"></div><div class="CodeMirror-gutters" style="display: none; height: 26px;"></div></div></div></pre>
+<p>To create a query string hash, follow the detailed instructions below:</p>
+<ol>
+<li>Compute canonical method<ul>
+<li>Simply the upper-case of the method name (e.g. <code>"GET"</code> or <code>"PUT"</code>)<br><br></li>
+</ul>
+</li>
+<li>Append the character <code>'&amp;'</code><br><br></li>
+<li>Compute canonical URI<ul>
+<li>Discard the protocol, server, port, context path and query parameters from the full URL.<ul>
+<li>For requests targeting add-ons discard the <code>baseUrl</code> in the add-on descriptor.</li>
+</ul>
+</li>
+<li>Removing the context path allows a reverse proxy to redirect incoming requests for <code>"jira.example.com/getsomething"</code>
+to <code>"example.com/jira/getsomething"</code> without breaking authentication. The requester cannot know that the reverse proxy
+will prepend the context path <code>"/jira"</code> to the originally requested path <code>"/getsomething"</code></li>
+<li>Empty-string is not permitted; use <code>"/"</code> instead.</li>
+<li>Url-encode any <code>'&amp;'</code> characters in the path.</li>
+<li>Do not suffix with a <code>'/'</code> character unless it is the only character. e.g.<ul>
+<li>Canonical URI of <code>"http://localhost:2990/jira/some/path/?param=value"</code> is <code>"/some/path"</code></li>
+<li>Canonical URI of <code>"http://localhost:2990"</code> is <code>"/"</code>
+<br><br></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>Append the character <code>'&amp;'</code><br><br></li>
+<li><p>Compute canonical query string</p>
+<ul>
+<li>The query string will use <a href="http://en.wikipedia.org/wiki/Percent-encoding">percent-encoding</a>.</li>
+<li>Sort the query parameters primarily by their percent-encoded names and secondarily by their percent-encoded values.</li>
+<li>Sorting is by codepoint: <code>sort(["a", "A", "b", "B"]) =&gt; ["A", "B", "a", "b"]</code></li>
+<li>For each parameter append its percent-encoded name, the <code>'='</code> character and then its percent-encoded value.</li>
+<li>In the case of repeated parameters append the <code>','</code> character and subsequent percent-encoded values.</li>
+<li>Ignore the <code>jwt</code> parameter, if present.</li>
+<li>Some particular values to be aware of:<ul>
+<li>A whitespace character is encoded as <code>"%20"</code>,</li>
+<li><code>"+"</code> as <code>"%2B"</code>,</li>
+<li><code>"*"</code> as <code>"%2A"</code> and</li>
+<li><code>"~"</code> as <code>"~"</code>.<br>
+(These values used for consistency with OAuth1.)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Convert the canonical request string to bytes</p>
+<ul>
+<li>The encoding used to represent characters as bytes is <code>UTF-8</code><br><br></li>
+</ul>
+</li>
+<li>Hash the canonical request bytes using the <code>SHA-256</code> algorithm<ul>
+<li>e.g. The <code>SHA-256</code> hash of <code>"foo"</code> is `"2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae</li>
+</ul>
+</li>
+</ol>
+<h2><a name="creating-token-manually"></a> Advanced: Creating a JWT token manually</h2>
+<div class="aui-message warning">
+    <p class="title">
+        <span class="aui-icon icon-warning"></span>
+        <strong>Disclaimer</strong>
+    </p>
+    You should only need to read this section if you are planning to create JWT tokens manually,
+    i.e. if you are not using one of the libraries listed in the previous section
+</div>
+
+<h3><a name="more-details"></a>More details on JWT tokens</h3>
+<p>The format of a JWT token is simple: <code>&lt;base64-encoded header&gt;.&lt;base64-encoded claims&gt;.&lt;signature&gt;</code>.</p>
+<ul>
+<li>Each section is separated from the others by a period character (<code>.</code>).</li>
+<li>Each section is base-64 encoded, so you will need to decode each one to make them human-readable.</li>
+<li>The header specifies a very small amount of information that the receiver needs in order to parse and verify the JWT token.<ul>
+<li>All JWT token headers state that the type is "JWT".</li>
+<li>The algorithm used to sign the JWT token is needed so that the receiver can verify the signature.</li>
+</ul>
+</li>
+<li>The claims are a list of assertions that the issuer is making: each says that "this named field" has "this value".<ul>
+<li>Some, like the "iss" claim, which identifies the issuer of this JWT token, have standard names and uses.</li>
+<li>Others are custom claims. We limit our use of custom claims as much as possible, for ease of implementation.</li>
+</ul>
+</li>
+<li>The signature is computed by using an algorithm such as HMAC SHA-256 plus the header and claims sections.<ul>
+<li>The receiver verifies that the signature must have been computed using the genuine JWT header and claims sections,
+the indicated algorithm and a previously established secret.</li>
+<li>An attacker tampering with the header or claims will cause signature verification to fail.</li>
+<li>An attacker signing with a different secret will cause signature verification to fail.</li>
+<li>There are various algorithm choices legal in the JWT spec. In atlassian-connect version 1.0 we support HMAC SHA-256. <strong>Important:</strong> your implementation should discard any JWT tokens which specify <code>alg: none</code> as these are not subject to signature verification.</li>
+</ul>
+</li>
+</ul>
+<h3>Steps to Follow</h3>
+<ol>
+<li>Create a header JSON object</li>
+<li>Convert the header JSON object to a UTF-8 encoded string and base-64 encode it. That gives you encodedHeader.</li>
+<li>Create a claims JSON object, including a <a href="https://developer.atlassian.com/static/connect/docs/latest/concepts/understanding-jwt.html#qsh">query string hash</a></li>
+<li>Convert the claims JSON object to a UTF-8 encoded string and base-64 encode it. That gives you encodedClaims.</li>
+<li>Concatenate the encoded header, a period character (<code>.</code>) and the encoded claims set. That gives you signingInput = encodedHeader+ "." + encodedClaims.</li>
+<li>Compute the signature of signingInput using the JWT or cryptographic library of your choice. Then base64 encode it. That gives you encodedSignature.</li>
+<li>concatenate the signing input, another period character and the signature, which gives you the JWT token. jwtToken = signingInput + "." + encodedSignature</li>
+</ol>
+<h3>Example</h3>
+<p> Here is an example in Java using gson, commons-codec, and the Java security and crypto libraries:</p>
+ <pre><div class="CodeMirror cm-s-neat CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 7px; left: 43px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" style="position: absolute; padding: 0px; width: 1000px; height: 1em; outline: none; font-size: 4px;" tabindex="0"></textarea></div><div class="CodeMirror-hscrollbar" style="left: 38px;"><div style="height: 1px; width: 0px;"></div></div><div class="CodeMirror-vscrollbar"><div style="width: 1px; height: 0px;"></div></div><div class="CodeMirror-scrollbar-filler"></div><div class="CodeMirror-gutter-filler"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 38px; min-height: 1808px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1; display: none;"></div><div class="CodeMirror-code"><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">1</div></div><pre><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-variable">JwtClaims</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">2</div></div><pre> &nbsp; &nbsp; <span class="cm-keyword">protected</span> <span class="cm-variable">String</span> <span class="cm-variable">iss</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">3</div></div><pre> &nbsp; &nbsp; <span class="cm-keyword">protected</span> <span class="cm-keyword">long</span> <span class="cm-variable">iat</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">4</div></div><pre> &nbsp; &nbsp; <span class="cm-keyword">protected</span> <span class="cm-keyword">long</span> <span class="cm-variable">exp</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">5</div></div><pre> &nbsp; &nbsp; <span class="cm-keyword">protected</span> <span class="cm-variable">String</span> <span class="cm-variable">qsh</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">6</div></div><pre> &nbsp; &nbsp; <span class="cm-keyword">protected</span> <span class="cm-variable">String</span> <span class="cm-variable">sub</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">7</div></div><pre> &nbsp;  <span class="cm-comment">// + getters/setters/constructors</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">8</div></div><pre>}</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">9</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">10</div></div><pre>[...]</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">11</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">12</div></div><pre><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-variable">JwtHeader</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">13</div></div><pre> &nbsp;  <span class="cm-keyword">protected</span> <span class="cm-variable">String</span> <span class="cm-variable">alg</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">14</div></div><pre> &nbsp;  <span class="cm-keyword">protected</span> <span class="cm-variable">String</span> <span class="cm-variable">typ</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">15</div></div><pre> &nbsp; &nbsp; <span class="cm-comment">// + getters/setters/constructors</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">16</div></div><pre>}</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">17</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">18</div></div><pre>[...]</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">19</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">20</div></div><pre><span class="cm-keyword">import</span> <span class="cm-keyword">static</span> <span class="cm-variable">org</span>.<span class="cm-variable">apache</span>.<span class="cm-variable">commons</span>.<span class="cm-variable">codec</span>.<span class="cm-variable">binary</span>.<span class="cm-variable">Base64</span>.<span class="cm-variable">encodeBase64URLSafeString</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">21</div></div><pre><span class="cm-keyword">import</span> <span class="cm-keyword">static</span> <span class="cm-variable">org</span>.<span class="cm-variable">apache</span>.<span class="cm-variable">commons</span>.<span class="cm-variable">codec</span>.<span class="cm-variable">binary</span>.<span class="cm-variable">Hex</span>.<span class="cm-variable">encodeHexString</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">22</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">io</span>.<span class="cm-variable">UnsupportedEncodingException</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">23</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">security</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">24</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">javax</span>.<span class="cm-variable">crypto</span>.<span class="cm-operator">*</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">25</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">javax</span>.<span class="cm-variable">crypto</span>.<span class="cm-variable">spec</span>.<span class="cm-variable">SecretKeySpec</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">26</div></div><pre><span class="cm-keyword">import</span> <span class="cm-variable">com</span>.<span class="cm-variable">google</span>.<span class="cm-variable">gson</span>.<span class="cm-variable">Gson</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">27</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">28</div></div><pre><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-variable">JwtBuilder</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">29</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">30</div></div><pre> &nbsp;  <span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable">String</span> <span class="cm-variable">generateJWTToken</span>(<span class="cm-variable">String</span> <span class="cm-variable">requestUrl</span>, <span class="cm-variable">String</span> <span class="cm-variable">canonicalUrl</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">31</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">key</span>, <span class="cm-variable">String</span> <span class="cm-variable">sharedSecret</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">32</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-keyword">throws</span> <span class="cm-variable">NoSuchAlgorithmException</span>, <span class="cm-variable">UnsupportedEncodingException</span>,</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">33</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">InvalidKeyException</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">34</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">35</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">JwtClaims</span> <span class="cm-variable">claims</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JwtClaims</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">36</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">claims</span>.<span class="cm-variable">setIss</span>(<span class="cm-variable">key</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">37</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">claims</span>.<span class="cm-variable">setIat</span>(<span class="cm-variable">System</span>.<span class="cm-variable">currentTimeMillis</span>() <span class="cm-operator">/</span> <span class="cm-number">1000L</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">38</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">claims</span>.<span class="cm-variable">setExp</span>(<span class="cm-variable">claims</span>.<span class="cm-variable">getIat</span>() <span class="cm-operator">+</span> <span class="cm-number">180L</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">39</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">40</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">claims</span>.<span class="cm-variable">setQsh</span>(<span class="cm-variable">getQueryStringHash</span>(<span class="cm-variable">canonicalUrl</span>));</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">41</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">jwtToken</span> <span class="cm-operator">=</span> <span class="cm-variable">sign</span>(<span class="cm-variable">claims</span>, <span class="cm-variable">sharedSecret</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">42</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">return</span> <span class="cm-variable">jwtToken</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">43</div></div><pre> &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">44</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">45</div></div><pre> &nbsp;  <span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable">String</span> <span class="cm-variable">sign</span>(<span class="cm-variable">JwtClaims</span> <span class="cm-variable">claims</span>, <span class="cm-variable">String</span> <span class="cm-variable">sharedSecret</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">46</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">throws</span> <span class="cm-variable">InvalidKeyException</span>, <span class="cm-variable">NoSuchAlgorithmException</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">47</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">String</span> <span class="cm-variable">signingInput</span> <span class="cm-operator">=</span> <span class="cm-variable">getSigningInput</span>(<span class="cm-variable">claims</span>, <span class="cm-variable">sharedSecret</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">48</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">String</span> <span class="cm-variable">signed256</span> <span class="cm-operator">=</span> <span class="cm-variable">signHmac256</span>(<span class="cm-variable">signingInput</span>, <span class="cm-variable">sharedSecret</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">49</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-keyword">return</span> <span class="cm-variable">signingInput</span> <span class="cm-operator">+</span> <span class="cm-string">"."</span> <span class="cm-operator">+</span> <span class="cm-variable">signed256</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">50</div></div><pre> &nbsp; &nbsp; }</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">51</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">52</div></div><pre> &nbsp; &nbsp; <span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable">String</span> <span class="cm-variable">getSigningInput</span>(<span class="cm-variable">JwtClaims</span> <span class="cm-variable">claims</span>, <span class="cm-variable">String</span> <span class="cm-variable">sharedSecret</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">53</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">throws</span> <span class="cm-variable">InvalidKeyException</span>, <span class="cm-variable">NoSuchAlgorithmException</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">54</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">JwtHeader</span> <span class="cm-variable">header</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JwtHeader</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">55</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">header</span>.<span class="cm-variable">alg</span> <span class="cm-operator">=</span> <span class="cm-string">"HS256"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">56</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">header</span>.<span class="cm-variable">typ</span> <span class="cm-operator">=</span> <span class="cm-string">"JWT"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">57</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">Gson</span> <span class="cm-variable">gson</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Gson</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">58</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">String</span> <span class="cm-variable">headerJsonString</span> <span class="cm-operator">=</span> <span class="cm-variable">gson</span>.<span class="cm-variable">toJson</span>(<span class="cm-variable">header</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">59</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">String</span> <span class="cm-variable">claimsJsonString</span> <span class="cm-operator">=</span> <span class="cm-variable">gson</span>.<span class="cm-variable">toJson</span>(<span class="cm-variable">claims</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">60</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">String</span> <span class="cm-variable">signingInput</span> <span class="cm-operator">=</span> <span class="cm-variable">encodeBase64URLSafeString</span>(<span class="cm-variable">headerJsonString</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">61</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; .<span class="cm-variable">getBytes</span>())</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">62</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-operator">+</span> <span class="cm-string">"."</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">63</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-operator">+</span> <span class="cm-variable">encodeBase64URLSafeString</span>(<span class="cm-variable">claimsJsonString</span>.<span class="cm-variable">getBytes</span>());</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">64</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-keyword">return</span> <span class="cm-variable">signingInput</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">65</div></div><pre> &nbsp; &nbsp; }</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">66</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">67</div></div><pre> &nbsp; &nbsp; <span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable">String</span> <span class="cm-variable">signHmac256</span>(<span class="cm-variable">String</span> <span class="cm-variable">signingInput</span>, <span class="cm-variable">String</span> <span class="cm-variable">sharedSecret</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">68</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">throws</span> <span class="cm-variable">NoSuchAlgorithmException</span>, <span class="cm-variable">InvalidKeyException</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">69</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">SecretKey</span> <span class="cm-variable">key</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">SecretKeySpec</span>(<span class="cm-variable">sharedSecret</span>.<span class="cm-variable">getBytes</span>(), <span class="cm-string">"HmacSHA256"</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">70</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">Mac</span> <span class="cm-variable">mac</span> <span class="cm-operator">=</span> <span class="cm-variable">Mac</span>.<span class="cm-variable">getInstance</span>(<span class="cm-string">"HmacSHA256"</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">71</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">mac</span>.<span class="cm-variable">init</span>(<span class="cm-variable">key</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">72</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">return</span> <span class="cm-variable">encodeBase64URLSafeString</span>(<span class="cm-variable">mac</span>.<span class="cm-variable">doFinal</span>(<span class="cm-variable">signingInput</span>.<span class="cm-variable">getBytes</span>()));</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">73</div></div><pre> &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">74</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">75</div></div><pre> &nbsp;  <span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable">String</span> <span class="cm-variable">getQueryStringHash</span>(<span class="cm-variable">String</span> <span class="cm-variable">canonicalUrl</span>)</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">76</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">throws</span> <span class="cm-variable">NoSuchAlgorithmException</span>,<span class="cm-variable">UnsupportedEncodingException</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">77</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">MessageDigest</span> <span class="cm-variable">md</span> <span class="cm-operator">=</span> <span class="cm-variable">MessageDigest</span>.<span class="cm-variable">getInstance</span>(<span class="cm-string">"SHA-256"</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">78</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">md</span>.<span class="cm-variable">update</span>(<span class="cm-variable">canonicalUrl</span>.<span class="cm-variable">getBytes</span>(<span class="cm-string">"UTF-8"</span>));</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">79</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-keyword">byte</span>[] <span class="cm-variable">digest</span> <span class="cm-operator">=</span> <span class="cm-variable">md</span>.<span class="cm-variable">digest</span>();</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">80</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-keyword">return</span> <span class="cm-variable">encodeHexString</span>(<span class="cm-variable">digest</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">81</div></div><pre> &nbsp; &nbsp; }</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">82</div></div><pre> }</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">83</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">84</div></div><pre>[...]</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">85</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">86</div></div><pre><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-variable">Sample</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">87</div></div><pre> &nbsp;  <span class="cm-keyword">public</span> <span class="cm-variable">String</span> <span class="cm-variable">getUrlSample</span>() <span class="cm-keyword">throws</span> <span class="cm-variable">Exception</span> {</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">88</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">requestUrl</span> <span class="cm-operator">=</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">89</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-string">"http://localhost:2990/jira/rest/atlassian-connect/latest/license"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">90</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">canonicalUrl</span> <span class="cm-operator">=</span> <span class="cm-string">"GET&amp;/rest/atlassian-connect/latest/license&amp;"</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">91</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">key</span> <span class="cm-operator">=</span> <span class="cm-string">"..."</span>; &nbsp; &nbsp; <span class="cm-comment">//from the add-on descriptor</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">92</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-comment">//and received during installation handshake</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">93</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">sharedSecret</span> <span class="cm-operator">=</span> <span class="cm-string">"..."</span>; <span class="cm-comment">//received during installation Handshake</span></pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">94</div></div><pre>&nbsp;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">95</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">jwtToken</span> <span class="cm-operator">=</span> <span class="cm-variable">JwtBuilder</span>.<span class="cm-variable">generateJWTToken</span>(</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">96</div></div><pre> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  <span class="cm-variable">requestUrl</span>, <span class="cm-variable">canonicalUrl</span>, <span class="cm-variable">key</span>, <span class="cm-variable">sharedSecret</span>);</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">97</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-variable">String</span> <span class="cm-variable">restAPIUrl</span> <span class="cm-operator">=</span> <span class="cm-variable">requestUrl</span> <span class="cm-operator">+</span> <span class="cm-string">"?jwt="</span> <span class="cm-operator">+</span> <span class="cm-variable">jwtToken</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">98</div></div><pre> &nbsp; &nbsp; &nbsp;  <span class="cm-keyword">return</span> <span class="cm-variable">restAPIUrl</span>;</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">99</div></div><pre> &nbsp;  }</pre></div><div style="position: relative;"><div style="position: absolute; left: -38px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 21px;">100</div></div><pre>}</pre></div></div><div class="CodeMirror-cursor" style="left: 4px; top: 2px; height: 14px;">&nbsp;</div><div class="CodeMirror-cursor CodeMirror-secondarycursor" style="display: none;">&nbsp;</div></div></div></div></div><div style="position: absolute; height: 30px; width: 1px; top: 1808px;"></div><div class="CodeMirror-gutters" style="height: 1808px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 29px;"></div><div class="CodeMirror-gutter CodeMirror-foldgutter"></div></div></div></div></pre>
+
+                        
+                    </section>
+                </div>
+            </div>
+        </section>
+        <footer id="footer" role="contentinfo">
+            <section class="footer-body">
+                <ul id="aui-footer-list">
+                    <li>Copyright © 2009-2014 Atlassian</li>
+                </ul>
+                <div id="footer-logo">
+                    <a href="http://www.atlassian.com/">Atlassian</a>
+                </div>
+            </section>
+        </footer>
+    </div>
+    <script>
+        $(".diagram").sequenceDiagram({theme: 'simple'});
+
+        var codeDefaults = {
+            mode: "clike",
+            theme: "neat",
+            lineNumbers:true,
+            gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
+            indentWithTabs:false,
+            electricChars:true,
+            matchBrackets:true,
+            autoCloseBrackets:true,
+            highlightSelectionMatches:true,
+            indentUnit:2,
+            lineWrapping: true,
+            readOnly:true
+        };
+
+        $('.code').each(function(){
+            CodeMirror.fromTextArea(this, codeDefaults);
+        });
+
+        function cmIfyPreCodeBlocks(block) {
+            var $sample = $(block),
+                lang = $sample.data('lang'),
+                text = $sample.text().trim(),
+                newOpts = $.extend({}, codeDefaults);
+
+            if (text.split("\n").length <= 1 || lang === "text") {
+                newOpts.lineNumbers = false;
+                newOpts.gutters = [];
+            }
+            newOpts.value = text;
+
+            if (lang) {
+                newOpts.mode = (lang == 'java' ? 'text/x-java' : lang);
+            }
+
+            var cm = CodeMirror(
+                function(node){
+                    block.parentNode.replaceChild(node, block)
+                }, newOpts
+            );
+        }
+        $('pre code').each(function(){
+            cmIfyPreCodeBlocks(this)
+        });
+
+        $(".expandNextPre").each(
+            function(index)
+            {
+                $(this).nextAll("pre").first().addClass("aui-expander-content");
+            }
+        );
+    </script>
+    <!-- issue collector -->
+    <script type="text/javascript" src="./Atlassian_Understanding JWT_files/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin-issuecollector.js"></script>
+    <script>
+        window.ATL_JQ_PAGE_PROPS = {
+            "triggerFunction": function(showCollectorDialog) {
+                jQuery(".issue-collector-feedback").click(function(e) {
+                    e.preventDefault();
+                    showCollectorDialog();
+                });
+            }
+        };
+    </script>
+    <!-- Google Analytics -->
+    <script type="text/javascript">
+        if(location.hostname === "developer.atlassian.com") {
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-6032469-43']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+        }
+    </script>
+    <script type="text/javascript">
+        adroll_adv_id = "32VY3BYAQRHLDDVMBEAGU2";
+        adroll_pix_id = "7Q44S6SDXNA4NE4TSAUFGF";
+        (function () {
+            var oldonload = window.onload;
+            window.onload = function() {
+               __adroll_loaded=true;
+               var scr = document.createElement("script");
+               var host = (("https:" == document.location.protocol) ? "https://s.adroll.com" : "http://a.adroll.com");
+               scr.setAttribute('async', 'true');
+               scr.type = "text/javascript";
+               scr.src = host + "/j/roundtrip.js";
+               ((document.getElementsByTagName('head') || [null])[0] ||
+                document.getElementsByTagName('script')[0].parentNode).appendChild(scr);
+               if(oldonload){
+                   oldonload()
+               }
+            };
+        }());
+    </script>
+    <script src="./Atlassian_Understanding JWT_files/connect-host.js"></script>
+    <script type="text/javascript">
+        require(['ac/cookie', 'ac/env', 'ac/inline-dialog', 'ac/dialog', 'ac/messages', 'ac/request', 'ac/history']);
+        window._AP = require('connect-host');
+    </script>
+    <script src="./Atlassian_Understanding JWT_files/connect-user.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/jsandbox.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/startup-commands.js"></script>
+    <script src="./Atlassian_Understanding JWT_files/static-includes.js"></script>
+
+
+
+<div id="atlwdg-blanket" class="atlwdg-blanket" style="display: none;"></div><div id="atlwdg-container" class="atlwdg-popup atlwdg-hidden"></div></body></html>

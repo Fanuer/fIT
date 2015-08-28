@@ -58,10 +58,8 @@ Durch den großen Umfang des Frameworks und da im ersten Schritt nur ein Prototy
 
 \subsection{Herausforderung statusloses Protokol Http}
 \label{ssec:statusloses-http}
-
-\begin{itemize}
-\item Login
-\end{itemize}
+Da HTTP ein statusloses Protokol ist, ist es ohne Weiteres nicht möglich, ein einmal abgerufenes Access-Token wiederzuverwenden. Um dies dennoch zu erreichen, wurde Service \textit{authFactory} entwickelt, welcher sich um das ein- und ausloggen kümmert. Hierbei wird unter Zuhilfenahme der \textit{LocalStorage}-Api ein erhaltenes Access-Token mit dem Nutzernamen und dem Ablaufdatum persistiert. Ist dieser Datensatz vorhanden und das Ablaufdatum noch nicht erreicht, gilt der Nutzer als angemeldet und kann auf seine Trainingspläne zugreifen. \\
+Gleichzeitig wird für die Verwaltung von Inhalt, welchen nur authentifizierte Nutzer abrufen können eine weitere Komponente benutzt, nämlich der \textit{Interceptor}. Dies ist ein spezieller Service, welcher eng mit dem \textit{\$http}-Service verbunden ist. Mit dem Interceptor ist es möglich, eine Request kurz vor- und eine Response direkt nach Erhalt einzusehen und gegebenenfalls darauf zu reagieren. Dies wird verwendet, um vor dem Absenden eines Request den \textit{authorizsation}-Header zu setzen, falls ein Access-Token vorhanden ist. \\ Der Respond ist wegen des eingehenden Statuscodes interessant: Wenn der Web Service mit \textit{401 (Unauthorised)} antwortet, ist der Nutzer nicht angemeldet. Daraufhin wird ein möglicher Datensatz mit einem Access-Token gelöscht und der Nutzer wird auf die Login-Seite umgeleitet\footcite{online:Created_SPA}. 
 
 \subsection{Online-Check}
 \label{ssec:Online-Check}

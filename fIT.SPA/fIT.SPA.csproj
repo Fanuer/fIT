@@ -86,6 +86,9 @@
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="packages.config" />
     <Content Include="Scripts\angular-route.min.js.map" />
+    <None Include="static\CacheManifest.appcache">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\PublishProfiles\fITSPA.pubxml" />
     <Content Include="Scripts\angular-indexed-db.js.map" />
     <Content Include="Scripts\angular-indexed-db.min.js.map" />
@@ -119,6 +122,7 @@
     <Content Include="app\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\default.js" />
     <Content Include="Scripts\jasmine-samples\Player.js" />
     <Content Include="Scripts\jasmine-samples\PlayerSpec.js" />
     <Content Include="Scripts\jasmine-samples\Song.js" />

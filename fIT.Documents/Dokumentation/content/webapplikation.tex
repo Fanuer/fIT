@@ -50,17 +50,11 @@ Damit das MarkUp nicht schnell durch die Nutzung von zusätzliche Direktiven üb
 Stimmt eine Route überein wird der konfigurierte Controller aufgerufen. Dessen Scope wird nach der Abarbeitung an die definierte View weitergegeben. Die Views sind hierbei Html-Dateien mit MarkUp-Schnipsel, innerhalb des View-Containers gerendert werden. Diese MarkUp-Schnipsel liegen ebenfalls auf dem Server. 
 \section{Umsetzung}
 \label{sec:SPA-Umsetzung}
-Durch die vorgestellten
+Durch die Nutzung der vorgestellten Komponenten war es möglich, einen Prototyp, welcher die grundlegenden Anforderungen, die in Kapitel ((ANFORDERUNGEN)) definiert wurden, erfüllt.\footcite{online:Created_SPA} Nachfolgend werden einige Teilaspekte im Zusammenhang mit der Implementierung näher beleuchtet.
 \subsection{Layout mit Twitter Bootstrap}
 \label{ssec:SPA-twitter-bootstrap}
-
-\begin{itemize}
-\item Was ist das 
-\item Vorteile: responsives Verhalten 
-\end{itemize}
-
-\subsection{Online-Check}
-\label{ssec:Online-Check}
+Zur Erstellung einer Oberfläche wurde vollständig auf das bewehrte, quelloffene CSS-Framework \textit{Bootstrap} von Twitter gesetzt. Dies ist unter dem Aspekt designet, einmal definiertes CSS auf allen Endgeräten eine natürliche und gut nutzbare Anwendung entsteht. Dies liegt daran, dass \textit{Bootstrap} es erlaubt, unter Nutzung eines integrierten Grid-Systems eine hoch-responsive Applikation zu erstellen.\footcite{online:get-bootstrap}\\
+Durch den großen Umfang des Frameworks und da im ersten Schritt nur ein Prototyp erzeugt werden sollte, war es möglich, alle Anforderungen in die Web-Applikation zu integrieren ohne, dass weitere Implementierung von CSS nötig war.
 
 \subsection{Herausforderung statusloses Protokol Http}
 \label{ssec:statusloses-http}
@@ -68,6 +62,16 @@ Durch die vorgestellten
 \begin{itemize}
 \item Login
 \end{itemize}
+
+\subsection{Online-Check}
+\label{ssec:Online-Check}
+Der Nutzer soll eine visuelle Rückmeldung darüber bekommen, ob die Applikation gerade eine Verbindung zu Web Service aufbauen kann oder nicht. Dafür wurde der im Beispiel \ref{lst:SPA-controller-navigation} gezeigte Controller um einen Online-Check erweitert. Ruft die Anwendungen in einem 5 Sekunden-Intervall die URI \textit{http://fit-bachelor.azurewebsites.net/api/accounts/ping}. Schlägt diese Anfrage mit den Statuscode \textit{0} fehlt, liegt keine Verbindung vor und der aktuelle Status ändert sich von \textit{Online} zu \textit{Offline}.
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.8\linewidth]{content/images/SPA-Online-Check}
+\caption{Screenshot: Veränderung der Statusanzeige, wenn keine Verbindung zum Internet besteht}
+\label{pic:SPA:OnlineCheck:Statusänderung}
+\end{figure}
 
 \section{Erweiterung um Offline-Nutzung}
 \label{sec:CachedHttpService}

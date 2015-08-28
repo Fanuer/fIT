@@ -6,7 +6,18 @@ function scheduleController($scope, scheduleFactory, authFactory, $location, $ro
         if ($routeParams.id) {
             if (!isNaN($routeParams.id)) {
                 scheduleFactory.getSchedule($routeParams.id).then(function (response) {
-                    $scope.vm = typeof response !== "undefined" ? response.data || response : {};
+                    var result = {};
+                    if (response !== null && typeof response !== "undefined") {
+                        if (angular.isArray(response)) {
+                            result = response[0];
+                        }
+                        else if (response.data) {
+                            result = response.data;
+                        } else {
+                            result = response;
+                        }
+                    }
+                    $scope.vm = result;
                 });
             } else {
                 $scope.vm.userId = authFactory.authentication.userId;
@@ -14,8 +25,8 @@ function scheduleController($scope, scheduleFactory, authFactory, $location, $ro
         }
         else {
             scheduleFactory.getSchedules().then(function (response) {
-              $scope.vm = response.data || response;
-            });
+                $scope.vm = response.data || response;
+            })
         }
     }
 

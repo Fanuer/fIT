@@ -8,7 +8,7 @@ function scheduleFactory(cachedHttp, baseUrl, entityNames) {
         return http.get(baseUrl + 'schedule', entityNames.schedule);
     };
 
-    var _getSchedule = function(id) {
+    var _getSchedule = function (id) {
         return http.get(baseUrl + 'schedule/' + id, entityNames.schedule, id);
     }
 

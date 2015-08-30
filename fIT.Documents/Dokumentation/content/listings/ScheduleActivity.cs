@@ -34,7 +34,7 @@ namespace fITNat
                 connectivityPointer = FindViewById<ImageView>(Resource.Id.ivConnectionSchedule);
                 setConnectivityStatus(OnOffService.Online);
 
-                //Hier die Schedules des Benutzers abholen und in die Liste einfügen
+                //Hier die Schedules des Benutzers abholen und in die Liste einfÃ¼gen
                 ooService = new OnOffService();
                 userID = Intent.GetStringExtra("User");
                 Guid userId = new Guid(userID);
@@ -50,7 +50,7 @@ namespace fITNat
             }
             catch(ArgumentNullException ex)
             {
-                Console.WriteLine("Keine UserId übergeben: " + ex.StackTrace);
+                Console.WriteLine("Keine UserId Ã¼bergeben: " + ex.StackTrace);
             }
             catch(System.Exception exc)
             {
@@ -60,7 +60,7 @@ namespace fITNat
 
         /// <summary>
         /// Clickevent auf ein Element des ListViews
-        /// Geht zu dem ausgewählten Trainingsplan und zeigt dort die Übungen an
+        /// Geht zu dem ausgewÃ¤hlten Trainingsplan und zeigt dort die Ãœbungen an
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -79,7 +79,7 @@ namespace fITNat
         public override void OnBackPressed()
         {
             base.OnBackPressed();
-        }
+        } 
 
 
         /// <summary>

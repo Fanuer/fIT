@@ -12,7 +12,7 @@ private async void bt_ItemClick(object sender, EventArgs e)
         bool result = await ooService.createPracticeAsync(scheduleId, exerciseId, userId, DateTime.Now, weight, repetitions, numberOfRepetitions);
         if(result)
         { 
-            //Zurück zu der Uebungsseite
+            //Zurueck zu der Uebungsseite
             OnBackPressed();
         }
         else
@@ -26,4 +26,4 @@ private async void bt_ItemClick(object sender, EventArgs e)
     catch (ServerException ex){[...]}
     catch(FormatException exc){[...]}
     catch (Exception exce){[...]}
-}
+} 

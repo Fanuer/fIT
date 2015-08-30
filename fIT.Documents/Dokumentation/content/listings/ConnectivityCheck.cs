@@ -17,7 +17,7 @@ Task.Run(async () =>
             {
                 //Online = true;
                 setzeStatus(true);
-                //vorher Offline => jetzt die Aktionen ausführen, die nur lokal gemacht werden konnten
+                //vorher Offline => jetzt die Aktionen ausfuehren, die nur lokal gemacht werden konnten
                 if (WasOffline)
                 {
                     await checkSync();
@@ -33,4 +33,4 @@ Task.Run(async () =>
             System.Threading.Thread.Sleep(10000);
         }
     }
-});
+}); 

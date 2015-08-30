@@ -15,4 +15,4 @@ private void lv_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
     practiceActivity.PutExtra("Schedule", scheduleId);
     practiceActivity.PutExtra("User", userId);
     StartActivity(practiceActivity);
-}
+} 

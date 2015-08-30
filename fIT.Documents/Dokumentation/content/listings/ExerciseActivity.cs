@@ -1,6 +1,6 @@
 /// <summary>
 /// Clickevent auf ein Element des ListViews
-/// Geht zu dem ausgewählten Training
+/// Geht zu dem ausgewaehlten Training
 /// </summary>
 /// <param name="sender"></param>
 /// <param name="e"></param>

@@ -1,2 +1,29 @@
 \chapter{Gegenüberstellung der clientseitigen Implementierungen}
 \label{cha:gegenueberstellung}
+Ziel dieses Kapitels ist die Gegenüberstellung der Erkenntnisse zur Entwicklung einer verlässlichen mobilen Applikation. Hierbei wird das neu erlangte Wissen zur Umsetzung einer Applikation als SPA und als native App bewertet, so dass mit der vorteilhafteren der beiden Optionen der Messeprototyp umgesetzt werden kann.
+
+\section{Umsetzung als SPA}
+\label{sec:gegenueberstellung-SPA}
+Als erstes sollen die Vor- und Nachteile der Umsetzung des Clients als Single Page Application aufgezeigt werden.
+
+\subsection{Vorteile}
+\label{sec:vorteile-SPA}
+Bei der Umsetzung des Clients als Web Applikation zeigen sich die Vorteile besonders in der Umsetzung der Oberfläche. \\
+Durch die Nutzung aktueller Web-Techniken und unter Nutzung geeigneter Frameworks lässt sich sehr leicht ein einheitliches Aussehen schaffen, welche für verschiedene Anzeigegrößen optimiert wurde. Hierbei ist man nicht nur auf mobile Endgeräte beschränkt sondern erhält quasi nebenbei eine Webseite, die bequem eine Desktop-Anwendung ersetzen kann. Auch die Umsetzung der Business-Logik konnte ohne großen Einarbeitung-Aufwand bewerkstelligt werden. Dabei fällt auf, dass durch das Voranschreiten von HTML5 viele Funktionen, welche vor einigen Jahren nur durch Desktop Applikationen umgesetzt werden, heute schon problemlos im Browser abbildbar sind. Hierbei zeigten sich aber auch die Schwächen einer Umsetzung als Web Applikation. 
+
+\subsection{Nachteile}
+\label{sec:nachteile-SPA}
+Wie bereits erwähnt sind viele, aber noch nicht alle Techniken für den Browser umgesetzt. So ist die Umsetzung der \textit{IndexedDB} für iOS und Microsoft-Geräte noch sehr fehleranfällig\footcite{online:caniuse:indexedDB}. In diesem Punkt spiegelt sich auch das größte Problem jeder Web-Umsetzung wieder: Unterschiedliche Browser implementieren einige Apis anders oder teilweise auch gar nicht, sodass vieles der Entwicklungszeit für das Anpassen der Funktionen und Oberflächen für die verschiedenen Browser genutzt werden muss. Wenn es nun so ist, dass Kern-Komponenten wie in unserem Fall die IndexedDB in einigen wichtigen Browsern (iOS Safari-Nutzung bei 7.33\% (v. 8.1-8.4 Stand 31.08.2015)\footcite{online:caniuse:indexedDB}) nicht ausreichen unterstützt werden, ist die Umsetzung dieses Teilaspekts für den produktiven Einsatz fast unmöglich. \\
+Ein weiterer Nachteil ergibt sich aus der Nutzung von AngularJs. Da die gesamte Datenaufbereitung mit Authentifizierung und dem Routing auf Seiten des Clients passiert, können die lokal gespeicherten Daten mit Hilfe der Entwicklungswerkzeuge des Browsers einfach ausgelesen werden. Darum wäre es unter Sicherheitsaspekten fahrlässig, die hier vorgestellte Implementierung der Authentifizierung (siehe Kapitel \ref{ssec:statusloses-http}) ohne weitere Sicherheitsmaßnahmen produktiv zu stellen.
+
+\section{Umsetzung als native App}
+\label{sec:gegenueberstellung-native-app}
+
+\subsection{Vorteile}
+\label{sec:vorteile-native-app}
+
+\subsection{Nachteile}
+\label{sec:nachteile-native-app}
+
+\section{Fazit: Weiterentwicklung als native App}
+\label{sec:gegenueberstellung-fazit}

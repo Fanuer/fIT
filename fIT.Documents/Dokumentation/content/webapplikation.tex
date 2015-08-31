@@ -115,7 +115,7 @@ Damit der Nutzer nicht auf die Abarbeitung der Synchronisationsprozesse warten m
 \subsection{Das AppCache-Manifest}
 \label{ssec:appcache-manifest}
 Der Einsatz des \textit{cachedHttpService} erlaubt eine Nutzung der \textit{SPA} auch ohne, dass eine Verbindung zum Web Service besteht. Doch noch braucht die \textit{SPA} eine Verbindung zu ihrem Host, damit statische Dateien wie \textit{View}-Templates und \textit{Script}-Dateien nachgeladen werden können. Diese Verbindungen können durch die Nutzung eines AppCaches stark reduziert werden. \\
-Der \textit{AppCache} wurde im Zuge von \textit{HTML5} implementiert und wird von allen gängigen Browsern in der aktuellen Version unterstützt\footcite{online:caniuse:appcache}. Hierbei wird eine Manifest-Datei auf dem Server abgelegt, welche Aussagen darüber trifft, welche Dateien lokal auf einem Client gespeichert werden sollen. Im Falle dieser Arbeit wurde konfiguriert, dass alle Dateien lokal gespeichert werden (siehe Beispiel \ref{lst:SPA-appcache-manifest} ab Zeile \ref{line:appcache:local}ff.). 
+Der \textit{AppCache} wurde im Zuge von \textit{HTML5} implementiert und wird von allen gängigen Browsern in der aktuellen Version unterstützt\footcite{online:AngularJs:indexedDB:w3c}\footcite{online:caniuse:appcache}. Hierbei wird eine Manifest-Datei auf dem Server abgelegt, welche Aussagen darüber trifft, welche Dateien lokal auf einem Client gespeichert werden sollen. Im Falle dieser Arbeit wurde konfiguriert, dass alle Dateien lokal gespeichert werden (siehe Beispiel \ref{lst:SPA-appcache-manifest} ab Zeile \ref{line:appcache:local}ff.). 
 
 \lstinputlisting[caption=Cache-Manifest-Datei, label=lst:SPA-appcache-manifest, style=htmlcssjs]{content/listings/CacheManifest.appcache}
 

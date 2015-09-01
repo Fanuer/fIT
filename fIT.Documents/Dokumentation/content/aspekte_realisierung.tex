@@ -1,14 +1,21 @@
 \chapter{Aspekte der Realisierung}
 \label{cha:realisierung}
+In diesem Kapitel werden allgemeine Komponenten für die Umsetzung dieses Projektes beschrieben. Dabei werden jeweils nur diese Techniken vorgestellt, welche von mehreren Komponenten genutzt werden, sodass sie in den jeweils dafür vorgesehenen Kapiteln mehrfach genannt werden müssten. \\
+Als generelle Aussage ist zu erwähnen, dass versucht wurde, möglichst viele Entwicklungswerkzeuge eines Unternehmens zu benutzen um mögliche positive Synergieeffekte in Form von leichter Kommunikation zwischen den gewählten Komponenten zu gewährleisten. Zur Umsetzung dieses Projekts wurden weitestgehend die Produkte der Softwarefirma \textit{Microsoft} genutzt.
 
 \section{Entwicklungsumgebung}
 \label{sec:entwicklungsumgebung}
+Für die Entwicklung sämtlicher Komponenten wurde \textit{Microsoft Visual Studio 2015 Community Edition} (kurz \textit{Visual Studio}) benutzt. Hierbei handelt es sich um die Standard-Entwicklungsplattform von \textit{Microsoft}. Diese Entscheidung wurde aus Gründen getroffen:
+\begin{itemize}
+\item Die Clients sollen durch die Drittanbieter-Frameworks \textit{Xamarin} und \textit{AngularJs} umgesetzt werden. Beide Frameworks sind entweder bereits in die Entwicklungsumgebung integriert oder können leicht nachträglich zum Projekt hinzugefügt werden. Die hierfür benutzten Programmiersprachen \textit{C\#} und \textit{Javascript} bzw. den kompletten \ac{Web Stack} werden vollständig mit gängigen \ac{IDE}-Features wie Autovervollständigung, Syntax-Highlighting und Debugger unterstützt. 
+\item Die Entwicklung von Web Anwendungen wird erheblich erleichtert, da \textit{Visual Studio} mit einem integrierter Webserver ausgeliefert wird. Dadurch können entwickelte Applikationen direkt lokal getestet werden, ohne, dass ein zusätzlicher Webserver installiert oder die Anwendung auf einen Webserver deployt werden muss.
+\item Eine starke Integration von anderen \textit{Microsoft} Produkten. Hierzu zählen die Hosting-Plattform \textit{Microsoft Azure} und das Datenbank-System \textit{Microsoft SQL Server}.
+\item Die Entwicklungsumgebung kann benötigte Komponenten und deren Abhängigkeiten durch den integrierten Paketmanager nachladen. Dadurch entfällt das nachträglichen Herunterladen von DLLs, wodurch Kompatibilitätsprobleme verringert werden.\footcite{online:VisualStudio}
+\end{itemize}
 
-\section{DB-System}
+\section{Datenbank-System}
 \label{sec:DB-System}
-
+Als Datenbanksystem wurde ebenfalls die Lösung von \textit{Microsoft} verwendet. Hierbei handelt es sich um \textit{Microsoft SQL Server}. Durch die einheitliche Nutzung von Microsoft-Produkten kann für den Zugriff auf die Datenbank der \ac{OR-Mapper} genutzt werden. Dieser erlaubt es, direkt aus Modell-Klassen Datenbank-Entitäten zu entwickeln. Dieser Vorgang wird in Kapitel \ref{ssec:aufbau-server-db} näher erläutert\footcite{online:SQLServer}.
 \section{Hosting-Plattform}
 \label{sec:Hosting-Plattform}
-
-\section{Testing (evtl)}
-\label{sec:Testing}
+Sowohl der Web Service als auch die Web-Application-Client müssen im Internet verfügbar gemacht werden, damit so von überall erreichbar sind. Hierzu biette \textit{Microsoft} die Hosting-Plattform \textit{Azure} an. Diese ermöglicht es, direkt aus \textit{Visual Studio} heraus seine Webanwendung zu veröffentlichen. Gleichzeitig lässt sich eine Datenbank hosten, welchen der Webservice direkt benutzen kann. Zusätzlich ist Azure sehr gut skalierbar, was den Einsatz als Hosting-Plattform für kleine Prototyp-Projekte optimal unterstützt\footcite{online:Azure}. 

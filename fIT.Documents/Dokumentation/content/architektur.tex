@@ -52,7 +52,7 @@ Aus den definierten Anwendungsfälle ergibt sich die Struktur für die Datenbank
 \centering
 \includegraphics[width=0.8\linewidth]{content/images/DB-Entwurf.png}
 \caption{Datenbank-Entwurf}
-\label{pic:usecase-messe}
+\label{pic:db-entwurf}
 \end{figure}
 
 \section{Programmarchitektur}
@@ -67,12 +67,18 @@ Abbildung \ref{pic:architecture} bildet diesen Aufbau grafisch ab:
 \caption{Aufbau der Anwendung}
 \label{pic:architecture}
 \end{figure}
+
+\newpage
 \section{Rollen-Konzept}
 \label{sec:rollen-konzept}
-Im Pflichtenheft wird für den zweiten Meilenstein eine Unterscheidung in den Berechtigungen gemacht (Nur Administrationen dürfen neue Übungen anlegen). Darum ist es nötig, ein Rollenkonzept zu entwickeln, der den Zugriff auf bestimmte Ressourcen reguliert. \\
-Aus den Aussagen, die im Pflichtenheft getroffen wurden, geht hervor, dass sich der Nutzer in mindestens einem der folgenden Zustände befindet:
+Im Pflichtenheft wird für den zweiten Meilenstein eine Unterscheidung in den Berechtigungen gemacht. So dürfen beispielsweise nur Administrationen neue Übungen anlegen. Darum ist es nötig, ein Rollenkonzept zu entwickeln, der den Zugriff auf bestimmte Ressourcen reguliert. \\
+Aus den Aussagen, die im Pflichtenheft getroffen wurden, geht hervor, das sich der Nutzer in einer der nachfolgenden Status befindet, wenn er auf den Web Service zugreifen will: 
+
 \begin{itemize}
-\item unautorisiert
-\item Rolle \textit{Nutzer}
-\item Rolle \textit{Administrator}
+\item unautorisiert \\
+Der Nutzer hat sich noch nicht gegenüber des Web Server authentifiziert. In diesem Status kann der Nutzer sich mit seinen Anmeldedaten einloggen oder als neuer Nutzer an der Web Applikation registrieren.
+\item Rolle \textbf{Nutzer}\\
+Jeder angemeldete Nutzer besitzt die Rolle \textit{Nutzer}. Ein normaler Nutzer kann seine Daten einsehen. Dies beinhaltet seine Trainingspläne, deren Übungen und die dazu angelegten Trainingseinheiten.
+\item Rolle \textbf{Administrator}\\
+Ein \textit{Administrator} ist ebenfalls ein Nutzer. Er kann zusätzlich neue Übungen anlegen. 
 \end{itemize}

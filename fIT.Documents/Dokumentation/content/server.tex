@@ -71,7 +71,7 @@ Die Dokumentation ist unter \href{http://fit-bachelor.azurewebsites.net/swagger}
 
 \section{Authentifizierung \& Autorisierung}
 \label{sec:server-authorisierung}
-Wie bereits in Kapitel ((Da wo die Rollen definiert werden)) beschrieben, darf nicht jeder Nutzer auf alle Daten zugreifen. Um dies zu bewerkstelligen, wurde ein Login-Mechanismus implementiert, welcher bekannte Nutzer authentifiziert. Da jedoch nicht alle authentifizierten Nutzer alle bereitgestellten WebApi-Methoden benutzen dürfen wurden auf Basis des \ac{Role-Based Access Models} Rollen implementiert, welche den Nutzer zur Nutzung verschiedener Aufrufe autorisieren. Zur Umsetzung dieser Anforderungen wurde das Protokoll \textit{OAuth2} implementiert.\footcite{online:WebApi_Authorize}
+Wie bereits in Kapitel \ref{sec:rollen-konzept} beschrieben, darf nicht jeder Nutzer auf alle Daten zugreifen. Um dies zu bewerkstelligen, wurde ein Login-Mechanismus implementiert, welcher bekannte Nutzer authentifiziert. Da jedoch nicht alle authentifizierten Nutzer alle bereitgestellten WebApi-Methoden benutzen dürfen wurden auf Basis des \ac{Role-Based Access Models} Rollen implementiert, welche den Nutzer zur Nutzung verschiedener Aufrufe autorisieren. Zur Umsetzung dieser Anforderungen wurde das Protokoll \textit{OAuth2} implementiert.\footcite{online:WebApi_Authorize}
 \subsection{OAuth2}
 \label{ssec:oauth2}
 OAuth2 ist ein Protokoll zur Authentifikation und zur Delegation von Zugriffsrollen. Die Struktur von OAuth2 kennt vier Instanzen, welche diesem Vorgang miteinander kommunizieren, nämlich Client, Resource Owner, Authorization Owner und Resource Server.\footcite[S. 286]{book:AngularJs:Steyer2015} 

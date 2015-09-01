@@ -1,21 +1,20 @@
 \chapter{Problemanalyse}
 \label{cha:problemanalyse}
-In diesem Kapitel wird das Gesamtproblem näher beleuchtet. Darauf aufbauend werden die grundsätzliche Komponenten und deren Funktionsweise beschrieben. 
+In diesem Kapitel soll das vorher grob geschilderte Problem analysiert, konkrete Ziele definiert und Entscheidungen für das weitere Vorgehen bei der Umsetzung getroffen werden. Darauf aufbauend werden die grundsätzlichen Komponenten und deren Funktionsweise beschrieben.\\
 
+Das Problem des Sachverhalts liegt darin, dass Anwendungen auch dann noch benutzbar sein sollen, wenn keine Verbindung zum Internet, speziell zum benötigten Server, besteht. Dafür müssen die Anwendungen ausgelegt und vorbereitet werden. Sei es durch das Unterbinden von Funktionen oder das Speichern von bereits erhaltenen Daten, um diese dem Benutzer dann für die weitere Verwendung zur Verfügung stellen zu können. \\
+Des Weiteren gibt es Unterschiede in der Auswahl der lokal zu speichernden Daten. Auf der einen Seite können alle Daten, die interessant sind, automatisch von der Anwendung für den Benutzer hinterlegt werden. Zum anderen kann es die Möglichkeit für den Benutzer geben, bestimmte Daten offline verfügbar zu machen.\\
+Zu beachten ist weiterhin, dass die Daten, die ohne Internetverbindung angelegt wurden, wieder zum Server synchronisiert werden müssen, um Benutzereingaben zentral persistent speichern zu können.\\
+Die Daten sollen für verschiedene Benutzer, die sich an dem Gerät anmelden, gespeichert werden. Darüber hinaus sollen Benutzer nur Funktionen ausführen können, zu denen sie auch autorisiert sind.\\
 
-\begin{itemize}
-\item konkrete Zeile
-\item Frühe Entscheidungen
-\end{itemize}
+Konkret kann daraus geschlossen werden, dass die Anwendungen mit einem Mechanismus ausgestattet sein müssen, der das lokale Zwischenspeichern von Informationen unterstützt. Damit soll das Abrufen von Daten im \textit{Offline}-Status ermöglicht werden. Des Weiteren soll es \textit{offline} möglich sein, Daten anzulegen und diese sollen dann mit dem Server synchronisiert werden, wenn wieder eine Verbindung besteht.\\
 
-Ziele:
-\begin{itemize}
-\item Datenaustausch zwischen Server und Client
-\item Authorisierung und Authetifizierung
-\item Ausfallsicherheit
-\begin{itemize}
-\item Prüfung der Verfügbarkeit des Servers
-\item Verhalten bei Nicht-Verfügbarkeit des Servers
-\end{itemize}
-\item Synchronisation nach Ausfall
-\end{itemize}
+Ziel soll es sein, zwei Applikationen zu entwickeln, die mit einem selbst entwickelten Server kommunizieren. Während der Kommunikation muss festgestellt werden, wann die Kommunikation abbricht und dementsprechend müssen die Applikationen das Verhalten vom \textit{Online}- zum \textit{Offline}-Verhalten umstellen. Wenn der Server erreichbar ist, können die benötigten Daten dort direkt abgefragt und lokal angezeigt werden. Zum Entgegenwirken von Datenverlust für den Benutzer, können die bei dieser Abfrage erhaltenen Informationen lokal gespeichert werden. Daten, die im \textit{Online}-Status angelegt werden, können direkt zum Server übertragen werden. Dort werden sie dann persistent gespeichert und sind dann für diesem Benutzer von überall erreichbar.\\
+Wenn die Verbindung abgebrochen ist, können die Applikationen nur auf die abgespeicherten Daten zurückgreifen und Anzeigen. Deshalb werden erhaltene Datensätze auch lokale hinterlegt. Wenn der Benutzer nun Daten anlegt, muss dies zum einen machbar sein, zum anderen müssen die Daten auch für die Applikation als \textit{Offline}-Daten erkennbar in dem lokalen Speicher sein. Deshalb müssen diese lokalen Daten besonders gekennzeichnet werden.\\
+Wenn die Verbindung zwischen Server und \textit{Client} gerade wieder hergestellt ist, müssen lokal angelegte Daten zum Server übertragen werden. Dazu ist dann die lokale Kennzeichnung von solchen Datensätzen sinnvoll. Der Server muss diese Daten dann annehmen und selbst in einer Datenbank speichern, um denselben Stand zu haben wie die Applikation.\\
+
+Zur Umsetzung der Applikationen fiel die Entscheidung auf zwei mobile Applikationen. Zum einen auf eine \textit{Single-Page-Application} und zum anderen auf eine Android-Applikation.\\
+Die \ac{SPA} wird als \textit{Homepage} im Browser umgesetzt. Dabei wird auf Responsivität geachtet, um das kleine \textit{Display} von mobilen Endgeräten nicht auszuschließen, da die beiden Applikationen vergleichbar auf mobilen Geräten funktionieren sollen.\\
+Android wurde als Plattform für die native App ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelten Apps ganz einfach auf einem Testsystem zu installieren, ohne - wie bei Apples iOS nötig - einen Entwickler-Account anlegen zu müssen. Zudem ist es bei einer iOS-App notwendig das Aufspielen einer Testapplikation über ein spezielles Entwickler-Tool in XCode durchzuführen. Diese Hürde fällt bei einer Android-App komplett weg. Des Weiteren ist das Android-Betriebssystem weiter verbreitet (siehe \citep{Statista-SmartphoneVerteilung}) und die App kann einen größeren Anklang finden.
+
+Eine der beiden Applikationen wird im Laufe der Arbeit ausgewählt und zu einem rudimentären Messe-Prototypen weiterentwickelt. Die Entscheidung in diesem Falle wird im Implementierungs-Prozess getroffen, um bis dahin die Vor- und Nachteile der beiden Möglichkeiten kennenzulernen. Die andere App wird jedoch trotzdem die oben genannten Grundfunktionen bereitstellen.

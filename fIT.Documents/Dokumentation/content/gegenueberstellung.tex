@@ -18,12 +18,22 @@ Ein weiterer Nachteil ergibt sich aus der Nutzung von AngularJs. Da die gesamte 
 
 \section{Umsetzung als native App}
 \label{sec:gegenueberstellung-native-app}
+Des Weiteren sollen auch die Vor- und Nachteile der Umsetzung als native Applikation vorgestellt werden.
 
 \subsection{Vorteile}
 \label{sec:vorteile-native-app}
+Die Vorteile einer nativen Applikation liegen besonders in dem umfangreichen Funktionsumfang. Dieser kann alle bereitgestellten Funktionen des Betriebssystems ausnutzen. Dazu zählen das \textit{Threading} (siehe Kapitel \ref{ssec:android-prozesse-threads}) und interne Aufrufe über \textit{Services}, die dann zum Beispiel zum Versenden vom Emails verwendet werden können. Zudem können Daten persistent, auch über die Dauer einer \textit{Session} hinaus, auf dem Gerät gespeichert werden (siehe Lokale Datenbank in Kapitel \ref{ssec:nat-db}).\\
+Eine hohe Sicherheit kann in dem Zuge einer nativen App ebenfalls bereitgestellt werden, da die Daten nur mit guten technischen Kenntnissen ausgelesen werden können. Sind die Daten darüber hinaus noch lokal verschlüsselt, so sind diese sicher.\\
+Weiterhin ist die gesamte Logik der Applikation nicht sichtbar für den Endanwender und von Manipulationen bei Datenabrufen kann man ausschließen. Diese sind nur über aufwendige programmatische Eingriffe möglich.
 
 \subsection{Nachteile}
 \label{sec:nachteile-native-app}
+Die Umsetzung der nativen App beansprucht viel Zeit und ein grundlegendes \textit{KnowHow} über die Funktionsweise des zu unterstützende Betriebssystems.\\
+Darin liegt auch noch ein weiteres Problem. Um eine große Markt-Abdeckung mit einer nativen App zu erreichen, benötigt man mindestens eine iOS- und eine Android-Applikation. Dann besitzt den Zugang zu über 95\% der Smartphone-Nutzer in Deutschland.\footcite{Statista-SmartphoneVerteilung}\\
+Die Entwicklung für zwei Systeme kann daraufhin in zwei Möglichkeiten umgesetzt werden. Zum einen könnten native Apps in den jeweiligen Sprachen entwickelt werden. Zum anderen kann eine Multiplattform-Lösung, wie Xamarin-Platform es ist, eingesetzt werden. Dabei beschränkt sich der Funktionsumfang dann aber auf die grundlegenden Funktionen, wenn bei den verschiedenen Funktionen nicht noch zwischen den Systemen unterschieden wird.\\
+Weiterhin ist das Erstellen von Oberflächen aufwendiger als bei einer \textit{Single Page Application}.\\
+Zudem müssen native Apps direkt auf das \textit{Device} geladen werden und können nicht einfach über das Internet aufgerufen werden.
 
 \section{Fazit: Weiterentwicklung als native App}
 \label{sec:gegenueberstellung-fazit}
+Zusammenfassend kann festgehalten werden, dass die Nachteile der \textit{Single Page Application} dahingehend überwiegen, dass die Sicherheit der Daten - besonders in Verbindung mit Vitaldaten - eine höhere Priorität einnimmt. Diese Anforderung kann nur von einer nativen App zufriedenstellend geleistet werden. Zudem kann nur eine nativen Applikation Daten über einen längeren Zeitraum persistent halten und einen größeren Funktionsumfang bereitstellen.

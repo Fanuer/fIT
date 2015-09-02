@@ -139,26 +139,30 @@
 	\input{content/native_app}
 	\input{content/webapplikation}
 	\input{content/gegenueberstellung}
+	\input{content/weiterentwicklung-messeprototyp}
 	\input{content/schluss}
 	
 	% ----------------- Ende des eigentlichen Textes
 	
 
 	%Verzeichnisse erstellen
-	\printglossaries	
+	\printglossaries[style=altlist,title=Glossar]	
   	\input{preamble/acronyms}
+  	\printnoidxglossaries	
 	\listoffigures
 	\listoftables
 	\lstlistoflistings
 	
+	
 	\appendix
 	\nocite{*} 
-	
+	\input{content/anhang}
+
 	%Literaturverzeichnis erstellen
 	\bibliography{bib/bib}
 	\bibliographystyle{jurabib}
 
-	\input{content/anhang}	
+	
 	%\input{content/anhang}
 	\input{content/eidesstattliche_erklaerung}
 \end{document}

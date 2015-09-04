@@ -147,3 +147,11 @@ Der \textit{Cache} ist im Fall dieser nativen App ein Zusammenschluss mehrerer i
 Die Hauptfunktionalität und -schwierigkeit lag in dem Szenario, dass die App gerade wieder eine Verbindung zum Server aufbaut und im Vorfeld Daten im Offline-Modus gespeichert hat, die dem Server noch nicht bekannt sind. Dieser Fall ist in dem Codeausschnitt \ref{lst:ConnectivityCheck} zu sehen. Dabei wird überprüft, ob die App in dem vorherigen Intervall noch im Offline-Modus war. 
 \lstinputlisting[caption=Synchronisation der Offline-Daten, label=lst:Sync, style=sharpc]{content/listings/Sync.cs}
 Ist dem so, wird in der lokalen Datenbank nach Trainings gesucht, die offline angelegt wurden. Diese werden dann mit dem Server abgeglichen und hochgeladen. Das Hochladen geschieht einzeln, damit im Fall eines abrupten Verbindungsverlustes maximal ein Datensatz verloren geht. Dabei wäre es möglich eine Transaktionsverwaltung für die Verbesserung zu integrieren, um dieses Problem zu verhindern. Bei dem Anlegen des Trainings fällt auf, dass die Attribute \textit{Username} und Passwort noch einmal übergeben werden. Diese Maßnahme musste ergriffen werden, um eine Verbindung zum Server herstellen zu können. Dazu wird eine \textit{Session} benötigt, die vorher noch nicht besteht, für den \textit{Upload} aber essentiell ist. Somit wird die \textit{Session} vor dem Hochladen abgerufen.
+
+%Sequenzdiagramm-CRUD
+\begin{figure}[h]
+\centering
+\includegraphics[width=\linewidth]{content/images/fITNat-OnOff-CRUD}
+\caption{Sequenzdiagramm CRUD}
+\label{pic:nat-CRUD}
+\end{figure}

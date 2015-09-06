@@ -22,10 +22,10 @@ Unter der vorherigen Architektur hätte die Logik in jede Verbidnungs-Operation 
 \label{sec:anpassungen-oberflaeche}
 Die Oberfläche wurde soweit angepasst, dass ein durchgängige \textit{Corporate Design} erkennbar ist. Die Oberfläche, insbesondere \textit{Buttons} und Dialoge wurden in diesem Schritt angepasst.\footcite{Android-Oberflaechen}\\
 Dabei wurden zwei \textit{Designs}, jeweils für den Login- und den Registrieren-\textit{Button}, umgesetzt. Dazu war es nötig eine \ac{XML}-Datei anzulegen, die dann die Eigenschaften der Schaltfläche zu beschreiben hat (Quellcode \ref{lst:BtnSignInNotClicked}):
-\lstinputlisting[caption=Design des Login-\textit{Buttons}, label=lst:BtnSignInNotClicked, style=xml]{content/listings/ButtonSignInStyle.xml}\\
+\lstinputlisting[caption=Design des Login-\textit{Buttons}, label=lst:BtnSignInNotClicked, style=xml]{content/listings/ButtonSignInStyle.xml}
 Im Anhang (siehe \ref{sec:UserStory}) kann man die \textit{UserStory} in der nativen App in Gänze einsehen.\\ 
 Weiterhin wurden die Dialogfenster mit Animationen versehen, um eine zum Betriebssystem passende \textit{Usability} gewährleisten zu können. Dazu musste ähnlich zum \textit{Button} eine \ac{XML}-Datei angelegt werden und darin dann die Bewegungen des Fensters beschrieben werden (Quellcode \ref{lst:slideRight}).
-\lstinputlisting[caption=Dialog-Animation, label=lst:slideRight, style=xml]{content/listings/slide_right.xml}\\
+\lstinputlisting[caption=Dialog-Animation, label=lst:slideRight, style=xml]{content/listings/slide_right.xml}
 Weiterhin wurden die \textit{Icons} zur Kenntlichmachung des Verbindungsstatus gegen zum Design passende ausgetauscht und ein App-\textit{Icon} eingefügt.
 
 \section{Implementierung der Statistik}

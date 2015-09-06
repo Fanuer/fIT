@@ -78,8 +78,8 @@
 
 % -------------- Daten für die Titelseite --> diese müssen angepasst werden!
 \newcommand*{\thedockind}{Bachelorthesis}
-\newcommand*{\thetitle}{Verl{\"a}ssliche mobile \mbox{Anwendungen}}
-\newcommand*{\thesubtitle}{Untersuchungen am Beispiel einer \mbox{Fitness-App}}
+\newcommand*{\thetitle}{Verl{\"a}ssliche mobile Anwendungen}
+\newcommand*{\thesubtitle}{Untersuchungen am Beispiel einer Fitness-App}
 \newcommand*{\theauthor}{Kevin Schie / Stefan Suermann}
 \newcommand*{\thematriculationnumber}{2012013 / 2012027} % Matrikelnummer
 \newcommand*{\thebirthday}{04.07.1993 / 13.12.1987} % Geburtstag
@@ -144,7 +144,7 @@
 	
 	% ----------------- Ende des eigentlichen Textes
 	
-
+	\appendix
 	%Verzeichnisse erstellen
 	\printglossaries
   	\input{preamble/acronyms}
@@ -153,16 +153,12 @@
 	\listoftables
 	\lstlistoflistings
 	
-	
-	\appendix
 	\nocite{*} 
-	\input{content/anhang}
-
 	%Literaturverzeichnis erstellen
 	\bibliography{bib/bib}
 	\bibliographystyle{jurabib}
 
-	
+	\input{content/anhang}
 	%\input{content/anhang}
 	\input{content/eidesstattliche_erklaerung}
 \end{document}

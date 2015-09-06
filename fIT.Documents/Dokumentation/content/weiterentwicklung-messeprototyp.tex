@@ -20,9 +20,10 @@ Unter der vorherigen Architektur hätte die Logik in jede Verbidnungs-Operation 
 
 \section{Anpassungen an der Oberfläche}
 \label{sec:anpassungen-oberflaeche}
-Die Oberfläche wurde soweit angepasst, dass ein durchgängige \textit{Corporate Design} erkennbar ist. Die Oberfläche, insbesondere \textit{Buttons} und Dialoge wurden in diesem Schritt angepasst.\\
+Die Oberfläche wurde soweit angepasst, dass ein durchgängige \textit{Corporate Design} erkennbar ist. Die Oberfläche, insbesondere \textit{Buttons} und Dialoge wurden in diesem Schritt angepasst.\footcite{Android-Oberflaechen}\\
 Dabei wurden zwei \textit{Designs}, jeweils für den Login- und den Registrieren-\textit{Button}, umgesetzt. Dazu war es nötig eine \ac{XML}-Datei anzulegen, die dann die Eigenschaften der Schaltfläche zu beschreiben hat (Quellcode \ref{lst:BtnSignInNotClicked}):
 \lstinputlisting[caption=Design des Login-\textit{Buttons}, label=lst:BtnSignInNotClicked, style=xml]{content/listings/ButtonSignInStyle.xml}\\
+Im Anhang (siehe \ref{sec:UserStory}) kann man die \textit{UserStory} in der nativen App in Gänze einsehen.\\ 
 Weiterhin wurden die Dialogfenster mit Animationen versehen, um eine zum Betriebssystem passende \textit{Usability} gewährleisten zu können. Dazu musste ähnlich zum \textit{Button} eine \ac{XML}-Datei angelegt werden und darin dann die Bewegungen des Fensters beschrieben werden (Quellcode \ref{lst:slideRight}).
 \lstinputlisting[caption=Dialog-Animation, label=lst:slideRight, style=xml]{content/listings/slide_right.xml}\\
 Weiterhin wurden die \textit{Icons} zur Kenntlichmachung des Verbindungsstatus gegen zum Design passende ausgetauscht und ein App-\textit{Icon} eingefügt.
@@ -39,4 +40,5 @@ Zur Generierung der Diagramm-Daten waren Informationen über die Übung, den Tra
 Zusammenfassend kann festgehalten werden, dass der zweite Meilenstein zur Optimierung der nativen Adnroid-Applikation beigetragen hat. So konnte durch das Auslagern der Synchronisation Last vom dem \textit{UIThread} genommen werden. Die daraus folgenden Vorteile wurden bereits in Kapitel \ref{cha:native-app} vorgestellt.\\
 Das es sich am Ende der Entwicklung um einen Messeprototypen handeln soll, ist das Design von besonderem Interesse. Diese Anforderung wurde im ersten Meilenstein zurückgestellt, um zuallererst einen Fokus auf den technischen Vergleich legen zu können. Nach der Sondierung der besseren Möglichkeit sollte diese dann weiter ausgebaut werden. Deshalb hat diese App eine Verbesserung der Oberflächen erhalten.\\
 Die Statistik (ein Kann-Kriterium aus \ref{sec:Pflichtenheft}) wurde zusätzlich umgesetzt, da das Interesse an der Umsetzung eines langen Klicks und der Möglichkeiten der \textit{BarChart-Extension} groß waren.\\
-Abschließend kann festgehalten werden, dass der zweite Meilenstein der nativen Applikation die letzten Verfeinerungen zum Prototypen gegeben hat.
+Abschließend kann festgehalten werden, dass der zweite Meilenstein der nativen Applikation die letzten Verfeinerungen zum Prototypen gegeben hat.\\
+Der Prototyp besitzt nun eine \textit{UserStory} (siehe Anhang \ref{sec:UserStory}), die alle benötigten Funktionen für die Entwicklung einer vollends ausgereiften App beinhaltet. So kann die Funktionalität des Speicherns eines Trainings auf das Speichern von Übungen und Trainingsplänen übertragen werden. Zudem kann das Abrufen von weiteren Daten, zum Beispiel für die Umsetzung von Administrator-Funktionen, mit den bestehenden Möglichkeiten umgesetzt werden.

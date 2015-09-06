@@ -1,10 +1,10 @@
 \chapter{Grundlagen}
 \label{cha:grundlagen}
-In diesem Kapitel wird eine Übersicht über die verschiedenen Funktionsweisen gegeben. Darauf aufbauend wird dann herausgestellt, welche Art von Speicherung in diesem Projekt umgesetzt wird. Dabei wird auch auf die Unterschiedliche Auffassung des Begriffes \textit{Cache} eingegangen und die Unterschiede werden erläutert.
+Das folgende Kapitel gibt eine Übersicht über die verschiedenen Funktionsweisen eines Caches. Darauf aufbauend wird dann herausgestellt, welche Art von Speicherung in diesem Projekt umgesetzt wird. Dabei wird auch auf die Unterschiedliche Auffassung des Begriffes \textit{Cache} eingegangen und die Unterschiede werden erläutert.
 
 \section{Definition eines Caches}
 \label{sec:cache-definition}
-Ein \textit{Cache} wird im Allgemeinen als eine Speicherregion oder Puffer verstanden, die besonders schnell erreichbar sind. Darin werden oft verwendete Daten gespeichert, um höheren Speicherverbrauch gegen einen Performancegewinn zu tauschen.\\
+Ein \textit{Cache} wird im Allgemeinen als eine Speicherregion oder Puffer verstanden, die besonders schnell erreichbar ist. Darin werden oft verwendete Daten gespeichert, um höheren Speicherverbrauch gegen einen Performancegewinn zu tauschen.\\
 \textit{Caches} werden in verschiedenen Umgebungen eingesetzt. Es wird zwischen \textit{Memory Cache}, \textit{Internet Browser Cache}, \textit{Disk Caching} und \textit{Server Caching} unterschieden.\\
 Der \textit{Memory Cache} wird in Computern verwendet, um den sehr schnellen \ac{SRAM} des Rechners auszunutzen. Diese Art macht es sich zunutze, dass Programme immer dieselben Daten oder Befehle ausführen. Diese Ergebnisse werden dann vom Betriebssystem in diesem \textit{Cache} gespeichert, um zum Beispiel darauf aufbauend schnellere Berechnungen vollziehen zu können. Dieser Speicher wird dann dem dazu relativ langsamen \ac{DRAM} vorgezogen.\footcite[Vgl.][S.48f.]{Cache-GummerSommer}\\
 Der \textit{Internet Browser Cache} wird ähnlich, aber in einem anderen Einsatz verwendet. Dieser speichert beliebte Seiten des Benutzers zwischen, um den Seitenaufruf zu beschleunigen. Dabei werden Dateien und \textit{Requests} zu der besuchten Seite gespeichert. Wenn man dann wieder zurück navigiert, kann der \textit{Browser} viele Dateien wiederverwenden und muss nicht mehr die gesamte Seite nachladen. Diese Variante wird auch \textit{Read Cache} genannt.\footcite{Cache-Techtarget}\\
@@ -13,7 +13,7 @@ Beim \textit{Server Caching} geht es darum, den \textit{Traffic} in einem Netzwe
 
 \subsection{Funktionsweisen von Caches}
 \label{ssec:cache-funktionsweisen}
-\textit{Caches} können in zwei unterschiedliche Funktionsweisen unterteilt werden, die im Folgenden genauer vorgestellt werden.
+\textit{Caches} lassen sich in zwei unterschiedliche Funktionsweisen unterteilen. Diese werden nachfolgend genauer vorgestellt.
 
 \subsubsection*{Store Forward}
 \label{sssec:cache-store-forward}
@@ -28,7 +28,7 @@ Beim \textit{Function Cache} oder auch \textit{Memoization} handelt es sich um e
 %\label{sssec:cache-ersetzungsalgorithmen}
 %FIFO, LRU, LRU, Random
 
-\subsection{Unsere Definition eines Caches}
+\subsection{Definition eines Caches innerhalb dieser Arbeit}
 \label{ssec:cache-unsere-definition}
 Im Folgenden wird der Begriff des \textit{Caches} als eine abgewandelte Technik zur lokalen Zwischenspeicherung von Daten auf einem mobilen Gerät verstanden. Die allgemeine Definition geht bei einem \textit{Cache} von einer Performancesteigerung aus (siehe Kapitel \ref{sec:cache-definition}), in diesem Projekt wird das Speichern von Daten jedoch dazu verwendet, um Daten auch offline zur Verfügung zu haben. Die bestehenden Eigenschaften zur Ersetzung von Daten und den verschiedenen Arten der Datenspeicherung werden beibehalten, jedoch im ersten Meilenstein nur rudimentär umgesetzt. Dabei wird eine Art \textit{Store and Forward} umgesetzt, jedoch wird bevorzugt auf den Server zugegriffen, da dieser als primärer Persistenzspeicher fungiert. Ein \textit{Function Cache} wird nicht umgesetzt, da dieser in diesem Anwendungsfall nicht optimal wäre. Es werden die Daten benötigt, die untereinander auch Beziehungen besitzen. Dabei reicht es nicht aus, die Funktionsaufrufe mit den entsprechenden Daten zu speichern, da man die gespeicherten Daten in einigen Fällen über mehrere Abfragen erhalten würde und diese dann mehrfach gespeichert werden würden. Dieses Problem würde dann die Effizienz des Zwischenspeicherns umgehen.
 
@@ -41,7 +41,7 @@ Der \textit{Cache} wird in beiden Applikationen als eine lokale Datenbank umgese
 Der \textit{Cache} als solches ist die Kombination aus der Logik, die in der Applikation zur Datenhaltung mit umgesetzt wird und einer lokalen Datenbank zur Speicherung der Daten. Die Schicht der \textit{Business}-Logik muss dabei Methoden zur Verfügung stellen, um die Daten lokal zu speichern und diese Daten dann auch wieder auslesen zu können.\\
 Des Weiteren muss die Logik zur Synchronisierung von Daten zwischen der lokalen und der Server-Datenbank umgesetzt werden. Diese wird im Folgenden allgemein beschrieben.
 
-\subsection{Funktionsweise des Caches}
+\subsection{Funktionsumfang des Caches}
 \label{ssec:cache-unsere-funktionsweise}
 Der \textit{Cache} muss die Daten auf demselben Stand halten, wie sie auf dem Server vorliegen. Deshalb bietet es sich an, Daten, die zum Server geschickt werden, auch lokal direkt zu speichern. Daten, die abgerufen werden, auch lokal zu speichern. Somit hat man keine unnötigen Abfragen zum Erhalt der Datenkonsistenz zwischen den beiden Ebenen. Diese Strategie hat somit einen positiven Einfluss auf die Performance der Applikationen und entlastet den Server von übermäßigen \textit{Requests}. In dem folgenden Sequenzdiagramm ist der Ablauf für die Logik des \textit{Caches} bei einem \textit{Get}-Aufruf an den Server zu sehen.
 

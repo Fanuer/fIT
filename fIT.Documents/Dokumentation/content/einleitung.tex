@@ -6,7 +6,7 @@ In diesem Kapitel wird das grundlegende Problem und die daraus resultierende Zie
 \label{sec:problemstellung}
 Momentan besitzen 57\% der Deutschen ein Smartphone. Somit hat sich die Zahl der Smartphone-Nutzer seit Ende 2011 mehr als verdoppelt.\footcite{Statista-SmartphoneNutzung}\\
 Durch die verstärkte Nutzung geraten \glspl{App} immer mehr in den Fokus. Applikationen haben sich im Laufe der Zeit im Alltag ausgebreitet und sind mittlerweile für den Endnutzer unverzichtbar geworden. Sei es beim Online-Shopping, Chatten oder der Navigation. Überall finden diese kleinen Programme ihre Verwendung.\\
-Dabei ist es besonders wichtig, dass eine konstante Internetverbindung besteht, um den kompletten Funktionsumfang nutzen zu können. Bis die Umsetzung eines flächendeckenden freien \ac{WLAN}s in Deutschland abgeschlossen ist, benötigt man eine gute Verbindung über seinen Netzbetreiber. Diese ist aber noch nicht vollständig und ausreichend im ganzen Land verfügbar.\\
+Dabei ist es besonders wichtig, dass eine konstante Internetverbindung besteht, um den kompletten Funktionsumfang nutzen zu können. Bis die Umsetzung eines flächendeckenden freien WLANs in Deutschland abgeschlossen ist, benötigt man eine gute Verbindung über seinen Netzbetreiber. Diese ist aber noch nicht vollständig und ausreichend im ganzen Land verfügbar.\\
 Deshalb ist es notwendig, dass Apps versuchen Verbindungsabbrüche für den Benutzer zu überbrücken. Dabei besteht die Möglichkeit einer kurzzeitigen Zwischenspeicherung von Daten, solange die Internetverbindung nicht bereitsteht. Änderungen, die in dieser Zeit gemacht werden, sollen aufgenommen und später zur Verfügung gestellt werden damit man auf all seinen Endgeräten einen einheitlichen Stand der Daten hat.\\
 Zur Umsetzung dieser Anforderungen können verschiedene Möglichkeiten genutzt werden.
 \section{Zielsetzung}
@@ -17,14 +17,13 @@ Bei den Applikationen wird während der Entwicklungsphase entschieden, welche de
 Der Prototyp soll es dem Benutzer ermöglichen durch seine Trainingspläne mit den zugehörigen Übungen zu navigieren und die Daten eines Trainings eingeben zu können. Zudem soll es möglich sein die letzten Trainingseinheiten einzusehen. Das soll unabhängig davon funktionieren, ob das Endgerät eine Verbindung zum Server aufbauen kann oder nicht.
 \section{Vorgehensweise}
 \label{sec:vorgehensweise}
-Zum Erreichen der Ziele wird zuallererst ein Überblick über die Grundlagen der Umsetzung gegeben. Dabei werden dann schon die ersten Techniken vorgestellt, die für die Implementierung verwendet werden sollen. Folgend wird die allgemeine Architektur des Systems, bestehend aus den beiden Applikationen und dem Server, erläutert, um den Gesamtzusammenhang dieses Projektes in Gänze überblicken zu können. Darauf aufbauend wird jeweils detaillierter auf die Umsetzungen der Apps und des Servers, sowie die dabei verwendeten Technologien eingegangen. Daraufhin werden die Applikationen verglichen und entschieden, welche der beiden zu einem Messeprototypen weiterentwickelt wird. Abschließend wird die Erweiterung zum Prototypen vorgestellt und ein Rückblick auf das gesamte Projekt gegeben.
-
+Zum Erreichen der Ziele muss als Erstes eine genauere Betrachtung der entstandenen Problematik durchgeführt werden. Anschließend werden benötigte Kenntnisse für das Erreichen der Ziele gesammelt. Diese gehen in die Planung der allgemeinen Architektur ein, welche Grundlage der späteren Implementierungen für Server und Clients ist. Nachdem die Architektur für Server und Clients definiert wurde, können diese umgesetzt werden. Die gewonnen Erkenntnisse aus den Implementierungen werden anschließend gegenübergestellt. Dies bildet die Grundlage für die Entscheidung, welche der beiden zu einem Messeprototypen weiterentwickelt wird. Abschließend wird die Erweiterung zum Messe-Prototypen umgesetzt.\\
+Projektbegleitend wird eine Dokumentation erstellt, welche jeweils die durchgeführten Maßnahmen und gewonnen Kenntnisse widerspiegelt. 
 \section{Arbeitsaufteilung}
 \label{sec:Arbeitsaufteilung}
-
+Da diese Arbeit von zwei Personen durchgeführt wird, muss an dieser Stelle noch aufgeschlüsselt werden, welche Aufgaben von wem durchgeführt werden. Hierzu dient die nachfolgende Tabelle \ref{tbl:arbeitsaufteilung}. Zur Wahrung der größtmöglichen Transparenz wurde zwischen der Dokumentation und der Implementierung der benötigten Komponenten unterschiedenen. 
 
 \begin{table}[]
-
 \caption{Arbeitsaufteilung}
 \label{tbl:arbeitsaufteilung}
 \begin{tabular}{|l|c|c|}

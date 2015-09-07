@@ -41,12 +41,12 @@ namespace fIT.WebApi.Entities
         public string Name { get; set; }
 
         /// <summary>
-        /// Fremdschlüssel zum Nutzer
+        /// Fremdschlüssel zum Nutzer (per Namens-Konvention) 
         /// </summary>        
         public string UserID { get; set; }
 
         /// <summary>
-        /// Uebungen
+        /// Uebungen (per Namens-Konvention) 
         /// </summary>
         public virtual ICollection<Exercise> Exercises { get; set; }
 

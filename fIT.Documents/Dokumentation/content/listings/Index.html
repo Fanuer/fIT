@@ -1,0 +1,34 @@
+﻿<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-controller="indexController"> |\label{line:indexHtml:controller}|
+	<div class="container">
+		<div class="navbar-header">
+			[...]
+			<ul class="nav pull-left">
+				<li class="status online navbar-text" data-ng-hide="!onlineStatus">|\label{line:indexHtml:Nutzung_Direktive}|
+					<span class="glyphicon glyphicon-ok "></span> Online
+				</li>
+				<li class="status offline navbar-text" data-ng-hide="onlineStatus">
+					<span class="glyphicon glyphicon-remove"></span> Offline
+				</li>
+			</ul>
+		</div>
+		<div id="navbar" class="navbar-collapse collapse">
+			<ul class="nav navbar-nav navbar-right">
+				<li data-ng-show="!authentication.isAuth">
+					<a href="#/login">Log in</a>
+				</li>
+				<li data-ng-show="!authentication.isAuth">
+					<a href="#/register">Register</a>
+				</li>
+				<li data-ng-show="authentication.isAuth">
+					<a href="#">Hallo {{authentication.userName}}</a> |\label{line:indexHtml:Nutzung_Variable}|
+				</li>
+				<li data-ng-show="authentication.isAuth">
+					<a href="#/schedules">Schedules</a>
+				</li>
+				<li data-ng-show="authentication.isAuth">
+					<a href="#" data-ng-click="logOut()">Log out</a> |\label{line:indexHtml:Nutzung_Methode}|
+				</li> 
+			</ul>
+		</div>
+	</div>
+</nav>

@@ -3,7 +3,7 @@
    %draft,     % Entwurfsstadium
    final,      % fertiges Dokument
 %%%% --- SchriftgrÃ¶Ãe ---
-   11pt,
+   12pt,
 %%%% --- Sprache ---
    english,
    ngerman,           % Letzte Sprache ist die Hauptsprache, andere muss erst ausgewÃ¤hlt werden.
@@ -83,7 +83,7 @@
 \newcommand*{\theauthor}{Kevin Schie / Stefan Suermann}
 \newcommand*{\thematriculationnumber}{2012013 / 2012027} % Matrikelnummer
 \newcommand*{\thebirthday}{04.07.1993 / 13.12.1987} % Geburtstag
-\newcommand*{\thedegree}{Bachelor of Science}
+\newcommand*{\thedegree}{Bachelor in Information Technology}
 \newcommand*{\themajor}{IT- und Softwaresysteme} % Studiengang
 \newcommand*{\thedate}{\today} % \today kann durch ein Datum erstetzt werden.
 \newcommand*{\thebetreuer}{Prof. Dr. Johannes Ecke-Sch{\"u}th}
@@ -92,7 +92,7 @@
 
 \input{preamble/packages}
 \input{preamble/commands}
-
+\input{preamble/glossary}
 
 % Umbenennung von "Listings"
 \addto\captionsngerman{%
@@ -107,7 +107,6 @@
 \renewcommand{\familydefault}{\sfdefault}	%sorgt für einheitliche Schriftart im gesamten Dokument
 \setcounter{secnumdepth}{5} %legt die Ebene fest, bis zu der nummeriert wird
 \setcounter{tocdepth}{5} %legt fest wieviele Ebenen im Inhaltsverzeichnis vorkommen
-
 
 \begin{document}
 
@@ -140,24 +139,26 @@
 	\input{content/native_app}
 	\input{content/webapplikation}
 	\input{content/gegenueberstellung}
+	\input{content/weiterentwicklung-messeprototyp}
 	\input{content/schluss}
 	
 	% ----------------- Ende des eigentlichen Textes
 	
-
+	\appendix
 	%Verzeichnisse erstellen
-  \input{preamble/acronyms}
+	\printglossaries
+  	\input{preamble/acronyms}
+  	\printnoidxglossaries	
 	\listoffigures
 	\listoftables
 	\lstlistoflistings
 	
-	\appendix
 	\nocite{*} 
-	
 	%Literaturverzeichnis erstellen
 	\bibliography{bib/bib}
 	\bibliographystyle{jurabib}
 
+	\input{content/anhang}
 	%\input{content/anhang}
 	\input{content/eidesstattliche_erklaerung}
 \end{document}

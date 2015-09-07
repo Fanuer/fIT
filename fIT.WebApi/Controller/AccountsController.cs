@@ -48,7 +48,7 @@ namespace fIT.WebApi.Controller
         [EnableQuery]
         public IQueryable<UserModel> GetUsers()
         {
-            return this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.Create(u)).AsQueryable();
+            return this.AppUserManager.Users.ToList().Select(u => this.TheModelFactory.CreateViewModel(u)).AsQueryable();
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace fIT.WebApi.Controller
 
             if (user != null)
             {
-                return Ok(this.TheModelFactory.Create(user));
+                return Ok(this.TheModelFactory.CreateViewModel(user));
             }
 
             return NotFound();
@@ -89,7 +89,7 @@ namespace fIT.WebApi.Controller
             var user = await this.AppUserManager.FindByNameAsync(username);
             if (user != null)
             {
-                return Ok(this.TheModelFactory.Create(user));
+                return Ok(this.TheModelFactory.CreateViewModel(user));
             }
             return NotFound();
         }
@@ -108,7 +108,7 @@ namespace fIT.WebApi.Controller
 
             if (user != null)
             {
-                return Ok(this.TheModelFactory.Create(user));
+                return Ok(this.TheModelFactory.CreateViewModel(user));
             }
             return NotFound();
         }
@@ -133,7 +133,7 @@ namespace fIT.WebApi.Controller
 
             var currentUserId = User.Identity.GetUserId();
             var user = await this.AppUserManager.FindByIdAsync(currentUserId);
-            user = this.TheModelFactory.Update(model, user);
+            user = this.TheModelFactory.CreateModel(model, user);
             var result = await this.AppUserManager.UpdateAsync(user);
             return !result.Succeeded ? GetErrorResult(result) : StatusCode(HttpStatusCode.NoContent);
         }
@@ -185,7 +185,7 @@ namespace fIT.WebApi.Controller
 
             Uri locationHeader = new Uri(Url.Link("GetUserById", new { id = user.Id }));
 
-            return Created(locationHeader, TheModelFactory.Create(user));
+            return Created(locationHeader, TheModelFactory.CreateViewModel(user));
         }
 
         /// <summary>

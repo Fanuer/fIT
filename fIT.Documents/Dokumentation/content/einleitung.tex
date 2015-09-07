@@ -1,49 +1,88 @@
 \chapter{Einleitung}
 \label{cha:einleitung}
-In diesem Kapitel wird das grundlegende Problem und die daraus resultierende Aufgabenstellung erläutert.
+In diesem Kapitel wird das grundlegende Problem und die daraus resultierende Zielsetzung erläutert. Anschließend wird grob auf das Vorgehen zur Lösung dieser Ziele eingegangen.
 
 \section{Problemstellung}
 \label{sec:problemstellung}
-
-\textbf
-Momentan besitzen 57\% der Deutschen ein Smartphone. Somit hat sich die Zahl der Smartphone-Nutzer seit Ende 2011 mehr als verdoppelt.\footcite{Statista}
-Durch die verstärkte Nutzung, geraten Applikationen (Apps) - kleine Programme für mobile Endgeräte - immer mehr in den Fokus.
-Apps haben sich im Laufe der Zeit im Alltag breit gemacht und sind mittlerweile für den Endnutzer unverzichtbar geworden. Sei es beim Online-Shopping, Chatten oder der Navigation. Überall finden Applikationen ihre Verwendung.
-Dabei ist es besonders wichtig, dass eine konstante Internetverbindung besteht, um den kompletten Funktionsumfang nutzen zu können.
-Bis die Umsetzung eines flächendeckenden freien WLANs in Deutschland abgeschlossen ist, benötigt man eine gute Verbindung über seinen Netzbetreiber. Diese ist aber nicht vollständig und ausreichend im ganzen Land verfügbar.
-
-Auf Grund dessen ist es notwendig, dass die Applikationen versuchen Verbindungsabbrüche für den Benutzer zu überbrücken. Dabei besteht die Möglichkeit einer kurzzeitigen Zwischenspeicherung von Daten, die vom Benutzer eingesehen oder verwendet werden können, solange die Internetverbindung nicht bereitsteht. Änderungen, die in dieser Zeit gemacht wurden, sollen auch aufgenommen und später zur Verfügung gestellt werden.\\
-Zur Umsetzung dieser Idee bestehen zwei Möglichkeiten. Zum einen kann eine mobile Web- oder eine native Applikation genutzt werden. [Zitat eines Gurus]
-
-
-
-
+Momentan besitzen 57\% der Deutschen ein Smartphone. Somit hat sich die Zahl der Smartphone-Nutzer seit Ende 2011 mehr als verdoppelt.\footcite{Statista-SmartphoneNutzung}\\
+Durch die verstärkte Nutzung geraten \glspl{App} immer mehr in den Fokus. Applikationen haben sich im Laufe der Zeit im Alltag ausgebreitet und sind mittlerweile für den Endnutzer unverzichtbar geworden. Sei es beim Online-Shopping, Chatten oder der Navigation. Überall finden diese kleinen Programme ihre Verwendung.\\
+Dabei ist es besonders wichtig, dass eine konstante Internetverbindung besteht, um den kompletten Funktionsumfang nutzen zu können. Bis die Umsetzung eines flächendeckenden freien WLANs in Deutschland abgeschlossen ist, benötigt man eine gute Verbindung über seinen Netzbetreiber. Diese ist aber noch nicht vollständig und ausreichend im ganzen Land verfügbar.\\
+Deshalb ist es notwendig, dass Apps versuchen Verbindungsabbrüche für den Benutzer zu überbrücken. Dabei besteht die Möglichkeit einer kurzzeitigen Zwischenspeicherung von Daten, solange die Internetverbindung nicht bereitsteht. Änderungen, die in dieser Zeit gemacht werden, sollen aufgenommen und später zur Verfügung gestellt werden damit man auf all seinen Endgeräten einen einheitlichen Stand der Daten hat.\\
+Zur Umsetzung dieser Anforderungen können verschiedene Möglichkeiten genutzt werden.
 \section{Zielsetzung}
 \label{sec:zielsetzung}
-Das Ziel dieser Arbeit soll es sein, die Architektur für eine verlässliche Applikation zu entwerfen. Zum einen wird die Verarbeitung und Umsetzung auf einem Windows-Server erläutert. Auf der anderen Seite werden parallel zwei Applikationen zum verlässlichen Zugriff entwickelt und anhand dessen beleuchtet, welche Umsetzung für den angegeben Sachverhalt angemessener erscheint. Für die Umsetzung der Webapplikation wird das ASP.Net-Framework verwendet. Die native Applikation wird aus technischen Gründen mit Hilfe von Xamarin für Android entwickelt. Die Auswahl des Android-Betriebssystems besteht darin, dass Tests auch ohne Komplikationen oder Beschränkungen des Hersteller auf eigenen Geräten problemlos durchgeführt werden können.\\
-Die vorteilhaftere Möglichkeit wird zu einem Prototypen mit rudimentären Funktionen und Design weiterentwickelt. Dabei besteht dann die Möglichkeit einen Trainingsplan zu erstellen und auf die Trainingsdaten der letzten fünf Trainings - unabhängig von der Internetverbidnung - zuzugreifen.
-
-%\begin{itemize}
-%	\item Was soll mit der Arbeit erreicht werden? Welche Ziele werden angestrebt? Möglichst kurz und präzise geplante Ergebnisse umreißen. $/rightarrow$ Daran werden Ihre Resultate am Ende gemessen!
-%\end{itemize}
-
-
+Das Hauptziel dieser Arbeit ist der Wissenserwerb der Projektdurchführenden im Bereich der verlässlichen mobilen Applikationen. \\
+Hierzu sollen zwei verlässliche Applikationen unter Nutzung verschiedener Techniken entworfen, umgesetzten und getestet werden. Als Beispiel soll eine Applikation entwickelt werden, die es ermöglichen den Trainingsfortschritt beim Krafttraining darzustellen, aufzunehmen und dauerhaft zu speichern. Zum Speichern der Benutzerdaten, wie Trainingspläne, Übungen und Trainings, wird ein Server benötigt, der die Anfragen der mobilen Geräte annimmt und verarbeitet.\\
+Bei den Applikationen wird während der Entwicklungsphase entschieden, welche der beiden Apps zu einem lauffähigen Messeprototypen weiterentwickelt wird. Diese Einschätzung geschieht aufgrund der Erkenntnisse, welche durch die verschiedenen Umsetzungen gewonnen wurden.\\
+Der Prototyp soll es dem Benutzer ermöglichen durch seine Trainingspläne mit den zugehörigen Übungen zu navigieren und die Daten eines Trainings eingeben zu können. Zudem soll es möglich sein die letzten Trainingseinheiten einzusehen. Das soll unabhängig davon funktionieren, ob das Endgerät eine Verbindung zum Server aufbauen kann oder nicht.
 \section{Vorgehensweise}
 \label{sec:vorgehensweise}
-Nachdem nun die Notwendigkeit von verlässlichen Applikationen und das Ziel der Arbeit definiert wurden, befasst sich das folgende Kapitel~\ref{cha:problemanalyse} mit der Problemanalyse im Hinblick auf die Umsetzung mit den beiden herangezogenen Varianten nativer- und Webapplikation.
+Zum Erreichen der Ziele muss als Erstes eine genauere Betrachtung der entstandenen Problematik durchgeführt werden. Anschließend werden benötigte Kenntnisse für das Erreichen der Ziele gesammelt. Diese gehen in die Planung der allgemeinen Architektur ein, welche Grundlage der späteren Implementierung für Server und Clients ist. Nachdem die Architektur für Server und Clients definiert wurde, können diese umgesetzt werden. Die gewonnen Erkenntnisse aus den Implementierungen werden anschließend gegenübergestellt. Dies bildet die Grundlage für die Entscheidung, welche der beiden zu einem Messeprototyp weiterentwickelt wird. Abschließend wird die Erweiterung zum Messeprototyp umgesetzt.\\
+Projektbegleitend wird eine Dokumentation erstellt, welche jeweils die durchgeführten Maßnahmen und gewonnen Kenntnisse widerspiegelt. 
+\section{Arbeitsaufteilung}
+\label{sec:Arbeitsaufteilung}
+Da diese Arbeit von zwei Personen durchgeführt wird, muss an dieser Stelle noch aufgeschlüsselt werden, welche Aufgaben von wem durchgeführt werden. Hierzu dient die nachfolgende Tabelle \ref{tbl:arbeitsaufteilung}. Des Weiteren wird auf Grundlage dieser Tabelle die interne Zeitplanung durchgeführt. Hierdurch kann ermittelt werden, welche Teilaufgaben parallel bearbeitet werden können. Zur Wahrung der größtmöglichen Transparenz wird zwischen der Dokumentation und der Implementierung der benötigten Komponenten unterschieden. 
 
+\begin{table}[]
+\caption{Arbeitsaufteilung}
+\label{tbl:arbeitsaufteilung}
+\begin{tabular}{|l|c|c|}
+\hline
+{\bf Aufgaben}                                                    & \multicolumn{2}{c|}{realisiert von}                                    \\
+                                                                  & \multicolumn{1}{l|}{Kevin Schie} & \multicolumn{1}{l|}{Stefan Suermann} \\
+
+{\bf Implementierung}                                             &                                &                                     \\
+\hline
+Server                                                            &                                 & X                                   \\
+\hline
+native App                                                        & X                               &                                     \\
+\hline
+Webapp                                                            &                                 & X                                   \\
+\hline
+Messeprototyp                                                     & X                               &                                     \\
+\hline
+                                                                  &                                 &                                     \\
+{\bf Dokumentation}                                               &                                 &                                     \\
+\hline
+Einleitung                                                        &                                 & X                                    \\
+\hline
+Problemanalyse                                                    & X                               &                                     \\
+\hline
+Grundlagen                                                        & X                               &                                     \\
+\hline
+Architektur                                                       &                                 & X                                   \\
+\hline
+Aspekte der Realisierung                                          &                                 & X                                   \\
+\hline
+\makecell[l]{Realisierung der serverseitigen\\Implementierung}    &                                 & X                                   \\
+\hline
+\makecell[l]{Relisierung der clientseitigen\\Implementierung als native App}     & X                               &                                     \\
+\hline
+\makecell[l]{Relisierung der clientseitigen\\Implementierung als Webapplikation} &                                 & X                                   \\
+\hline
+\makecell[l]{Gegen{\"u}berstellung der\\clientseitigen Implementierung}        & X                               & X                                   \\
+\hline
+\makecell[l]{Weiterentwicklung eines\\Clients zu einem Messeprototyp}         & X                               &                                     \\
+\hline
+Fazit                                                             &                                 & X                                   \\
+\hline
+Pflichtenheft                                                     &                                 & X                                   \\
+\hline
+Cache Post                                                        & X                               &                                     \\
+\hline
+User-Story in der nativen App                                     & X                               &                                     \\
+\hline
+Funktionsumfang                                                   & X                               &   \\
+\hline
+                                 
+\end{tabular}
+\end{table}
 
 %\begin{itemize}
 %	\item Wie wird vorgegangen, um das Ziel zu erreichen?
 %	\item Warum ist die Arbeit so gegliedert, wie sie gegliedert ist?
 %	\item Welche Aspekte werden nicht behandelt \textbf{und} warum?
 %\end{itemize}
-
-
-
-
-
-
 
 %{TODO: Rausnehmen}
 %Beschreibung: Wer was gemacht hat -> Übersicht je Kapitel

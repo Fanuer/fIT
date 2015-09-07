@@ -1,0 +1,37 @@
+﻿CACHE MANIFEST
+
+# Time: Fri, 28 Aug 2015 18:34:32 GMT  |\label{line:appcache:timestamp}|
+
+CACHE: |\label{line:appcache:local}|
+/Content/bootstrap.min.css
+/Content/bootstrap-theme.min.css
+/Content/Site.css
+/fonts/glyphicons-halflings-regular.woff
+/fonts/glyphicons-halflings-regular.ttf
+/Scripts/modernizr-2.8.3.js
+/Scripts/jquery-1.9.1.min.js
+/Scripts/bootstrap.min.js
+/Scripts/angular.min.js
+/Scripts/angular-route.min.js
+/Scripts/angular-local-storage.js
+/app/directive/sameAs.js
+/app/controllers/homeController.js
+/app/controllers/indexController.js
+/app/controllers/signupController.js
+/app/controllers/loginController.js
+/app/controllers/scheduleController.js
+/app/factory/enumFactory.js
+/app/factory/authFactory.js
+/app/factory/scheduleFactory.js
+/app/factory/authInterceptorFactory.js
+/app/views/schedules.html
+/app/views/login.html
+/app/views/schedule.html
+/app/views/signup.html
+/app/app.js
+
+NETWORK:
+* |\label{line:appcache:network}|
+
+SETTINGS:
+prefer-online |\label{line:appcache:prefer-online}|

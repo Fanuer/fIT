@@ -36,7 +36,7 @@ namespace fIT.WebApi.Controller
 
             return all
                    .Where(x=> CurrentUserId.Equals(x.UserId))
-                   .Select(this.TheModelFactory.Create)
+                   .Select(this.TheModelFactory.CreateViewModel)
                    .AsQueryable();
         }
 
@@ -100,7 +100,7 @@ namespace fIT.WebApi.Controller
             try
             {
                 var orig = await this.AppRepository.Practices.FindAsync(id);
-                orig = this.TheModelFactory.Update(practice, orig);
+                orig = this.TheModelFactory.CreateModel(practice, orig);
                 await this.AppRepository.Practices.UpdateAsync(orig);
             }
             catch (DbUpdateConcurrencyException)
@@ -133,10 +133,10 @@ namespace fIT.WebApi.Controller
                 return BadRequest(ModelState);
             }
 
-            var datamodel = this.TheModelFactory.Update(practice);
+            var datamodel = this.TheModelFactory.CreateModel(practice);
             await this.AppRepository.Practices.AddAsync(datamodel);
             
-            practice = this.TheModelFactory.Create(datamodel);
+            practice = this.TheModelFactory.CreateViewModel(datamodel);
             return CreatedAtRoute("GetPracticeById", new { id = practice.Id }, practice);
         }
 

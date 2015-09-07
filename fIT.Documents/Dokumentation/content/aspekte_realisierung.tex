@@ -14,14 +14,19 @@ Für die Entwicklung sämtlicher Komponenten wurde \textit{Microsoft Visual Stud
 \end{itemize}
 \section{Datenbank-System}
 \label{sec:DB-System}
-Als Datenbanksystem wurde ebenfalls die Lösung von \textit{Microsoft} verwendet. Hierbei handelt es sich um \textit{Microsoft SQL Server}. Durch die einheitliche Nutzung von Microsoft-Produkten kann für den Zugriff auf die Datenbank der \ac{OR-Mapper} genutzt werden. Dieser erlaubt es, direkt aus Modell-Klassen Datenbank-Entitäten zu entwickeln. Dieser Vorgang wird in Kapitel \ref{ssec:aufbau-server-db} näher erläutert\footcite{online:SQLServer}.
+Als Datenbanksystem wurde ebenfalls die Lösung von \textit{Microsoft} verwendet. Hierbei handelt es sich um \textit{Microsoft SQL Server}. Durch die einheitliche Nutzung von Microsoft-Produkten kann für den Zugriff auf die Datenbank der \ac{OR-Mapper} genutzt werden. Dieser erlaubt es, direkt aus Modell-Klassen Datenbank-Entitäten zu entwickeln. Dieser Vorgang wird in Kapitel \ref{ssec:aufbau-server-db} näher erläutert.\footcite{online:SQLServer}
 \section{Hosting-Plattform}
 \label{sec:Hosting-Plattform}
-Sowohl der Web Service als auch die Web-Application-Client müssen im Internet verfügbar gemacht werden, damit so von überall erreichbar sind. Hierzu biette \textit{Microsoft} die Hosting-Plattform \textit{Azure} an. Diese ermöglicht es, direkt aus \textit{Visual Studio} heraus seine Webanwendung zu veröffentlichen. Gleichzeitig lässt sich eine Datenbank hosten, welchen der Webservice direkt benutzen kann. Zusätzlich ist Azure sehr gut skalierbar, was den Einsatz als Hosting-Plattform für kleine Prototyp-Projekte optimal unterstützt\footcite{online:Azure}.
-\section{Versionsverwaltung}
-\label{sec:versionsverwaltung}
-
+Sowohl der Web Service als auch die Web-Application-Client müssen im Internet verfügbar gemacht werden, damit so von überall erreichbar sind. Hierzu biette \textit{Microsoft} die Hosting-Plattform \textit{Azure} an. Diese ermöglicht es, direkt aus \textit{Visual Studio} heraus seine Webanwendung zu veröffentlichen. Gleichzeitig lässt sich eine Datenbank hosten, welchen der Webservice direkt benutzen kann. Zusätzlich ist Azure sehr gut skalierbar, was den Einsatz als Hosting-Plattform für kleine Prototyp-Projekte optimal unterstützt.\footcite{online:Azure}
 \section{Dokumentationslösung}
 \label{sec:dokumentationslösung}
-
- 
+Zur Umsetzung der Projektdokumentation wurde das Framework LaTeX benutzt. Dieses erweitert das Textsatzsystem \textit{Tex} mit Makros. Die Makros können als Markup benutzt werden, um einen Text zu strukturieren. Dadurch kann, wie bei Nutzung von Markup üblich, sehr einfach Inhalt und Aussehen getrennt werden. Somit hat man den Vorteil, dass man nur einmal das Aussehen pflegen muss und anschließend ausschließlich den Inhalt mit dem gewünschten Markup definieren muss. Diese Dateien können anschließend zu einer Pdf-Datei kompiliert werden.\footcite{online:definition-latex}\\ Ein weiterer Vorteil ist, dass die Inhaltsdateien aus einfachen Text-Dateien bestehen. Bei dieser Art von Dateien lassen sich Änderungen (beispielsweise mittel Versionsverwaltung) leichter nachvollziehen als beispielsweise bei docx-Dateien, welche Word benutzt. Dabei handelt es sich um Binärdateien, welche die Nachvollziehbarkeit erschweren.
+\section{Versionsverwaltung}
+\label{sec:versionsverwaltung}
+Dieses Projekt wurde von mehren Personen durchgeführt. Dabei ist es unerlässlich, dass die Projektstände zwischen den Teilnehmern nachvollziehbar verwaltet werden, da sonst schnell Chaos entstehen kann. Um dem entgegenzuwirken wurde \textit{Git} als Versionsverwaltung eingesetzt. \\
+Diese Entscheidung wurde aus folgenden Gründen getroffen:
+\begin{itemize}
+\item \textit{Git} ist eine verteiltes Versionsverwaltungssystem. Das bedeutet, dass sowohl ein lokalen als auch ein globales Repository entsteht. Dies macht die Entwicklung leichter: Im vorliegenden Fall wurde beispielsweise solange lokal entwickelt, bis eine Funktionalität funktionsfähig war. Anschließend wurden alle lokalen Stände in das globale Repository eingecheckt, sodass immer ein funktionierender Stand im globalen Repository vorliegt. 
+\item Für die Nutzung von \textit{Git} benötigt man keinen eigenen Server, in dem das globale Repository aufgespielt wird. Hierfür kann die Webseite \textit{https://github.com} genutzt werden. Diese stellt diese Funktionalität kostenlos bereit und ist weltweit über das Internet verfügbar. 
+\item Für \textit{Git} gibt es eine direkt Integration in die genutzte Entwicklungsumgebung.
+\end{itemize}

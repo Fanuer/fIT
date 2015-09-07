@@ -8,7 +8,7 @@ Die Web-Applikation wurde als \ac{Single Page-Application}(SPA) implementiert. \
 \label{sec:AngularJs}
 Zur Umsetzung der SPA wurde das quelloffene Framework AngularJs from Google gewählt, welches sich immer größerer Popularität erfreut\footcite{online:angularjs-popularity}\footcite[S. 33]{book:AngularJs:Steyer2015}. Es bietet alle Möglichkeiten, um einen Endgerät als weitestgehend autonomen \ac{Fat-Client} zu implementieren. Dadurch wird die Möglichkeit geschaffen, eine Applikation zu entwickelte, welche selbst dann akzeptabel reagiert, wenn ein aufrufendes Endgerät keine Verbindung zum Internet besitzt. Hierzu stellt es zusätzliches \ac{MarkUp} bereit, welches zu Laufzeit interpretiert und ausgeführt wird. Die dazu nötigen Komponenten von AngularJs und deren Einsatz werden nachfolgend genauer erläutert.
 
-\subsection{Begriff: Komponente}
+\subsection{Abgrenzung des Begriffs: Komponente}
 Wenn in diesem Kapitel der Begriff Komponente benutzt wird, ist eine abgeschlossene, logische Einheit im AngularJs-Umfeld gemeint. Auf einige dieser Komponenten, wie Services und Controller, wird im späteren Verlauf dieses Kapitels detaillierter eingegangen. AngularJs nutzt den Begriff des \textit{Modules} als einen Container für verschiedene Komponenten\footcite{online:angular:module}. 
 \subsection{Dependency Injection}
 \label{ssec:SPA-Dependency-Injection}
@@ -47,7 +47,7 @@ In Zeile \ref{line:indexHtml:Nutzung_Methode} wird eine Direktive benutzt, um au
 \label{ssec:SPA-Routing}
 Damit das MarkUp nicht schnell durch die Nutzung von zusätzliche Direktiven überladen wird, bietet AngularJs das module \textit{\$route} zur Implementierug von Routing an. Hierbei wird durch die Direktive \textit{ng-view} ein Block als View-Container definiert. Dieser wird abhängig von der aufgerufenen URL mit unterschiedlichen Inhalten befüllt. Das Beispiel \ref{lst:SPA-routing} zeigt solch eine Routing-Konfiguration. 
 \lstinputlisting[caption=Routing mit AngularJs, label=lst:SPA-routing, style=htmlcssjs]{content/listings/routing.js}
-Stimmt eine Route überein wird der konfigurierte Controller aufgerufen. Dessen Scope wird nach der Abarbeitung an die definierte View weitergegeben. Die Views sind hierbei Html-Dateien mit MarkUp-Schnipsel, innerhalb des View-Containers gerendert werden. Diese MarkUp-Schnipsel liegen ebenfalls auf dem Server. 
+Stimmt eine Route überein wird der konfigurierte Controller aufgerufen. Dessen Scope wird nach der Abarbeitung an die definierte View weitergegeben. Die Views sind hierbei HTML-Dateien mit MarkUp-Schnipsel, innerhalb des View-Containers gerendert werden. Diese MarkUp-Schnipsel liegen ebenfalls auf dem Server. 
 \section{Umsetzung}
 \label{sec:SPA-Umsetzung}
 Durch die Nutzung der vorgestellten Komponenten war es möglich, einen Prototyp, welcher die grundlegenden Anforderungen, die in Kapitel \ref{cha:architektur} definiert wurden, erfüllt.\footcite{online:Created_SPA} Nachfolgend werden einige Teilaspekte im Zusammenhang mit der Implementierung näher beleuchtet.

@@ -41,4 +41,20 @@ Zusammenfassend kann festgehalten werden, dass der zweite Meilenstein zur Optimi
 Das es sich am Ende der Entwicklung um einen Messeprototypen handeln soll, ist das Design von besonderem Interesse. Diese Anforderung wurde im ersten Meilenstein zurückgestellt, um zuallererst einen Fokus auf den technischen Vergleich legen zu können. Nach der Sondierung der besseren Möglichkeit sollte diese dann weiter ausgebaut werden. Deshalb hat diese App eine Verbesserung der Oberflächen erhalten.\\
 Die Statistik (ein Kann-Kriterium aus \ref{sec:Pflichtenheft}) wurde zusätzlich umgesetzt, da das Interesse an der Umsetzung eines langen Klicks und der Möglichkeiten der \textit{BarChart-Extension} groß waren.\\
 Abschließend kann festgehalten werden, dass der zweite Meilenstein der nativen Applikation die letzten Verfeinerungen zum Prototypen gegeben hat.\\
-Der Prototyp besitzt nun eine \textit{UserStory} (siehe Anhang \ref{sec:UserStory}), die alle benötigten Funktionen für die Entwicklung einer vollends ausgereiften App beinhaltet. So kann die Funktionalität des Speicherns eines Trainings auf das Speichern von Übungen und Trainingsplänen übertragen werden. Zudem kann das Abrufen von weiteren Daten, zum Beispiel für die Umsetzung von Administrator-Funktionen, mit den bestehenden Möglichkeiten umgesetzt werden.
+Der Prototyp besitzt nun eine \textit{UserStory}, die alle benötigten Funktionen für die Entwicklung einer vollends ausgereiften App beinhaltet. So kann die Funktionalität des Speicherns eines Trainings auf das Speichern von Übungen und Trainingsplänen übertragen werden. Zudem kann das Abrufen von weiteren Daten, zum Beispiel für die Umsetzung von Administrator-Funktionen, mit den bestehenden Möglichkeiten umgesetzt werden.
+
+%UserStory
+\begin{figure}[!htbp]
+\centering
+\includegraphics[width=\textwidth, angle={90}]{content/images/UserStory}
+\caption{UserStory}
+\label{pic:UserStory}
+\end{figure}
+
+In der Abbildung \ref{pic:UserStory} ist die Übersicht der Oberflächen zu erkennen (größere Abbildungen sind im Anhnag unter Abschnitt \ref{sec:UserStory} zu finden). Darüber hinaus sind auch die Verbindungen zwischen den Oberflächen eingezeichnet, um sehen zu können, wie der \textit{Workflow} verläuft.\\
+Der Einstieg des Benutzers in die Android-App geschieht über die Startseite, die die Auswahl zwischen Login und Registrierung darstellt. Wählt der Benutzer die Registrierung, erscheint der entsprechende Dialog. Um diese Funktion nutzen zu können, muss das Gerät eine Verbindung zum Server besitzen. 
+Wenn sich der Benutzer einloggen möchte, erscheint der Login-Dialog. Um sich offline anmelden zu können, muss der Login einmal im Online-Modus durchgeführt worden sein, damit die App die Benutzerinformationen komplett vom Server erhalten hat.\\
+Nach einem erfolgreichen Login, sei es offline oder online, werden die Trainingspläne des Benutzers als Liste angezeigt. Durch einen Klick auf den entsprechenden Plan, öffnet sich eine neue Seite mit den zu diesem Plan zugewiesenen Übungen.\\
+Auf der folgenden Übersichtsseite werden die Übungen mit Namen und Beschreibung aufgelistet und der Benutzer hat nun zwei Möglichkeiten, um zu interagieren. Zum einen kann man durch das Auswählen einer Übung zu der Trainingsseite gelangen. Auf dieser Seite kann der Benutzer dann die Daten für diese Übung zu einem Training eintragen. Benötigt werden dazu das Gewicht, die Anzahl der Sätze und die Wiederholungszahl.
+Als zweite Möglichkeit kann durch einen langen Klick auf eine Übung eine Statistik zu den dazu eingetragenen Trainings aufgerufen werden. Diese Statistik wird als Balkendiagramm angezeigt und gibt einen Überblick über die Leistungen des Benutzers. Der Index berechnet sich als Produkt der eingetragenen Werte Gewicht, Satzzahl und Wiederholungen.\\
+Um in der Statistik alle Daten angezeigt zu bekommen, muss diese im Online-Modus aufgerufen werden, um die Daten auf das Gerät laden zu können. Dann können offline Trainings eingetragen werden und diese erscheinen unverzüglich in der Statistik. Wird die Statistik im Offline-Modus zum ersten Mal aufgerufen, werden nur die offline angelegten Trainings angezeigt.

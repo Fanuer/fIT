@@ -57,7 +57,7 @@ namespace fITNat
         //OnCreate -> Initialisierung
         public override void OnCreate()
         {
-            base.OnCreate(); 
+            base.OnCreate();
             mgnServiceServer = new ManagementService(URL);
             setzeManagementServiceLocal(new ManagementServiceLocal());
             setzeDb(new LocalDB());
@@ -99,12 +99,12 @@ namespace fITNat
                         return userId;
                     }
                 }
-                catch(ServerException ex)
+                catch (ServerException ex)
                 {
                     System.Console.WriteLine("Fehler beim Online-Einloggen (Server)" + ex.StackTrace);
                     throw;
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     System.Console.WriteLine("Fehler beim Online-Einloggen" + exc.StackTrace);
                 }
@@ -119,7 +119,7 @@ namespace fITNat
                     if (result != null)
                         return result;
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     System.Console.WriteLine("Fehler beim Offline-Einloggen" + exc.StackTrace);
                     throw;
@@ -140,7 +140,7 @@ namespace fITNat
         /// <param name="fitness"></param>
         /// <param name="birthdate"></param>
         /// <returns></returns>
-        public async Task<bool> SignUp( string username,
+        public async Task<bool> SignUp(string username,
                                         string email,
                                         string password,
                                         string passwordConfirm,
@@ -188,7 +188,7 @@ namespace fITNat
         /// <param name="repetitions"></param>
         /// <param name="numberOfRepetitions"></param>
         /// <returns></returns>
-        public async Task<bool> createPracticeAsync( int scheduleId,
+        public async Task<bool> createPracticeAsync(int scheduleId,
                                                 int exerciseId,
                                                 string userId,
                                                 DateTime timestamp = default(DateTime),
@@ -216,7 +216,7 @@ namespace fITNat
                         pOn.Repetitions = repetitions;
                         pOn.NumberOfRepetitions = numberOfRepetitions;
                         int result = db.insertUpdatePracticeOnline(pOn);
-                        if(result != -1)
+                        if (result != -1)
                         {
                             Console.WriteLine("Training auch lokal angelegt");
                         }
@@ -225,7 +225,7 @@ namespace fITNat
                     else
                         return false;
                 }
-                catch(ServerException ex)
+                catch (ServerException ex)
                 {
                     throw;
                 }
@@ -249,7 +249,7 @@ namespace fITNat
                     else
                         return false;
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     System.Console.WriteLine("Fehler beim lokalen Anlegen des Trainings: " + exc.StackTrace);
                 }
@@ -304,7 +304,7 @@ namespace fITNat
                     practices = db.GetAllPracticesByUserScheduleExercise(userId, scheduleId, exerciseId);
                     foreach (var item in practices)
                     {
-                        if (item.Id != 0)
+                        if (item.Id != 0 || item.LocalId != 0)
                         {
                             resultListe.Add(item);
                         }
@@ -610,7 +610,7 @@ namespace fITNat
                             setzeStatus(false);
                             setzeWasOffline(true);
                         }
-                        Console.WriteLine("Online: " + Online);
+                        Console.WriteLine("Online: " + Online);                            
                         //Timeout 10sek.
                         System.Threading.Thread.Sleep(10000);
                     }

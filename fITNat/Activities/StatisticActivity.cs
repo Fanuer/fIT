@@ -45,12 +45,15 @@ namespace fITNat.Activities
                 }
                 
                 var data = zahlen.ToArray();
-                var chart = new BarChartView(this)
+                if(data.Length != 0)
                 {
-                    ItemsSource = Array.ConvertAll(data, v => new BarModel { Value = v })
-                };
-                AddContentView(chart, new ViewGroup.LayoutParams(
+                    var chart = new BarChartView(this)
+                    {
+                        ItemsSource = Array.ConvertAll(data, v => new BarModel { Value = v })
+                    };
+                    AddContentView(chart, new ViewGroup.LayoutParams(
                   ViewGroup.LayoutParams.FillParent, ViewGroup.LayoutParams.FillParent));
+                }
             }
             catch(Exception ex)
             {

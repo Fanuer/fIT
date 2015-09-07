@@ -88,12 +88,12 @@ namespace fITNat
         /// <param name="online"></param>
         public void setConnectivityStatus(bool online)
         {
+            connectivityPointer.SetImageResource(0);
             if (online)
                 connectivity = Resource.Drawable.CheckDouble;
             else
                 connectivity = Resource.Drawable.Check;
-            connectivityPointer.SetBackgroundResource(0);
-            connectivityPointer.SetBackgroundResource(connectivity);
+            connectivityPointer.SetImageResource(connectivity);
         }
     }
 }

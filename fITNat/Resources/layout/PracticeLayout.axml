@@ -59,7 +59,8 @@
         android:inputType="numberDecimal"
         android:layout_width="50dp"
         android:layout_height="30dp"
-        android:background="#ddd" />
+        android:background="#ddd"
+        android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/txtWeightLabelSmall"
         android:layout_toRightOf="@id/txtWeight"
@@ -89,7 +90,8 @@
         android:inputType="number"
         android:layout_width="50dp"
         android:layout_height="30dp"
-        android:background="#ddd" />
+        android:background="#ddd"
+        android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/txtNumberOfRepetitionsLabel"
         android:layout_below="@id/txtRepetitionsLabel"
@@ -108,7 +110,8 @@
         android:inputType="number"
         android:layout_width="50dp"
         android:layout_height="30dp"
-        android:background="#ddd" />
+        android:background="#ddd"
+        android:textColor="@android:color/black" />
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

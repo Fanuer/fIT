@@ -493,7 +493,7 @@ namespace fITNat
             try
             {
                 db = new SQLiteConnection(path);
-                tempList = db.Query<Practice>("Select * From Practice Where LocalId=?", data.LocalId);
+                tempList = db.Query<Practice>("Select * From Practice Where Id=?", data.Id);
                 if (tempList.Count != 0)
                 {
                     temp = tempList.First<Practice>();
@@ -512,6 +512,9 @@ namespace fITNat
                     return 0;
                 }
                 db.Insert(data);
+                List<Practice> testListe = db.Query<Practice>("Select * From Practice Where LocalId=?", data.LocalId);
+                Practice test = testListe.First<Practice>();
+                Console.WriteLine(test.LocalId);
                 return 1;
             }
             catch (SQLiteException ex)
@@ -626,14 +629,17 @@ namespace fITNat
         /// <returns></returns>
         public List<Practice> GetAllPracticesByUserScheduleExercise(string userId, int scheduleId, int exerciseId)
         {
-            List<Practice> result = null;
+            List<Practice> result = new List<Practice>();
             try
             {
                 var db = new SQLiteConnection(path);
-                List<Practice> practices = db.Query<Practice>("Select * From Practice Where UserId = ? and ScheduleId=? and ExerciseId=?", userId, scheduleId, exerciseId);
-                if (practices != null)
+                List<Practice> test = db.Query<Practice>("Select * From Practice Where ScheduleId=?", scheduleId);
+                foreach (var item in test)
                 {
-                    result = practices;
+                    if(item.ExerciseId == exerciseId)
+                    {
+                        result.Add(item);
+                    }
                 }
             }
             catch (SQLiteException ex)

@@ -1,17 +1,17 @@
 \chapter{Architektur}
 \label{cha:architektur}
-In diesem Kapitel werden die architektonischen Randbedingungen für die Entwicklung der Applikation beschrieben. Hierzu zählt welche Anwendungsfälle in den späteren Prototypen und im schlussendlichen Messeprototyp gegeben sein muss. Daraus resultiert der Aufbau der Datenbank und die schlussendliche Systemarchitektur. Als Grundlage dient das Pflichtenheft. Dieses liegt dieser Arbeit gesondert im Anhang bei (siehe Anhang \ref{sec:Pflichtenheft}).
+In diesem Kapitel werden die architektonischen Randbedingungen für die Entwicklung der Applikation beschrieben. Hierzu zählt welche Anwendungsfälle in die späteren Prototypen und im schlussendlichen Messeprototyp gegeben sein muss. Daraus resultiert der Aufbau der Datenbank und die schlussendliche Systemarchitektur. Als Grundlage dient das Pflichtenheft. Dieses liegt dieser Arbeit gesondert im Anhang bei (siehe Anhang \ref{sec:Pflichtenheft}).
 
 \section{Anwendungsfälle}
 \label{sec:anwendungsfaelle}
-Das Pflichtenheft sieht eine Unterteilung des Projekts in zwei aufeinanderfolgenden Meilensteine vor. Hierbei werden erst Proof-of-Concept-Prototypen entwickelt. Anschließend wird ein Prototyp zum Messe-Prototypen weiterentwickelt. \\
+Das Pflichtenheft sieht eine Unterteilung des Projekts in zwei aufeinanderfolgenden Meilensteine vor (siehe \ref{sec:meilenstein-plan}). Hierbei werden erst Proof-of-Concept-Prototypen entwickelt. Anschließend wird ein Prototyp zum Messe-Prototypen weiterentwickelt. \\
 Für diese beiden Prototypen müssen andere bzw. erweiterte Anwendungsfälle implementiert werden. Darum werden nachfolgend für die beiden Implementierungsschritte die Anwendungsfälle einzeln aufgeschlüsselt. 
 \subsection{Anwendungsfälle für Meilenstein 1 (Proof-of-Concept-Phase)}
 \label{ssec:anwendungsfaelle-poc}
 Aus dem Pflichtenheft ergeben sich folgende Anwendungsfälle für die erste Phase des Projekts:
 \begin{itemize}
 \item Es soll möglich sein, sich an der Anwendung anzumelden
-\item Es soll möglich sein, eine Entität mit Daten (Trainingsplan, Training oder Übung) unabhängig von der Verbindung zum Web Service persistent anzulegen, zu ändern und zu speichern
+\item Es soll möglich sein, eine Entität mit Daten (Trainingsplan, Training oder Übung), unabhängig von der Verbindung zum Web Service, persistent anzulegen, zu ändern und zu speichern
 \item Optional soll sich ein Nutzer an der Anwendung registrieren können
 \end{itemize}
 
@@ -58,12 +58,12 @@ Aus den definierten Anwendungsfälle ergibt sich die Struktur für die Datenbank
 \section{Programmarchitektur}
 \label{sec:programmarchitektur}
 Da verschiedene Clients implementiert werden sollen, ist es sinnvoll das Projekt als Mehrschichtenarchitektur für verteilte Anwendung zu implementieren. \\
-Der Server hält dabei die Funktionen zur Nutzung durch die Clients vor. Konkret greift der Server per OR-Mapper auf die Datenbank zu, bereitet die Daten in der Applikations-Schicht auf und reicht sie über eine Rest-Schnittstelle an die anfragenden Client weiter. Dabei muss gewährleistet sein, dass ein Nutzer nur die Daten abrufen darf, für die er autorisiert wurde. \\
+Der Server hält dabei die Funktionen zur Nutzung durch die Clients vor. Konkret greift der Server per OR-Mapper auf die Datenbank zu, bereitet die Daten in der Applikationsschicht auf und reicht sie über eine REST-Schnittstelle an die anfragenden Client weiter. Dabei muss gewährleistet sein, dass ein Nutzer nur die Daten abrufen darf, für die er autorisiert wurde. \\
 Clientseitig werden Daten in einer Caching-Schicht zum Schutz vor eventuellen Verbindungsabbrüchen zwischengespeichert. Anschließend werden die erhaltenen Daten auf dem Endgerät für die Anzeige aufbereitet und angezeigt. \\
 Abbildung \ref{pic:architecture} bildet diesen Aufbau grafisch ab:
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.8\linewidth]{content/images/Aufbau-Architektur.png}
+\includegraphics[width=0.7\linewidth]{content/images/Aufbau-Architektur.png}
 \caption{Aufbau der Anwendung}
 \label{pic:architecture}
 \end{figure}
@@ -73,7 +73,6 @@ Abbildung \ref{pic:architecture} bildet diesen Aufbau grafisch ab:
 \label{sec:rollen-konzept}
 Im Pflichtenheft wird für den zweiten Meilenstein eine Unterscheidung in den Berechtigungen gemacht. So dürfen beispielsweise nur Administrationen neue Übungen anlegen. Darum ist es nötig, ein Rollenkonzept zu entwickeln, der den Zugriff auf bestimmte Ressourcen reguliert. \\
 Aus den Aussagen, die im Pflichtenheft getroffen wurden, geht hervor, das sich der Nutzer in einer der nachfolgenden Status befindet, wenn er auf den Web Service zugreifen will: 
-
 \begin{itemize}
 \item unautorisiert \\
 Der Nutzer hat sich noch nicht gegenüber des Web Server authentifiziert. In diesem Status kann der Nutzer sich mit seinen Anmeldedaten einloggen oder als neuer Nutzer an der Web Applikation registrieren.

@@ -1,9 +1,9 @@
 \chapter{Grundlagen}
 \label{cha:grundlagen}
-Das folgende Kapitel gibt eine Übersicht über die verschiedenen Funktionsweisen eines Caches. Darauf aufbauend wird anschließend herausgestellt, welche Art von Speicherung in diesem Projekt umgesetzt wird. Dabei wird ebenfalls auf die verschiedenen Auffassung des Begriffes \textit{Cache} eingegangen und deren Unterschiede erläutert.
+Das folgende Kapitel gibt eine Übersicht über die verschiedenen Funktionsweisen eines Caches. Darauf aufbauend wird anschließend herausgestellt, welche Art von Speicherung in diesem Projekt umgesetzt wird. Dabei wird ebenfalls auf die verschiedenen Auffassungen des Begriffes \textit{Cache} eingegangen und deren Unterschiede erläutert.
 \section{Definition eines Caches}
 \label{sec:cache-definition}
-Ein \textit{Cache} wird im Allgemeinen als eine Speicherregion oder Puffer verstanden, die besonders schnell erreichbar ist. Darin werden oft verwendete Daten gespeichert, um höheren Speicherverbrauch gegen einen Performancegewinn zu tauschen.
+Ein \textit{Cache} wird im Allgemeinen als eine Speicherregion oder Puffer verstanden, die besonders schnell erreichbar ist, da oft verwendete Daten zwischengespeichert werden. Somit erkauft man sich durch einen erhöhten Speicherbedarf einen Performancegewinn.
 \subsection{Cache-Arten}
 \textit{Caches} werden in verschiedenen Umgebungen eingesetzt. Hierbei kann zwischen folgenden Arten unterschieden werden:
 \begin{itemize}
@@ -23,7 +23,7 @@ Beim \textit{Server Caching} geht es darum, den \textit{Traffic} in einem Netzwe
 \subsection{Funktionsweisen von Caches}
 \label{ssec:cache-funktionsweisen}
 \textit{Caches} lassen sich in zwei unterschiedliche Funktionsweisen unterteilen. Diese werden nachfolgend genauer vorgestellt.
-\subsubsection*{Store Forward}
+\subsubsection*{Store and Forward}
 \label{sssec:cache-store-forward}
 Das \textit{Store and Forward}-Prinzip ist eine spezielle Art des \textit{Cachings}, das Netze überbrücken soll, welche Verzögerungen tolerieren. Gegensätzlich dazu sind die Techniken \textit{Streaming} und Internettelefonie, die keine Verzögerungen tolerieren. Gleichzusetzen ist diese Technik mit der \ac{TCP}-Übertragung, die auch zwischengespeichert werden kann. Der Vorteil dieser Technik besteht darin, dass eine Zwischenstation die übertragenen Daten speichert, auf Integrität prüft und, wenn gewünscht, weiterleitet.\footcite{Cache-StoreForward}\\
 Diese Technik kann auch in einem System untergebracht werden. So soll ein Datum auf der Festplatte gespeichert werden, wird dazu jedoch sicherheitshalber im Puffer zwischengespeichert. Direkt danach wird dieses Datum abgerufen, ist aber noch nicht auf die Festplatte geschrieben. Dann kann das Datum aus dem Puffer geladen werden und die geringe Geschwindigkeit der Festplatte wird dem Anwender nicht bewusst.\footcite{Cache-StoreForwardSOA}

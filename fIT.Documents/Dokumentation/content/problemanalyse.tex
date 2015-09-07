@@ -1,30 +1,53 @@
 \chapter{Problemanalyse}
 \label{cha:problemanalyse}
-Im letzten Kapitel wurde die Aufgabenstellung grob beschrieben. Nun sollen die angesprochenen Probleme feiner analysiert werden, so dass sich die konkreten Ziele ergeben. Die Zeile bilden die Grundlage für die Entscheidungen zum weitere Vorgehen während der Umsetzung. Darauf aufbauend werden die grundsätzlichen Komponenten und deren Funktionsweise beschrieben.
+Im letzten Kapitel wurde die Aufgabenstellung grob beschrieben. Nun sollen die angesprochenen Probleme feiner analysiert werden, so dass sich die konkreten Ziele ergeben. Die Ziele bilden die Grundlage für die Entscheidungen zum weitere Vorgehen während der Umsetzung, welche in einem Soll-Konzept dargelegt wird.
 \section{Problembeschreibung}
 \label{sec:problembeschreibung}
-Die vordergründige Herausforderung liegt darin, dass die Fitness-Anwendungen auch dann noch benutzbar sein sollen, wenn keine Verbindung zum Internet, speziell zum benötigten Server, besteht. Dafür müssen die Applikationen ausgelegt und vorbereitet werden. Sei es durch das Unterbinden von Funktionen oder das Speichern von bereits erhaltenen Daten, um diese dem Benutzer für die weitere Verwendung zur Verfügung stellen zu können. \\
-Weiterhin gibt es Unterschiede in der Auswahl der lokal zu speichernden Daten. Auf der einen Seite können alle Daten, die relevant sind, automatisch von der Anwendung für den Benutzer hinterlegt werden. Zum anderen kann es die Möglichkeit für den Benutzer geben, bestimmte Daten offline verfügbar zu machen.\\
-Zu beachten ist darüber hinaus, dass die Daten, die ohne Internetverbindung angelegt werden, wieder zum Server synchronisiert werden müssen, um Benutzereingaben zentral persistent speichern zu können. In diesem Anwendungsfall sollen Trainingsdaten erfasst und gespeichert werden.\\
-Die Daten sollen für verschiedene Benutzer, die sich an dem Gerät anmelden, gespeichert werden. Des Weiteren sollen Benutzer nur Funktionen ausführen können, zu denen sie auch autorisiert sind.\\
-Konkret kann daraus geschlossen werden, dass die Anwendungen mit einem Mechanismus ausgestattet sein müssen, der das lokale Zwischenspeichern von Informationen unterstützt. Damit soll das Abrufen von Daten im \textit{Offline}-Modus ermöglicht werden. Des Weiteren soll es \textit{offline} möglich sein, Daten anzulegen und diese sollen dann mit dem Server synchronisiert werden, wenn wieder eine Verbindung besteht.\section{Soll-Konzept}
-\label{sec:soll-konzept}
+Aus der groben Problembeschreibung lassen sich folgende technische Herausforderungen ablesen:\\
+Der Server dient als zentrale Datenhaltung für verschiedene Clients. Darum ist es nötig, dass Client und Server dafür ausgelegt werden, über einen standardisierte Schnittstelle zu kommunizieren, um die anfallenden Daten auszutauschen. Diese Schnittstelle muss einen Authentifizierungs- und Autorisierungsmechanismus implementieren, so dass jeder Nutzer nur an seine Daten gelangt. Darüber hinaus ist die Schnittstelle so zu implementieren, dass diese Kommunikation (zumindest temporär) optional ist, sodass eine Ausfallsicherheit entsteht. Um diese zu gewährleisten, muss ein Client die Möglichkeit haben, die Verbindung zum Server zu prüfen. Schlägt diese Prüfung fehl, muss der Client mit entsprechenden Maßnahmen reagieren. Hierfür muss zum einen der Zugriff auf Funktionen, welche zwingend eine Verbindung benötigen, reguliert werden. Zum Anderen müssen lokal anfallende Daten bei fehlender Verbindung zwischengespeichert werden. Letzteres hat zwei Vorteile:
+\begin{itemize}
+\item Neu angelegte Daten gehen dem Nutzer nicht verloren, obwohl sie nicht zum Server geschickt werden.
+\item Dem Nutzer bleiben Funktionalitäten und bereits vorhandene Daten erhalten, obwohl keine Verbindung zum Server besteht.
+\end{itemize}
+Fallen neue lokale Daten an, ergibt sich aus der Problembeschreibung, dass diese bei späterer Verbindung zum Server persistiert werden. Dies muss die Kommunikations-Schnittstelle durch einen geeigneten Synchronisationsmechanismus unterstützen. 
 
+%Die vordergründige Herausforderung liegt darin, dass die Fitness-Anwendungen auch
+%dann noch benutzbar sein sollen, wenn keine Verbindung zum Internet, speziell zum
+%benötigten Server, besteht. Dafür müssen die Applikationen ausgelegt und vorbereitet werden. Sei es durch das Unterbinden von Funktionen oder das Speichern von bereits erhaltenen Daten, um diese dem Benutzer für die weitere Verwendung zur
+%Verfügung stellen zu können. \\
+%Weiterhin gibt es Unterschiede in der Auswahl der lokal zu speichernden Daten. Auf
+%der einen Seite können alle Daten, die relevant sind, automatisch von der Anwendung für den Benutzer hinterlegt werden. Zum anderen kann es die Möglichkeit für den Benutzer geben, bestimmte Daten offline verfügbar zu machen.
+%Zu beachten ist darüber hinaus, dass die Daten, die ohne Internetverbindung angelegt werden, wieder zum Server synchronisiert werden müssen, um Benutzereingaben zentral persistent speichern zu können. In diesem Anwendungsfall sollen Trainingsdaten erfasst und gespeichert werden.\\
+%Die Daten sollen für verschiedene Benutzer, die sich an dem Gerät anmelden, gespeichert werden. Des Weiteren sollen Benutzer nur Funktionen ausführen können,
+%zu denen sie auch autorisiert sind.\\
+%Konkret kann daraus geschlossen werden, dass die Anwendungen mit einem Mechanismus
+%ausgestattet sein müssen, der das lokale Zwischenspeichern von Informationen
+%unterstützt. Damit soll das Abrufen von Daten im Offline-Modus ermöglicht
+%werden. Des Weiteren soll es offline möglich sein, Daten anzulegen und diese sollen dann mit dem Server synchronisiert werden, wenn wieder eine Verbindung besteht.
+
+\section{Soll-Konzept}
+\label{sec:soll-konzept}
+Aus der vorangehenden konkreten Problembeschreibung ergibt sich ein Soll-Konzept für die Umsetzung des Projekts, welches in den folgenden Abschnitten erläutert wird.
 \subsection{Kommunikation zwischen Client und Server}
 \label{ssec:kommunikation-client-server}
-Ziel soll es sein, zwei Fitness-Applikationen zu entwickeln, die mit einem selbst entwickelten Server kommunizieren (siehe Kapitel \ref{cha:server-impl}). Während der Kommunikation muss festgestellt werden, wann die Kommunikation abbricht und dementsprechend müssen die Applikationen das Verhalten vom \textit{Online}- zum \textit{Offline}-Modus umstellen. Wenn der Server erreichbar ist, können die benötigten Daten dort direkt abgefragt und lokal angezeigt werden. Zum Entgegenwirken von Datenverlust für den Benutzer, können die bei dieser Abfrage erhaltenen Informationen lokal gespeichert werden. Daten, die im \textit{Online}-Status angelegt werden, können direkt zum Server übertragen werden. Dort werden sie dann persistent gespeichert und sind für diesen Benutzer von überall erreichbar.\\
-Wenn die Verbindung abgebrochen ist, können die Applikationen nur auf die abgespeicherten Daten zurückgreifen und anzeigen. Deshalb werden erhaltene Datensätze auch lokal abgelegt. Wenn der Benutzer nun Daten anlegt, muss dies zum einen machbar sein, zum anderen müssen die Daten auch für die Applikation als \textit{Offline}-Daten erkennbar in dem lokalen Speicher sein. Deshalb sind Daten besonders zu kennzeichnen.\\
-Wenn die Verbindung zwischen Server und \textit{Client} gerade wieder hergestellt ist, müssen lokal angelegte Daten zum Server übertragen werden. In diesem Schritt ist dann die lokale Kennzeichnung dieser Datensätze von Vorteil. Der Server muss diese Daten dann annehmen und selbst in einer Datenbank speichern, um denselben Stand zu haben wie die Applikation.
+Ziel soll die Umsetzung zweier mobiler Applikationen sein, welche mit einem selbst entwickelten Server kommunizieren. Während der Kommunikation muss festgestellt werden, ob- bzw. wann diese abbricht. Abhängig davon müssen die Applikationen das Verhalten zwischen \textit{Online}- und \textit{Offline}-Modus umstellen. \\
+Wenn der Server erreichbar ist, können die benötigten Daten dort direkt abgefragt und lokal angezeigt werden. Zum Entgegenwirken von Datenverlust für den Benutzer, werden die bei dieser Abfrage erhaltenen Informationen lokal gespeichert werden. Daten, die im \textit{Online}-Status angelegt werden, können direkt zum Server übertragen werden. Dort werden sie dann persistent gespeichert und sind für diesen Benutzer von überall erreichbar.\\
+Wenn die Verbindung abgebrochen ist, können die Applikationen nur auf die abgespeicherten Daten zurückgreifen und diese anzeigen. Die Applikationen sollen die Möglichkeit bieten, auch im \textit{Offline}-Zustand Daten anzulegen. Geschieht dies, werden die Daten ebenfalls lokal gespeichert. Hierbei werden sie als \textit{Offline}-Daten mittels \textit{Flag} erkennbar in dem lokalen Speicher abgelegt.\\
+Wenn die Verbindung zwischen Server und Client gerade wieder hergestellt werden kann, müssen lokal angelegte Daten zum Server übertragen werden. Zur Erkennung, welche Daten an den Server übertragen werden müssen, dient das \textit{Offline}-Flag aus den Daten des lokale Speichern. Bei dieser Übertragung muss eine Synchronisation der Daten erfolgen. 
 \subsection{Evaluation zur Client-Entwicklung}
 \label{ssec:evaluation-client-entwicklung}
-Zur Umsetzung werden zwei mobile Applikationen ausgewählt. Diese sind besonders im Einsatz der App (bspw. im Fitnessstudio) von Vorteil. \\
-Zum einen wird eine \textit{Single-Page-Application} und zum anderen eine Android-Applikation entwickelt.
+Während der Umsetzung sollen zwei mobile Applikationen entwickelt werden.  Hierzu beschriebt die Aufgabenstellung die Implementierung in zwei unterschiedlichen Technologien. Dabei soll evaluiert werden, welche Technik für die Umsetzung der Anforderungen am Besten geeignet sind. Deshalb soll folgende Applikationen entwickelt werden: 
+\begin{itemize}
+\item eine mobil-optimierte Webseite (Web-App)
+\item native App 
+\end{itemize}
 \subsubsection*{Single Page Application}
 \label{ssec:aufgabenstellung:spa}
-Die \ac{SPA} wird als \textit{Homepage} im Browser umgesetzt. Dabei wird auf Responsivität geachtet, um das kleine \textit{Display} von mobilen Endgeräten nicht auszuschließen, da die beiden Applikationen vergleichbar auf mobilen Geräten funktionieren sollen.
+Die Web-App soll als \textit{Homepage} im Browser umgesetzt werden. Damit die clientseitige Logik einfacher umgesetzt werden kann, soll die Web-App als \textit{Single-Page-Application} (kurz \ac{SPA}) umgesetzt werden. Hierbei soll konsequent auf aktuelle Web-Techniken aus HTML5, CSS3 und Javascript gesetzt werden. \\
+Da eine mobile Nutzung im Vordergrund steht, soll die SPA sich \gls{responsiv} verhalten. Dadurch wird eine Nutzung auf kleinen Displays unterstützt. Dies erhöht die Vergleichbarkeit der Applikationen, da beide Varianten problemlos auf dem gleichen Gerät getestet werden können.
 \subsubsection*{Native App}
 \label{ssec:aufgabenstellung:nat-app}
-Android wird als Plattform für die native App ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelten Apps ganz einfach auf einem Testsystem zu installieren, ohne - wie bei Apples iOS nötig - einen Entwickler-Account anlegen zu müssen. Zudem ist es bei einer iOS-App notwendig das Aufspielen einer Testapplikation über ein spezielles Entwickler-Tool in XCode durchzuführen. Diese Hürde fällt bei einer Android-App weg. Des Weiteren ist das Android-Betriebssystem weiter verbreitet (siehe \citep{Statista-SmartphoneVerteilung}) und die App kann einen größeren Anklang finden.
+Die native App soll für Android entwickelt. Android wird als Plattform ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelten Apps ganz einfach auf einem Testsystem zu installieren, ohne - wie bei Apples iOS nötig - einen Entwickler-Account anlegen zu müssen.\\ Zudem ist es bei einer iOS-App notwendig, das Aufspielen einer Testapplikation über ein spezielles Entwickler-Tool in XCode durchzuführen. Diese Hürde fällt bei einer Android-App weg. Des Weiteren ist das Android-Betriebssystem weiter verbreitet (siehe \citep{Statista-SmartphoneVerteilung}). Dadurch kann bei einer möglichen späteren Weiterentwicklung eine größere Akzeptanz der App erzielt werden.
 \subsection{Umsetzung der Client-Entwicklung}
 \label{ssec:umsetzung-client-entwicklung}
-Eine der beiden Applikationen wird im Laufe der Arbeit ausgewählt und zu einem rudimentären Messe-Prototypen weiterentwickelt. Die Entscheidung in diesem Falle wird im Implementierungs-Prozess getroffen, um bis dahin die Vor- und Nachteile der beiden Möglichkeiten kennenzulernen. Die andere App wird jedoch trotzdem die oben genannten Grundfunktionen bereitstellen.
+Auf Grundlage der Evaluation soll eine der beiden Applikationen ausgewählt und anschließend zu einem rudimentären Messe-Prototypen weiterentwickelt werden. Diese soll eine komplette \gls{UserStory} implementieren. Als Beispiel soll eine Fitness-App dienen. Hierbei kann ein Nutzer Trainingsdaten verwalten. 

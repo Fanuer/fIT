@@ -51,3 +51,31 @@ Die native App soll für Android entwickelt. Android wird als Plattform ausgewä
 \subsection{Umsetzung der Client-Entwicklung}
 \label{ssec:umsetzung-client-entwicklung}
 Auf Grundlage der Evaluation soll eine der beiden Applikationen ausgewählt und anschließend zu einem rudimentären Messe-Prototypen weiterentwickelt werden. Diese soll eine komplette \gls{UserStory} implementieren. Als Beispiel soll eine Fitness-App dienen. Hierbei kann ein Nutzer Trainingsdaten verwalten. 
+\section{Meilenstein-Plan}
+\label{sec:meilenstein-plan}
+Aus dem Soll-Konzept ergibt sich eine klare Aufteilung des Projekts in zwei Meilensteine:
+\begin{table}[]
+\centering
+\caption{Meilensteinplan}
+\label{tbl:meilensteinplan}
+\begin{tabular}{|c|l|}
+\hline
+{\bf Meilenstein} & {\bf Titel}                                                      \\ \hline
+1                 & Umsetzung der Clients als \textit\{Proof-of-Concept\}-Prototypen \\ \hline
+2                 & Umsetzung einer mobilen Anwendung als Messeprototyp              \\ \hline
+\end{tabular}
+\end{table}
+
+\subsection{Umsetzung der Clients als \textit{Proof-of-Concept}-Prototypen}
+In diesem Meilenstein werden Erkenntnisse zur Implementierung einer verlässlichen mobilen Anwendung gesammelt. \\
+Hierbei müssen folgende Teilschritte durchgeführt werden:
+\begin{enumerate}
+\item Erwerb grundsätzlicher Kenntnisse eines Caches und dessen Implementierung
+\item Implementierung des Servers 
+\item Erstellung einer Web-App
+\item Erstellung einer nativen App
+\item Evaluierung der Erkenntnisse
+\end{enumerate}
+Da beide Clients während der Implementierung den Server benötigen, müssen die Teilschritte bis einschließlich Schritt 2 synchron abgearbeitet werden. Die Umsetzung der beiden Clients kann anschließend parallel erfolgen. Dieser Meilenstein endet mit der Gegenüberstellung der gewonnen Erkenntnisse und der Auswahl einer Technik für Meilenstein 2.
+\subsection{Umsetzung einer mobilen Anwendung als Messeprototyp}
+In diesem Meilenstein wird die in Meilenstein 1 gewählte Technik benutzt, um einen Messeprototypen zu entwickeln. Hierbei sollen alle Funktionalitäten implementiert werden, um einen Anwendungsfall vollständig durchzuführen. Als Anwendungsfall soll ein Nutzer ein neues Trainingsdatum anlegen. Dabei soll es irrelevant sein, ob eine Verbindung zum Server besteht, oder nicht.

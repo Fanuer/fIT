@@ -100,7 +100,7 @@
 %        Definition: \acro{ acronym }[ short name ]{ full name }
 %        Nutzung im Text: \ac{acronym}
  \usepackage[
- 	footnote,	% Full names appear in the footnote
+ 	%footnote,	% Full names appear in the footnote
  	%smaller,		% Print acronym in smaller fontsize
  	%printonlyused %
  ]{acronym}
@@ -160,15 +160,48 @@
 %Literatur-Einstellungen
 
 %vielleicht Layout anpassen...
-\usepackage{jurabib}
+%\usepackage{jurabib}
+%\jurabibsetup{
+%	commabeforerest,
+%	ibidem=name&title,
+%	citefull=first,
+%	see,
+%	authorformat={all,abbrv}
+%	titleformat={colonsep,all},
+%}
+\usepackage[%
+style=authortitle-dw,
+namefont=smallcaps,%
+firstnamefont=smallcaps,%
+idemfont=smallcaps,% Schriftart von »Ders.« / »Dies.«
+%ibidemfont=smallcaps,% Schriftart von »ebenda« / »ebd.«
+idembib=true,% aufeinanderfolgende Einträge -> »Ders.« bzw. »Dies.«
+idembibformat=idem,% idem= Ders./Dies.; alternativ: =dash macht Strich -
+edbyidem=true,% Autor und Herausgeber bei @incollection- oder @inbook- Einträgen dieselben
+nopublisher=true,% true unterdrückt den Verlag
+%nolocation=true,% true unterdrückt den Ort, dito doi=true, eprint=true, isbn=true bzw. issn=true
+backend=bibtex,
+useeditor=true,% Herausgeber vor dem Buchtitel
+firstfull=false,% Erste Erwähnung nicht als Vollzitat
+shorthandwidth=3em,% Breite der Label im Sigelverzeichnis angeben.
+%firstinits=,% Initialen der Vornamen
+%uniquename=init,% Gibt bei Autoren mit gleichem Nachnamen die Initialen mit aus
+]{biblatex} 
+\DeclareNameFormat{sortname}{% Reihenfolge Nachname Vorname Bibliographie
+\iffirstinits
+{\usebibmacro{name:last-first}{#1}{#4}{#5}{#7}}
+{\usebibmacro{name:last-first}{#1}{#3}{#5}{#7}}%
+\usebibmacro{name:andothers}}
 
-\jurabibsetup{
-	commabeforerest,
-	ibidem=strict,
-	citefull=first,
-	see,
-	titleformat={colonsep,all},
-}
+\bibliography{bib/bib}
+
+\renewbibmacro*{author/editor/translator}{%
+\ifthenelse{\ifuseauthor\AND\NOT\ifnameundef{author}}
+{\usebibmacro{author}\addspace(\printfield{shorttitle})}
+{\ifthenelse{\ifuseeditor\AND\NOT\ifnameundef{editor}}
+{\usebibmacro{editor}\addspace(\printfield{shorttitle})}
+{\usebibmacro{translator}\addspace(\printfield{shorttitle})}}}
+
 
 %Kurzzitat-Schreibweise
 %\usepackage[%
@@ -178,9 +211,9 @@
 %]{jurabib}
 %\renewcommand{\jbcitationyearformat}[1]{\unskip, #1}
 
-\renewcommand*{\jbauthorfont}{\textsc}
-\renewcommand*{\biblnfont}{\scshape\textbf}
-\renewcommand*{\bibfnfont}{\normalfont\textbf}
+%\renewcommand*{\jbauthorfont}{\textsc}
+%\renewcommand*{\biblnfont}{\scshape\textbf}
+%\renewcommand*{\bibfnfont}{\normalfont\textbf}
 
 
 % Quotes =================================================================
@@ -423,9 +456,11 @@ escapechar=|
 % Trennen von Bindestrich oder so ...
 %\defaulthyphenchar=127
 
-\usepackage{ucs}               % Extended UTF-8 input encoding
-\usepackage[utf8x]{inputenc}   % trans­lates var­i­ous stan­dard and other in­put en­cod­ings into a ‘LATEX in­ter­nal lan­guage’
+%\usepackage{ucs}               % Extended UTF-8 input encoding
+\usepackage[utf8]{inputenc}   % trans­lates var­i­ous stan­dard and other in­put en­cod­ings into a ‘LATEX in­ter­nal lan­guage’
 \usepackage[T1]{fontenc}
+\usepackage{textcomp}
+%\usepackage{eurosans}
 \usepackage{alltt}
 \usepackage{marvosym}
 \usepackage{fancybox}

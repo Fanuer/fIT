@@ -129,6 +129,7 @@
 	
 	% ----------------- Einfügen des eigentlichen Textes
 	
+	\input{content/eidesstattliche_erklaerung}
 	\input{content/aufgabenstellung}	
 	\input{content/einleitung}	
 	\input{content/problemanalyse}
@@ -146,19 +147,18 @@
 	
 	\appendix
 	%Verzeichnisse erstellen
-	\printglossaries
-  	\input{preamble/acronyms}
-  	\printnoidxglossaries	
-	\listoffigures
+		\input{content/anhang}
+	\printnoidxglossaries	
+	\input{preamble/acronyms}
+  	\listoffigures
 	\listoftables
 	\lstlistoflistings
 	
 	\nocite{*} 
 	%Literaturverzeichnis erstellen
-	\bibliography{bib/bib}
-	\bibliographystyle{jurabib}
+	
+%	\bibliographystyle{jurabib}
+\printbibliography
 
-	\input{content/anhang}
 	%\input{content/anhang}
-	\input{content/eidesstattliche_erklaerung}
 \end{document}

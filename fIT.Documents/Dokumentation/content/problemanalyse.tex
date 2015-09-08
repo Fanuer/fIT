@@ -31,12 +31,12 @@ Aus der vorangehenden konkreten Problembeschreibung ergibt sich ein Soll-Konzept
 \subsection{Kommunikation zwischen Client und Server}
 \label{ssec:kommunikation-client-server}
 Ziel soll die Umsetzung zweier mobiler Applikationen sein, welche mit einem selbst entwickelten Server kommunizieren. Während der Kommunikation muss festgestellt werden, ob- bzw. wann diese abbricht. Abhängig davon müssen die Applikationen das Verhalten zwischen Online- und Offline-Modus umstellen. \\
-Wenn der Server erreichbar ist, können die benötigten Daten dort direkt abgefragt und lokal angezeigt werden. Zum Entgegenwirken von Datenverlust für den Benutzer, werden die bei dieser Abfrage erhaltenen Informationen lokal gespeichert werden. Daten, die im \textit{Online}-Status angelegt werden, können direkt zum Server übertragen werden. Dort werden sie dann persistent gespeichert und sind für diesen Benutzer von überall erreichbar.\\
+Wenn der Server erreichbar ist, können die benötigten Daten dort direkt abgefragt und lokal angezeigt werden. Zum Entgegenwirken von Datenverlust für den Benutzer, werden die bei dieser Abfrage erhaltenen Informationen lokal gespeichert. Daten, die im Online-Status angelegt werden, können direkt zum Server übertragen werden. Dort werden sie dann persistent gespeichert und sind für diesen Benutzer von überall erreichbar.\\
 Wenn die Verbindung abgebrochen ist, können die Applikationen nur auf die abgespeicherten Daten zurückgreifen und diese anzeigen. Die Applikationen sollen die Möglichkeit bieten, auch im Offline-Zustand Daten anzulegen. Geschieht dies, werden die Daten ebenfalls lokal gespeichert. Hierbei werden sie als Offline-Daten mittels \textit{Flag} erkennbar, in dem lokalen Speicher, abgelegt.\\
-Wenn die Verbindung zwischen Server und Client gerade wieder hergestellt werden kann, müssen lokal angelegte Daten zum Server übertragen werden. Zur Erkennung, welche Daten an den Server übertragen werden müssen, dient das Offline-Flag aus den Daten des lokalen Speichers. Bei dieser Übertragung muss eine Synchronisation der Daten erfolgen. 
+Wenn die Verbindung zwischen Server und Client gerade wieder hergestellt werden kann, müssen lokal angelegte Daten zum Server übertragen werden. Zur Erkennung, welche Daten an den Server übertragen werden müssen, dient das Offline-\textit{Flag} aus den Daten des lokalen Speichers. Bei dieser Übertragung muss eine Synchronisation der Daten erfolgen. 
 \subsection{Evaluation zur Client-Entwicklung}
 \label{ssec:evaluation-client-entwicklung}
-Während der Umsetzung sollen zwei mobile Applikationen entwickelt werden.  Hierzu beschriebt die Aufgabenstellung die Implementierung in zwei unterschiedlichen Technologien. Dabei soll evaluiert werden, welche Technik für die Umsetzung der Anforderungen am Besten geeignet ist. Deshalb sollen folgende Applikationen entwickelt werden: 
+Während der Umsetzung sollen zwei mobile Applikationen entwickelt werden. Hierzu beschreibt die Aufgabenstellung die Implementierung in zwei unterschiedlichen Technologien. Dabei soll evaluiert werden, welche Technik für die Umsetzung der Anforderungen am besten geeignet ist. Deshalb sollen folgende Applikationen entwickelt werden: 
 \begin{itemize}
 \item eine mobil-optimierte Webseite (Web-App)
 \item eine native App 
@@ -47,14 +47,14 @@ Die Web-App soll als \textit{Homepage} im Browser umgesetzt werden. Damit die cl
 Da eine mobile Nutzung im Vordergrund steht, soll die SPA sich \gls{responsiv} verhalten. Dadurch wird eine Nutzung auf kleinen Displays unterstützt. Dies erhöht die Vergleichbarkeit der Applikationen, da beide Varianten problemlos auf dem gleichen Gerät getestet werden können.
 \subsubsection*{Native App}
 \label{ssec:aufgabenstellung:nat-app}
-Die native App soll für Android entwickelt. Android wurde als Plattform ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelte App auf einem Testsystem zu installieren, ohne - wie bei Apples iOS nötig - einen Entwickler-Account anlegen zu müssen.\\ 
+Die native App soll für Android entwickelt werden. Android wurde als Plattform ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelte App auf einem Testsystem zu installieren, ohne - wie bei Apples iOS nötig - einen Entwickler-Account anlegen zu müssen.\\ 
 Zudem ist es bei einer iOS-App notwendig, das Aufspielen einer Testapplikation über ein spezielles Entwickler-Tool in XCode durchzuführen. Diese Hürde fällt bei einer Android-App weg. Des Weiteren ist das Android-Betriebssystem weiter verbreitet (siehe \citep{Statista-SmartphoneVerteilung}). Dadurch kann bei einer möglichen späteren Weiterentwicklung eine größere Akzeptanz der App erzielt werden.
 \subsection{Weiterentwicklung eines Clients}
 \label{ssec:umsetzung-client-entwicklung}
 Auf Grundlage der Evaluation soll eine der beiden Applikationen ausgewählt und anschließend zu einem rudimentären Messe-Prototypen weiterentwickelt werden. Diese soll eine komplette \gls{UserStory} implementieren. Als Beispiel soll eine Fitness-App dienen. Hierbei kann ein Nutzer Trainingsdaten verwalten. 
 \section{Meilensteinplan}
 \label{sec:meilenstein-plan}
-Aus dem nun vorliegenden Soll-Konzept kann ein Meilenstein-Plan erzeugt werden. Diese zeigt einen groben Projektablauf auf und spiegelt parallel ablaufende Entwicklungen wieder. Das gesamte Projekt kann in zwei Meilensteine unterteilt werden, welche nachfolgend genauer beschrieben werden.
+Aus dem nun vorliegenden Soll-Konzept kann ein Meilenstein-Plan erzeugt werden. Dieser zeigt einen groben Projektablauf auf und spiegelt parallel ablaufende Entwicklungen wieder. Das gesamte Projekt kann in zwei Meilensteine unterteilt werden, welche nachfolgend genauer beschrieben werden.
 \begin{table}[!h]
 \centering
 \caption{Meilensteinplan}
@@ -79,4 +79,4 @@ Hierbei müssen folgende Teilschritte durchgeführt werden:
 \end{enumerate}
 Da beide Clients während der Implementierung den Server benötigen, müssen die Teilschritte bis einschließlich Schritt 2 nacheinander abgearbeitet werden. Die Umsetzung der beiden Clients kann anschließend parallel erfolgen. Dieser Meilenstein endet mit der Gegenüberstellung der gewonnen Erkenntnisse und der Auswahl einer Technik für Meilenstein 2.
 \subsection{Umsetzung einer mobilen Anwendung als Messeprototyp}
-In diesem Meilenstein wird die in Meilenstein 1 gewählte Technik benutzt, um einen Messeprototyp zu entwickeln. Hierbei sollen alle Funktionalitäten implementiert werden, um einen Anwendungsfall vollständig durchzuführen. Als Anwendungsfall soll ein Nutzer ein neues Trainingsdatum anlegen. Dabei soll es irrelevant sein, ob eine Verbindung zum Server besteht, oder nicht. Dieser Anwendungsfall wird als grafisch aufbereitete User-Story im Umfeld des fertig implementierten Messeprototyps vorgestellt.
+In diesem Meilenstein wird die in Meilenstein 1 gewählte Technik benutzt, um einen Messeprototypen zu entwickeln. Hierbei sollen alle Funktionalitäten implementiert werden, um einen Anwendungsfall vollständig durchführen zu können. Als Anwendungsfall soll ein Nutzer ein neues Trainingsdatum anlegen. Dabei soll es irrelevant sein, ob eine Verbindung zum Server besteht, oder nicht. Dieser Anwendungsfall wird als grafisch aufbereitete User Story im Umfeld des fertig implementierten Messeprototyps vorgestellt.

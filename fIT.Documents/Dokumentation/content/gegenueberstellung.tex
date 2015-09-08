@@ -1,11 +1,11 @@
 \chapter{Gegenüberstellung der clientseitigen Implementierungen}
 \label{cha:gegenueberstellung}
-Ziel dieses Kapitels ist die Gegenüberstellung der Erkenntnisse zur Entwicklung einer verlässlichen mobilen Applikation. Hierbei wird das neu erlangte Wissen zur Umsetzung einer Applikation als SPA und als native App bewertet, so dass mit der vorteilhafteren der beiden Optionen der Messeprototyp umgesetzt werden kann. \\
+Ziel dieses Kapitels ist die Gegenüberstellung der Erkenntnisse zur Entwicklung einer verlässlichen mobilen Applikation. Hierbei wird das neu erlangte Wissen zur Umsetzung einer Applikation als \ac{SPA} und als native App bewertet, so dass mit der vorteilhafteren der beiden Optionen der Messeprototyp umgesetzt werden kann. \\
 Das Kapitel schließt auch gleichzeitig die Entwicklung des Meilensteins 1 ab.
 
 \section{Umsetzung als SPA}
 \label{sec:gegenueberstellung-SPA}
-Als Erstes sollen die Vor- und Nachteile der Umsetzung des Clients als \textit{Single Page Application} aufgezeigt werden.
+Als Erstes sollen die Vor- und Nachteile der Umsetzung des Clients als Single Page Application aufgezeigt werden.
 
 \subsection{Vorteile}
 \label{sec:vorteile-SPA}
@@ -14,7 +14,7 @@ Durch die Nutzung aktueller Web-Techniken und unter Nutzung geeigneter Framework
 
 \subsection{Nachteile}
 \label{sec:nachteile-SPA}
-Wie bereits erwähnt sind viele, aber noch nicht alle Techniken für den Browser umgesetzt. So ist die Umsetzung der \textit{IndexedDB} für iOS und Microsoft-Geräte noch sehr fehleranfällig\footcite{online:caniuse:indexedDB}. In diesem Punkt spiegelt sich auch das größte Problem jeder Web-Umsetzung wieder: Unterschiedliche Browser implementieren einige Apis anders oder teilweise auch gar nicht, sodass vieles der Entwicklungszeit für das Anpassen der Funktionen und Oberflächen für die verschiedenen Browser genutzt werden muss. Wenn es nun so ist, dass Kern-Komponenten wie in unserem Fall die IndexedDB in einigen wichtigen Browsern (iOS Safari-Nutzung bei 7.33\% (v. 8.1-8.4 Stand 31.08.2015\footcite{online:caniuse:indexedDB}) nicht ausreichen unterstützt werden, ist die Umsetzung dieses Teilaspekts für den produktiven Einsatz fast unmöglich. \\
+Wie bereits erwähnt sind viele, aber noch nicht alle Techniken für den Browser umgesetzt. So ist die Umsetzung der \textit{IndexedDB} für iOS und Microsoft-Geräte noch sehr fehleranfällig\footcite{online:caniuse:indexedDB}. In diesem Punkt spiegelt sich auch das größte Problem jeder Web-Umsetzung wieder: Unterschiedliche Browser implementieren einige APIs anders oder teilweise auch gar nicht, sodass vieles der Entwicklungszeit für das Anpassen der Funktionen und Oberflächen für die verschiedenen Browser genutzt werden muss. Wenn es nun so ist, dass Kern-Komponenten wie in unserem Fall die IndexedDB in einigen wichtigen Browsern (iOS Safari-Nutzung bei 7.33\% (v. 8.1-8.4 Stand 31.08.2015\footcite{online:caniuse:indexedDB}) nicht ausreichen unterstützt werden, ist die Umsetzung dieses Teilaspekts für den produktiven Einsatz fast unmöglich. \\
 Ein weiterer Nachteil ergibt sich aus der Nutzung von AngularJs. Da die gesamte Datenaufbereitung mit Authentifizierung und dem Routing auf Seiten des Clients passiert, können die lokal gespeicherten Daten mit Hilfe der Entwicklungswerkzeuge des Browsers einfach ausgelesen werden. Darum wäre es unter Sicherheitsaspekten fahrlässig, die hier vorgestellte Implementierung der Authentifizierung (siehe Kapitel \ref{ssec:statusloses-http}) ohne weitere Sicherheitsmaßnahmen produktiv zu stellen.
 
 \section{Umsetzung als native App}
@@ -29,7 +29,7 @@ Weiterhin ist die gesamte Logik der Applikation nicht sichtbar für den Endanwen
 
 \subsection{Nachteile}
 \label{sec:nachteile-native-app}
-Die Umsetzung der nativen App beansprucht viel Zeit und ein grundlegendes \textit{KnowHow} über die Funktionsweise des zu unterstützende Betriebssystems.\\
+Die Umsetzung der nativen App beansprucht viel Zeit und ein grundlegendes Knowhow über die Funktionsweise des zu unterstützende Betriebssystems.\\
 Darin liegt auch noch ein weiteres Problem. Um eine große Markt-Abdeckung mit einer nativen App zu erreichen, benötigt man mindestens eine iOS- und eine Android-Applikation. Dann besitzt den Zugang zu über 95\% der Smartphone-Nutzer in Deutschland.\footcite{Statista-SmartphoneVerteilung}\\
 Die Entwicklung für zwei Systeme kann daraufhin in zwei Möglichkeiten umgesetzt werden. Zum einen könnten native Apps in den jeweiligen Sprachen entwickelt werden. Zum anderen kann eine Multiplattform-Lösung, wie Xamarin-Platform es ist, eingesetzt werden. Dabei beschränkt sich der Funktionsumfang dann aber auf die grundlegenden Funktionen, wenn bei den verschiedenen Funktionen nicht noch zwischen den Systemen unterschieden wird.\\
 Weiterhin ist das Erstellen von Oberflächen aufwendiger als bei einer \textit{Single Page Application}.\\

@@ -1,10 +1,10 @@
 \chapter{Architektur}
 \label{cha:architektur}
-In diesem Kapitel werden die architektonischen Randbedingungen für die Entwicklung der Applikation beschrieben. Hierzu zählt welche Anwendungsfälle in die späteren Prototypen und im schlussendlichen Messeprototyp gegeben sein muss. Daraus resultiert der Aufbau der Datenbank und die schlussendliche Systemarchitektur. Als Grundlage dient das Pflichtenheft. Dieses liegt dieser Arbeit gesondert im Anhang bei (siehe Anhang \ref{sec:Pflichtenheft}).
+In diesem Kapitel werden die architektonischen Randbedingungen für die Entwicklung der Applikation beschrieben. Hierzu zählt, welche Anwendungsfälle in die späteren Prototypen und im schlussendlichen Messeprototyp gegeben sein muss. Daraus resultiert der Aufbau der Datenbank und die schlussendliche Systemarchitektur. Als Grundlage dient das Pflichtenheft. Dieses liegt dieser Arbeit gesondert im Anhang bei (siehe Anhang \ref{sec:Pflichtenheft}).
 
 \section{Anwendungsfälle}
 \label{sec:anwendungsfaelle}
-Das Pflichtenheft sieht eine Unterteilung des Projekts in zwei aufeinanderfolgenden Meilensteine vor (siehe \ref[Kapitel ]{sec:meilenstein-plan}). Hierbei werden erst Proof-of-Concept-Prototypen entwickelt. Anschließend wird ein Prototyp zum Messe-Prototypen weiterentwickelt. \\
+Das Pflichtenheft sieht eine Unterteilung des Projekts in zwei aufeinanderfolgende Meilensteine vor (siehe Kapitel \ref{sec:meilenstein-plan}). Hierbei werden erst Proof-of-Concept-Prototyp entwickelt. Anschließend wird ein Prototyp zum Messeprototyp weiterentwickelt. \\
 Für diese beiden Prototypen müssen andere bzw. erweiterte Anwendungsfälle implementiert werden. Darum werden nachfolgend für die beiden Implementierungsschritte die Anwendungsfälle einzeln aufgeschlüsselt. 
 \subsection{Anwendungsfälle für Meilenstein 1 (Proof-of-Concept-Phase)}
 \label{ssec:anwendungsfaelle-poc}
@@ -22,7 +22,7 @@ Aus dem Pflichtenheft ergeben sich folgende Anwendungsfälle für die erste Phas
 \label{pic:usecase-poc}
 \end{figure}
 
-\subsection{Anwendungsfälle für Meilenstein 2 (Messe-Prototyp-Phase)}
+\subsection{Anwendungsfälle für Meilenstein 2 (Messeprototyp-Phase)}
 \label{ssec:anwendungsfaelle-messe}
 Für den Meilenstein 2 werden die bereits vorgestellten Anwendungsfälle weiter verfeinert. Daraus ergeben sich folgende Anwendungsfälle:
 \begin{itemize}
@@ -58,7 +58,7 @@ Aus den definierten Anwendungsfälle ergibt sich die Struktur für die Datenbank
 \section{Programmarchitektur}
 \label{sec:programmarchitektur}
 Da verschiedene Clients implementiert werden sollen, ist es sinnvoll das Projekt als Mehrschichtenarchitektur für verteilte Anwendung zu implementieren. \\
-Der Server hält dabei die Funktionen zur Nutzung durch die Clients vor. Konkret greift der Server per OR-Mapper auf die Datenbank zu, bereitet die Daten in der Applikationsschicht auf und reicht sie über eine REST-Schnittstelle an die anfragenden Client weiter. Dabei muss gewährleistet sein, dass ein Nutzer nur die Daten abrufen darf, für die er autorisiert wurde. \\
+Der Server hält dabei die Funktionen zur Nutzung durch die Clients vor. Konkret greift der Server per \gls{OR-Mapper} auf die Datenbank zu, bereitet die Daten in der Applikationsschicht auf und reicht sie über eine \ac{REST}-Schnittstelle an die anfragenden Client weiter. Dabei muss gewährleistet sein, dass ein Nutzer nur die Daten abrufen darf, für die er autorisiert wurde. \\
 Clientseitig werden Daten in einer Caching-Schicht zum Schutz vor eventuellen Verbindungsabbrüchen zwischengespeichert. Anschließend werden die erhaltenen Daten auf dem Endgerät für die Anzeige aufbereitet und angezeigt. \\
 Abbildung \ref{pic:architecture} bildet diesen Aufbau grafisch ab:
 \begin{figure}[h]

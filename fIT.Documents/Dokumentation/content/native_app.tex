@@ -1,11 +1,11 @@
-\chapter{Realisierung der clientseitigen Implementierung als native App}
+\chapter{Realisierung des Clients als native App}
 \label{cha:native-app}
-Dieses Kapitel widmet sich der Implementierung der nativen Applikation. Im Kapitel \ref{cha:architektur} wurde eine grobe Übersicht zu der Umsetzung und der Funktionsweise dieser \ac{App} gegeben, die nun verfeinert wird.
-Dabei werden folgend die verwendeten Komponenten und Techniken erläutert und die Zusammenhänge zwischen den Techniken dargestellt.
+Dieses Kapitel widmet sich der Implementierung der nativen Applikation. Im Kapitel \ref{cha:architektur} wurde eine grobe Übersicht zu der Umsetzung und der Funktionsweise dieser \gls{App} gegeben, die nun verfeinert wird.
+Dabei werden folgend die verwendeten Komponenten und Techniken erläutert und deren Zusammenhänge dargestellt.
 \section{Allgemeine Funktionsweise einer Android-App}
 \label{sec:definition-android}
-Grundlegend für die Entwicklung einer Android-App ist das Wissen über die Basis des Systems, auf dem entwickelt wird. 
-Bei dem Betriebssystem \ac{Android} handelt es sich um eine Art eines \ac{monolithisch}en Multiuser-\ac{Linux}-Systems. \footcite{Android-Fundamentals}
+Grundlegend für die Entwicklung einer \gls{Android}-App ist das Wissen über die Basis des Systems, auf dem entwickelt wird. 
+Bei dem Betriebssystem \gls{Android} handelt es sich um eine Art eines \ac{monolithisch}en Multiuser-\ac{Linux}-Systems. \footcite{Android-Fundamentals}
 Dieses Betriebssystem stellt die Hardwaretreiber zur Verfügung und führt die Prozessorganisation, sowie die Benutzer- und Speicherverwaltung durch.\footcite[S. 19ff.]{Android-BeckerPant}
 Jede Applikation wird in einem eigenen Prozess gestartet. In diesem Prozess befindet sich eine \ac{Sandbox}, die eine virtuelle Maschine mit der Applikation ausführt. Die Kommunikation aus der Sandbox heraus kann nur über Schnittstellen des Betriebssystems geschehen. Diese Einschränkung sorgt für Sicherheit im System, da ein Prinzip der minimalen Rechte eingehalten wird. Demnach kann eine Applikation nur auf zugewiesene und freigegebene Ressourcen im System zugreifen. Ein weiterer Vorteil dieser internen Architektur liegt in der Robustheit des Systems. Wenn eine Applikation durch Fehler terminiert, wird nur der allokierte Prozess beendet und das Betriebssystem bleibt von diesem Problem unberührt. \footcite{Android-SystemPermissions}
 Android-Applikationen werden in der Programmiersprache \ac{Java} geschrieben, mit einem Java-\ac{Compiler} kompiliert und dann von einem Cross-Assembler für die entsprechende \ac{VM} aufbereitet. Das Produkt ist ein ausführbares \ac{.apk}-Paket.\footcite{Android-Fundamentals}

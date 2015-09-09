@@ -57,9 +57,9 @@ Aus den definierten Anwendungsfälle ergibt sich die Struktur für die Datenbank
 
 \section{Programmarchitektur}
 \label{sec:programmarchitektur}
-Da verschiedene Clients implementiert werden sollen, ist es sinnvoll das Projekt als Mehrschichtenarchitektur für verteilte Anwendung zu implementieren. \\
-Der Server hält dabei die Funktionen zur Nutzung durch die Clients vor. Konkret greift der Server per \gls{OR-Mapper} auf die Datenbank zu, bereitet die Daten in der Applikationsschicht auf und reicht sie über eine \ac{REST}-Schnittstelle an die anfragenden Client weiter. Eine detaillierte Beschreibung zu \ac{REST} wird in Kapitel \ref{sec:definition-rest} gegeben. Bei dieser Kommunikation muss gewährleistet sein, dass ein Nutzer nur die Daten abrufen darf, für die er autorisiert wurde. \\
-Clientseitig werden Daten in einer Caching-Schicht zum Schutz vor eventuellen Verbindungsabbrüchen zwischengespeichert. Anschließend werden die erhaltenen Daten auf dem Endgerät für die Anzeige aufbereitet und angezeigt. \\
+Da verschiedene Clients implementiert werden sollen, ist es sinnvoll das Projekt als Mehrschichtenarchitektur für eine verteilte Anwendung zu implementieren. \\
+Der Server hält dabei die Funktionen zur Nutzung durch die Clients vor. Konkret greift der Server per \gls{OR-Mapper} auf die Datenbank zu, bereitet die Daten in der Applikationsschicht auf und reicht sie über eine \ac{REST}-Schnittstelle an den anfragenden Client weiter. Eine detaillierte Beschreibung zu \ac{REST} wird in Kapitel \ref{sec:definition-rest} gegeben. Bei dieser Kommunikation muss gewährleistet sein, dass ein Nutzer nur die Daten abrufen darf, für die er autorisiert wurde. \\
+Clientseitig werden Daten in einem lokalen Speicher zum Schutz vor eventuellen Verbindungsabbrüchen zwischengespeichert. Anschließend werden die erhaltenen Daten auf dem Endgerät für die Anzeige aufbereitet und angezeigt. \\
 Abbildung \ref{pic:architecture} bildet diesen Aufbau grafisch ab:
 \begin{figure}[h]
 \centering
@@ -71,11 +71,11 @@ Abbildung \ref{pic:architecture} bildet diesen Aufbau grafisch ab:
 \newpage
 \section{Rollen-Konzept}
 \label{sec:rollen-konzept}
-Im Pflichtenheft wird für den zweiten Meilenstein eine Unterscheidung in den Berechtigungen gemacht. So dürfen beispielsweise nur Administrationen neue Übungen anlegen. Darum ist es nötig, ein Rollenkonzept zu entwickeln, der den Zugriff auf bestimmte Ressourcen reguliert. \\
-Aus den Aussagen, die im Pflichtenheft getroffen wurden, geht hervor, das sich der Nutzer in einer der nachfolgenden Status befindet, wenn er auf den Web Service zugreifen will: 
+Im Pflichtenheft wird für den zweiten Meilenstein eine Unterscheidung in den Berechtigungen gemacht. So dürfen beispielsweise nur Administrationen neue Übungen anlegen. Darum ist es notwendig, ein Rollenkonzept zu entwickeln, welches den Zugriff auf bestimmte Ressourcen reguliert. \\
+Aus den Aussagen, die im Pflichtenheft getroffen wurden, geht hervor, dass sich der Nutzer in einer der nachfolgenden Status befindet, wenn er auf den Web Service zugreifen will: 
 \begin{itemize}
 \item unautorisiert \\
-Der Nutzer hat sich noch nicht gegenüber des Web Server authentifiziert. In diesem Status kann der Nutzer sich mit seinen Anmeldedaten einloggen oder als neuer Nutzer an der Web Applikation registrieren.
+Der Nutzer hat sich noch nicht gegenüber des Web Servers authentifiziert. In diesem Status kann der Nutzer sich mit seinen Anmeldedaten einloggen oder als neuer Nutzer an der Web Applikation registrieren.
 \item Rolle \textbf{Nutzer}\\
 Jeder angemeldete Nutzer besitzt die Rolle \textit{Nutzer}. Ein normaler Nutzer kann seine Daten einsehen. Dies beinhaltet seine Trainingspläne, deren Übungen und die dazu angelegten Trainingseinheiten.
 \item Rolle \textbf{Administrator}\\

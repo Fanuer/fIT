@@ -75,7 +75,7 @@ namespace fITNat
                 else
                 {
                     new AlertDialog.Builder(this)
-                        .SetMessage("Anlegen ist schiefgegangen")
+                        .SetMessage("Anlegen ist fehlgeschlagen")
                         .SetTitle("Error")
                         .Show();
                 }

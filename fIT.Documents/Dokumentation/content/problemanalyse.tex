@@ -39,19 +39,19 @@ Wenn die Verbindung zwischen Server und Client gerade wieder hergestellt werden 
 Während der Umsetzung sollen zwei mobile Applikationen entwickelt werden.  Hierzu beschriebt die Aufgabenstellung die Implementierung in zwei unterschiedlichen Technologien. Dabei soll evaluiert werden, welche Technik für die Umsetzung der Anforderungen am Besten geeignet ist. Deshalb sollen folgende Applikationen entwickelt werden: 
 \begin{itemize}
 \item eine \ac{Web-App}
-\item eine native App 
+\item eine native \gls{App} 
 \end{itemize}
 \subsubsection*{Single Page Application}
 \label{ssec:aufgabenstellung:spa}
-Die Web-App soll als \textit{Homepage} im Browser umgesetzt werden. Damit die clientseitige Logik einfacher umgesetzt werden kann, soll die Web-App als \ac{SPA} umgesetzt werden. Hierbei soll konsequent auf aktuelle Web-Techniken aus \gls{HTML5}, \gls{CSS3} und \gls{Javascript} gesetzt werden. \\
+Die \ac{Web-App} soll als Webseite im Browser umgesetzt werden. Damit die clientseitige Logik einfacher umgesetzt werden kann, soll die \ac{Web-App} als \ac{SPA} umgesetzt werden. Hierbei soll konsequent auf aktuelle Web-Techniken aus \gls{HTML5}, \gls{CSS3} und \gls{Javascript} gesetzt werden. \\
 Da eine mobile Nutzung im Vordergrund steht, soll die \ac{SPA} sich \gls{responsiv} verhalten. Dadurch wird eine Nutzung auf kleinen Displays unterstützt. Dies erhöht die Vergleichbarkeit der Applikationen, da beide Varianten problemlos auf dem gleichen Gerät getestet werden können.
 \subsubsection*{Native App}
 \label{ssec:aufgabenstellung:nat-app}
-Die native App soll für \gls{Android} entwickelt. \gls{Android} wurde als Plattform ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelte App auf einem Testsystem zu installieren, ohne - wie bei Apples Web-App nötig - einen Entwickler-Account anlegen zu müssen.\\ 
-Zudem ist es bei einer \gls{iOS}-App notwendig, das Aufspielen einer Testapplikation über ein spezielles Entwickler-Tool in \gls{XCode} durchzuführen. Diese Hürde fällt bei einer \gls{Android}-App weg. Des Weiteren ist das \gls{Android}-Betriebssystem weiter verbreitet\footcite{Statista-SmartphoneVerteilung}. Dadurch kann bei einer möglichen späteren Weiterentwicklung eine größere Akzeptanz der App erzielt werden.
+Die native \gls{App} soll für \gls{Android} entwickelt. \gls{Android} wurde als Plattform ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelte App auf einem Testsystem zu installieren, ohne - wie bei \textit{Apples} \ac{Web-App} nötig - einen Entwickler-Account anlegen zu müssen.\\ 
+Zudem ist es bei einer \gls{iOS}-\gls{App} notwendig, das Aufspielen einer Testapplikation über ein spezielles Entwickler-Tool in \gls{XCode} durchzuführen. Diese Hürde fällt bei einer \gls{Android}-\gls{App} weg. Des Weiteren ist das \gls{Android}-Betriebssystem weiter verbreitet\footcite{Statista-SmartphoneVerteilung}. Dadurch kann bei einer möglichen späteren Weiterentwicklung eine größere Akzeptanz der \gls{App} erzielt werden.
 \subsection{Weiterentwicklung eines Clients}
 \label{ssec:umsetzung-client-entwicklung}
-Auf Grundlage der Evaluation soll eine der beiden Applikationen ausgewählt und anschließend zu einem rudimentären Messe-Prototypen weiterentwickelt werden. Diese soll eine komplette \gls{UserStory} implementieren. Als Beispiel soll eine Fitness-App dienen. Hierbei kann ein Nutzer Trainingsdaten verwalten. 
+Auf Grundlage der Evaluation soll eine der beiden Applikationen ausgewählt und anschließend zu einem rudimentären Messeprototyp weiterentwickelt werden. Diese soll eine komplette \gls{UserStory} implementieren. Als Beispiel soll eine Fitness-\gls{App} dienen. Hierbei kann ein Nutzer Trainingsdaten verwalten. 
 \section{Meilensteinplan}
 \label{sec:meilenstein-plan}
 Aus dem nun vorliegenden Soll-Konzept kann ein Meilenstein-Plan erzeugt werden. Diese zeigt einen groben Projektablauf auf und spiegelt parallel ablaufende Entwicklungen wieder. Das gesamte Projekt kann in zwei Meilensteine unterteilt werden, welche nachfolgend genauer beschrieben werden.
@@ -74,7 +74,7 @@ Hierbei müssen folgende Teilschritte durchgeführt werden:
 \item Erwerb grundsätzlicher Kenntnisse eines Caches und dessen Implementierung
 \item Implementierung des Servers 
 \item Erstellung einer \ac{Web-App}
-\item Erstellung einer nativen App
+\item Erstellung einer nativen \gls{App}
 \item Evaluierung der Erkenntnisse
 \end{enumerate}
 Da beide Clients während der Implementierung den Server benötigen, müssen die Teilschritte bis einschließlich Schritt 2 nacheinander abgearbeitet werden. Die Umsetzung der beiden Clients kann anschließend parallel erfolgen. Dieser Meilenstein endet mit der Gegenüberstellung der gewonnen Erkenntnisse und der Auswahl einer Technik für Meilenstein 2.

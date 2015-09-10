@@ -36,16 +36,8 @@ Zur Darstellung wurde die \textit{Xamarin-Extension BarChart} verwendet. Das Pak
 Zur Generierung der Diagramm-Daten waren Informationen über die Übung, den Trainingsplan und den \textit{User} nötig. Diese Daten werden über einen Intent an die \textit{StatisticActivity} übergeben, in welcher dann die benötigten Daten abgerufen werden.
 \lstinputlisting[caption=Statistik \textit{Activity}, label=lst:statistik, style=sharpc]{content/listings/StatisticActivity.cs}
 
-\section{Fazit aus Meilenstein 2}
-\label{sec:fazit-meilenstein-2}
-Zusammenfassend kann festgehalten werden, dass der zweite Meilenstein zur Optimierung der nativen Android-Applikation beigetragen hat. Dies geschah sowohl in der Programmlogik als auch durch die Anpassungen der Oberflächen. \\
-So konnte durch das Auslagern der Synchronisation Last vom dem \textit{UIThread} genommen werden. Die daraus folgenden Vorteile wurden bereits in Kapitel \ref{cha:native-app} vorgestellt.\\
-Bei der Entwicklung eines Messeprototypen ist eine ansprechende Oberfläche von großer Bedeutung für die Akzeptanz durch den späteren Nutzer. Diese Anforderung wurde im ersten Meilenstein zurückgestellt, um einen Fokus auf den technischen Vergleich legen zu können. Nachdem nun im ersten Meilenstein eine für die Aufgabenstellung passende technische Grundlage entstanden ist, konnte sich in diesem Meilenstein auf die Optimierung des Aussehens fokussiert werden.\\
-Die Statistik, ein Kann-Kriterium im Pflichtenheft (siehe Kapitel\ref{sec:Pflichtenheft}), wurde zusätzlich umgesetzt, um die Nutzerfreundlichkeit weiter zu steigern. Als Nebeneffekt wurden weitere Kenntnisse im Umgang mit langen Klicks und der \textit{BarChart-Extension} gesammelt.\\
-
-Abschließend kann festgehalten werden, dass der zweite Meilenstein der nativen Applikation die letzten Verfeinerungen zum Prototypen gegeben hat.\\
-Der Prototyp besitzt nun eine \gls{UserStory}, die alle benötigten Funktionen für die Entwicklung einer vollends ausgereiften \gls{App} beinhaltet. So kann die Funktionalität des Speicherns eines Trainings auf das Speichern von Übungen und Trainingsplänen übertragen werden. Zudem kann das Abrufen von weiteren Daten, zum Beispiel für die Umsetzung von Administrator-Funktionen, mit den bestehenden Möglichkeiten umgesetzt werden.
-
+\section{User Story der App}
+\label{sec:user-story}
 %UserStory
 \begin{figure}[!htbp]
 \centering
@@ -54,9 +46,8 @@ Der Prototyp besitzt nun eine \gls{UserStory}, die alle benötigten Funktionen f
 \label{pic:UserStory}
 \end{figure}
 
-
 In der Abbildung \ref{pic:UserStory} ist die Übersicht der Oberflächen zu erkennen. Größere Abbildungen sind im Anhang unter Abschnitt \ref{sec:UserStory} zu finden. Darüber hinaus sind auch die Verbindungen zwischen den Oberflächen eingezeichnet, um zeigen, wie der \textit{Workflow} verläuft.\\
-Der Einstieg des Benutzers in die \gls{Android}-\gls{App} geschieht über die Startseite (siehe Abbildung \ref{pic:natAppStartseite}), die die Auswahl zwischen Login und Registrierung darstellt. Diese Oberfläche wird nur für Nutzer angezeigt, welche sich noch nicht an der \gls{App} angemeldet haben. \\
+Der Einstieg des Benutzers in die \gls{Android}-\gls{App} geschieht über die Startseite (siehe Abbildung \ref{pic:natAppStartseite}), die die Auswahl zwischen Login und Registrierung darstellt. Diese Oberfläche wird nur für Nutzer angezeigt, welche sich noch nicht an der \gls{App} angemeldet haben. \\ \newpage
 Wählt der Benutzer die Registrierung, gelangt er zum Registrieren-Dialog (siehe Abbildung \ref{pic:natAppRegistrierung}). Um diese Funktion nutzen zu können, muss das Gerät eine Verbindung zum Server besitzen. \\
 Wählt der Nutzer, statt der Registrierungsschaltfläche, die Schaltfläche zum Anmelden, erscheint der Login-Dialog (siehe Abbildung \ref{pic:natAppLogin}). Um sich offline anmelden zu können, muss ein Nutzer sich einmal an der Applikation angemeldet haben, während diese eine Verbindung zum Web Service besessen hat. Dies ist nötig, da mit die \gls{App} validieren kann, ob die eingegebenen Daten serverseitig valide sind. Ist dies der Fall, werden sie lokal gespeichert, sodass sich ein Nutzer fortan auch lokal mit den gespeicherten Anmeldedaten autorisieren kann.\\
 Nach einem erfolgreichen Anmeldung an der \gls{App}, sei es offline oder online, werden die Trainingspläne des Benutzers als Liste angezeigt (siehe Abbildung \ref{pic:natAppTrainingspläne}). Durch einen Klick auf den entsprechenden Plan, öffnet sich eine neue Seite mit den zu diesem Plan zugewiesenen Übungen (siehe Abbildung \ref{pic:natAppÜbungen}). Auf dieser werden die Übungen mit Namen und Beschreibung aufgelistet. Der Benutzer hat nun zwei Möglichkeiten, um zu interagieren: 
@@ -65,3 +56,13 @@ Nach einem erfolgreichen Anmeldung an der \gls{App}, sei es offline oder online,
 \item Als zweite Möglichkeit kann durch einen langen Klick auf eine Übung eine Statistik zu den dazu eingetragenen Trainings aufgerufen werden. Diese Statistik wird als Balkendiagramm angezeigt und gibt einen Überblick über die Leistungen des Benutzers. Der Index berechnet sich als Produkt der eingetragenen Werte Gewicht, Satzzahl und Wiederholungen.
 \end{itemize}
 Werden neue Daten eingetragen, erscheinen diese, unabhängig von Verbindungsstatus sofort in der Statistik (siehe Abbildung \ref{pic:natAppStatistik}). Um in der Statistik alle Daten angezeigt zu bekommen, muss diese im Online-Modus aufgerufen werden, um die Daten auf das Gerät laden zu können. Wird die Statistik im Offline-Modus zum ersten Mal aufgerufen, werden nur die offline angelegten Trainings angezeigt.
+
+\section{Fazit aus Meilenstein 2}
+\label{sec:fazit-meilenstein-2}
+Zusammenfassend kann festgehalten werden, dass der zweite Meilenstein zur Optimierung der nativen Android-Applikation beigetragen hat. Dies geschah sowohl in der Programmlogik als auch durch die Anpassungen der Oberflächen. \\
+So konnte durch das Auslagern der Synchronisation Last vom dem \textit{UIThread} genommen werden. Die daraus folgenden Vorteile wurden bereits in Kapitel \ref{cha:native-app} vorgestellt.\\
+Bei der Entwicklung eines Messeprototypen ist eine ansprechende Oberfläche von großer Bedeutung für die Akzeptanz durch den späteren Nutzer. Diese Anforderung wurde im ersten Meilenstein zurückgestellt, um einen Fokus auf den technischen Vergleich legen zu können. Nachdem nun im ersten Meilenstein eine für die Aufgabenstellung passende technische Grundlage entstanden ist, konnte sich in diesem Meilenstein auf die Optimierung des Aussehens fokussiert werden.\\
+Die Statistik, ein Kann-Kriterium im Pflichtenheft (siehe Kapitel\ref{sec:Pflichtenheft}), wurde zusätzlich umgesetzt, um die Nutzerfreundlichkeit weiter zu steigern. Als Nebeneffekt wurden weitere Kenntnisse im Umgang mit langen Klicks und der \textit{BarChart-Extension} gesammelt.\\
+Abschließend kann festgehalten werden, dass der zweite Meilenstein der nativen Applikation die letzten Verfeinerungen zum Prototypen gegeben hat.\\
+Der Prototyp besitzt nun eine \gls{UserStory}, die alle benötigten Funktionen für die Entwicklung einer vollends ausgereiften \gls{App} beinhaltet. So kann die Funktionalität des Speicherns eines Trainings auf das Speichern von Übungen und Trainingsplänen übertragen werden. Zudem kann das Abrufen von weiteren Daten, zum Beispiel für die Umsetzung von Administrator-Funktionen, mit den bestehenden Möglichkeiten umgesetzt werden.
+

@@ -18,7 +18,7 @@ private async void bt_ItemClick(object sender, EventArgs e)
         else
         {
             new AlertDialog.Builder(this)
-                .SetMessage("Anlegen ist schiefgegangen")
+                .SetMessage("Anlegen ist fehlgeschlagen")
                 .SetTitle("Error")
                 .Show();
         }

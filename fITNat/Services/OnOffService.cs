@@ -114,7 +114,7 @@ namespace fITNat
             {
                 try
                 {
-                    //Lokal nachgucken
+                    //Lokal nachschauen
                     Guid result = db.findUser(username, password);
                     if (result != null)
                         return result;

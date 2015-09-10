@@ -50,7 +50,7 @@ Des Weiteren muss die Logik zur Synchronisierung von Daten zwischen der lokalen 
 \subsection{Funktionsumfang eines Caches innerhalb des Projekts}
 \label{ssec:cache-unsere-funktionsweise}
 Der \textit{Cache} muss die Daten auf demselben Stand halten, wie sie auf dem Server vorliegen. Deshalb bietet es sich an, Daten, die zum Server geschickt werden, auch redundant lokal zu speichern. Genauso verfährt man mit Daten, welche vom Server abgerufen werden. Somit hat man keine unnötigen Abfragen zum Erhalt der Datenkonsistenz zwischen den beiden Ebenen. Diese Strategie hat somit einen positiven Einfluss auf die Performance der Applikationen und entlastet den Server von übermäßigen \textit{Requests}. \\
-In dem nachstehenden Sequenzdiagramm (siehe Abbildung \ref{pic:cacheGet}) ist der Ablauf für die Logik des \textit{Caches} bei einem \textit{Get}-Aufruf an den Server zu sehen. Ein Sequenzdiagramm zum Ablauf eines POST-Requests liegt dem Anhang bei (siehe \ref{pic:cachePost}).
+In dem nachstehenden Sequenzdiagramm (siehe Abbildung \ref{pic:cacheGet}) ist der Ablauf für die Logik des \textit{Caches} bei einem \textit{Get}-Aufruf an den Server zu sehen. Ein Sequenzdiagramm zum Ablauf eines POST-Requests liegt dem Anhang bei (siehe \ref{pic:cachePost}).\\
 %CacheGet-Bild
 \begin{figure}[!h]
 \centering

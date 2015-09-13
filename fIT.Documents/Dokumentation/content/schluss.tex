@@ -4,25 +4,20 @@ In diesem Kapitel wird eine Retrospektive des durchgeführten Projekts gegeben. 
 \section{Ziele / Ergebnisse}
 \label{sec:ziele-ergebnisse}
 Rückblickend kann das Projekt als ein Erfolg gesehen werden. \\
-Aus dem Projekt ist eine umfassende Client-Server-Landschaft entstanden, welche die gesetzten Anforderungen an eine verlässliche mobile Applikation, sowohl in den Aspekten der Benutzerfreundlichkeit als auch der Verlässlichkeit, erfüllt. Sowohl der Server als auch beide Clients haben in den jeweils erstellten Meilensteine alle muss Kriterien erfüllt. Teilweise konnten sogar noch optionale Kann-Kriterien umgesetzt werden. So ist es beispielsweise möglich, sich an der Web \ac{API} zu registrieren oder in der nativen \gls{App} eine Trainingsstatistik aufzubauen. 
-Dies ist besonders deshalb bemerkenswert, da die Projektteilnehmenden einen großteils der genutzten Techniken erst erlernen mussten. 
+Aus dem Projekt ist eine umfassende Client-Server-Landschaft entstanden, welche die gesetzten Anforderungen an eine verlässliche mobile Applikation, sowohl in den Aspekten der Benutzerfreundlichkeit, als auch der Verlässlichkeit, erfüllt. Der Server sowie beide Clients haben in den jeweils erstellten Meilensteine alle Muss-Kriterien erfüllt. Teilweise konnten sogar optionale Kann-Kriterien umgesetzt werden. So ist es beispielsweise möglich, sich an der Web \ac{API} zu registrieren oder in der nativen \gls{App} eine Trainingsstatistik aufzubauen. 
+Dies ist besonders deshalb bemerkenswert, da die Projektteilnehmenden einen Großteil der genutzten Techniken erst erlernen mussten. 
 Alle im Projekt erzeugten Ressourcen können über das öffentliche Git-Repository unter \textit{\href{https://github.com/Fanuer/fIT}{https://github.com/Fanuer/fIT}} abgerufen werden. 
-
-%Anfangs wurde ein Überblick über die Aufgabe gegeben und die Systemarchitektur vorgestellt. Darauf aufbauend wurden die verwendeten Technologien erörtert und die Umsetzungen der beiden Applikationen bis zu einem festgelegten Punkt dokumentiert. Die Implementierung des Servers wurde zusätzlich betrachtet. Die anschließende Gegenüberstellung der Apps hat ergeben, dass die Weiterentwicklung der Android-App in Hinsicht auf Sicherheit als einzige Lösung gesehen werden kann.\\
-%Deshalb wurde für diese Applikation ein zweiter Meilenstein begonnen, um die Anforderungen an den umzusetzenden Prototypen zu implementieren. 
-%Rückblickend kann das Projekt als ein großer Erfolg gesehen werden. Die eingangs formulierten Ziele konnten vollständig umgesetzt werden. Zudem wurden teilweise noch Funktionen umgesetzt, die über das formulierte Ziel hinaus gehen.\\
-%Zusammenfassend ist es nun mit dem Prototypen möglich den kompletten Funktionsumfang der nativen Android-App auch im \textit{Oflline}-Modus nutzen zu können. 
 \section{Erkenntnisse}
 \label{sec:erkenntnisse}
 Der Erkenntnisgewinn dieser Arbeit ist beträchtlich. \\
-Es wurden vorwiegend unbekannte und für die Autoren neue Technologien verwendet. Die Einarbeitung geschah in den meisten Fällen reibungslos. Dies wurde gerade zu Anfang des Projekts jedoch auch als Risiko empfunden, welches ein Problem in der Umsetzung hätte verursachen können. Diese Zweifel waren jedoch im nach hinein unbegründet. \\
-Die Tatsache, dass dieses Projekt von zwei Personen durchgeführt wurde, ergab sich als enormer Vorteil. Dies gestattet, punktuell Spezialwissen zu erwerben, was jeweils der anderen Person vermittelt werden musste. Dadurch wurde der Lerneffekt nochmals verstärkt und Zusammenhänge leichter vertieft.\\
-Ebenfalls wurde von beiden Projektteilnehmer als sinnvoll erachtet, dass eine Komplettlösung für ein größeres Feld an Aufgaben, nämlich mobile Applikationen, geschaffen werden musste. Das meint, dass nicht nur einer Cache-Komponente für ein bestehendes System erstellt wurde, sondern jede Komponenten für die Realisierung der Systemlandschaft erstellt, verwaltet und veröffentlicht werden musste.\\
+Es wurden vorwiegend unbekannte und für die Autoren neue Technologien verwendet. Dies wurde gerade zu Anfang des Projekts jedoch auch als Risiko empfunden, welches ein Problem in der Umsetzung hätte verursachen können. Diese Zweifel waren jedoch im nach hinein unbegründet. Die Einarbeitung geschah in den meisten Fällen reibungslos.\\
+Die Tatsache, dass dieses Projekt von zwei Personen durchgeführt wurde, ergab sich als enormer Vorteil. Dies gestattete, punktuell Spezialwissen zu erwerben, was jeweils der anderen Person vermittelt werden musste. Dadurch wurde der Lerneffekt nochmals verstärkt und Zusammenhänge leichter vertieft.\\
+Ebenfalls wurde von beiden Projektteilnehmer als sinnvoll erachtet, dass eine Komplettlösung für ein größeres Feld an Aufgaben, nämlich mobile Applikationen, geschaffen werden musste. Das meint, dass nicht nur eine Cache-Komponente für ein bestehendes System erstellt wurde, sondern sämtliche Komponente für die Realisierung der Systemlandschaft erstellt, verwaltet und veröffentlicht werden musste.\\
 Somit konnte sich ein Einblick über alle anfallenden Arbeitsschritte zur Umsetzung einer mobilen Applikation geschaffen werden. 
 \section{Ausblick}
 \label{sec:ausblick}
-Die Grundlage für den Ausbau dieses Projektes zu einer marktreifen \gls{App} ist gegeben. Der dahinter liegende Server ist stark genug, um eine größere Last an Anfragen zu bewältigen. Zum Ausbau dieses Projekts muss die \gls{Android}-\gls{App} weiterentwickelt werden. \\
+Die Grundlage für den Ausbau dieses Projektes zu einer marktreifen \gls{App} ist gegeben: \\
 Die Umsetzung aller wichtiger Funktionen wurde jeweils an mindestens einem Beispiel im Messeprototyp dargestellt und muss demnach nur noch auf die fehlenden Funktionalitäten übertragen werden.\\
 Durch den nun tieferen Einblick in die Technologien sollte sich dieser Aufwand in Grenzen halten.\\
-Auf Seiten dies Servers müssen hauptsächlich Sicherheitsfunktionen weiterentwickelt werden, um die Web API öffentlich nutzbar zumachen. Zu diesen Funktionen zählen beispielsweise die Validierung von ClientIDs, die Einschränkung eingehender Anfragen durch \ac{CORS} und die Signierung von Tokens. \\
-Darüber hinaus kann eine Weiterentwicklung der \ac{App} dazu führen, dass die Web \ac{API} Ressourcen erweitert werden muss. 
+Auf Seiten des Servers müssen hauptsächlich Sicherheitsfunktionen weiterentwickelt werden, um die Web API öffentlich nutzbar zu machen. Zu diesen Funktionen zählen beispielsweise die Validierung von ClientIDs, die Einschränkung eingehender Anfragen durch \ac{CORS} und die Signierung von Tokens. \\
+Darüber hinaus kann eine Weiterentwicklung der \gls{App} dazu führen, dass die Web \ac{API} erweitert werden muss. 

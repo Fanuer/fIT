@@ -25,11 +25,11 @@ Das letzte \ac{HTTP}-Verb, welches an dieser Stelle vorgestellt werden soll, ist
 Das zum Datenaustausch genutzte Protokoll \ac{HTTP} ist statuslos. Das bedeutet, dass kein Kontext bei der Kommunikation besteht bzw. jede Kommunikation unabhängig von vor- oder nachherigen Verbindungen ist. Deshalb muss ein \ac{REST}ful Web Service so implementieren werden, dass alle Informationen, welche für die Kommunikation notwendig sind, bei jeder Anfrage mitgesendet werden. Was vordergründig als Nachteil erscheint, ist ein wesentlicher Vorteil. Dadurch, dass jeder Request alle nötigen Informationen mitliefert, ist es nicht nötig, den Kontext der Kommunikation über mehrere Requests auf dem Server zu verwalten. Dadurch kann ein \ac{REST}ful Web Service sehr leicht skaliert werden.\footcite[S. 26ff.]{REST-und-HTTP}
 \subsubsection*{Daten sind unabhängig von der Darstellung}
 Das \ac{REST}ful-Paradigma besagt, dass Daten losgelöst von einer Darstellung bereitgestellt werden. Darum ist ein \ac{REST}ful Web Service so zu implementieren, dass der Client das gewünschte Datenformat anfragen kann. Bei Nutzung des Protokolls HTTP wird dies in der Regel über die Header-Eigenschaft \textit{accept} realisiert, welche gewünschten Datenformate angibt. Werden dieses nicht vom Server unterstützt, werden die angeforderten Daten in einem Standard-Format zurückgegeben. \footcite[S. 26ff.]{REST-und-HTTP}
-\section{Aufbau der Komponenten}
+\section{Umsetzung der Komponenten}
 \label{sec:aufbau-Komponenten}
 In diesem Abschnitt wird beschrieben, wie der zuvor theoretisch beschriebene \ac{REST}-Ansatz für das Projekt umgesetzt wurde. Der aus der Umsetzung entstandene Server besteht aus zwei Teilen: Der Datenbank und der Web \ac{API}, welche jeweils gesondert vorgestellt werden. \\
 Die Web \ac{API} bietet eine Schnittstelle zum Abrufen der Daten mittels \ac{HTTP}. Diese wurde nach dem Design-Pattern \textit{\ac{MVVM}} aufgebaut. Die erzeugten Objekte, welche Tupel einer Datenbank-Relation darstellen, werden aus speziell dafür präparierten Model-Klassen erzeugt. Bevor diese Daten dann über die Web \ac{API} bereitgestellt werden, werden sie vom Model in ein ViewModel übertragen. Hierbei wird, nach dem Grundgedanken des \gls{Seperation-of-Concerns}, klar zwischen den Models für die Datenbank und den ViewModels, welche die Web \ac{API} benutzt, unterschieden.
-\subsection{Datenbank}
+\subsection{Einbindung und Zugriff auf die Datenbank}
 \label{ssec:aufbau-server-db}
 Wie bereits in Kapitel \ref{sec:DB-System} vorgestellt, wurde die Datenbank-Lösung \textit{\ac{MSSQL}} von \textit{Microsoft} zur Datenhaltung gewählt. Dies hat den Vorteil, dass das \textit{\gls{MSEF}}, welches sehr gut für die Nutzung mit einer Web \ac{API} optimiert ist, als \gls{OR-Mapper} genutzt werden kann. Dieser bietet das Design-Pattern \textit{Code First}. Das bedeutet, dass anhand präparierter Model-Klassen die benötigten Relationen in der Datenbank automatisch erzeugt werden. \footcite{entity-framework-code-first}\\
 An den folgenden Beispielen wird exemplarisch beschrieben, wie die Model-Klassen aufgebaut wurden und wie sich daraus die Struktur der Datenbank ergibt. Grundlage für die Model-Klassen ist das Interface \textit{IEntity} (siehe Quellcode-Beispiel \ref{lst:IEntity}):
@@ -54,7 +54,7 @@ Im Beispiel fällt auf, dass das \textit{Web \ac{API}-Framework} die Nutzung von
 Das Framework versucht die empfangenen Daten in einem ViewModel-Objekt zu kapseln und anschließend zu validieren. Die dafür genutzten Validatoren werden direkt im View-Model als Annotationen angegeben.\footcite{webApi-Validation} Die Klasse \textit{EntryModel} (siehe Quellcode-Beispiel \ref{lst:EntryModel}) zeigt die Ntzung von Validator-Annotationen in den Zeilen \ref{line:EntryModel_Annotation_1} und \ref{line:EntryModel_Annotation_2}. \\ 
 \lstinputlisting[caption=Basis-Model-Klasse, label=lst:EntryModel, style=sharpc]{content/listings/EntryModel.cs}
 Schlägt die Validierung fehl, werden die Fehler mit dem passenden Statuscode zurückgegeben. Andernfalls werden die Daten per \gls{Factory}-Klasse in ein Model konvertiert und per \gls{Repository}-Klasse in der Datenbank persistiert. Anschließend wird dem ViewModel, im Sinne des \ac{REST}-Gedankens, eine URL zur GET-Methode mit der ID des neu erstellten Objekts übergeben. 
-\subsubsection*{Swagger}
+\subsubsection*{Swagger als Entwurfshilfsmittel}
 \label{sssec:Swagger}
 Da die Web \ac{API} zur Entwicklung der Clients benötigt wurde, entstand schnell die Notwendigkeit einer Dokumentation des aktuellen Stands des Web Services. \\
 Aus diesem Grund wurde \textit{Swagger} in die Web \ac{API} integriert. \textit{Swagger} ist ein \linebreak quelloffenes Framework zur Dokumentation von \ac{REST}ful Web \ac{API}s, welche von vielen großen Konzernen genutzt wird\footcite{swagger}. Durch Nutzung des \gls{NuGet}-Packets \textit{Swashbuckle} konnte durch hinzufügen von Kommentaren und Annotationen eine vollständige und übersichtliche Dokumentation erstellt werden\footcite{implementing-Swagger}. Die Abbildung \ref{pic:swagger-UI} zeigt diese. \\
@@ -67,12 +67,12 @@ Die Dokumentation ist unter \textit{\href{http://fit-bachelor.azurewebsites.net/
 \label{pic:swagger-UI}
 \end{figure}
 
-\section{Authentifizierung \& Autorisierung}
+\section{Einbindung von Authentifizierung \& Autorisierung}
 \label{sec:server-authorisierung}
 Wie bereits in Kapitel \ref{sec:rollen-konzept} beschrieben, darf nicht jeder Nutzer auf alle Daten zugreifen. Um dies sicherzustellen, wurde ein Login-Mechanismus implementiert, welcher bekannte Nutzer authentifiziert. Da jedoch nicht alle authentifizierten Nutzer alle bereitgestellten Web \ac{API}-Methoden benutzen dürfen, wurden auf Basis des \textit{\ac{RBAC}} Rollen implementiert, welche den Nutzer zur Nutzung verschiedener Aufrufe autorisieren. Zur Umsetzung dieser Anforderungen wurde das Protokoll \textit{OAuth2} implementiert.\footcite{online:WebApi_Authorize}
-\subsection{OAuth2}
+\subsection{Das Protokoll \textit{OAuth2}}
 \label{ssec:oauth2}
-OAuth2 ist ein Protokoll zur Authentifikation und zur Delegation von Zugriffsrollen. Die Struktur von OAuth2 kennt vier Instanzen, welche in diesem Vorgang miteinander kommunizieren. Dazu zählt \textit{Client}, \textit{Resource Owner}, \textit{Authorization Server} und \textit{Resource Server}.\footcite[S. 286]{book:AngularJs:Steyer2015} Abbildung \ref{pic:OAuth2} beschreibt diesen Vorgang.
+OAuth2 ist ein Protokoll-Standard zur Authentifikation und zur Delegation von Zugriffsrollen. Die Struktur von OAuth2 kennt vier Instanzen, welche in diesem Vorgang miteinander kommunizieren. Diese sind \textit{Client}, \textit{Resource Owner}, \textit{Authorization Server} und \textit{Resource Server}.\footcite[S. 286]{book:AngularJs:Steyer2015} Abbildung \ref{pic:OAuth2} beschreibt diesen Vorgang.
 \begin{figure}[h]
 \centering
 \includegraphics[width=1\linewidth]{content/images/OAuth2}
@@ -93,7 +93,7 @@ Der \textit{Resource Server} enthält die geforderte Ressource. Ab diesem Kommun
 Durch die strikte Trennung dieser Instanzen ist es ohne Weiteres möglich, dass unterschiedliche Systeme die jeweiligen Aufgaben übernehmen. Deshalb hat sich in letzter Zeit etabliert, dass immer häufiger \textit{Single-Sign-On}-Szenarien implementiert werden. Dabei muss sich der Nutzer nur an einer Stelle registrieren (z.B. Bei \textit{Facebook} oder \textit{Twitter}). Will der Nutzer nun auf eine andere Ressource zugreifen, kann der \textit{Ressource-Server} ein \textit{Access-Token} vom \textit{Facebook}-Authorisierungsserver akzeptieren. Dies hat für den Nutzer den Vorteil, dass er sich nicht bei mehreren Seiten registrieren muss, sondern jedes mal Zugriff über den Authorisierungsserver mithilfe seiner \textit{Credentials} erhält. \footcite[S. 294]{book:AngularJs:Steyer2015} 
 \subsection{JWT and Bearer Token}
 \label{ssec:jwt-bearer}
-Sowohl das Access-Token als auch das Refresh-Token sind \ac{JWT}. Das sind codierte und meistens auch signierte Repräsentationen von Daten. Zur genaueren Betrachtung des Aufbaus, wird folgend ein Access-Token näher beschrieben. Es besteht aus 3 Teilen, welche mit einem Punkt voneinander getrennt sind. Die Daten selber sind mithilfe des Kodierungsverfahren \textit{base64} verschlüsselt.\footcite[S. 289]{book:AngularJs:Steyer2015} Die Bestandteile sind:
+Sowohl das Access-Token als auch das Refresh-Token sind \ac{JWT}. Diese werden von Instanzen des OAuth2 zur Kommunikation benutzt. Es sind codierte und meistens auch signierte Repräsentationen von Daten. Zur genaueren Betrachtung des Aufbaus, wird folgend ein Access-Token näher beschrieben. Es besteht aus 3 Teilen, welche mit einem Punkt voneinander getrennt sind. Die Daten selber sind mithilfe des Kodierungsverfahren \textit{base64} verschlüsselt.\footcite[S. 289]{book:AngularJs:Steyer2015} Die Bestandteile sind:
 \begin{itemize}
 \item \textbf{Header}\\Hier wird der Typ des Tokens und der Algorithmus, welcher für die Verschlüsselung benutzt wurde, angegeben. 
 \item \textbf{Payload} \\Die zu übermittelnden Daten werden als \ac{JSON}-Objekt bereitgestellt. Das Objekt enthält sowohl die Informationen für die Kommunikation, wie beispielsweise den Nutzernamen und die Rollen, als auch Meta-Daten über das Token (z.B. das Ablauf-Datum).
@@ -104,7 +104,7 @@ Wie bereits im Abschnitt zum \textit{Authorization Server} (siehe \ref{sssec:aut
 Das \textit{Access-Token} wird bei Requests an den Server mitgesendet. Sollte das Token von Dritten abgefangen werden, können diese nur für kurze Zeit im Namen des Nutzers Aktionen durchführen. Das Abgreifen eines solchen Tokens wird im produktiven Gebrauch, durch zusätzliche Sicherheitsmaßnahmen, wie die Nutzung des Protokolls \textit{\ac{HTTPS}} erschwert. \\
 Da das Refresh-Token ausschließlich zum Erneuern des Access-Tokens benutzt wird, ist die Gefahr, dass es abgefangen wird wesentlich geringer, wodurch die lange Lebensdauer vertretbar ist. \\
 Außerdem bleiben durch die kurze Lebensdauer des Access-Tokens die Daten immer aktuell. Sollte sich an den Daten des Nutzers etwas ändern (z.B. wird eine Rolle hinzugefügt oder entzogen) wird diese Änderungen beim nächsten Abrufen eines \textit{Access-Tokens} in die Payload codiert\footcite{online:Implemented_OAuth_RefreshToken}. Somit ist immer gewährleistet, dass der Nutzer nur die Funktionalität nutzt, für die er auch autorisiert ist. 
-\subsection{Zugriff per CORS}
+\subsection{Zugriffsbeschränkung per CORS}
 \label{ssec:cors}
 Im vorherigen Abschnitt wurden Maßnahmen beschrieben, durch die nur autorisierte Nutzer an geschützte Daten herankommen. Mit \textit{\ac{CORS}} wird ein weiterer Mechanismus vorgestellt, welcher den Zugriff auf die Daten per \textit{\ac{AJAX}} beschränkt. \\
 Um den Nutzer davor zu schützen, dass eine Webseite im Hintergrund Daten von anderen Quellen nachlädt, ist in jedem Browser eine \textit{Same-Origin-Policy} implementiert. Diese besagt, dass nur Daten aus der gleichen Domäne, aus der der \textit{\ac{AJAX}}-Aufruf abgesetzt wurde, abgerufen werden dürfen. \\
@@ -112,9 +112,16 @@ Häufig ist es trotzdem nötig, auf fremden Domänen zuzugreifen. Deshalb wurden
 Hierbei wird beim Server eine Liste an gültigen Domänen für eine domänenübergreifende Anfrage hinterlegt. Soll nun vom Browser eine Anfrage an den Server gesendet werden, wird über das \ac{HTTP} Verb unterschieden, ob durch diese Anfrage eine Ressource auf dem Server verändert wird. Dies geschieht bei PUT, DELETE und POST, wobei letzteres eine Ausnahme bildet. Werden per POST Daten in einem Format übermittelt, welches beim Absenden eines Formulars genutzt wird (z.B. \textit{application/x-www-form-urlencoded}), wird die Anfrage wie ein nicht-ändernder Aufruf behandelt. \\
 Wenn nun eine Datenänderung im Sinne von \ac{CORS} durch den Aufruf angestoßen wurde oder wenn der Aufruf zusätzliche Schlüssel im Header enthält, wird vor der Ausführung ein \textit{Preflight} gesendet. Dies ist eine gls{OPTIONS}-Anfrage, welche genutzt wird, um die Durchführung der bevorstehenden Anfrage zu validieren.
 Enthält die Antwort im Header nicht den Schlüssel \textit{Access-Control-Allow-Origin} mit der aufrufenden Domäne, wird vom Browser ein Fehler erzeugt. Andernfalls wird die Abfrage an den Server gesendet\footcite[S. 102]{book:AngularJs:Steyer2015}. Dadurch ist gewährleistet, dass nur berechtigte Clients anfragen an den Server senden. Es wurde auf weitere Implementierung von \gls{Polyfills} verzichtet, da \ac{CORS} bereits in allen modernen Browsern genutzt werden kann\footcite{online:can-i-use:cors}.
-\section{Testen der Funktionalität}
+\section{Testen der Server-Funktionalität}
 \label{sec:server-tests}
-Die erwartete Funktionsweise des Servers ist Grundvoraussetzung für die Umsetzung der Clients. Um diese zu bewerkstelligen wurde die \textit{ManagementApi} entwickelt. Dies ist eine portable \ac{DLL}, welche alle Anfragen an den Server in Methoden kapselt. Hierbei wurde bei der Erstellung der \ac{DLL} darauf geachtet, dass sie sowohl in klassischen Testprojekten als auch zur Umsetzung der nativen \gls{App} genutzt werden kann. Darüber hinaus war ein Design-Ziel, dass alle Methoden auch asynchron aufrufbar sind, damit Nutzer der \ac{DLL} in der Erstellung ihres Programmablaufes größere Flexibilität besitzen. \\
+Die erwartete Funktionsweise des Servers ist Grundvoraussetzung für die Umsetzung der Clients. Um diese zu bewerkstelligen wurde im Rahmen dieser Arbeit die \textit{ManagementApi} entwickelt. Dies ist eine portable \ac{DLL}, welche alle Anfragen an den Server in Methoden kapselt. Hierbei wurde bei der Erstellung der \ac{DLL} darauf geachtet, dass sie sowohl in klassischen Testprojekten als auch zur Umsetzung der nativen \gls{App} genutzt werden kann. Darüber hinaus war ein Design-Ziel, dass alle Methoden auch asynchron aufrufbar sind, damit Nutzer der \ac{DLL} in der Erstellung ihres Programmablaufes größere Flexibilität besitzen. \\
+Jeder Testfall Benutzt die ManagementApi als Schnittstelle zum Server, um verschiedene Anwendungsfälle zu prüfen. Abbildung beschreibt den schematischen Aufbau der Tests.
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\linewidth]{content/images/Aufbau-Testfaelle}
+\caption{Aufbau eines Testfalls}
+\label{pic:OAuth2}
+\end{figure}
 Die erzeugten Methoden wurden iterativ entwickelt und direkt getestet. Hierbei wurden zur Verifikation der Funktionalität ausschließlich Positivtests erstellt. So ist sichergestellt, dass jede Methode der \textit{ManagementApi} die gewünschten Aktionen auf dem Web Service durchführt. \\
 Der nachfolgende Codeausschnitt \ref{lst:ClientTests.Users} zeigt beispielhaft die Entwicklung eines Testfalls:
 \lstinputlisting[caption=Implementierung des Tests 'Nutzer kann eigene Daten anpassen', label=lst:ClientTests.Users, style=sharpc]{content/listings/ClientTests.Users.cs}

@@ -4,26 +4,12 @@ Im letzten Kapitel wurde die Aufgabenstellung grob beschrieben. Nun sollen die a
 \section{Problembeschreibung}
 \label{sec:problembeschreibung}
 Aus der groben Problembeschreibung lassen sich folgende technische Herausforderungen ablesen:\\
-Der Server dient als zentrale Datenhaltung für verschiedene Clients. Darum ist es nötig, dass Client und Server dafür ausgelegt werden, über eine standardisierte Schnittstelle zu kommunizieren, um die anfallenden Daten auszutauschen. Diese muss einen Authentifizierungs- und Autorisierungsmechanismus bereitstellen, so dass jeder Nutzer nur an seine eigenen Daten gelangt. Darüber hinaus ist die Schnittstelle so zu implementieren, dass diese Kommunikation (zumindest temporär) optional ist, sodass eine Ausfallsicherheit entsteht. Um diese zu gewährleisten, muss ein Client die Möglichkeit haben, die Verbindung zum Server zu prüfen. Schlägt diese Prüfung fehl, muss der Client mit entsprechenden Maßnahmen reagieren. Hierfür muss zum einen der Zugriff auf Funktionen, welche zwingend eine Verbindung benötigen, reguliert werden. Zum Anderen müssen lokal anfallende Daten bei fehlender Verbindung zwischengespeichert werden. Letzteres hat zwei Vorteile:
+Der Server dient als zentrale Datenhaltung für verschiedene Clients. Darum ist es nötig, dass Client und Server dafür ausgelegt werden, über eine standardisierte Schnittstelle zu kommunizieren, um die anfallenden Daten auszutauschen. Diese muss einen Authentifizierungs- und Autorisierungsmechanismus bereitstellen, so dass jeder Nutzer nur an seine eigenen Daten gelangt. Darüber hinaus ist die Schnittstelle so zu implementieren, dass diese Kommunikation optional ist. Dadurch entsteht eine Ausfallsicherheit, da die Funktionalität des Endgeräts autonom von Server genutzt werden kann. Um diese zu gewährleisten, muss ein Client die Möglichkeit haben, die Verbindung zum Server zu prüfen. Schlägt diese Prüfung fehl, muss der Client mit entsprechenden Maßnahmen, wie beispielsweise einer lokalen Zwischenspeicherung, reagieren. Hierfür muss zum einen der Zugriff auf Funktionen, welche zwingend eine Verbindung benötigen, reguliert werden. Zum Anderen müssen lokal anfallende Daten bei fehlender Verbindung zwischengespeichert werden. Letzteres hat zwei Vorteile:
 \begin{itemize}
 \item Neu angelegte Daten gehen dem Nutzer nicht verloren, obwohl sie nicht zum Server geschickt werden.
 \item Dem Nutzer bleiben Funktionalitäten und bereits vorhandene Daten erhalten, obwohl keine Verbindung zum Server besteht.
 \end{itemize}
 Fallen neue lokale Daten an, ergibt sich aus der Problembeschreibung, dass diese bei späterer Verbindung zum Server persistiert werden. Dies muss die Kommunikationsschnittstelle durch einen geeigneten Synchronisationsmechanismus unterstützen. 
-
-%Die vordergründige Herausforderung liegt darin, dass die Fitness-Anwendungen auch
-%dann noch benutzbar sein sollen, wenn keine Verbindung zum Internet, speziell zum
-%benötigten Server, besteht. Dafür müssen die Applikationen ausgelegt und vorbereitet werden. Sei es durch das Unterbinden von Funktionen oder das Speichern von bereits erhaltenen Daten, um diese dem Benutzer für die weitere Verwendung zur
-%Verfügung stellen zu können. \\
-%Weiterhin gibt es Unterschiede in der Auswahl der lokal zu speichernden Daten. Auf
-%der einen Seite können alle Daten, die relevant sind, automatisch von der Anwendung für den Benutzer hinterlegt werden. Zum anderen kann es die Möglichkeit für den Benutzer geben, bestimmte Daten offline verfügbar zu machen.
-%Zu beachten ist darüber hinaus, dass die Daten, die ohne Internetverbindung angelegt werden, wieder zum Server synchronisiert werden müssen, um Benutzereingaben zentral persistent speichern zu können. In diesem Anwendungsfall sollen Trainingsdaten erfasst und gespeichert werden.\\
-%Die Daten sollen für verschiedene Benutzer, die sich an dem Gerät anmelden, gespeichert werden. Des Weiteren sollen Benutzer nur Funktionen ausführen können,
-%zu denen sie auch autorisiert sind.\\
-%Konkret kann daraus geschlossen werden, dass die Anwendungen mit einem Mechanismus
-%ausgestattet sein müssen, der das lokale Zwischenspeichern von Informationen
-%unterstützt. Damit soll das Abrufen von Daten im Offline-Modus ermöglicht
-%werden. Des Weiteren soll es offline möglich sein, Daten anzulegen und diese sollen dann mit dem Server synchronisiert werden, wenn wieder eine Verbindung besteht.
 
 \section{Soll-Konzept}
 \label{sec:soll-konzept}
@@ -47,28 +33,28 @@ Die \ac{Web-App} soll als Webseite im Browser umgesetzt werden. Damit die client
 Da eine mobile Nutzung im Vordergrund steht, soll die \ac{SPA} sich \gls{responsiv} verhalten. Dadurch wird eine Nutzung auf kleinen Displays unterstützt. Dies erhöht die Vergleichbarkeit der Applikationen, da beide Varianten problemlos auf dem gleichen Gerät getestet werden können.
 \subsubsection*{Native App}
 \label{ssec:aufgabenstellung:nat-app}
-Die native \gls{App} soll für \gls{Android} entwickelt. \gls{Android} wurde als Plattform ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelte App auf einem Testsystem zu installieren, ohne - wie bei \textit{Apples} \ac{Web-App} nötig - einen Entwickler-Account anlegen zu müssen.\\ 
+Die native \gls{App} soll für \gls{Android} entwickelt werden. \gls{Android} wurde als Plattform ausgewählt, um die Vorteile des offenen Systems nutzen zu können. So ist es beispielsweise möglich die entwickelte App auf einem Testsystem zu installieren, ohne - wie bei \textit{Apples} \ac{Web-App} nötig - einen Entwickler-Account anlegen zu müssen.\\ 
 Zudem ist es bei einer \gls{iOS}-\gls{App} notwendig, das Aufspielen einer Testapplikation über ein spezielles Entwickler-Tool in \gls{XCode} durchzuführen. Diese Hürde fällt bei einer \gls{Android}-\gls{App} weg. Des Weiteren ist das \gls{Android}-Betriebssystem weiter verbreitet\footcite{Statista-SmartphoneVerteilung}. Dadurch kann bei einer möglichen späteren Weiterentwicklung eine größere Akzeptanz der \gls{App} erzielt werden.
 \subsection{Weiterentwicklung eines Clients}
 \label{ssec:umsetzung-client-entwicklung}
 Auf Grundlage der Evaluation soll eine der beiden Applikationen ausgewählt und anschließend zu einem rudimentären Messeprototyp weiterentwickelt werden. Diese soll eine komplette \gls{UserStory} implementieren. Als Beispiel soll eine Fitness-\gls{App} dienen. Hierbei kann ein Nutzer Trainingsdaten verwalten. 
-\section{Meilensteinplan}
+\section{Phasenplan}
 \label{sec:meilenstein-plan}
-Aus dem nun vorliegenden Soll-Konzept kann ein Meilenstein-Plan erzeugt werden. Diese zeigt einen groben Projektablauf auf und spiegelt parallel ablaufende Entwicklungen wieder. Das gesamte Projekt kann in zwei Meilensteine unterteilt werden, welche nachfolgend genauer beschrieben werden (siehe Tabelle \ref{tbl:meilensteinplan}).
+Aus dem nun vorliegenden Soll-Konzept kann ein Phasenplan erzeugt werden. Diese zeigt einen groben Projektablauf auf und spiegelt parallel ablaufende Entwicklungen wieder. Das gesamte Projekt kann in zwei Phasen unterteilt werden, welche nachfolgend genauer beschrieben werden (siehe Tabelle \ref{tbl:meilensteinplan}).
 \begin{table}[!h]
 \centering
-\caption{Meilensteinplan}
+\caption{Phasenplan}
 \label{tbl:meilensteinplan}
 \begin{tabular}{|c|l|}
 \hline
-{\bf Meilenstein} & {\bf Titel}                                                      \\ \hline
+{\bf Phase} & {\bf Titel}                                                      \\ \hline
 1                 & Umsetzung der Clients als \textit{Proof-of-Concept}-Prototypen \\ \hline
 2                 & Umsetzung einer mobilen Anwendung als Messeprototyp              \\ \hline
 \end{tabular}
 \end{table}
 
-\subsection{Umsetzung der Clients als \textit{Proof-of-Concept}-Prototypen}
-In diesem Meilenstein werden Erkenntnisse zur Implementierung einer verlässlichen mobilen Anwendung gesammelt. \\
+\subsection{Phase 1: Umsetzung der Clients als \textit{Proof-of-Concept}-Prototypen}
+In dieser Phase werden Erkenntnisse zur Implementierung einer verlässlichen mobilen Anwendung gesammelt. \\
 Hierbei müssen folgende Teilschritte durchgeführt werden:
 \begin{enumerate}
 \item Erwerb grundsätzlicher Kenntnisse eines Caches und dessen Implementierung
@@ -77,6 +63,6 @@ Hierbei müssen folgende Teilschritte durchgeführt werden:
 \item Erstellung einer nativen \gls{App}
 \item Evaluierung der Erkenntnisse
 \end{enumerate}
-Da beide Clients während der Implementierung den Server benötigen, müssen die Teilschritte bis einschließlich Schritt 2 nacheinander abgearbeitet werden. Die Umsetzung der beiden Clients kann anschließend parallel erfolgen. Dieser Meilenstein endet mit der Gegenüberstellung der gewonnen Erkenntnisse und der Auswahl einer Technik für Meilenstein 2.
-\subsection{Umsetzung einer mobilen Anwendung als Messeprototyp}
-In diesem Meilenstein wird die in Meilenstein 1 gewählte Technik benutzt, um einen Messeprototyp zu entwickeln. Hierbei sollen alle Funktionalitäten implementiert werden, um einen Anwendungsfall vollständig durchzuführen. Als Anwendungsfall soll ein Nutzer ein neues Trainingsdatum anlegen. Dabei soll es irrelevant sein, ob eine Verbindung zum Server besteht, oder nicht. Dieser Anwendungsfall wird als grafisch aufbereitete \gls{UserStory} im Umfeld des fertig implementierten Messeprototyps vorgestellt.
+Da beide Clients während der Implementierung den Server benötigen, müssen die Teilschritte bis einschließlich Schritt 2 nacheinander abgearbeitet werden. Die Umsetzung der beiden Clients kann anschließend parallel erfolgen. Diese Phase endet mit der Gegenüberstellung der gewonnen Erkenntnisse und der Auswahl einer Technik für Phase 2.
+\subsection{Phase 2: Umsetzung einer mobilen Anwendung als Messeprototyp}
+In dieser Phase wird die in Phase 1 gewählte Technik benutzt, um einen Messeprototyp zu entwickeln. Hierbei sollen alle Funktionalitäten implementiert werden, um einen Anwendungsfall vollständig durchzuführen. Als Anwendungsfall soll ein Nutzer ein neues Trainingsdatum anlegen. Dabei soll es irrelevant sein, ob eine Verbindung zum Server besteht, oder nicht. Dieser Anwendungsfall wird als grafisch aufbereitete \gls{UserStory} im Umfeld des fertig implementierten Messeprototyps vorgestellt.

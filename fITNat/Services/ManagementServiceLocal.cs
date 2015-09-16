@@ -196,6 +196,7 @@ namespace fITNat.Services
                 user.Username = username;
                 user.Password = password;
                 user.ConfirmPassword = passwordConfirm;
+                user.Email = email;
                 user.Gender = gender;
                 user.Job = job;
                 user.Fitness = fitness;

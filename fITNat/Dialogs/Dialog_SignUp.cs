@@ -32,7 +32,7 @@ namespace fITNat
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             base.OnCreateView(inflater, container, savedInstanceState);
-
+            ooService = new OnOffService();
             var view = inflater.Inflate(Resource.Layout.Dialog_sign_up, container, false);
 
             //Alle Eingabeelemente holen

@@ -80,7 +80,7 @@
 \newcommand*{\thedockind}{Bachelorthesis}
 \newcommand*{\thetitle}{Verl{\"a}ssliche mobile Anwendungen}
 \newcommand*{\thesubtitle}{Untersuchungen am Beispiel einer Fitness-App}
-\newcommand*{\theauthor}{Kevin Schie / Stefan Suermann}
+\newcommand*{\theauthors}{Kevin Schie / Stefan Suermann}
 \newcommand*{\thematriculationnumber}{2012013 / 2012027} % Matrikelnummer
 \newcommand*{\thebirthday}{04.07.1993 / 13.12.1987} % Geburtstag
 \newcommand*{\thedegree}{Bachelor in Information Technology}
@@ -129,6 +129,8 @@
 	
 	% ----------------- Einfügen des eigentlichen Textes
 	
+	\input{preamble/acronyms}
+  	\input{content/eidesstattliche_erklaerung}
 	\input{content/aufgabenstellung}	
 	\input{content/einleitung}	
 	\input{content/problemanalyse}
@@ -146,19 +148,13 @@
 	
 	\appendix
 	%Verzeichnisse erstellen
-	\printglossaries
-  	\input{preamble/acronyms}
-  	\printnoidxglossaries	
+	\input{content/anhang}
+	\printnoidxglossaries	
 	\listoffigures
 	\listoftables
 	\lstlistoflistings
 	
 	\nocite{*} 
 	%Literaturverzeichnis erstellen
-	\bibliography{bib/bib}
-	\bibliographystyle{jurabib}
-
-	\input{content/anhang}
-	%\input{content/anhang}
-	\input{content/eidesstattliche_erklaerung}
+	\printbibliography
 \end{document}

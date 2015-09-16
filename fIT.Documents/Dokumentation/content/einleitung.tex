@@ -5,15 +5,14 @@ In diesem Kapitel wird das grundlegende Problem und die daraus resultierende Zie
 \section{Problemstellung}
 \label{sec:problemstellung}
 Momentan besitzen 57\% der Deutschen ein Smartphone. Somit hat sich die Zahl der Smartphone-Nutzer seit Ende 2011 mehr als verdoppelt.\footcite{Statista-SmartphoneNutzung}\\
-Durch die verstärkte Nutzung geraten \glspl{App} immer mehr in den Fokus. Applikationen haben sich im Laufe der Zeit im Alltag ausgebreitet und sind mittlerweile für den Endnutzer unverzichtbar geworden. Sei es beim Online-Shopping, Chatten oder der Navigation. Überall finden diese kleinen Programme ihre Verwendung.\\
-Dabei ist es besonders wichtig, dass eine konstante Internetverbindung besteht, um den kompletten Funktionsumfang nutzen zu können. Bis die Umsetzung eines flächendeckenden freien WLANs in Deutschland abgeschlossen ist, benötigt man eine gute Verbindung über seinen Netzbetreiber. Diese ist aber noch nicht vollständig und ausreichend im ganzen Land verfügbar.\\
-Deshalb ist es notwendig, dass Apps versuchen Verbindungsabbrüche für den Benutzer zu überbrücken. Dabei besteht die Möglichkeit einer kurzzeitigen Zwischenspeicherung von Daten, solange die Internetverbindung nicht bereitsteht. Änderungen, die in dieser Zeit gemacht werden, sollen aufgenommen und später zur Verfügung gestellt werden damit man auf all seinen Endgeräten einen einheitlichen Stand der Daten hat.\\
-Zur Umsetzung dieser Anforderungen können verschiedene Möglichkeiten genutzt werden.
+Durch die verstärkte Nutzung geraten \glspl{App} immer mehr in den Fokus. Applikationen haben sich im Laufe der Zeit im Alltag ausgebreitet und sind somit für den Endnutzer immer wichtiger. Sei es beim Online-Shopping, Chatten oder der Navigation. Überall finden diese kleinen Programme ihre Verwendung.\\
+Dabei ist es besonders wichtig, dass eine konstante Internetverbindung besteht, um den kompletten Funktionsumfang nutzen zu können. Bis die Umsetzung eines flächendeckenden freien \ac{WLAN}s in Deutschland abgeschlossen ist, wird eine gute Verbindung über seinen Netzbetreiber benötigt. Diese ist aber noch nicht vollständig und ausreichend im ganzen Land verfügbar.\\
+Deshalb ist es notwendig, dass \glspl{App} versuchen Verbindungsabbrüche für den Benutzer zu überbrücken. Dabei besteht die Möglichkeit einer kurzzeitigen Zwischenspeicherung von Daten, solange die Internetverbindung nicht bereitsteht. Änderungen, die in dieser Zeit gemacht werden, sollen aufgenommen und später zur Verfügung gestellt werden, damit auf allen Endgeräten einen einheitlichen Stand der Daten sicherstellen werden kann.
 \section{Zielsetzung}
 \label{sec:zielsetzung}
 Das Hauptziel dieser Arbeit ist der Wissenserwerb der Projektdurchführenden im Bereich der verlässlichen mobilen Applikationen. \\
-Hierzu sollen zwei verlässliche Applikationen unter Nutzung verschiedener Techniken entworfen, umgesetzten und getestet werden. Als Beispiel soll eine Applikation entwickelt werden, die es ermöglichen den Trainingsfortschritt beim Krafttraining darzustellen, aufzunehmen und dauerhaft zu speichern. Zum Speichern der Benutzerdaten, wie Trainingspläne, Übungen und Trainings, wird ein Server benötigt, der die Anfragen der mobilen Geräte annimmt und verarbeitet.\\
-Bei den Applikationen wird während der Entwicklungsphase entschieden, welche der beiden Apps zu einem lauffähigen Messeprototypen weiterentwickelt wird. Diese Einschätzung geschieht aufgrund der Erkenntnisse, welche durch die verschiedenen Umsetzungen gewonnen wurden.\\
+Hierzu sollen zwei verlässliche Applikationen unter Nutzung verschiedener Techniken entworfen, umgesetzt und getestet werden. Als Beispiel soll eine Applikation entwickelt werden, die es ermöglicht den Trainingsfortschritt beim Krafttraining darzustellen, aufzunehmen und dauerhaft zu speichern. Zum Speichern der Benutzerdaten, wie Trainingspläne, Übungen und Trainings, wird ein Server benötigt, der die Anfragen der mobilen Geräte annimmt und verarbeitet.\\
+Bei den Applikationen wird während der Entwicklungsphase entschieden, welche der beiden \glspl{App} zu einem lauffähigen Messeprototypen weiterentwickelt wird. Diese Einschätzung geschieht aufgrund der Erkenntnisse, welche durch die verschiedenen Umsetzungen gewonnen wurden.\\
 Der Prototyp soll es dem Benutzer ermöglichen durch seine Trainingspläne mit den zugehörigen Übungen zu navigieren und die Daten eines Trainings eingeben zu können. Zudem soll es möglich sein die letzten Trainingseinheiten einzusehen. Das soll unabhängig davon funktionieren, ob das Endgerät eine Verbindung zum Server aufbauen kann oder nicht.
 \section{Vorgehensweise}
 \label{sec:vorgehensweise}
@@ -21,8 +20,7 @@ Zum Erreichen der Ziele muss als Erstes eine genauere Betrachtung der entstanden
 Projektbegleitend wird eine Dokumentation erstellt, welche jeweils die durchgeführten Maßnahmen und gewonnen Kenntnisse widerspiegelt. 
 \section{Arbeitsaufteilung}
 \label{sec:Arbeitsaufteilung}
-Da diese Arbeit von zwei Personen durchgeführt wird, muss an dieser Stelle noch aufgeschlüsselt werden, welche Aufgaben von wem durchgeführt werden. Hierzu dient die nachfolgende Tabelle \ref{tbl:arbeitsaufteilung}. Des Weiteren wird auf Grundlage dieser Tabelle die interne Zeitplanung durchgeführt. Hierdurch kann ermittelt werden, welche Teilaufgaben parallel bearbeitet werden können. Zur Wahrung der größtmöglichen Transparenz wird zwischen der Dokumentation und der Implementierung der benötigten Komponenten unterschieden. 
-
+Da diese Arbeit von zwei Personen durchgeführt wird, muss an dieser Stelle noch aufgeschlüsselt werden, welche Aufgaben von wem durchgeführt werden. Hierzu dient die nachfolgende Tabelle \ref{tbl:arbeitsaufteilung}. \\Des Weiteren wird auf Grundlage dieser Tabelle die interne Zeitplanung durchgeführt. Hierdurch kann ermittelt werden, welche Teilaufgaben parallel bearbeitet werden können. Zur Wahrung der größtmöglichen Transparenz wird zwischen der Dokumentation und der Implementierung der benötigten Komponenten unterschieden. 
 \begin{table}[]
 \caption{Arbeitsaufteilung}
 \label{tbl:arbeitsaufteilung}
@@ -35,9 +33,9 @@ Da diese Arbeit von zwei Personen durchgeführt wird, muss an dieser Stelle noch
 \hline
 Server                                                            &                                 & X                                   \\
 \hline
-native App                                                        & X                               &                                     \\
+native \gls{App}                                                        & X                               &                                     \\
 \hline
-Webapp                                                            &                                 & X                                   \\
+mobile Web Applikation                                                            &                                 & X                                   \\
 \hline
 Messeprototyp                                                     & X                               &                                     \\
 \hline
@@ -56,7 +54,7 @@ Aspekte der Realisierung                                          &             
 \hline
 \makecell[l]{Realisierung der serverseitigen\\Implementierung}    &                                 & X                                   \\
 \hline
-\makecell[l]{Relisierung der clientseitigen\\Implementierung als native App}     & X                               &                                     \\
+\makecell[l]{Relisierung der clientseitigen\\Implementierung als native \gls{App}}     & X                               &                                     \\
 \hline
 \makecell[l]{Relisierung der clientseitigen\\Implementierung als Webapplikation} &                                 & X                                   \\
 \hline
@@ -70,7 +68,7 @@ Pflichtenheft                                                     &             
 \hline
 Cache Post                                                        & X                               &                                     \\
 \hline
-User-Story in der nativen App                                     & X                               &                                     \\
+User-Story in der nativen \gls{App}                                     & X                               &                                     \\
 \hline
 Funktionsumfang                                                   & X                               &   \\
 \hline

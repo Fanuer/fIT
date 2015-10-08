@@ -26,8 +26,8 @@ namespace fITNat
 		
 		public static void UpdateIdValues()
 		{
-			global::SQLite.Resource.String.ApplicationName = global::fITNat.Resource.String.ApplicationName;
-			global::SQLite.Resource.String.Hello = global::fITNat.Resource.String.Hello;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.ApplicationName = global::fITNat.Resource.String.ApplicationName;
+			global::SQLite.Net.Platform.XamarinAndroid.Resource.String.Hello = global::fITNat.Resource.String.Hello;
 		}
 		
 		public partial class Animation

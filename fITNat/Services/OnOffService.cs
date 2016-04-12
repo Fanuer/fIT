@@ -15,6 +15,7 @@ using fIT.WebApi.Client.Portable.Implementation;
 using fIT.WebApi.Client.Data.Models.Shared;
 using System.Threading;
 using fIT.WebApi.Client.Data.Models.Practice;
+using fITNat.LocalData;
 
 namespace fITNat
 {

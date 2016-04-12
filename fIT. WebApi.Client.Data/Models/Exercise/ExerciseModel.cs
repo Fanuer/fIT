@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using fIT.WebApi.Client.Data.Models.Shared;
 
 namespace fIT.WebApi.Client.Data.Models.Exercise

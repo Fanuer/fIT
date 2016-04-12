@@ -1,5 +1,6 @@
 using SQLite;
 using System;
+using SQLite.Net.Attributes;
 
 namespace fITNat.DBModels
 {

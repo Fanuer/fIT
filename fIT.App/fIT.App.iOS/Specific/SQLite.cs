@@ -14,8 +14,6 @@ namespace fIT.App.iOS.Specific
 {
   public class SQLite:ISqlLite
   {
-
-
     public SQLiteConnection GetConnection()
     {
       var path = this.GetDBPath();

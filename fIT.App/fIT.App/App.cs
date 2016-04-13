@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using fIT.App.Helpers;
+using fIT.App.Pages;
 using fIT.App.Services;
 
 using Xamarin.Forms;
@@ -20,19 +22,7 @@ namespace fIT.App
     {
       AppName = "fIT.App";
       // The root page of your application
-      MainPage = new ContentPage
-      {
-        Content = new StackLayout
-        {
-          VerticalOptions = LayoutOptions.Center,
-          Children = {
-            new Label {
-              XAlign = TextAlignment.Center,
-              Text = "Welcome to Xamarin Forms!"
-            }
-          }
-        }
-      };
+      MainPage = new NavigationPage(new SchedulePage());
     }
 
     #endregion
@@ -61,6 +51,7 @@ namespace fIT.App
     #region PROPERTIES
     public static string AppName { get; private set; }
 
+    public static Locator Locator => new Locator();
     #endregion
   }
 }

@@ -8,14 +8,14 @@ using SQLite.Net.Attributes;
 namespace fIT.App.Data.Datamodels
 {
   [Table("Schedule")]
-  class Schedule:LocalDataModelBase
+  public class Schedule:LocalDataModelBase
   {
     public int Id { get; set; }
     public string UserId { get; set; }
     public string Name { get; set; }
     public override string ToString()
     {
-      return $"[Schedule: LocalId={LocalId}, WasOffline={WasOffline}, Id={Id}, UserId={UserId}, Name={Name}, Url={Url}]";
+      return $"[Schedule: LocalId={LocalId}, WasOffline={WasOffline}, Id={Id}, UserId={UserId}, Name={Name}]";
     }
   }
 }

@@ -87,10 +87,7 @@ namespace fITNat
 			public const int Icon = 2130837510;
 			
 			// aapt resource value: 0x7f020007
-			public const int monoandroidsplash = 2130837511;
-			
-			// aapt resource value: 0x7f020008
-			public const int ProgressBarStyle = 2130837512;
+			public const int ProgressBarStyle = 2130837511;
 			
 			static Drawable()
 			{

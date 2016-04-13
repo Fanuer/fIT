@@ -24,7 +24,7 @@ namespace fIT.App.Data.Datamodels
     public string UserId { get; set; }
     public override string ToString()
     {
-      return $"[Exercise: LocalId={LocalId}, WasOffline={WasOffline}, Id={Id}, Url={Url}, Timestamp={Timestamp}, Weight={Weight}, NumberOfRepetitions={NumberOfRepetitions}, Repetitions={Repetitions}, ScheduleId={ScheduleId}, ExerciseId={ExerciseId}, UserId={UserId}";
+      return $"[Exercise: LocalId={LocalId}, WasOffline={WasOffline}, Id={Id}, Timestamp={Timestamp}, Weight={Weight}, NumberOfRepetitions={NumberOfRepetitions}, Repetitions={Repetitions}, ScheduleId={ScheduleId}, ExerciseId={ExerciseId}, UserId={UserId}";
     }
 
   }

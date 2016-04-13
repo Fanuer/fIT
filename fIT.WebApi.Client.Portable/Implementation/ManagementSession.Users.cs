@@ -203,6 +203,8 @@ namespace fIT.WebApi.Client.Portable.Implementation
         #region Properties
         public IUserManagement Users { get { return this; } }
 
+      public string CurrentUserID { get; set; }
+
         #endregion
     }
 }

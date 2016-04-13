@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using fIT.App.Data;
 using fIT.App.Helpers;
+using fIT.App.Repositories;
 using fIT.WebApi.Client.Portable.Implementation;
 
 namespace fIT.App.Services
@@ -57,11 +59,13 @@ namespace fIT.App.Services
     {
       while (!this._stop)
       {
-        var status = await SessionService.Current.Server.PingAsync();
+        var status = await ServerRespository.Current.Server.PingAsync();
         if (status != _currentStatus)
         {
+          lock(_lock) {
           this.OnStatusChanged?.Invoke(this, new ChangedOnlineStateEventArgs(status));
           this._currentStatus = status;
+          }
         }
         System.Diagnostics.Debug.WriteLine("Connection checked");
         await Task.Delay(this.Interval);

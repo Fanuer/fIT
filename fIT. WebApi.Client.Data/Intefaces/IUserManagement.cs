@@ -115,6 +115,12 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <returns></returns>
         Task UpdatePracticeAsync(int id, PracticeModel model);
 
-        #endregion
-    }
+    #endregion
+
+    #region PROPERTIES
+
+      string CurrentUserID { get; set; }
+
+      #endregion
+  }
 }

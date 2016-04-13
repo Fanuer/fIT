@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Portable.Implementation;
 
-namespace fIT.App.Services
+namespace fIT.App.Repositories
 {
-  internal class SessionService
+  internal class ServerRespository
   {
     #region Const
     private const string URL = @"http://fit-bachelor.azurewebsites.net/";
@@ -17,15 +13,15 @@ namespace fIT.App.Services
     #endregion
 
     #region FIELDS
-    private static SessionService _current;
+    private static ServerRespository _current;
 
     #endregion
 
     #region CTOR
 
-    private SessionService()
+    private ServerRespository()
     {
-      this.Server = new ManagementService(SessionService.URL);
+      this.Server = new ManagementService(ServerRespository.URL);
     }
     #endregion
 
@@ -41,15 +37,15 @@ namespace fIT.App.Services
 
     #region PROPERTIES
 
-    public static SessionService Current 
+    public static ServerRespository Current 
     {
       get
       {
-        if (SessionService._current != null)
+        if (ServerRespository._current != null)
         {
-          SessionService._current = new SessionService();
+          ServerRespository._current = new ServerRespository();
         }
-        return SessionService._current;
+        return ServerRespository._current;
       }
     }
 

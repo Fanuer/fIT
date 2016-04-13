@@ -15,7 +15,7 @@ namespace fIT.App.Data.Datamodels
     public string Name { get; set; }
     public override string ToString()
     {
-      return string.Format("[Exercise: LocalId={0}, WasOffline={1}, Id={2}, Description={3}, Name={4}, Url={5}", LocalId, WasOffline, Id, Description, Name, Url);
+      return $"[Exercise: LocalId={LocalId}, WasOffline={WasOffline}, Id={Id}, Description={Description}, Name={Name}";
     }
 
   }

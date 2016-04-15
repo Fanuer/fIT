@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -59,16 +60,25 @@ namespace fIT.App.Services
     {
       while (!this._stop)
       {
-        var status = await ServerRespository.Current.Server.PingAsync();
-        if (status != _currentStatus)
+        try
         {
-          lock(_lock) {
-          this.OnStatusChanged?.Invoke(this, new ChangedOnlineStateEventArgs(status));
-          this._currentStatus = status;
+          var status = await ServerRespository.Current.Server.PingAsync();
+          if (status != _currentStatus)
+          {
+            lock (_lock)
+            {
+              this.OnStatusChanged?.Invoke(this, new ChangedOnlineStateEventArgs(status));
+              this._currentStatus = status;
+            }
           }
+          Debug.WriteLine("Connection checked");
+          await Task.Delay(this.Interval);
         }
-        System.Diagnostics.Debug.WriteLine("Connection checked");
-        await Task.Delay(this.Interval);
+        catch (Exception e)
+        {
+          Debug.WriteLine("Ping-Error: " + e.Message);
+        }
+        
       }
     }
     #endregion

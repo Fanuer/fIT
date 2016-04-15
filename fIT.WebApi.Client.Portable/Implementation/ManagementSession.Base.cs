@@ -446,7 +446,9 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// <summary>
         /// Current Refresh Token
         /// </summary>
-        private string RefreshToken { get { return refreshToken; } }
+         public string RefreshToken {
+          get{return refreshToken;}
+          internal set { this.refreshToken = value; } }
         /// <summary>
         /// Access Token Expire Date
         /// </summary>

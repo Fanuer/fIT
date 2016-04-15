@@ -63,11 +63,28 @@ namespace fIT.App.Repositories
     }
         #endregion
 
+    public async Task<bool> LoginAsync(string username, string password)
+    {
+      var result = false;
+
+      if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+      {
+        var conn = DependencyService.Get<ISqlLite>().GetAsyncConnection();
+        var user = await conn.FindAsync<User>(x => x.Username.Equals(username, StringComparison.CurrentCultureIgnoreCase) && x.Password.Equals(password, StringComparison.CurrentCultureIgnoreCase));
+        if (user != null)
+        {
+          this.CurrentUserId = user.UserId;
+          result = true;
+        }
+      }
+      return result;
+    }
+
     #region PROPERTIES
 
     public IUserManagement UserManagement { get; set; }
     public IAdminManagement AdminManagement { get; set; }
-    public string CurrentUserId { get; set; }
+    public Guid CurrentUserId { get; set; }
 
     public static LocalRepository Current
     {
@@ -176,7 +193,7 @@ namespace fIT.App.Repositories
       {
         User result = null;
 
-        if (!String.IsNullOrEmpty(this.CurrentUserID))
+        if (!String.IsNullOrEmpty(this.CurrentUserID.ToString()))
         {
           var conn = DependencyService.Get<ISqlLite>().GetAsyncConnection();
           result = await conn.FindAsync<User>(x => x.UserId == CurrentUserID);
@@ -263,7 +280,9 @@ namespace fIT.App.Repositories
       #endregion
 
       #region PROPERTIES
-      public string CurrentUserID { get; set; }
+      public Guid CurrentUserID { get; set; }
+
+      private bool UserIdSet => !String.IsNullOrWhiteSpace(this.CurrentUserID.ToString()) && this.CurrentUserID != Guid.Empty;
 
       #endregion
     }

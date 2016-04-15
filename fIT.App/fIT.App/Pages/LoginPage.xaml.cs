@@ -10,10 +10,10 @@ using Xamarin.Forms;
 
 namespace fIT.App.Pages
 {
-  [RegisterViewModel(typeof(ScheduleViewModel))]
-  public partial class SchedulePage : ContentPage
+  [RegisterViewModel(typeof(LoginViewModel))]
+  public partial class LoginPage : ContentPage
   {
-    public SchedulePage()
+    public LoginPage()
     {
       InitializeComponent();
     }

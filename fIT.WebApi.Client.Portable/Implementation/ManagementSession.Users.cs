@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
@@ -203,7 +204,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         #region Properties
         public IUserManagement Users { get { return this; } }
 
-      public string CurrentUserID { get; set; }
+      public Guid CurrentUserID { get; set; }
 
         #endregion
     }

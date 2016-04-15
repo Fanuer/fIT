@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using fIT.App.Data.ViewModels;
 using fIT.App.Helpers;
+using fIT.App.Interfaces;
 using fIT.App.Pages;
+using fIT.App.Repositories;
 using fIT.App.Services;
-
+using fIT.App.Utilities.Navigation;
 using Xamarin.Forms;
 
 namespace fIT.App
@@ -21,8 +24,25 @@ namespace fIT.App
     public App()
     {
       AppName = "fIT.App";
-      // The root page of your application
-      MainPage = new NavigationPage(new SchedulePage());
+      Settings.RefreshToken = "";
+      IoCLocator.Current.RegisterServices(new Dictionary<Type, Type>() { { typeof(IRepository), typeof(Repository) } });
+      IoCLocator.Current.RegisterViewModels(typeof(AppViewModelBase).Namespace);
+
+      NavigationFrame frame = null;
+      
+      // Is Logged In
+      if (String.IsNullOrEmpty(Settings.RefreshToken))
+      {
+        var vm = IoCLocator.Current.GetInstance<LoginViewModel>();
+        frame = new NavigationFrame(vm);
+      }
+      else
+      {
+        var vm = IoCLocator.Current.GetInstance<ScheduleViewModel>();
+        frame = new NavigationFrame(vm);
+      }
+      
+      MainPage = frame.Root;
     }
 
     #endregion
@@ -51,7 +71,6 @@ namespace fIT.App
     #region PROPERTIES
     public static string AppName { get; private set; }
 
-    public static Locator Locator => new Locator();
     #endregion
   }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exercise;
@@ -119,7 +120,7 @@ namespace fIT.WebApi.Client.Data.Intefaces
 
     #region PROPERTIES
 
-      string CurrentUserID { get; set; }
+      Guid CurrentUserID { get; set; }
 
       #endregion
   }

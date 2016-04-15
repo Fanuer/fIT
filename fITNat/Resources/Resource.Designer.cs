@@ -309,9 +309,6 @@ namespace fITNat
 		public partial class Style
 		{
 			
-			// aapt resource value: 0x7f060001
-			public const int Mono_Android_Theme_Splash = 2131099649;
-			
 			// aapt resource value: 0x7f060000
 			public const int dialog_animation = 2131099648;
 			

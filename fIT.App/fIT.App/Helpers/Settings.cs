@@ -22,6 +22,10 @@ namespace fIT.App.Helpers
 
     private const string KEY_BASEURL = "settings_key_BaseUrl";
     private static readonly string DEFAULT_BASEURL = @"http://fit-bachelor.azurewebsites.net/";
+
+    private const string KEY_REFRESHTOKEN = "settings_key_RefreshToken";
+    private static readonly string DEFAULT_REFRESHTOKEN = String.Empty;
+
     #endregion
 
     #region CTOR
@@ -39,15 +43,15 @@ namespace fIT.App.Helpers
       }
     }
 
-    internal static string BaseUrl
+    internal static string RefreshToken
     {
       get
       {
-        return AppSettings.GetValueOrDefault<string>(KEY_BASEURL, DEFAULT_BASEURL);
+        return AppSettings.GetValueOrDefault<string>(KEY_REFRESHTOKEN, DEFAULT_REFRESHTOKEN);
       }
       set
       {
-        AppSettings.AddOrUpdateValue<string>(KEY_BASEURL, value);
+        AppSettings.AddOrUpdateValue<string>(KEY_REFRESHTOKEN, value);
       }
     }
     #endregion

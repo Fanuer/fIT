@@ -36,7 +36,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="App.cs" />
-    <Compile Include="Data\AutoMapper.cs" />
     <Compile Include="Data\ChangedOnlineStateEventArgs.cs" />
     <Compile Include="Data\Datamodels\Exercise.cs" />
     <Compile Include="Data\Datamodels\LocalDataModelBase.cs" />
@@ -46,20 +45,25 @@
     <Compile Include="Data\Datamodels\User.cs" />
     <Compile Include="Data\Exceptions\InvalidForOfflineException.cs" />
     <Compile Include="Data\ViewModels\AppViewModelBase.cs" />
+    <Compile Include="Data\ViewModels\LoginViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleViewModel.cs" />
-    <Compile Include="Data\ViewModels\ViewModelBaseOld.cs" />
     <Compile Include="Helpers\CryptoHelper.cs" />
-    <Compile Include="Helpers\Locator.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Interfaces\IAccountStore.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\ISqlLite.cs" />
+    <Compile Include="Pages\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\SchedulePage.xaml.cs">
       <DependentUpon>SchedulePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\SignUpPage.xaml.cs">
+      <DependentUpon>SignUpPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\Respoitory.cs" />
+    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\LocalRepository.cs" />
     <Compile Include="Repositories\ServerRespository.cs" />
     <Compile Include="Services\OnOffService.cs" />
@@ -74,6 +78,10 @@
     <ProjectReference Include="..\..\fIT. WebApi.Client.Data\fIT. WebApi.Client.Data.csproj">
       <Project>{73379ea7-55c0-4bdd-86a6-097b577d4da9}</Project>
       <Name>fIT. WebApi.Client.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\fIT.App.Utilities\fIT.App.Utilities.csproj">
+      <Project>{C097ED18-244A-4659-8BC5-604360ABD25D}</Project>
+      <Name>fIT.App.Utilities</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\fIT.WebApi.Client.Portable\fIT.WebApi.Client.Portable.csproj">
       <Project>{E1834616-BA49-4FDC-99B3-B77485FF659E}</Project>
@@ -148,6 +156,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\LoginPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\SignUpPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

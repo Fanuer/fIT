@@ -28,7 +28,7 @@ namespace fIT.App.Data.ViewModels
       Message = "";
 
       this.OnLoginClickedCommand = new Command(async ()=> { await OnLoginClicked(); });
-      this.OnSignUpClickedCommand = new Command(()=> MessagingCenter.Send<LoginViewModel, Page>(this, Const.Navigation.ADD_PAGE, new SignUpPage()));
+      this.OnSignUpClickedCommand = new Command(async ()=> await this.ViewModelNavigation.PushAsync(IoCLocator.Current.GetInstance<ScheduleViewModel>()));
     }
 
     #endregion

@@ -8,7 +8,7 @@ using Xamarin.Forms;
 
 namespace fIT.App.Pages
 {
-  public partial class SignUpPage : ContentPage
+  public partial class SignUpPage : BasePage
   {
     public SignUpPage()
     {

@@ -11,7 +11,7 @@ using Xamarin.Forms;
 namespace fIT.App.Pages
 {
   [RegisterViewModel(typeof(LoginViewModel))]
-  public partial class LoginPage : ContentPage
+  public partial class LoginPage : BasePage
   {
     public LoginPage()
     {

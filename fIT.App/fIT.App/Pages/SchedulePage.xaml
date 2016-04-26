@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<d:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="fIT.App.Pages.SchedulePage"
+             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
   >
   <!--BindungContext has to be set on code behind because of IoC-->
   <ListView x:Name="ScheduleList" ItemsSource="{Binding Schedules}">
@@ -11,4 +12,4 @@
       </DataTemplate>
     </ListView.ItemTemplate>
   </ListView>
-</ContentPage>
+</d:BasePage>

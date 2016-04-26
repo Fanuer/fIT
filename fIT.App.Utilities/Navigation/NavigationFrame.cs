@@ -102,7 +102,17 @@ namespace fIT.App.Utilities.Navigation
       {
         throw new ArgumentException("Trying to create a Page for an unrecognized view model type. Did you forget to use the RegisterViewModel attribute?");
       }
-      var newPage = (Page)Activator.CreateInstance(ViewModelTypeToPageType[viewModel.GetType()]);
+      Page newPage = null;
+      try
+      {
+        newPage = (Page)Activator.CreateInstance(ViewModelTypeToPageType[viewModel.GetType()]);
+        ;
+      }
+      catch (Exception e)
+      {
+        throw e;
+      }
+      
       newPage.BindingContext = viewModel;
       var navigatedPage = viewModel as INavigatingViewModel;
       if (navigatedPage != null)

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<d:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="fIT.App.Pages.LoginPage"
+             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App">
+  <d:BasePage.ToolbarItems>
+    <ToolbarItem Text="Sign Up" Command="{Binding OnSignUpClickedCommand}" Priority="0"/>
+  </d:BasePage.ToolbarItems>
+  <d:BasePage.BackgroundColor>
+  </d:BasePage.BackgroundColor>
+  <d:BasePage.Content>
+    <StackLayout VerticalOptions="StartAndExpand">
+      <Label Text="Username" FontSize="Medium"/>
+      <Entry x:Name="UsernameEntry" Text="{Binding Username, Mode=OneWayToSource}"/>
+      <Label Text="Password" FontSize="Medium"/>
+      <Entry x:Name="PasswordEntry" IsPassword="true" Text="{Binding Password, Mode=TwoWay}"/>
+      <Button Text="Login" FontSize="Medium" Command="{Binding OnLoginClickedCommand}"/>
+      <Label x:Name="MessageLabel" Text="{Binding Message, Mode=OneWay}" />
+    </StackLayout>
+  </d:BasePage.Content>
+</d:BasePage> 

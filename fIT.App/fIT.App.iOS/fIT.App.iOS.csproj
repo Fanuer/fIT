@@ -207,12 +207,12 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Check.png">
+    <EmbeddedResource Include="Resources\Icons\Check.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\CheckDouble.png">
+    <EmbeddedResource Include="Resources\Icons\CheckDouble.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>

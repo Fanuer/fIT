@@ -11,6 +11,12 @@ namespace fIT.App.Pages
 {
   public partial class BasePage : ContentPage
   {
+    #region FIELDS
+    private const string _offlineIcon = "Check.png";
+    private const string _onlineIcon = "DoubleCheck.png";
+    #endregion
+
+    #region CTOR
     public BasePage()
     {
       InitializeComponent();
@@ -18,16 +24,31 @@ namespace fIT.App.Pages
       {
         Text = "OnlineStatus",
         Order = ToolbarItemOrder.Primary,
-        Icon = this.OfflineIcon
+        Icon = this.OnlineIcon
       };
       this.ToolbarItems.Add(OnlineStatus);
       OnOffService.Current.OnStatusChanged += (sender, args) => OnlineStatus.Icon = args.Status ? OnlineIcon : OfflineIcon;
     }
+    #endregion
+
+    #region METHODS
+    #endregion
+
+    #region PROPERTIES
+
+    private ToolbarItem OnlineStatus { get; set; }
+
+    private string OnlineIcon => String.Concat(Device.OnPlatform("Icons/", "", "Assets/Icons"), _onlineIcon);
+    private string OfflineIcon => String.Concat(Device.OnPlatform("Icons/", "", "Assets/Icons"), _offlineIcon);
+
+    #endregion
 
 
-    protected ToolbarItem OnlineStatus { get; set; }
 
-    private string OfflineIcon => "Check.png";
-    private string OnlineIcon => "DoubleCheck.png";
+
+
+
+
+
   }
 }

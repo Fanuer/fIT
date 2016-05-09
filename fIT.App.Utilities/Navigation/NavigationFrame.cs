@@ -106,7 +106,6 @@ namespace fIT.App.Utilities.Navigation
       try
       {
         newPage = (Page)Activator.CreateInstance(ViewModelTypeToPageType[viewModel.GetType()]);
-        ;
       }
       catch (Exception e)
       {

@@ -15,7 +15,7 @@ namespace fIT.WebApi.Client.Data.Models.Schedule
 
         #region Properties
         public string UserId { get; set; }
-        public IEnumerable<EntryModel<int>> Exercises { get; set; } 
+        public ICollection<EntryModel<int>> Exercises { get; set; } 
         #endregion
     }
 }

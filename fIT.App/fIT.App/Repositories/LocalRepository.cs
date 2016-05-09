@@ -86,18 +86,9 @@ namespace fIT.App.Repositories
     public IAdminManagement AdminManagement { get; set; }
     public Guid CurrentUserId { get; set; }
 
-    public static LocalRepository Current
-    {
-      get
-      {
-        if (LocalRepository._instance == null)
-        {
-          LocalRepository._instance = new LocalRepository();
-        }
-        return LocalRepository._instance;
-      }
-    }
-    #endregion
+    public static LocalRepository Current => LocalRepository._instance ?? (LocalRepository._instance = new LocalRepository());
+
+      #endregion
 
     #region NESTED
     private class LocalAdminManagement:IAdminManagement

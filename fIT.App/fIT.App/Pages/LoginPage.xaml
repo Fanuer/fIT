@@ -2,16 +2,18 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="fIT.App.Pages.LoginPage"
-             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App">
+             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
+            BackgroundColor="{Binding Colors.Blue}">
   <d:BasePage.ToolbarItems>
     <ToolbarItem Text="Sign Up" Command="{Binding OnSignUpClickedCommand}" Priority="0"/>
   </d:BasePage.ToolbarItems>
-  <d:BasePage.BackgroundColor>
-  </d:BasePage.BackgroundColor>
+  <d:BasePage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="50, 20, 50, 0" Android="50,0,50,0" WinPhone="50,0,50,0"/>
+  </d:BasePage.Padding>
   <d:BasePage.Content>
-    <StackLayout VerticalOptions="StartAndExpand">
-      <Label Text="Username" FontSize="Medium"/>
-      <Entry x:Name="UsernameEntry" Text="{Binding Username, Mode=OneWayToSource}"/>
+    <StackLayout VerticalOptions="Center">
+      <Label Text="Username" FontSize="Medium" TextColor="{Binding Colors.DarkGray}"/>
+      <Entry x:Name="UsernameEntry" Text="{Binding Username, Mode=OneWayToSource}" TextColor="{Binding Colors.DarkGray}" BackgroundColor="{Binding Colors.LightGray}"/>
       <Label Text="Password" FontSize="Medium"/>
       <Entry x:Name="PasswordEntry" IsPassword="true" Text="{Binding Password, Mode=TwoWay}"/>
       <Button Text="Login" FontSize="Medium" Command="{Binding OnLoginClickedCommand}"/>

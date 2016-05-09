@@ -4,11 +4,15 @@
              x:Class="fIT.App.Pages.SchedulePage"
              xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
   >
-  <!--BindungContext has to be set on code behind because of IoC-->
-  <ListView x:Name="ScheduleList" ItemsSource="{Binding Schedules}">
+  <ListView 
+    x:Name="ScheduleList" 
+    ItemsSource="{Binding Schedules}"
+    IsPullToRefreshEnabled="True"
+    RefreshCommand="{Binding OnRefresh}"
+    IsRefreshing="{Binding IsRefreshing}">
     <ListView.ItemTemplate>
       <DataTemplate>
-        <TextCell Text="{Binding Name}" />
+        <TextCell Text="{Binding Name}" Detail="{Binding Exercises.Count, StringFormat='Übungen: {0}'}"/>
       </DataTemplate>
     </ListView.ItemTemplate>
   </ListView>

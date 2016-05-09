@@ -2,59 +2,42 @@
 using System.Threading.Tasks;
 using fIT.App.Helpers;
 using fIT.WebApi.Client.Data.Intefaces;
-using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Portable.Implementation;
+
 
 namespace fIT.App.Repositories
 {
-  internal class ServerRespository
-  {
-    #region Const
-    private const string URL = @"http://fit-bachelor.azurewebsites.net/";
-    
-    #endregion
-
-    #region FIELDS
-    private static ServerRespository _current;
-
-    #endregion
-
-    #region CTOR
-
-    private ServerRespository()
+    internal class ServerRespository
     {
-      this.Server = new ManagementService(ServerRespository.URL);
-      Task.Run(TryGetSessionAsync);
-    }
-    #endregion
+        #region Const
+        private const string URL = @"http://fit-bachelor.azurewebsites.net/";
 
-    #region METHODS
+        #endregion
 
-    private async Task TryGetSessionAsync()
-    {
-      if (!String.IsNullOrWhiteSpace(Settings.RefreshToken))
-      {
-        this.ServerSession = await this.Server.LoginAsync(Settings.RefreshToken);
-      }
-    }
-    #endregion
+        #region FIELDS
+        private static ServerRespository _current;
 
-    #region PROPERTIES
+        #endregion
 
-    public static ServerRespository Current 
-    {
-      get
-      {
-        if (ServerRespository._current == null)
+        #region CTOR
+
+        private ServerRespository()
         {
-          ServerRespository._current = new ServerRespository();
+            this.Server = new ManagementService(ServerRespository.URL);
         }
-        return ServerRespository._current;
-      }
-    }
+        #endregion
 
-    public IManagementSession ServerSession { get; private set; }
-    public IManagementService Server { get; private set; }
-    #endregion
-  }
+        #region METHODS
+        
+        #endregion
+
+        #region PROPERTIES
+        
+
+        public static ServerRespository Current => ServerRespository._current ?? (ServerRespository._current = new ServerRespository());
+
+        public IManagementSession ServerSession { get; internal set; }
+        public IManagementService Server { get; private set; }
+        #endregion
+    }
 }

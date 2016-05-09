@@ -90,19 +90,19 @@ namespace fIT.WebApi.Client.Portable.Implementation
       {
         try
         {
-          client.CancelPendingRequests();
+          client?.CancelPendingRequests();
         }
         catch { }
 
-        client.Dispose();
-        handler.Dispose();
+        client?.Dispose();
+        handler?.Dispose();
 
         IManagementSession[] currentSessions = sessions.Values.ToArray();
         sessions = null;
 
         foreach (IManagementSession session in currentSessions)
         {
-          session.Dispose();
+          session?.Dispose();
         }
       }
 
@@ -283,7 +283,8 @@ namespace fIT.WebApi.Client.Portable.Implementation
       {
         throw new ArgumentNullException(nameof(refreshToken));
       }
-      var mockSession = new ManagementSession(this, "", new AuthenticationResultModel()) { RefreshToken = refreshToken };
+        var mockAuthResult = new AuthenticationResultModel(expireDate: DateTime.Now.AddMinutes(31));
+      var mockSession = new ManagementSession(this, "", mockAuthResult) { RefreshToken = refreshToken };
       await mockSession.PerformRefreshAsync();
       return mockSession;
     }

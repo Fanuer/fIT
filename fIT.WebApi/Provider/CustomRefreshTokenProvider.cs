@@ -38,7 +38,7 @@ namespace fIT.WebApi.Provider
           ClientId = clientId,
           Subject = context.Ticket.Identity.Name,
           IssuedUtc = DateTime.UtcNow,
-          ExpiresUtc = DateTime.UtcNow.AddMinutes(Double.Parse(refreshTokenLifetime))
+          ExpiresUtc = DateTime.UtcNow.AddMonths(Int32.Parse(refreshTokenLifetime))
         };
         context.Ticket.Properties.IssuedUtc = token.IssuedUtc;
         context.Ticket.Properties.ExpiresUtc = token.ExpiresUtc;

@@ -20,13 +20,13 @@ namespace fIT.App.Pages
     public BasePage()
     {
       InitializeComponent();
-      OnlineStatus = new ToolbarItem
+      /*OnlineStatus = new ToolbarItem
       {
         Text = "OnlineStatus",
         Order = ToolbarItemOrder.Primary,
         Icon = this.OnlineIcon
       };
-      this.ToolbarItems.Add(OnlineStatus);
+      this.ToolbarItems.Add(OnlineStatus);*/
       OnOffService.Current.OnStatusChanged += (sender, args) => OnlineStatus.Icon = args.Status ? OnlineIcon : OfflineIcon;
     }
     #endregion
@@ -42,13 +42,6 @@ namespace fIT.App.Pages
     private string OfflineIcon => String.Concat(Device.OnPlatform("Icons/", "", "Assets/Icons"), _offlineIcon);
 
     #endregion
-
-
-
-
-
-
-
 
   }
 }

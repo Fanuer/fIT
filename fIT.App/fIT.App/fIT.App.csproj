@@ -46,6 +46,12 @@
     <Compile Include="Data\Exceptions\InvalidForOfflineException.cs" />
     <Compile Include="Data\ViewModels\AppViewModelBase.cs" />
     <Compile Include="Data\ViewModels\ColorViewModel.cs" />
+    <Compile Include="Data\ViewModels\EditScheduleViewModel.cs" />
+    <Compile Include="Data\ViewModels\ExerciseListViewModel.cs" />
+    <Compile Include="Data\ViewModels\ExerciseViewModel.cs" />
+    <Compile Include="Data\ViewModels\ImageViewModel.cs" />
+    <Compile Include="Data\ViewModels\ListEntryViewModel.cs" />
+    <Compile Include="Data\ViewModels\ListViewModel.cs" />
     <Compile Include="Data\ViewModels\LoginViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleListEntryViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleViewModel.cs" />
@@ -56,6 +62,9 @@
     <Compile Include="Interfaces\ISqlLite.cs" />
     <Compile Include="Pages\BasePage.xaml.cs">
       <DependentUpon>BasePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EditSchedulePage.xaml.cs">
+      <DependentUpon>EditSchedulePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
@@ -201,7 +210,19 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Images\Icon.png" />
+    <EmbeddedResource Include="Resources\Images\icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Images\add.png" />
+    <EmbeddedResource Include="Resources\Images\edit.png" />
+    <EmbeddedResource Include="Resources\Images\logout.png" />
+    <EmbeddedResource Include="Resources\Images\remove.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\EditSchedulePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.1.0.6529\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />

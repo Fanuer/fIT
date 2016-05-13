@@ -12,10 +12,10 @@ using Xamarin.Forms;
 
 namespace fIT.App.Data.ViewModels
 {
-    public class ScheduleListEntryViewModel:AppViewModelBase
+    public class ScheduleListEntryViewModel : ListEntryViewModel
     {
         #region CONST
-        
+
         #endregion
 
         #region FIELDS
@@ -29,22 +29,53 @@ namespace fIT.App.Data.ViewModels
 
         public ScheduleListEntryViewModel(IUserDialogs userDialogs = null) : base(userDialogs, "")
         {
-           this.OnEntryTappedCommand = new Command(async() => await OnEntryTapped()); 
+            this.OnEditClickedCommand = new Command(async () => await OnEditAsync());
+            this.OnEntryTappedCommand = new Command(async () => await this.ViewModelNavigation.PushAsync(IoCLocator.Current.GetInstance<ExerciseViewModel>()));
+            this.OnRemoveClickedCommand = new Command(async () => await OnDeleteAsync());
         }
         #endregion
 
         #region METHODS
-        private async Task OnEntryTapped()
+
+        private async Task OnEditAsync()
         {
-            await this.ViewModelNavigation.ExchangeAync(IoCLocator.Current.GetInstance<ScheduleViewModel>());
+            var vm = IoCLocator.Current.GetInstance<EditScheduleViewModel>();
+            vm.ScheduleId = Id;
+            vm.Name = this.Name;
+            await this.ViewModelNavigation.PushAsync(vm);
+        }
+
+        private async Task OnDeleteAsync()
+        {
+            var answer = await this.UserDialogs.ConfirmAsync("Do you really want to delete this entry?");
+
+            if (answer)
+            {
+                var um = await this.Repository.GetUserManagementAsync();
+                //await um.DeleteScheduleAsync(Id);
+            }
+            this.Owner.List.Remove(this);
         }
         #endregion
 
         #region PROPERTIES
+
+        public override ListViewModel Owner { get; set; }
+
         /// <summary>
-        /// ExerciseID
+        /// ScheduleId
         /// </summary>
-        public int Id { get; set; }
+        public int Id
+        {
+            get
+            {
+                return _id;
+            }
+            set
+            {
+                Set(ref _id, value);
+            }
+        }
 
         /// <summary>
         /// Name of the owning Schedule
@@ -63,7 +94,8 @@ namespace fIT.App.Data.ViewModels
         /// <summary>
         /// Number of Exercises
         /// </summary>
-        public int ExerciseCount {
+        public int ExerciseCount
+        {
             get
             {
                 return _count;
@@ -73,8 +105,6 @@ namespace fIT.App.Data.ViewModels
                 Set(ref _count, value);
             }
         }
-
-        public ICommand OnEntryTappedCommand { get; private set; }
         #endregion
 
     }

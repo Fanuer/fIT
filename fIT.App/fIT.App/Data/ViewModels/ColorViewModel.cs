@@ -23,7 +23,7 @@ namespace fIT.App.Data.ViewModels
             this.Blue = Color.FromRgb(11, 163, 193);
             this.DarkGray = Color.FromRgb(112,112,112);
             this.LightGray = Color.FromRgb(224,224,224);
-            this.White = Color.FromRgb(242, 235, 199);
+            this.White = Color.White;
         }
         #endregion
 

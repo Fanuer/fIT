@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<d:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
+             x:Class="fIT.App.Pages.EditSchedulePage">
+  <ContentPage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="50, 120, 50, 100" Android="50,100,50,100" WinPhone="50,100,50,100"/>
+  </ContentPage.Padding>
+  <StackLayout VerticalOptions="Center">
+    <Label Text="Name" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
+    <Entry x:Name="UsernameEntry" Text="{Binding Name, Mode=TwoWay}" TextColor="{Binding Colors.DarkGray}" BackgroundColor="{Binding Colors.LightGray}"/>
+    <StackLayout Orientation="Horizontal">
+      <Button Text="Ok" FontSize="Medium" Command="{Binding OnOkClickCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}" />
+      <Button Text="Cancel" FontSize="Medium" Command="{Binding OnCancelClickCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}" />
+    </StackLayout>
+  </StackLayout>
+</d:BasePage>

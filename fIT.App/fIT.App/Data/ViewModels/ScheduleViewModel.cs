@@ -9,60 +9,50 @@ using Acr.UserDialogs;
 using AutoMapper.Internal;
 using fIT.App.Data.Datamodels;
 using fIT.App.Interfaces;
+using fIT.App.Utilities.Navigation;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using Xamarin.Forms;
 
 namespace fIT.App.Data.ViewModels
 {
-    public class ScheduleViewModel : AppViewModelBase
+    public class ScheduleViewModel : ListViewModel<ScheduleListEntryViewModel>
     {
         #region FIELDS
-
-        private bool _IsRefreshing;
-        private ObservableCollection<ScheduleListEntryViewModel> _ScheduleList;
         #endregion
 
         #region CTOR
         public ScheduleViewModel(IUserDialogs userDialogs) : base(userDialogs, "Trainingspläne")
         {
-            this._ScheduleList = new ObservableCollection<ScheduleListEntryViewModel>();
-            this.OnRefresh = new Command(async () => await this.RefreshAsync(), () => !this.IsRefreshing);
+            this.OnAddClickedCommand = new Command(async () => await OnAddClickedAsync());
         }
 
         #endregion
 
         #region METHODS
 
+        private async Task OnAddClickedAsync()
+        {
+            var vm = IoCLocator.Current.GetInstance<EditScheduleViewModel>();
+            vm.ScheduleId = -1;
+            vm.Name = "";
+            await this.ViewModelNavigation.PushModalAsync(vm);
+        }
+
         protected override async Task InitAsync()
         {
             var um = await this.Repository.GetUserManagementAsync();
             var schedules = await um.GetAllSchedulesAsync();
-            this.Schedules = new ObservableCollection<ScheduleListEntryViewModel>(schedules.Select(x => this.AutoMapper.Map<ScheduleListEntryViewModel>(x)));
-        }
-
-        public async Task RefreshAsync()
-        {
-            await InitAsync();
-            this.IsRefreshing = false;
+            this.List = new ObservableCollection<ScheduleListEntryViewModel>(schedules.Select(x =>
+            {
+                var result = this.AutoMapper.Map<ScheduleListEntryViewModel>(x);
+                result.Owner = this;
+                return result;
+            }));
         }
 
         #endregion
 
         #region PROPERTIES
-        public ObservableCollection<ScheduleListEntryViewModel> Schedules
-        {
-            get { return this._ScheduleList; }
-            set { this.Set(ref this._ScheduleList, value); }
-        }
-
-        public bool IsRefreshing
-        {
-            get { return this._IsRefreshing; }
-            set { this.Set(ref this._IsRefreshing, value); }
-        }
-
-        public ICommand OnRefresh { get; private set; }
-
         #endregion
     }
 }

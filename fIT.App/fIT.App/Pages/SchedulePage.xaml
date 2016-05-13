@@ -8,21 +8,29 @@
   <d:BasePage.Padding>
     <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Android="0,0,0,0" WinPhone="0,0,0,0"/>
   </d:BasePage.Padding>
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="Add" Icon="{Binding Images.Add.Source}" Command="{Binding OnAddClickedCommand}"/>
+  </ContentPage.ToolbarItems>
   <ListView 
     x:Name="ScheduleList" 
-    ItemsSource="{Binding Schedules}"
+    ItemsSource="{Binding List}"
     IsPullToRefreshEnabled="True"
-    RefreshCommand="{Binding OnRefresh}"
+    RefreshCommand="{Binding OnRefreshCommand}"
     IsRefreshing="{Binding IsRefreshing}"
-    BackgroundColor="{Binding Colors.LightGray}"
+    BackgroundColor="{Binding Colors.White}"
     SeparatorColor="{Binding Colors.Blue}">
     <ListView.ItemTemplate>
       <DataTemplate>
-        <TextCell 
-          Text="{Binding Name}" 
-          Detail="{Binding ExerciseCount, StringFormat='Übungen: {0}'}" 
+        <TextCell
+          Text="{Binding Name}"
+          Detail="{Binding ExerciseCount, StringFormat='Übungen: {0}'}"
           TextColor="{Binding Colors.Blue}"
-          DetailColor="{Binding Colors.DarkGray}"/>
+          DetailColor="{Binding Colors.DarkGray}">
+          <TextCell.ContextActions>
+            <MenuItem Command="{Binding OnEditClickedCommand}" Icon="{Binding Images.Edit.Source}" Text="Edit"/>
+            <MenuItem Command="{Binding OnRemoveClickedCommand}" Icon="{Binding Images.Remove.Source}" Text="Remove" IsDestructive="True"/>
+          </TextCell.ContextActions>
+        </TextCell>
       </DataTemplate>
     </ListView.ItemTemplate>
   </ListView>

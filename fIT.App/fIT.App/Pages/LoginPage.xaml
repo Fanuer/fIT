@@ -11,13 +11,12 @@
   </d:BasePage.Padding>
   <ContentPage.Content>
     <StackLayout VerticalOptions="Center">
-      <Image Source="{Binding FitLogo}"></Image>
+      <Image Source="{Binding Images.Icon.Source}"></Image>
       <Label Text="Username" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
       <Entry x:Name="UsernameEntry" Text="{Binding Username, Mode=OneWayToSource}" TextColor="{Binding Colors.DarkGray}" BackgroundColor="{Binding Colors.LightGray}"/>
       <Label Text="Password" FontSize="Medium"  TextColor="{Binding Colors.LightGray}"/>
       <Entry x:Name="PasswordEntry" IsPassword="true" Text="{Binding Password, Mode=TwoWay}" TextColor="{Binding Colors.DarkGray}" BackgroundColor="{Binding Colors.LightGray}"/>
       <Button Text="Login" FontSize="Medium" Command="{Binding OnLoginClickedCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}" />
-      <Label x:Name="MessageLabel" Text="{Binding Message, Mode=OneWay}" TextColor="{Binding Colors.Red}"/>
     </StackLayout>
     </ContentPage.Content>
 </d:BasePage> 

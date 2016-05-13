@@ -30,11 +30,10 @@ namespace fIT.App.Data.ViewModels
 
         protected AppViewModelBase(IUserDialogs userDialogs, string title)
         {
-            
             this.Title = title;
             this.Colors = new ColorViewModel();
-            this.FitLogo = ImageSource.FromResource("fIT.App.Resources.Images.Icon.png");
-            this.UserDialogs = userDialogs;
+            this.Images = new ImageViewModel();
+            this.UserDialogs = userDialogs ?? IoCLocator.Current.GetInstance<IUserDialogs>();
 
             Task.Run(InitAsync);
             this.PropertyChanged += (sender, args) =>
@@ -48,6 +47,13 @@ namespace fIT.App.Data.ViewModels
                     else
                     {
                         this.UserDialogs.HideLoading();
+                    }
+                }
+                else if (args.PropertyName.Equals(nameof(this.Message)))
+                {
+                    if (!String.IsNullOrWhiteSpace(this.Message))
+                    {
+                        this.UserDialogs.ErrorToast(Message);
                     }
                 }
             };
@@ -100,7 +106,7 @@ namespace fIT.App.Data.ViewModels
 
         public ColorViewModel Colors { get; private set; }
 
-        public ImageSource FitLogo{ get; private set; }
+        public ImageViewModel Images{ get; private set; }
 
         /// <summary>
         /// Shows, if a Page is waiting for an action to end

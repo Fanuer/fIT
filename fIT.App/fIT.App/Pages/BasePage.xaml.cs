@@ -30,8 +30,13 @@ namespace fIT.App.Pages
                     var vm = (AppViewModelBase) this.BindingContext;
                     if (vm != null)
                     {
-                        this.ToolbarItems.Add(new ToolbarItem("Logout", "fIT.App.Resources.Images.Logout.png",
-                            async () => await vm.LogoutAsync(), ToolbarItemOrder.Secondary));
+                        this.ToolbarItems.Add(new ToolbarItem()
+                        {
+                            Icon = (FileImageSource) vm.Images.Logout.Source,
+                            Text = "Logout",
+                            Order = ToolbarItemOrder.Secondary,
+                            Command = new Command(async () => await vm.LogoutAsync())
+                        });
                     }
                 }
             };

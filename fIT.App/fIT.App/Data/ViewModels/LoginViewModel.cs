@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
+using AutoMapper;
 using fIT.App.Helpers;
 using fIT.App.Interfaces;
 using fIT.App.Pages;
@@ -21,7 +23,7 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region CTOR
-        public LoginViewModel(IRepository rep) : base(rep, "Login")
+        public LoginViewModel(IUserDialogs userdialogs) : base(userdialogs, "Login")
         {
             Username = "";
             Password = "";
@@ -38,8 +40,10 @@ namespace fIT.App.Data.ViewModels
         private async Task OnLoginClicked()
         {
             this.Message = "";
-
+            this.IsLoading = true;
             var result = await Repository.LoginAsync(this.Username, this.Password);
+            this.Password = "";
+            this.IsLoading = false;
             if (result)
             {
                 await this.ViewModelNavigation.ExchangeAync(IoCLocator.Current.GetInstance<ScheduleViewModel>());
@@ -47,17 +51,26 @@ namespace fIT.App.Data.ViewModels
             else
             {
                 this.Message = "Login failed";
-                this.Password = "";
             }
         }
 
         #endregion
 
         #region PROPERTIES
+        /// <summary>
+        /// Login-Process-Command.
+        /// Is fired, if the user has entered its user credentials and hits the login-button
+        /// </summary>
         public ICommand OnLoginClickedCommand { get; private set; }
 
+        /// <summary>
+        /// Command is fired, if the user clicks on the 'Sign Up'-Button
+        /// </summary>
         public ICommand OnSignUpClickedCommand { get; private set; }
 
+        /// <summary>
+        /// Username
+        /// </summary>
         public string Username
         {
             get
@@ -70,6 +83,9 @@ namespace fIT.App.Data.ViewModels
             }
         }
 
+        /// <summary>
+        /// User Password to login
+        /// </summary>
         public string Password
         {
             get

@@ -19,11 +19,11 @@ namespace fIT.App.Data.ViewModels
 
         public ColorViewModel()
         {
-            this.Red = this.CreateColor(150, 45, 62, 351, 53, 38);
-            this.Blue = this.CreateColor(52, 136, 153, 190, 66, 60);
-            this.DarkGray = this.CreateColor(52, 54, 66, 231, 21, 25);
-            this.LightGray = this.CreateColor(156, 156, 151, 180, 3, 61);
-            this.White = this.CreateColor(242, 235, 199, 50, 17, 94);
+            this.Red = Color.FromRgb(219,17,47);
+            this.Blue = Color.FromRgb(11, 163, 193);
+            this.DarkGray = Color.FromRgb(112,112,112);
+            this.LightGray = Color.FromRgb(224,224,224);
+            this.White = Color.FromRgb(242, 235, 199);
         }
         #endregion
 
@@ -68,9 +68,9 @@ namespace fIT.App.Data.ViewModels
 
             
             var color = Color.FromRgba(red, green, blue, alpha);
-            color = color.WithLuminosity(Math.Abs(luminosity) < 0.001 ? 0 : luminosity / 100);
+            /*color = color.WithLuminosity(Math.Abs(luminosity) < 0.001 ? 0 : luminosity / 100);
             color = color.WithSaturation(Math.Abs(saturation) < 0.001 ? 0 : saturation / 100);
-            color = color.WithHue(Math.Abs(hue) < 0.001 ? 0 : hue / 360);
+            color = color.WithHue(Math.Abs(hue) < 0.001 ? 0 : hue / 360);*/
             return color;
         }
         #endregion

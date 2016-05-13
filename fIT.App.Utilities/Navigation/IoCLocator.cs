@@ -95,7 +95,7 @@ namespace fIT.App.Utilities.Navigation
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetInstance<T>() where T : ViewModelBase
+        public T GetInstance<T>() where T : class
         {
             return (T)ServiceLocator.Current.GetInstance(typeof(T));
         }

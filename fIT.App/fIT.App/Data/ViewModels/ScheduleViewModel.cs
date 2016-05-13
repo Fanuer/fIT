@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Acr.UserDialogs;
 using AutoMapper.Internal;
 using fIT.App.Data.Datamodels;
 using fIT.App.Interfaces;
@@ -18,13 +19,13 @@ namespace fIT.App.Data.ViewModels
         #region FIELDS
 
         private bool _IsRefreshing;
-        private ObservableCollection<ScheduleModel> _ScheduleList;
+        private ObservableCollection<ScheduleListEntryViewModel> _ScheduleList;
         #endregion
 
         #region CTOR
-        public ScheduleViewModel(IRepository rep) : base(rep, "Trainingspläne")
+        public ScheduleViewModel(IUserDialogs userDialogs) : base(userDialogs, "Trainingspläne")
         {
-            this._ScheduleList = new ObservableCollection<ScheduleModel>();
+            this._ScheduleList = new ObservableCollection<ScheduleListEntryViewModel>();
             this.OnRefresh = new Command(async () => await this.RefreshAsync(), () => !this.IsRefreshing);
         }
 
@@ -36,7 +37,7 @@ namespace fIT.App.Data.ViewModels
         {
             var um = await this.Repository.GetUserManagementAsync();
             var schedules = await um.GetAllSchedulesAsync();
-            this.Schedules = new ObservableCollection<ScheduleModel>(schedules);
+            this.Schedules = new ObservableCollection<ScheduleListEntryViewModel>(schedules.Select(x => this.AutoMapper.Map<ScheduleListEntryViewModel>(x)));
         }
 
         public async Task RefreshAsync()
@@ -48,7 +49,7 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region PROPERTIES
-        public ObservableCollection<ScheduleModel> Schedules
+        public ObservableCollection<ScheduleListEntryViewModel> Schedules
         {
             get { return this._ScheduleList; }
             set { this.Set(ref this._ScheduleList, value); }

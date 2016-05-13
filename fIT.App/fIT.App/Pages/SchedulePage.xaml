@@ -3,16 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="fIT.App.Pages.SchedulePage"
              xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
+            BackgroundColor="{Binding Colors.Blue}"
   >
+  <d:BasePage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Android="0,0,0,0" WinPhone="0,0,0,0"/>
+  </d:BasePage.Padding>
   <ListView 
     x:Name="ScheduleList" 
     ItemsSource="{Binding Schedules}"
     IsPullToRefreshEnabled="True"
     RefreshCommand="{Binding OnRefresh}"
-    IsRefreshing="{Binding IsRefreshing}">
+    IsRefreshing="{Binding IsRefreshing}"
+    BackgroundColor="{Binding Colors.LightGray}"
+    SeparatorColor="{Binding Colors.Blue}">
     <ListView.ItemTemplate>
       <DataTemplate>
-        <TextCell Text="{Binding Name}" Detail="{Binding Exercises.Count, StringFormat='Übungen: {0}'}"/>
+        <TextCell 
+          Text="{Binding Name}" 
+          Detail="{Binding ExerciseCount, StringFormat='Übungen: {0}'}" 
+          TextColor="{Binding Colors.Blue}"
+          DetailColor="{Binding Colors.DarkGray}"/>
       </DataTemplate>
     </ListView.ItemTemplate>
   </ListView>

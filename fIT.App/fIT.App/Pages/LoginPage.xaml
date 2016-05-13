@@ -2,22 +2,22 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="fIT.App.Pages.LoginPage"
-             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
-            BackgroundColor="{Binding Colors.Blue}">
+             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App">
   <d:BasePage.ToolbarItems>
     <ToolbarItem Text="Sign Up" Command="{Binding OnSignUpClickedCommand}" Priority="0"/>
   </d:BasePage.ToolbarItems>
   <d:BasePage.Padding>
     <OnPlatform x:TypeArguments="Thickness" iOS="50, 20, 50, 0" Android="50,0,50,0" WinPhone="50,0,50,0"/>
   </d:BasePage.Padding>
-  <d:BasePage.Content>
+  <ContentPage.Content>
     <StackLayout VerticalOptions="Center">
-      <Label Text="Username" FontSize="Medium" TextColor="{Binding Colors.DarkGray}"/>
+      <Image Source="{Binding FitLogo}"></Image>
+      <Label Text="Username" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
       <Entry x:Name="UsernameEntry" Text="{Binding Username, Mode=OneWayToSource}" TextColor="{Binding Colors.DarkGray}" BackgroundColor="{Binding Colors.LightGray}"/>
-      <Label Text="Password" FontSize="Medium"/>
-      <Entry x:Name="PasswordEntry" IsPassword="true" Text="{Binding Password, Mode=TwoWay}"/>
-      <Button Text="Login" FontSize="Medium" Command="{Binding OnLoginClickedCommand}"/>
-      <Label x:Name="MessageLabel" Text="{Binding Message, Mode=OneWay}" />
+      <Label Text="Password" FontSize="Medium"  TextColor="{Binding Colors.LightGray}"/>
+      <Entry x:Name="PasswordEntry" IsPassword="true" Text="{Binding Password, Mode=TwoWay}" TextColor="{Binding Colors.DarkGray}" BackgroundColor="{Binding Colors.LightGray}"/>
+      <Button Text="Login" FontSize="Medium" Command="{Binding OnLoginClickedCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}" />
+      <Label x:Name="MessageLabel" Text="{Binding Message, Mode=OneWay}" TextColor="{Binding Colors.Red}"/>
     </StackLayout>
-  </d:BasePage.Content>
+    </ContentPage.Content>
 </d:BasePage> 

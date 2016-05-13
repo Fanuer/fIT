@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using AutoMapper;
 using fIT.App.Data.Datamodels;
 using fIT.App.Data.ViewModels;
@@ -27,9 +28,12 @@ namespace fIT.App
         public App()
         {
             AppName = "Fitter";
-            Settings.RefreshToken = "";
-            IoCLocator.Current.RegisterServices(new Dictionary<Type, Type>() { { typeof(IRepository), typeof(Repository) } });
+            IoCLocator.Current.RegisterServices(new Dictionary<Type, Type>()
+            {
+                { typeof(IRepository), typeof(Repository) }
+            });
             IoCLocator.Current.RegisterViewModels(typeof(AppViewModelBase).Namespace);
+            IoCLocator.Current.RegisterService(() => UserDialogs.Instance);
             RegisterAutoMapper();
 
             NavigationFrame frame = null;
@@ -77,6 +81,7 @@ namespace fIT.App
                 var config = new MapperConfiguration(cfg =>
                 {
                     cfg.CreateMap<ScheduleModel, Schedule>().ForMember(des => des.ExerciseCount, opt => opt.ResolveUsing(model => model.Exercises.Count()));
+                    cfg.CreateMap<ScheduleModel, ScheduleListEntryViewModel>().ForMember(vm => vm.ExerciseCount, opt => opt.ResolveUsing(model => model.Exercises.Count()));
                 });
 
                 return config.CreateMapper();

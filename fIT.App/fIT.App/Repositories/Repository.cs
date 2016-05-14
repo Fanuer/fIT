@@ -89,9 +89,16 @@ namespace fIT.App.Repositories
             
             if (LoggedIn && _status)
             {
-                var session = await ServerRespository.Current.Server.LoginAsync(Settings.RefreshToken);
-                var user = await session.Users.GetUserDataAsync();
-                SetServerData(session);
+                try
+                {
+                    var session = await ServerRespository.Current.Server.LoginAsync(Settings.RefreshToken);
+                    SetServerData(session);
+                }
+                catch (Exception)
+                {
+                    Settings.RemoveUserSettings();
+                }
+                
                 _isInitialised = true;
             }
         }
@@ -99,7 +106,6 @@ namespace fIT.App.Repositories
         private bool SetServerData(IManagementSession session)
         {
             var result = false;
-
             try
             {
                 if (session != null)
@@ -107,9 +113,17 @@ namespace fIT.App.Repositories
                     lock (_lock)
                     {
                         ServerRespository.Current.ServerSession = session;
+                        Settings.RefreshToken = session.RefreshToken;
                         Settings.Username = session.CurrentUserName;
                         Settings.UserId = LocalRepository.Current.CurrentUserId = session.CurrentUserId;
-                        Settings.RefreshToken = session.RefreshToken;
+                        session.PropertyChanged += (sender, args) =>
+                        {
+                            IManagementSession ses = (IManagementSession)sender;
+                            if (args.PropertyName == nameof(ses.RefreshToken))
+                            {
+                                Settings.RefreshToken = ses.RefreshToken;
+                            }
+                        };
                         result = true;
                     }
                 }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Text;
+using fIT.WebApi.Client.Data.Intefaces;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 
@@ -28,7 +29,6 @@ namespace fIT.App.Helpers
 
         private const string KEY_USERNAME = "settings_key_UserName";
         private static readonly string DEFAULT_USERNAME = String.Empty;
-
         #endregion
 
         #region CTOR
@@ -81,8 +81,6 @@ namespace fIT.App.Helpers
                 AppSettings.AddOrUpdateValue(KEY_USERID, value);
             }
         }
-
-
         #endregion
     }
 }

@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using fIT.WebApi.Client.Data.Intefaces;
 using fIT.WebApi.Client.Data.Models.Account;
 using fIT.WebApi.Client.Data.Models.Exceptions;
 using fIT.WebApi.Client.Data.Models.Shared;
+using fIT.WebApi.Client.Portable.Annotations;
 using fIT.WebApi.Client.Portable.Helper;
 using Newtonsoft.Json;
 
@@ -17,6 +20,10 @@ namespace fIT.WebApi.Client.Portable.Implementation
 {
     public partial class ManagementSession : IManagementSession
     {
+        #region EVENTS
+        public event PropertyChangedEventHandler PropertyChanged;
+        #endregion
+
         #region Field
         private const string RefreshTokenPath = "/api/accounts/login";
         public const string AccessTokenClaimType = "http://fit-bachelor.azurewebsites.net/api/accesstoken";
@@ -61,6 +68,21 @@ namespace fIT.WebApi.Client.Portable.Implementation
         #endregion
 
         #region Methods
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool Set<T>(ref T field, T newValue = default(T), [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, newValue))
+                return false;
+            field = newValue;
+            this.OnPropertyChanged(propertyName);
+            return true;
+        }
+
         private string QueryString(object data)
         {
             if (data == null) throw new ArgumentNullException("data");
@@ -447,7 +469,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         /// </summary>
          public string RefreshToken {
           get{return refreshToken;}
-          internal set { this.refreshToken = value; } }
+          internal set { Set(ref this.refreshToken, value); } }
         /// <summary>
         /// Access Token Expire Date
         /// </summary>
@@ -458,5 +480,6 @@ namespace fIT.WebApi.Client.Portable.Implementation
         public string CurrentUserName { get; private set; }
         public Guid CurrentUserId { get; private set; }
         #endregion
+
     }
 }

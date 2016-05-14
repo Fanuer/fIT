@@ -39,6 +39,7 @@
     <Compile Include="Implementation\ManagementSession.Admin.cs" />
     <Compile Include="Implementation\ManagementSession.Base.cs" />
     <Compile Include="Implementation\ManagementSession.Users.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

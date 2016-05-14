@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
 using System.Web.Http.Description;
 using System.Web.Http.OData;
@@ -34,6 +36,93 @@ namespace fIT.WebApi.Controller
         {
             var result = new { timestamp = DateTime.Now };
             return this.Ok(result);
+        }
+
+        /// <summary>
+        /// THIS METHOD IS FOR SWAGGER USE ONLY. 
+        /// Hack to login an user and to receive an access token. 
+        /// </summary>
+        /// <param name="username">username</param>
+        /// <param name="password">user's password</param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.NoContent)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [Route("performLogin")]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IHttpActionResult> Login(LoginModel login)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Invoke the "token" OWIN service to perform the login: /api/token
+            // Ugly hack: I use a server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
+            var request = HttpContext.Current.Request;
+            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + "/api/accounts/login";
+            using (var client = new HttpClient())
+            {
+                var requestParams = new Dictionary<string, string>()
+                {
+                    {"grant_type", "password"},
+                    {"username", login.Username},
+                    {"password", login.Password},
+                };
+
+                var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
+                var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
+                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
+                var responseCode = tokenServiceResponse.StatusCode;
+                var responseMsg = new HttpResponseMessage(responseCode)
+                {
+                    Content = new StringContent(responseString, Encoding.UTF8, "application/json")
+                };
+                return ResponseMessage(responseMsg);
+            }
+        }
+
+        /// <summary>
+        /// THIS METHOD IS FOR SWAGGER USE ONLY. 
+        /// Hack to login with a Refresh-Token
+        /// </summary>
+        /// <param name="refreshToken">valid Refresh Token</param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.NoContent)]
+        [SwaggerResponse(HttpStatusCode.BadRequest)]
+        [Route("performRefresh")]
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<IHttpActionResult> RefreshSession(string refreshToken)
+        {
+            if (String.IsNullOrWhiteSpace(refreshToken))
+            {
+                return BadRequest();
+            }
+
+            // Invoke the "token" OWIN service to perform the login: /api/token
+            // Ugly hack: I use a server-side HTTP POST because I cannot directly invoke the service (it is deeply hidden in the OAuthAuthorizationServerHandler class)
+            var request = HttpContext.Current.Request;
+            var tokenServiceUrl = request.Url.GetLeftPart(UriPartial.Authority) + "/api/accounts/login";
+            using (var client = new HttpClient())
+            {
+                var requestParams = new Dictionary<string, string>()
+                {
+                    {"grant_type", "refresh_token"},
+                    {"refresh_token", refreshToken},
+                    {"client_id", "MyClient"},
+                };
+
+                var requestParamsFormUrlEncoded = new FormUrlEncodedContent(requestParams);
+                var tokenServiceResponse = await client.PostAsync(tokenServiceUrl, requestParamsFormUrlEncoded);
+                var responseString = await tokenServiceResponse.Content.ReadAsStringAsync();
+                var responseCode = tokenServiceResponse.StatusCode;
+                var responseMsg = new HttpResponseMessage(responseCode)
+                {
+                    Content = new StringContent(responseString, Encoding.UTF8, "application/json")
+                };
+                return ResponseMessage(responseMsg);
+            }
         }
 
         #region Users

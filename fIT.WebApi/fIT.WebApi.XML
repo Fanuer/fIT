@@ -133,6 +133,23 @@
             Method to prove the Serversa availability
             </summary>
         </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.Login(fIT.WebApi.Models.LoginModel)">
+            <summary>
+            THIS METHOD IS FOR SWAGGER USE ONLY. 
+            Hack to login an user and to receive an access token. 
+            </summary>
+            <param name="username">username</param>
+            <param name="password">user's password</param>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.AccountsController.RefreshSession(System.String)">
+            <summary>
+            THIS METHOD IS FOR SWAGGER USE ONLY. 
+            Hack to login with a Refresh-Token
+            </summary>
+            <param name="refreshToken">valid Refresh Token</param>
+            <returns></returns>
+        </member>
         <member name="M:fIT.WebApi.Controller.AccountsController.GetUsers">
             <summary>
             Gets all application Users
@@ -323,6 +340,28 @@
             Alters the settings between users and roles
             </summary>
             <param name="model">new settings</param>
+        </member>
+        <member name="M:fIT.WebApi.Helpers.Helper.GetDisplayName(System.Object)">
+            <summary>
+            Returns an objects displayname or the string-representation
+            </summary>
+            <param name="obj">calling object</param>
+            <returns></returns>
+        </member>
+        <member name="T:fIT.WebApi.Models.LoginModel">
+            <summary>
+            Login Data
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.LoginModel.Username">
+            <summary>
+            User name
+            </summary>
+        </member>
+        <member name="P:fIT.WebApi.Models.LoginModel.Password">
+            <summary>
+            Password
+            </summary>
         </member>
         <member name="P:fIT.WebApi.Models.RefreshTokenModel.Id">
             <summary>
@@ -701,13 +740,6 @@
             <summary>
             Uebungen (per Namens-Konvention) 
             </summary>
-        </member>
-        <member name="M:fIT.WebApi.Helpers.Helper.GetDisplayName(System.Object)">
-            <summary>
-            Returns an objects displayname or the string-representation
-            </summary>
-            <param name="obj">calling object</param>
-            <returns></returns>
         </member>
         <member name="T:fIT.WebApi.Manager.ApplicationUserManager">
             <summary>

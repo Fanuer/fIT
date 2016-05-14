@@ -38,7 +38,7 @@ namespace fIT.App.Repositories
                 if (_status)
                 {
                     var session = await ServerRespository.Current.Server.LoginAsync(username, password);
-                    result = this.SetServerData(session, session.CurrentUserId);
+                    result = this.SetServerData(session);
                     if (!_isInitialised)
                     {
                         _isInitialised = !_isInitialised;
@@ -52,6 +52,7 @@ namespace fIT.App.Repositories
             }
             catch (Exception e)
             {
+                Settings.RemoveUserSettings();
                 Debug.WriteLine("Error on login: " + e.Message + Environment.NewLine + e.StackTrace);
             }
             return result;
@@ -90,12 +91,12 @@ namespace fIT.App.Repositories
             {
                 var session = await ServerRespository.Current.Server.LoginAsync(Settings.RefreshToken);
                 var user = await session.Users.GetUserDataAsync();
-                SetServerData(session, new Guid(user.Id));
+                SetServerData(session);
                 _isInitialised = true;
             }
         }
 
-        private bool SetServerData(IManagementSession session, Guid userId )
+        private bool SetServerData(IManagementSession session)
         {
             var result = false;
 
@@ -106,7 +107,8 @@ namespace fIT.App.Repositories
                     lock (_lock)
                     {
                         ServerRespository.Current.ServerSession = session;
-                        LocalRepository.Current.CurrentUserId = session.CurrentUserId;
+                        Settings.Username = session.CurrentUserName;
+                        Settings.UserId = LocalRepository.Current.CurrentUserId = session.CurrentUserId;
                         Settings.RefreshToken = session.RefreshToken;
                         result = true;
                     }
@@ -114,7 +116,7 @@ namespace fIT.App.Repositories
             }
             catch (Exception e)
             {
-                Settings.RefreshToken = String.Empty;
+                Settings.RemoveUserSettings();
                 Debug.WriteLine($"Error on ServerLogin: {e.Message}");
             }
             return result;
@@ -129,7 +131,6 @@ namespace fIT.App.Repositories
                 await InitialiseAsync();
             }
         }
-
 
         #endregion
 

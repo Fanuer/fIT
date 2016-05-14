@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
+using fIT.App.Helpers;
+using fIT.App.Utilities.Navigation;
+using fIT.WebApi.Client.Data.Models.Schedule;
 using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
 
@@ -22,25 +25,61 @@ namespace fIT.App.Data.ViewModels
         #region CTOR
         public EditScheduleViewModel(IUserDialogs userDialogs = null) : base(userDialogs, "Edit Schedule")
         {
-            this.OnCancelClickCommand = new Command(async () => await this.ViewModelNavigation.PopModalAsync());
-            this.OnOkClickCommand = new Command(async () => await this.EditScheduleAsync());
+            this.OnCancelClickCommand = new Command(async () => await this.ViewModelNavigation.PopAsPopUpAsync());
+            this.OnOkClickCommand = new Command(async () => await this.HandleScheduleChange());
         }
         #endregion
 
         #region METHODS
 
-        private async Task EditScheduleAsync()
+        private async Task HandleScheduleChange()
         {
-            var parent = await this.ViewModelNavigation.PopModalAsync();
+            var parent = await this.ViewModelNavigation.PopAsPopUpAsync();
             var scheduleModel = parent as ScheduleViewModel;
             if (scheduleModel != null)
             {
-                var entry = scheduleModel.List.First(x => x.Id == this.ScheduleId);
-                entry.Name = this.Name;
+                scheduleModel.IsLoading = true;
+                if (this.ScheduleId == -1)
+                {
+                    await this.AddScheduleAsync(scheduleModel);
+                }
+                else
+                {
+                    await this.EditScheduleAsync(scheduleModel);
+                }
+                scheduleModel.IsLoading = false;
             }
         }
 
+        private async Task EditScheduleAsync(ScheduleViewModel vm)
+        {
+            var um = await Repository.GetUserManagementAsync();
+            var schedule = await um.GetScheduleByIdAsync(this.ScheduleId);
+            schedule.Name = this.Name;
+            await um.UpdateScheduleAsync(this.ScheduleId, schedule);
+            vm.List.First(x => x.Id == this.ScheduleId).Name = this.Name;
+            
+        }
 
+        private async Task AddScheduleAsync(ScheduleViewModel vm)
+        {
+            try
+            {
+                var um = await Repository.GetUserManagementAsync();
+                var newSchedule = await um.CreateScheduleAsync(new ScheduleModel()
+                {
+                    Name = this.Name,
+                    UserId = Settings.UserId.ToString()
+                });
+                var newEntry = AutoMapper.Map<ScheduleListEntryViewModel>(newSchedule);
+                vm.List.Add(newEntry);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            
+        }
         #endregion
 
         #region PROPERTIES
@@ -56,7 +95,5 @@ namespace fIT.App.Data.ViewModels
         }
 
         #endregion
-
-
     }
 }

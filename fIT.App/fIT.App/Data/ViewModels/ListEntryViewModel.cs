@@ -26,10 +26,7 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region PROPERTIES
-        public ICommand OnRemoveClickedCommand { get; protected set; }
-        public ICommand OnEditClickedCommand { get; protected set; }
         public ICommand OnEntryTappedCommand { get; protected set; }
-        public virtual ListViewModel Owner{ get; set; }
         #endregion
 
 

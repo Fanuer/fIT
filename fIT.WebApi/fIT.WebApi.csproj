@@ -194,6 +194,7 @@
     <Compile Include="Controller\EnumsController.cs" />
     <Compile Include="Controller\PracticeController.cs" />
     <Compile Include="Controller\SchedulesController.cs" />
+    <Compile Include="Helpers\AddParametersFilter.cs" />
     <Compile Include="Migrations\201507150819282_AlteredModels_WeightTimeStamp.cs" />
     <Compile Include="Migrations\201507150819282_AlteredModels_WeightTimeStamp.Designer.cs">
       <DependentUpon>201507150819282_AlteredModels_WeightTimeStamp.cs</DependentUpon>
@@ -227,6 +228,7 @@
       <DependentUpon>201508031040410_AddedModelBinder1.cs</DependentUpon>
     </Compile>
     <Compile Include="Models\EnumValueModel.cs" />
+    <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PracticeModel.cs" />
     <Compile Include="Models\RefreshTokenModel.cs" />
     <Compile Include="Models\ScheduleModel.cs" />

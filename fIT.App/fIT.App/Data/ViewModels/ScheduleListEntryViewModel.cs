@@ -29,39 +29,14 @@ namespace fIT.App.Data.ViewModels
 
         public ScheduleListEntryViewModel(IUserDialogs userDialogs = null) : base(userDialogs, "")
         {
-            this.OnEditClickedCommand = new Command(async () => await OnEditAsync());
             this.OnEntryTappedCommand = new Command(async () => await this.ViewModelNavigation.PushAsync(IoCLocator.Current.GetInstance<ExerciseViewModel>()));
-            this.OnRemoveClickedCommand = new Command(async () => await OnDeleteAsync());
         }
         #endregion
 
         #region METHODS
-
-        private async Task OnEditAsync()
-        {
-            var vm = IoCLocator.Current.GetInstance<EditScheduleViewModel>();
-            vm.ScheduleId = Id;
-            vm.Name = this.Name;
-            await this.ViewModelNavigation.PushAsync(vm);
-        }
-
-        private async Task OnDeleteAsync()
-        {
-            var answer = await this.UserDialogs.ConfirmAsync("Do you really want to delete this entry?");
-
-            if (answer)
-            {
-                var um = await this.Repository.GetUserManagementAsync();
-                //await um.DeleteScheduleAsync(Id);
-            }
-            this.Owner.List.Remove(this);
-        }
         #endregion
 
         #region PROPERTIES
-
-        public override ListViewModel Owner { get; set; }
-
         /// <summary>
         /// ScheduleId
         /// </summary>

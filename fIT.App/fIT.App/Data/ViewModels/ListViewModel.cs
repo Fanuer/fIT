@@ -10,21 +10,24 @@ using Xamarin.Forms;
 
 namespace fIT.App.Data.ViewModels
 {
-    public abstract class ListViewModel : AppViewModelBase
+    public abstract class ListViewModel<T> : AppViewModelBase where T : ListEntryViewModel
     {
         #region CONST
         #endregion
 
         #region FIELDS
         private bool _isRefreshing;
-        protected ObservableCollection<ListEntryViewModel> _list;
-
+        private ObservableCollection<T> _list;
+        private int? _id;
         #endregion
 
         #region CTOR
 
         protected ListViewModel(IUserDialogs userDialogs, string title) : base(userDialogs, title)
         {
+            this._isRefreshing = false;
+            this._id = -1;
+            this._list = new ObservableCollection<T>();
             this.OnRefreshCommand = new Command(async () => await this.RefreshAsync(), () => !this.IsRefreshing);
         }
         #endregion
@@ -39,63 +42,46 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region PROPERTIES
-        public virtual ObservableCollection<ListEntryViewModel> List
+        public new ObservableCollection<T> List
         {
-            get { return this._list; }
-            set { this.Set(ref this._list, value); }
+            get
+            {
+                return _list;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    this.Set(ref _list, value);
+                }
+            }
         }
 
+        /// <summary>
+        /// Checks wheather the page is currently refreshing
+        /// </summary>
         public bool IsRefreshing
         {
             get { return this._isRefreshing; }
             set { this.Set(ref this._isRefreshing, value); }
         }
+        /// <summary>
+        /// Action that is performed when the user refreshed the page by swiping down
+        /// </summary>
         public ICommand OnRefreshCommand { get; protected set; }
+
         public ICommand OnAddClickedCommand { get; protected set; }
+        public ICommand OnRemoveClickedCommand { get; protected set; }
+        public ICommand OnEditClickedCommand { get; protected set; }
 
-        #endregion
-
-
-    }
-
-    public abstract class ListViewModel<T>: ListViewModel where T: ListEntryViewModel
-    {
-        #region CONST
-        #endregion
-
-        #region FIELDS
-        #endregion
-
-        #region CTOR
-
-        protected ListViewModel(IUserDialogs userDialogs, string title) : base(userDialogs, title)
+        /// <summary>
+        /// Optional Id of the current Entity (used to make webserver-calls)
+        /// </summary>
+        public int? Id
         {
-            List = new ObservableCollection<T>();
+            get { return _id; }
+            set { Set(ref _id, value); }
         }
         #endregion
-
-        #region METHODS
-
-        #endregion
-
-        #region PROPERTIES
-        public new ObservableCollection<T> List
-        {
-            get
-            {
-                return base.List != null ? new ObservableCollection<T>(base.List.Cast<T>()) : null;
-            }
-            set
-            {
-                if (value!= null)
-                {
-                    this.Set(ref _list, new ObservableCollection<ListEntryViewModel>(value));
-                }
-            }
-        }
-
-        #endregion
-
-
     }
 }

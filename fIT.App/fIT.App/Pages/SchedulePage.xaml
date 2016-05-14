@@ -1,9 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="fIT.App.Pages.SchedulePage"
-             xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App"
+            x:Class="fIT.App.Pages.SchedulePage"
             BackgroundColor="{Binding Colors.Blue}"
+            
   >
   <d:BasePage.Padding>
     <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Android="0,0,0,0" WinPhone="0,0,0,0"/>
@@ -27,8 +28,8 @@
           TextColor="{Binding Colors.Blue}"
           DetailColor="{Binding Colors.DarkGray}">
           <TextCell.ContextActions>
-            <MenuItem Command="{Binding OnEditClickedCommand}" Icon="{Binding Images.Edit.Source}" Text="Edit"/>
-            <MenuItem Command="{Binding OnRemoveClickedCommand}" Icon="{Binding Images.Remove.Source}" Text="Remove" IsDestructive="True"/>
+            <MenuItem Command="{Binding Source={x:Reference ScheduleList}, Path=BindingContext.OnEditClickedCommand}"  CommandParameter="{Binding Id}" Icon="{Binding Images.Edit.Source}" Text="Edit"/>
+            <MenuItem Command="{Binding Source={x:Reference ScheduleList}, Path=BindingContext.OnRemoveClickedCommand}" CommandParameter="{Binding Id}" Icon="{Binding Images.Remove.Source}" Text="Remove" IsDestructive="True"/>
           </TextCell.ContextActions>
         </TextCell>
       </DataTemplate>

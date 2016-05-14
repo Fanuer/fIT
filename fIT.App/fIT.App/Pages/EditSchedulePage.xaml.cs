@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using fIT.App.Data.ViewModels;
 using fIT.App.Utilities.Navigation.Attributes;
+using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 
 namespace fIT.App.Pages
 {
     [RegisterViewModel(typeof(EditScheduleViewModel))]
-    public partial class EditSchedulePage : BasePage
+    public partial class EditSchedulePage : PopupPage
     {
         public EditSchedulePage()
         {

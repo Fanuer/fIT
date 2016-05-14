@@ -28,11 +28,11 @@ namespace fIT.App.Repositories
         #endregion
 
         #region METHODS
-        
+
         #endregion
 
         #region PROPERTIES
-        
+
 
         public static ServerRespository Current => ServerRespository._current ?? (ServerRespository._current = new ServerRespository());
 

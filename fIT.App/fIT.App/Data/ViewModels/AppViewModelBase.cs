@@ -70,7 +70,7 @@ namespace fIT.App.Data.ViewModels
 
         public async Task LogoutAsync()
         {
-            Settings.RefreshToken = "";
+            Settings.RemoveUserSettings();
             await this.ViewModelNavigation.PopToRootAsync();
             await this.ViewModelNavigation.ExchangeAync(IoCLocator.Current.GetInstance<LoginViewModel>());
         }

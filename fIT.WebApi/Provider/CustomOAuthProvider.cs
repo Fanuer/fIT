@@ -55,7 +55,7 @@ namespace fIT.WebApi.Provider
 
             if (client == null)
             {
-                context.SetError("invalid_clientId", string.Format("Client '{0}' is not registered in the system.", context.ClientId));
+                context.SetError("invalid_clientId", $"Client '{context.ClientId}' is not registered in the system.");
                 return;
             }
 

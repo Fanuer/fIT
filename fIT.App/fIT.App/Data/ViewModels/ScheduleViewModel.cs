@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace fIT.App.Data.ViewModels
         public ScheduleViewModel(IUserDialogs userDialogs) : base(userDialogs, "Trainingspläne")
         {
             this.OnAddClickedCommand = new Command(async () => await OnAddClickedAsync());
+            this.OnEditClickedCommand = new Command<int>(async (id) => await OnEditClickedAsync(id));
+            this.OnRemoveClickedCommand = new Command<int>(async (id) => await OnRemoveClickedAsync(id));
         }
 
         #endregion
@@ -35,24 +38,45 @@ namespace fIT.App.Data.ViewModels
             var vm = IoCLocator.Current.GetInstance<EditScheduleViewModel>();
             vm.ScheduleId = -1;
             vm.Name = "";
-            await this.ViewModelNavigation.PushModalAsync(vm);
+            await this.ViewModelNavigation.PushAsPopUpAsync(vm);
+        }
+
+        private async Task OnEditClickedAsync(int id)
+        {
+            var vm = IoCLocator.Current.GetInstance<EditScheduleViewModel>();
+            vm.ScheduleId = id;
+            vm.Name = this.List.First(x=>x.Id==id).Name;
+            await this.ViewModelNavigation.PushAsPopUpAsync(vm);
+        }
+
+        private async Task OnRemoveClickedAsync(int id)
+        {
+            var answer = await this.UserDialogs.ConfirmAsync("Do you really want to delete this entry?");
+
+            if (answer)
+            {
+                this.IsLoading = true;
+                var um = await this.Repository.GetUserManagementAsync();
+                await um.DeleteScheduleAsync(id);
+                var delete = this.List.First(x => x.Id == id);
+                this.List.Remove(delete);
+                this.IsLoading = false;
+            }
         }
 
         protected override async Task InitAsync()
         {
+            this.IsLoading = true;
             var um = await this.Repository.GetUserManagementAsync();
             var schedules = await um.GetAllSchedulesAsync();
-            this.List = new ObservableCollection<ScheduleListEntryViewModel>(schedules.Select(x =>
-            {
-                var result = this.AutoMapper.Map<ScheduleListEntryViewModel>(x);
-                result.Owner = this;
-                return result;
-            }));
+            this.List = new ObservableCollection<ScheduleListEntryViewModel>(schedules.Select(x => this.AutoMapper.Map<ScheduleListEntryViewModel>(x)));
+            this.IsLoading = false;
         }
 
         #endregion
 
         #region PROPERTIES
+
         #endregion
     }
 }

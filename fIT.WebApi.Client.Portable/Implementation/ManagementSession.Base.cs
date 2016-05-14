@@ -122,8 +122,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         public async Task PerformRefreshAsync()
         {
             string oldToken = Token;
-            const string REFRESHCONTENT = "grant_type=refresh_token&refresh_token={0}&client_id=MyClient";
-            var stringContent = String.Format(String.Format(REFRESHCONTENT, this.RefreshToken));
+            var stringContent = $"grant_type=refresh_token&refresh_token={this.RefreshToken}&client_id=MyClient";
             stringContent = this.service.ClientInformation.AddClientData(stringContent);
             var content = new StringContent(stringContent);
 

@@ -24,8 +24,14 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region CTOR
-        public ScheduleViewModel() : base("Trainingspläne")
+
+        public ScheduleViewModel() : this(false) { }
+        public ScheduleViewModel(bool initAsync= false) : base("Trainingspläne")
         {
+            if (initAsync)
+            {
+                Task.Run(async () =>await this.InitAsync());
+            }
         }
 
         #endregion
@@ -59,7 +65,7 @@ namespace fIT.App.Data.ViewModels
                 this.ShowMessage($"Schedule '{delete.Name}' deleted", ToastEvent.Success);
             }
         }
-        protected override async Task InitAsync()
+        public override async Task InitAsync()
         {
             this.IsLoading = true;
             var um = await this.Repository.GetUserManagementAsync();

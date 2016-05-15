@@ -31,6 +31,7 @@ namespace fIT.App.Data.ViewModels
             var exercises = await um.GetAllExercisesAsync();
             var newExercises = exercises.Where(exercise => !exercise.Schedules.All(schedule => schedule.Id == this.Id.Value));
             var vm = new EditExerciseViewModel(newExercises);
+            await vm.InitAsync();
             await this.ViewModelNavigation.PushAsPopUpAsync(vm);
         }
 
@@ -56,7 +57,7 @@ namespace fIT.App.Data.ViewModels
             }
         }
 
-        protected override async Task InitAsync()
+        public override async Task InitAsync()
         {
             this.IsLoading = true;
             var um = await this.Repository.GetUserManagementAsync();

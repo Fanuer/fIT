@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Acr.UserDialogs;
 using AutoMapper;
 using fIT.App.Helpers;
@@ -19,13 +20,17 @@ namespace fIT.App.Data.ViewModels.Abstract
 
         #region CTOR
 
+        private AppViewModelBase():this("")
+        {
+            
+        }
+
         protected AppViewModelBase(string title)
         {
             this.Title = title;
             this.Colors = new ColorViewModel();
             this.Images = new ImageViewModel();
             this.UserDialogs = IoCLocator.Current.GetInstance<IUserDialogs>();
-            Task.Run(InitAsync);
             this.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName.Equals(nameof(IsLoading)))
@@ -46,9 +51,9 @@ namespace fIT.App.Data.ViewModels.Abstract
 
         #region METHODS
 
-        protected virtual Task InitAsync()
+        public virtual Task InitAsync()
         {
-            return null;
+            return Task.Run(() => { });
         }
 
         public async Task LogoutAsync()

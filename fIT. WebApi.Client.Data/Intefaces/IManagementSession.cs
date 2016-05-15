@@ -6,8 +6,6 @@ namespace fIT.WebApi.Client.Data.Intefaces
 {
     public interface IManagementSession : IDisposable, INotifyPropertyChanged
     {
-        event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
         /// Encrypted Access Token
         /// </summary>

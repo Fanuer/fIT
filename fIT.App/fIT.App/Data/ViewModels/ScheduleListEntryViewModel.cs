@@ -70,6 +70,7 @@ namespace fIT.App.Data.ViewModels
         protected override async Task OnEntryTappedAsync(int id)
         {
             var vm = AutoMapper.Map<ExerciseViewModel>(this);
+            await vm.InitAsync();
             await this.ViewModelNavigation.PushAsync(vm);
         }
     }

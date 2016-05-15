@@ -43,7 +43,9 @@ namespace fIT.App.Data.ViewModels
             this.IsLoading = false;
             if (result)
             {
-                await this.ViewModelNavigation.ExchangeAync(new ScheduleViewModel());
+                var vm = new ScheduleViewModel();
+                await this.ViewModelNavigation.ExchangeAync(vm);
+                await vm.InitAsync();
             }
             else
             {

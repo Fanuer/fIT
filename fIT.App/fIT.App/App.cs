@@ -5,14 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
 using AutoMapper;
-using fIT.App.Data.Datamodels;
 using fIT.App.Data.ViewModels;
+using fIT.App.Data.ViewModels.Abstract;
 using fIT.App.Helpers;
-using fIT.App.Helpers.Navigation;
-using fIT.App.Helpers.Navigation.Interfaces;
 using fIT.App.Helpers.Navigation.Specific;
 using fIT.App.Interfaces;
-using fIT.App.Pages;
 using fIT.App.Repositories;
 using fIT.App.Services;
 using fIT.WebApi.Client.Data.Models.Exercise;
@@ -51,7 +48,7 @@ namespace fIT.App
             else
             {
                 //var vm = IoCLocator.Current.GetInstance<ScheduleViewModel>();
-                var vm = new ScheduleViewModel();
+                var vm = new ScheduleViewModel(true);
                 frame = new NavigationFrame(vm);
             }
 

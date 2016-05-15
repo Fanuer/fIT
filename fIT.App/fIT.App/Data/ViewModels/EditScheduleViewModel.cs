@@ -78,6 +78,7 @@ namespace fIT.App.Data.ViewModels
                     UserId = Settings.UserId.ToString()
                 });
                 var newEntry = AutoMapper.Map<ScheduleListEntryViewModel>(newSchedule);
+                newEntry.ViewModelNavigation = this.ViewModelNavigation;
                 vm.List.Add(newEntry);
             }
             catch (Exception e)

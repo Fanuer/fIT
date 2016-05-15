@@ -11,7 +11,7 @@
     <ToolbarItem Text="Add" Icon="{Binding Images.Add.Source}" Command="{Binding OnAddClickedCommand}"/>
   </ContentPage.ToolbarItems>
   <controls:UnselectListView
-    x:Name="ScheduleList"
+    x:Name="ExerciseList"
     ItemsSource="{Binding List}"
     IsPullToRefreshEnabled="True"
     RefreshCommand="{Binding OnRefreshCommand}"
@@ -22,13 +22,13 @@
       <DataTemplate>
         <TextCell
           Text="{Binding Name}"
-          Detail="{Binding ExerciseCount, StringFormat='Übungen: {0}'}"
+          Detail="{Binding ShortDescription}"
           TextColor="{Binding Colors.Blue}"
           DetailColor="{Binding Colors.DarkGray}"
           Command="{Binding OnEntryTabbedCommand}"
           CommandParameter="{Binding Id}">
           <TextCell.ContextActions>
-            <MenuItem Command="{Binding Source={x:Reference ScheduleList}, Path=BindingContext.OnRemoveClickedCommand}" CommandParameter="{Binding Id}" Icon="{Binding Images.Remove.Source}" Text="Remove" IsDestructive="True"/>
+            <MenuItem Command="{Binding Source={x:Reference ExerciseList}, Path=BindingContext.OnRemoveClickedCommand}" CommandParameter="{Binding Id}" Icon="{Binding Images.Remove.Source}" Text="Remove" IsDestructive="True"/>
           </TextCell.ContextActions>
         </TextCell>
       </DataTemplate>

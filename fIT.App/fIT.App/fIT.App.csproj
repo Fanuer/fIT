@@ -45,17 +45,21 @@
     <Compile Include="Data\Datamodels\ScheduleHasExercises.cs" />
     <Compile Include="Data\Datamodels\User.cs" />
     <Compile Include="Data\Exceptions\InvalidForOfflineException.cs" />
-    <Compile Include="Data\ViewModels\AppViewModelBase.cs" />
-    <Compile Include="Data\ViewModels\ColorViewModel.cs" />
+    <Compile Include="Data\ViewModels\Abstract\AppViewModelBase.cs" />
+    <Compile Include="Data\ViewModels\Abstract\ColorViewModel.cs" />
+    <Compile Include="Data\ViewModels\Abstract\EditViewModel.cs" />
+    <Compile Include="Data\ViewModels\Abstract\ImageViewModel.cs" />
+    <Compile Include="Data\ViewModels\Abstract\ListEntryViewModel.cs" />
+    <Compile Include="Data\ViewModels\Abstract\ListViewModel.cs" />
+    <Compile Include="Data\ViewModels\EditExerciseViewModel.cs" />
     <Compile Include="Data\ViewModels\EditScheduleViewModel.cs" />
     <Compile Include="Data\ViewModels\ExerciseListEntryViewModel.cs" />
     <Compile Include="Data\ViewModels\ExerciseViewModel.cs" />
-    <Compile Include="Data\ViewModels\ImageViewModel.cs" />
-    <Compile Include="Data\ViewModels\ListEntryViewModel.cs" />
-    <Compile Include="Data\ViewModels\ListViewModel.cs" />
     <Compile Include="Data\ViewModels\LoginViewModel.cs" />
+    <Compile Include="Data\ViewModels\PracticeViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleListEntryViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleViewModel.cs" />
+    <Compile Include="Data\ViewModels\ViewModelFactory.cs" />
     <Compile Include="Helpers\CryptoHelper.cs" />
     <Compile Include="Helpers\IoCLocator.cs" />
     <Compile Include="Helpers\Navigation\Attributes\RegisterViewModelAttribute.cs" />
@@ -68,6 +72,9 @@
     <Compile Include="Interfaces\ISqlLite.cs" />
     <Compile Include="Pages\BasePage.xaml.cs">
       <DependentUpon>BasePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\EditExercisePage.xaml.cs">
+      <DependentUpon>EditExercisePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\EditSchedulePage.xaml.cs">
       <DependentUpon>EditSchedulePage.xaml</DependentUpon>
@@ -126,6 +133,10 @@
     </Reference>
     <Reference Include="ExifLib, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\ExifLib.PCL.1.0.1\lib\portable-net45+sl50+win+WindowsPhoneApp81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\ExifLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FreshEssentials, Version=1.0.5976.18464, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FreshEssentials.2.0.1\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\FreshEssentials.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight, Version=5.2.0.37222, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
@@ -243,6 +254,13 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\EditExercisePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

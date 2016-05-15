@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials"
+             x:Class="fIT.App.Pages.EditExercisePage">
+  <Frame
+      BackgroundColor="{Binding Colors.Blue}"
+      WidthRequest="350"
+      HorizontalOptions="Center"
+      VerticalOptions="Center">
+    <StackLayout>
+      <Label Text="Übung" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
+      <fe:BindablePicker ItemsSource="{Binding Exercises}" SelectedItem="{Binding SelectedExercise, Mode=TwoWay}"/>
+      <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+        <StackLayout.Padding >
+          <Thickness Top="10"/>
+        </StackLayout.Padding>
+        <Button Text="Ok" FontSize="Medium" Command="{Binding OnOkClickCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}"/>
+        <Button Text="Cancel" FontSize="Medium" Command="{Binding OnCancelClickCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}"/>
+      </StackLayout>
+    </StackLayout>
+  </Frame>
+</ContentPage>

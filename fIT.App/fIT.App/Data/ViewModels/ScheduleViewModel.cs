@@ -9,6 +9,7 @@ using System.Windows.Input;
 using Acr.UserDialogs;
 using AutoMapper.Internal;
 using fIT.App.Data.Datamodels;
+using fIT.App.Data.ViewModels.Abstract;
 using fIT.App.Helpers;
 using fIT.App.Helpers.Navigation;
 using fIT.App.Interfaces;
@@ -33,18 +34,13 @@ namespace fIT.App.Data.ViewModels
 
         protected override async Task OnAddClickedAsync()
         {
-            var vm = IoCLocator.Current.GetInstance<EditScheduleViewModel>();
-            vm.ScheduleId = -1;
-            vm.Name = "";
+            var vm = new EditScheduleViewModel();
             await this.ViewModelNavigation.PushAsPopUpAsync(vm);
         }
 
         protected override async Task OnEditClickedAsync(int id)
         {
-            // var vm = IoCLocator.Current.GetInstance<EditScheduleViewModel>();
-            var vm = new EditScheduleViewModel();
-            vm.ScheduleId = id;
-            vm.Name = this.List.First(x=>x.Id==id).Name;
+            var vm = new EditScheduleViewModel(id, this.List.First(x => x.Id == id).Name);
             await this.ViewModelNavigation.PushAsPopUpAsync(vm);
         }
 

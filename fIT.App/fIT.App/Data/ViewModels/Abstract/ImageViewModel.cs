@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Xamarin.Forms;
 
-namespace fIT.App.Data.ViewModels
+namespace fIT.App.Data.ViewModels.Abstract
 {
     public class ImageViewModel
     {

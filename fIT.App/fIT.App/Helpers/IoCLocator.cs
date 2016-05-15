@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using fIT.App.Data.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
@@ -102,17 +101,6 @@ namespace fIT.App.Helpers
                 result = (T) ServiceLocator.Current.GetInstance(typeof(T));
             }
             return result;
-        }
-
-        /// <summary>
-        /// Returns an new Instance of the given Type each time it is called
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <returns></returns>
-        public T GetListEntryInstance<T>() where T : ListEntryViewModel
-        {
-            
-            return SimpleIoc.Default.GetInstanceWithoutCaching<T>();
         }
 
         /// <summary>

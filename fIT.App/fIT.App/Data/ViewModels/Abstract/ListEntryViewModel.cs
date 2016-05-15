@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Acr.UserDialogs;
 using Xamarin.Forms;
 
-namespace fIT.App.Data.ViewModels
+namespace fIT.App.Data.ViewModels.Abstract
 {
     public abstract class ListEntryViewModel : AppViewModelBase
     {

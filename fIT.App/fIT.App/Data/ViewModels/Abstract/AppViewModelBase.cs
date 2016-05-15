@@ -1,21 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Acr.UserDialogs;
 using AutoMapper;
-using fIT.App.Data.Datamodels;
 using fIT.App.Helpers;
-using fIT.App.Helpers.Navigation;
 using fIT.App.Helpers.Navigation.Interfaces;
 using fIT.App.Interfaces;
 using GalaSoft.MvvmLight;
-using Xamarin.Forms;
 
-namespace fIT.App.Data.ViewModels
+namespace fIT.App.Data.ViewModels.Abstract
 {
     public abstract class AppViewModelBase : ViewModelBase, INavigatingViewModel
     {

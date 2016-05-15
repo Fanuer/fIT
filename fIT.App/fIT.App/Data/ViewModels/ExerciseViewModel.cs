@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
+using fIT.App.Data.ViewModels.Abstract;
+using fIT.WebApi.Client.Data.Models.Exercise;
 
 namespace fIT.App.Data.ViewModels
 {
@@ -23,19 +25,35 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region METHODS
-        protected override Task OnAddClickedAsync()
+        protected override async Task OnAddClickedAsync()
         {
-            return null;
+            var um = await this.Repository.GetUserManagementAsync();
+            var exercises = await um.GetAllExercisesAsync();
+            var newExercises = exercises.Where(exercise => !exercise.Schedules.All(schedule => schedule.Id == this.Id.Value));
+            var vm = new EditExerciseViewModel(newExercises);
+            await this.ViewModelNavigation.PushAsPopUpAsync(vm);
         }
 
         protected override Task OnEditClickedAsync(int id)
         {
-            return null;
+            var result = new Task(() => { });
+            return result;
         }
 
-        protected override Task OnRemoveClickedAsync(int id)
+        protected override async Task OnRemoveClickedAsync(int id)
         {
-            return null;
+            var answer = await this.UserDialogs.ConfirmAsync("Do you really want to delete this entry?");
+
+            if (answer)
+            {
+                this.IsLoading = true;
+                var um = await this.Repository.GetUserManagementAsync();
+                await um.RemoveExerciseFromScheduleAsync(this.Id.Value, id);
+                var delete = this.List.First(x => x.Id == id);
+                this.List.Remove(delete);
+                this.IsLoading = false;
+                this.ShowMessage($"Übung '{delete.Name}' entfernt", ToastEvent.Success);
+            }
         }
 
         protected override async Task InitAsync()

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using fIT.App.Data.ViewModels;
+using fIT.App.Data.ViewModels.Abstract;
 using fIT.App.Helpers;
 using fIT.App.Services;
 using Xamarin.Forms;
@@ -14,8 +15,6 @@ namespace fIT.App.Pages
     public partial class BasePage : ContentPage
     {
         #region FIELDS
-        private const string _offlineIcon = "Check.png";
-        private const string _onlineIcon = "DoubleCheck.png";
         #endregion
 
         #region CTOR
@@ -46,11 +45,6 @@ namespace fIT.App.Pages
         #endregion
 
         #region PROPERTIES
-
-        private ToolbarItem OnlineStatus { get; set; }
-
-        private string OnlineIcon => String.Concat(Device.OnPlatform("Icons/", "", "Assets/Icons"), _onlineIcon);
-        private string OfflineIcon => String.Concat(Device.OnPlatform("Icons/", "", "Assets/Icons"), _offlineIcon);
 
         #endregion
 

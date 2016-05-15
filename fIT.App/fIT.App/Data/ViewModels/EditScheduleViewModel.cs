@@ -6,14 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
+using fIT.App.Data.ViewModels.Abstract;
 using fIT.App.Helpers;
 using fIT.WebApi.Client.Data.Models.Schedule;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
 
 namespace fIT.App.Data.ViewModels
 {
-    public class EditScheduleViewModel:AppViewModelBase
+    public class EditScheduleViewModel: EditViewModel
     {
         #region CONST
         #endregion
@@ -23,41 +25,35 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region CTOR
-        public EditScheduleViewModel(IUserDialogs userDialogs = null) : base("Edit Schedule")
+        public EditScheduleViewModel(int scheduleId = -1, string name = "") : base("Trainingsplan ändern")
         {
-            this.OnCancelClickCommand = new Command(async () => await this.ViewModelNavigation.PopAsPopUpAsync());
-            this.OnOkClickCommand = new Command(async () => await this.HandleScheduleChange());
+            this.ScheduleId = scheduleId;
+            this.Name = name;
         }
         #endregion
 
         #region METHODS
 
-        private async Task HandleScheduleChange()
+        protected override async Task HandleOkClickedAsync(ViewModelBase viewModel)
         {
-            try
+            var scheduleModel = viewModel as ScheduleViewModel;
+            if (viewModel != null)
             {
-                var parent = await this.ViewModelNavigation.PopAsPopUpAsync();
-                var scheduleModel = parent as ScheduleViewModel;
-                if (scheduleModel != null)
+                scheduleModel.IsLoading = true;
+                if (this.ScheduleId == -1)
                 {
-                    scheduleModel.IsLoading = true;
-                    if (this.ScheduleId == -1)
-                    {
-                        await this.AddScheduleAsync(scheduleModel);
-                        this.ShowMessage($"Schedule '{this.Name}' created", ToastEvent.Success);
-                    }
-                    else
-                    {
-                        await this.EditScheduleAsync(scheduleModel);
-                        this.ShowMessage($"Schedule '{this.Name}' updated", ToastEvent.Success);
-                    }
-                    scheduleModel.IsLoading = false;
+                    await this.AddScheduleAsync(scheduleModel);
+                    this.ShowMessage($"Schedule '{this.Name}' created", ToastEvent.Success);
+                }
+                else
+                {
+                    await this.EditScheduleAsync(scheduleModel);
+                    this.ShowMessage($"Schedule '{this.Name}' updated", ToastEvent.Success);
                 }
             }
-            catch (Exception e)
+            else
             {
-                Debug.WriteLine($"Error on changing Schedule: {e.Message} {Environment.NewLine}{e.StackTrace}");
-                this.ShowMessage("Error occured");
+                throw new InvalidCastException($"The given ViewModel was expected to be of type '{nameof(ScheduleViewModel)}' but was '{viewModel.GetType().Name}'");
             }
         }
 
@@ -95,8 +91,6 @@ namespace fIT.App.Data.ViewModels
         #region PROPERTIES
 
         public int ScheduleId { get; set; }
-        public ICommand OnOkClickCommand { get; private set; }
-        public ICommand OnCancelClickCommand { get; private set; }
         
         public string Name
         {
@@ -105,5 +99,7 @@ namespace fIT.App.Data.ViewModels
         }
 
         #endregion
+
+        
     }
 }

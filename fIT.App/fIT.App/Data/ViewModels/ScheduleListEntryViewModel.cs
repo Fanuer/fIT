@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using AutoMapper;
+using fIT.App.Data.ViewModels.Abstract;
 using fIT.App.Helpers;
 using fIT.App.Interfaces;
 using Xamarin.Forms;

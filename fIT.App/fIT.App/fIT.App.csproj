@@ -59,8 +59,6 @@
     <Compile Include="Data\ViewModels\PracticeViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleListEntryViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleViewModel.cs" />
-    <Compile Include="Data\ViewModels\ViewModelFactory.cs" />
-    <Compile Include="Helpers\CryptoHelper.cs" />
     <Compile Include="Helpers\IoCLocator.cs" />
     <Compile Include="Helpers\Navigation\Attributes\RegisterViewModelAttribute.cs" />
     <Compile Include="Helpers\Navigation\Interfaces\INavigatingViewModel.cs" />

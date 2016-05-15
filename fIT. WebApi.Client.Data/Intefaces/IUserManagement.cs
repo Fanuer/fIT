@@ -79,8 +79,22 @@ namespace fIT.WebApi.Client.Data.Intefaces
 
         #region Exercise
 
+        /// <summary>
+        /// Get all Exercises
+        /// </summary>
+        /// <returns></returns>
         Task<IEnumerable<ExerciseModel>> GetAllExercisesAsync();
+        /// <summary>
+        /// Gets one Exercise by its id
+        /// </summary>
+        /// <param name="exerciseId">Id of an exercise</param>
+        /// <returns></returns>
         Task<ExerciseModel> GetExerciseByIdAsync(int exerciseId);
+        /// <summary>
+        /// Gets all of the users exercises of one schedule
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<ExerciseModel>> GetScheduleExercisesAsync(int scheduleId);
 
         #endregion
 
@@ -96,6 +110,12 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <param name="id">id eines Trainings</param>
         /// <returns></returns>
         Task<PracticeModel> GetPracticeByIdAsync(int id);
+
+        /// <summary>
+        /// Gets all of the users practices of one exercise
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<PracticeModel>> GetPracticesAsync(int scheduleId, int exerciseId);
         /// <summary>
         /// Erstellt ein neues Training fuer den angemeldeten Nutzer
         /// </summary>
@@ -116,12 +136,12 @@ namespace fIT.WebApi.Client.Data.Intefaces
         /// <returns></returns>
         Task UpdatePracticeAsync(int id, PracticeModel model);
 
-    #endregion
+        #endregion
 
-    #region PROPERTIES
+        #region PROPERTIES
 
-      Guid CurrentUserID { get; set; }
+        Guid CurrentUserID { get; set; }
 
-      #endregion
-  }
+        #endregion
+    }
 }

@@ -88,6 +88,19 @@
             </summary>
             <param name="id">Schedule id</param>
         </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.GetExercisesOfSchedule(System.Int32)">
+            <summary>
+            Get all Exercises of a schedule
+            </summary>
+            <param name="id">Id of a schedule</param>
+            <returns></returns>
+        </member>
+        <member name="M:fIT.WebApi.Controller.SchedulesController.GetPractices(System.Int32,System.Int32)">
+            <summary>
+            Get all Practice Entries of an exercise
+            </summary>
+            <response code="500">Internal Server Error</response>
+        </member>
         <member name="M:fIT.WebApi.Controller.SchedulesController.UpdateSchedule(System.Int32,fIT.WebApi.Models.ScheduleModel)">
             <summary>
             Updates an existing schedule

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using fIT.App.Helpers;
-using fIT.App.Utilities.Navigation;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using GalaSoft.MvvmLight.Command;
 using Xamarin.Forms;
@@ -23,7 +23,7 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region CTOR
-        public EditScheduleViewModel(IUserDialogs userDialogs = null) : base(userDialogs, "Edit Schedule")
+        public EditScheduleViewModel(IUserDialogs userDialogs = null) : base("Edit Schedule")
         {
             this.OnCancelClickCommand = new Command(async () => await this.ViewModelNavigation.PopAsPopUpAsync());
             this.OnOkClickCommand = new Command(async () => await this.HandleScheduleChange());
@@ -34,20 +34,30 @@ namespace fIT.App.Data.ViewModels
 
         private async Task HandleScheduleChange()
         {
-            var parent = await this.ViewModelNavigation.PopAsPopUpAsync();
-            var scheduleModel = parent as ScheduleViewModel;
-            if (scheduleModel != null)
+            try
             {
-                scheduleModel.IsLoading = true;
-                if (this.ScheduleId == -1)
+                var parent = await this.ViewModelNavigation.PopAsPopUpAsync();
+                var scheduleModel = parent as ScheduleViewModel;
+                if (scheduleModel != null)
                 {
-                    await this.AddScheduleAsync(scheduleModel);
+                    scheduleModel.IsLoading = true;
+                    if (this.ScheduleId == -1)
+                    {
+                        await this.AddScheduleAsync(scheduleModel);
+                        this.ShowMessage($"Schedule '{this.Name}' created", ToastEvent.Success);
+                    }
+                    else
+                    {
+                        await this.EditScheduleAsync(scheduleModel);
+                        this.ShowMessage($"Schedule '{this.Name}' updated", ToastEvent.Success);
+                    }
+                    scheduleModel.IsLoading = false;
                 }
-                else
-                {
-                    await this.EditScheduleAsync(scheduleModel);
-                }
-                scheduleModel.IsLoading = false;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error on changing Schedule: {e.Message} {Environment.NewLine}{e.StackTrace}");
+                this.ShowMessage("Error occured");
             }
         }
 

@@ -93,13 +93,12 @@ namespace fIT.App.Repositories
                 {
                     var session = await ServerRespository.Current.Server.LoginAsync(Settings.RefreshToken);
                     SetServerData(session);
+                    _isInitialised = true;
                 }
                 catch (Exception)
                 {
                     Settings.RemoveUserSettings();
                 }
-                
-                _isInitialised = true;
             }
         }
 

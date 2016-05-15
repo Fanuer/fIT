@@ -7,9 +7,9 @@ using System.Windows.Input;
 using Acr.UserDialogs;
 using AutoMapper;
 using fIT.App.Helpers;
+using fIT.App.Helpers.Navigation;
 using fIT.App.Interfaces;
 using fIT.App.Pages;
-using fIT.App.Utilities.Navigation;
 using Xamarin.Forms;
 
 namespace fIT.App.Data.ViewModels
@@ -23,14 +23,11 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region CTOR
-        public LoginViewModel(IUserDialogs userdialogs) : base(userdialogs, "Login")
+        public LoginViewModel():base("Login")
         {
-            Username = "";
-            Password = "";
-            Message = "";
-
             this.OnLoginClickedCommand = new Command(async () => { await OnLoginClicked(); });
-            this.OnSignUpClickedCommand = new Command(async () => await this.ViewModelNavigation.PushAsync(IoCLocator.Current.GetInstance<ScheduleViewModel>()));
+            //this.OnSignUpClickedCommand = new Command(async () => await this.ViewModelNavigation.PushAsync(IoCLocator.Current.GetInstance<ScheduleViewModel>()));
+            this.OnSignUpClickedCommand = new Command(async () => await this.ViewModelNavigation.PushAsync(new ScheduleViewModel()));
         }
 
         #endregion
@@ -39,18 +36,17 @@ namespace fIT.App.Data.ViewModels
 
         private async Task OnLoginClicked()
         {
-            this.Message = "";
             this.IsLoading = true;
             var result = await Repository.LoginAsync(this.Username, this.Password);
             this.Password = "";
             this.IsLoading = false;
             if (result)
             {
-                await this.ViewModelNavigation.ExchangeAync(IoCLocator.Current.GetInstance<ScheduleViewModel>());
+                await this.ViewModelNavigation.ExchangeAync(new ScheduleViewModel());
             }
             else
             {
-                this.Message = "Login failed";
+                this.ShowMessage("Login failed");
             }
         }
 

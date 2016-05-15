@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 
-namespace fIT.App.Utilities.Navigation.Interfaces
+namespace fIT.App.Helpers.Navigation.Interfaces
 {
     public interface IViewModelNavigation
     {
@@ -19,6 +19,6 @@ namespace fIT.App.Utilities.Navigation.Interfaces
 
         Task<ViewModelBase> PopAsPopUpAsync(bool animate = true);
 
-        Task PushAsPopUpAsync(ViewModelBase viewModel, bool animate = true);
+        Task PushAsPopUpAsync(ViewModelBase bindingContext, bool animate = true);
     }
 }

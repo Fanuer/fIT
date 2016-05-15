@@ -9,9 +9,9 @@ using Acr.UserDialogs;
 using AutoMapper;
 using fIT.App.Data.Datamodels;
 using fIT.App.Helpers;
+using fIT.App.Helpers.Navigation;
+using fIT.App.Helpers.Navigation.Interfaces;
 using fIT.App.Interfaces;
-using fIT.App.Utilities.Navigation;
-using fIT.App.Utilities.Navigation.Interfaces;
 using GalaSoft.MvvmLight;
 using Xamarin.Forms;
 
@@ -28,13 +28,12 @@ namespace fIT.App.Data.ViewModels
 
         #region CTOR
 
-        protected AppViewModelBase(IUserDialogs userDialogs, string title)
+        protected AppViewModelBase(string title)
         {
             this.Title = title;
             this.Colors = new ColorViewModel();
             this.Images = new ImageViewModel();
-            this.UserDialogs = userDialogs ?? IoCLocator.Current.GetInstance<IUserDialogs>();
-
+            this.UserDialogs = IoCLocator.Current.GetInstance<IUserDialogs>();
             Task.Run(InitAsync);
             this.PropertyChanged += (sender, args) =>
             {
@@ -47,13 +46,6 @@ namespace fIT.App.Data.ViewModels
                     else
                     {
                         this.UserDialogs.HideLoading();
-                    }
-                }
-                else if (args.PropertyName.Equals(nameof(this.Message)))
-                {
-                    if (!String.IsNullOrWhiteSpace(this.Message))
-                    {
-                        this.UserDialogs.ErrorToast(Message);
                     }
                 }
             };
@@ -72,7 +64,19 @@ namespace fIT.App.Data.ViewModels
         {
             Settings.RemoveUserSettings();
             await this.ViewModelNavigation.PopToRootAsync();
-            await this.ViewModelNavigation.ExchangeAync(IoCLocator.Current.GetInstance<LoginViewModel>());
+            //await this.ViewModelNavigation.ExchangeAync(IoCLocator.Current.GetInstance<LoginViewModel>());
+            await this.ViewModelNavigation.ExchangeAync(new LoginViewModel());
+        }
+
+        /// <summary>
+        /// Shows Message that provides feedback to a user
+        /// </summary>
+        /// <param name="message">Feedback-Message</param>
+        /// <param name="type">Type of Message</param>
+        /// <param name="description">Additional Information</param>
+        public void ShowMessage(string message, ToastEvent type = ToastEvent.Error, string description = null)
+        {
+            this.UserDialogs.Toast(new ToastConfig(type, message, description));
         }
         #endregion
 
@@ -81,14 +85,6 @@ namespace fIT.App.Data.ViewModels
         protected IRepository Repository => IoCLocator.Current.GetInstance<IRepository>();
         protected IUserDialogs UserDialogs { get; private set; }
         protected IMapper AutoMapper => IoCLocator.Current.GetInstance<IMapper>();
-        /// <summary>
-        /// Message that provides feedback to a user
-        /// </summary>
-        public string Message
-        {
-            get { return _message; }
-            set { this.Set(ref this._message, value); }
-        }
 
         /// <summary>
         /// Page Title
@@ -96,7 +92,7 @@ namespace fIT.App.Data.ViewModels
         public string Title
         {
             get { return _title; }
-            private set { this.Set(ref this._title, value); }
+            internal set { this.Set(ref this._title, value); }
         }
 
         /// <summary>

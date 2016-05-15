@@ -136,6 +136,15 @@ namespace fIT.WebApi.Client.Portable.Implementation
         }
 
         /// <summary>
+        /// Gets all of the users exercises of one schedule
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<ExerciseModel>> GetScheduleExercisesAsync(int scheduleId)
+        {
+            return await this.GetAsync<IEnumerable<ExerciseModel>>($"api/schedule/{scheduleId}/exercise");
+        }
+
+        /// <summary>
         /// Gets one Exercise by its id
         /// </summary>
         /// <param name="exerciseId">Id of an exercise</param>
@@ -144,7 +153,7 @@ namespace fIT.WebApi.Client.Portable.Implementation
         {
             return await this.GetAsync<ExerciseModel>("api/exercise/" + exerciseId);
         }
-
+        
         #endregion
 
         #region Practice
@@ -155,6 +164,15 @@ namespace fIT.WebApi.Client.Portable.Implementation
         public async Task<IEnumerable<PracticeModel>> GetAllPracticesAsync()
         {
             return await this.GetAsync<IEnumerable<PracticeModel>>("api/practice");
+        }
+
+        /// <summary>
+        /// Gets all of the users practices of one exercise
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<PracticeModel>> GetPracticesAsync(int scheduleId, int exerciseId)
+        {
+            return await this.GetAsync<IEnumerable<PracticeModel>>($"api/schedule/{scheduleId}/exercise/{exerciseId}");
         }
 
         /// <summary>

@@ -23,26 +23,36 @@ namespace fIT.App.Data.ViewModels
 
         #region CTOR
 
-        protected ListViewModel(IUserDialogs userDialogs, string title) : base(userDialogs, title)
+        protected ListViewModel(string title):base(title)
         {
             this._isRefreshing = false;
             this._id = -1;
             this._list = new ObservableCollection<T>();
             this.OnRefreshCommand = new Command(async () => await this.RefreshAsync(), () => !this.IsRefreshing);
+            this.OnAddClickedCommand = new Command(async () => await OnAddClickedAsync());
+            this.OnEditClickedCommand = new Command<int>(async (id) => await OnEditClickedAsync(id));
+            this.OnRemoveClickedCommand = new Command<int>(async (id) => await OnRemoveClickedAsync(id));
+            //this.OnEntryTabbedCommand = new Command<int>(async (id) => await OnEntryTappedAsync(id));
         }
         #endregion
 
         #region METHODS
-        public virtual async Task RefreshAsync()
+        protected virtual async Task RefreshAsync()
         {
             await InitAsync();
             this.IsRefreshing = false;
         }
 
+        protected abstract Task OnAddClickedAsync();
+
+        protected abstract Task OnEditClickedAsync(int id);
+
+        protected abstract Task OnRemoveClickedAsync(int id);
+
         #endregion
 
         #region PROPERTIES
-        public new ObservableCollection<T> List
+        public ObservableCollection<T> List
         {
             get
             {
@@ -82,6 +92,7 @@ namespace fIT.App.Data.ViewModels
             get { return _id; }
             set { Set(ref _id, value); }
         }
+        
         #endregion
     }
 }

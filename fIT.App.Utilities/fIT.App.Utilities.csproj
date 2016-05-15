@@ -36,11 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Navigation\Attributes\RegisterViewModelAttribute.cs" />
-    <Compile Include="Navigation\Interfaces\INavigatingViewModel.cs" />
-    <Compile Include="Navigation\Interfaces\IViewModelNavigation.cs" />
-    <Compile Include="Navigation\IoCLocator.cs" />
-    <Compile Include="Navigation\NavigationFrame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

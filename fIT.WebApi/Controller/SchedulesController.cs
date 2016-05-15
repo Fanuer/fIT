@@ -63,6 +63,49 @@ namespace fIT.WebApi.Controller
         }
 
         /// <summary>
+        /// Get all Exercises of a schedule
+        /// </summary>
+        /// <param name="id">Id of a schedule</param>
+        /// <returns></returns>
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(List<ExerciseModel>))]
+        [SwaggerResponse(HttpStatusCode.NotFound)]
+        [HttpGet]
+        [Route("{id:int}/exercise")]
+        public async Task<IHttpActionResult> GetExercisesOfSchedule(int id)
+        {
+            var schedule = await this.AppRepository.Schedules.FindAsync(id);
+            if (!IsValidSchedule(schedule.UserID))
+            {
+                ModelState.AddModelError("UserId", "You can only get exercises of your own schedules");
+            }
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            return Ok(schedule.Exercises.Select(this.TheModelFactory.CreateViewModel));
+        }
+
+
+        /// <summary>
+        /// Get all Practice Entries of an exercise
+        /// </summary>
+        /// <response code="500">Internal Server Error</response>
+        [HttpGet]
+        [EnableQuery]
+        [Route("{id:int}/exercise/{exerciseId:int}")]
+        [SwaggerResponse(HttpStatusCode.OK, Type = typeof(IEnumerable<PracticeModel>))]
+        public async Task<IQueryable<PracticeModel>> GetPractices(int id, int exerciseId)
+        {
+            var all = await this.AppRepository.Practices.GetAllAsync();
+
+            return all
+                   .Where(x => CurrentUserId.Equals(x.UserId) && x.ScheduleId == id && x.ExerciseId == exerciseId)
+                   .Select(this.TheModelFactory.CreateViewModel)
+                   .AsQueryable();
+        }
+
+
+        /// <summary>
         /// Updates an existing schedule
         /// </summary>
         /// <param name="schedule">New schedule Data</param>
@@ -170,7 +213,7 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.OK)]
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
-        [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
+        [Route("{scheduleId:int}/exercise/{exerciseId:int}")]
         [HttpPut]
         public async Task<IHttpActionResult> AddExerciseToSchedule(int scheduleId, int exerciseId)
         {
@@ -220,7 +263,7 @@ namespace fIT.WebApi.Controller
         [SwaggerResponse(HttpStatusCode.BadRequest)]
         [SwaggerResponse(HttpStatusCode.NotFound)]
         [HttpDelete]
-        [Route("{scheduleId:int}/Exercise/{exerciseId:int}")]
+        [Route("{scheduleId:int}/exercise/{exerciseId:int}")]
         public async Task<IHttpActionResult> RemoveExerciseFromSchedule(int scheduleId, int exerciseId)
         {
             var schedule = await this.AppRepository.Schedules.FindAsync(scheduleId);

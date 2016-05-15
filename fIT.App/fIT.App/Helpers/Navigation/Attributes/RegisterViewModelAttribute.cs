@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 
-namespace fIT.App.Utilities.Navigation.Attributes
+namespace fIT.App.Helpers.Navigation.Attributes
 {
   [AttributeUsage(AttributeTargets.Class)]
   public class RegisterViewModelAttribute : Attribute

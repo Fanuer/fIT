@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Acr.UserDialogs;
+using Xamarin.Forms;
 
-namespace fIT.App.Data.ViewModels
+namespace fIT.App.Controls
 {
-    public class ExerciseListViewModel:ListEntryViewModel
+    public class UnselectListView: ListView
     {
-
         #region CONST
         #endregion
 
@@ -17,8 +16,16 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region CTOR
-        public ExerciseListViewModel(IUserDialogs userDialogs, string title) : base(userDialogs, title)
+
+        public UnselectListView()
         {
+            this.ItemSelected += (sender, args) =>
+            {
+                if (args.SelectedItem != null)
+                {
+                    this.SelectedItem = null;
+                }
+            };
         }
         #endregion
 
@@ -27,6 +34,5 @@ namespace fIT.App.Data.ViewModels
 
         #region PROPERTIES
         #endregion
-
     }
 }

@@ -22,7 +22,6 @@ namespace fIT.App.Pages
         public BasePage()
         {
             InitializeComponent();
-            OnOffService.Current.OnStatusChanged += (sender, args) => OnlineStatus.Icon = args.Status ? OnlineIcon : OfflineIcon;
             this.BindingContextChanged += (sender, args) =>
             {
                 if (!String.IsNullOrEmpty(Settings.RefreshToken))

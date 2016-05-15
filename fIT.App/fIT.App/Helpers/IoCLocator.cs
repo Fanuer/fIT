@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using fIT.App.Data.ViewModels;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
-namespace fIT.App.Utilities.Navigation
+namespace fIT.App.Helpers
 {
     /// <summary>
     /// Inversion of Control handler for View Models and Services. 
@@ -45,7 +44,7 @@ namespace fIT.App.Utilities.Navigation
                 return;
             }
             var viewModelTypes = this.DomainTypes.Where(x => !String.IsNullOrWhiteSpace(x?.Namespace) && x.Namespace.Equals(viewModelNameSpace) && x.IsSubclassOf(typeof(ViewModelBase)) && !x.IsAbstract);
-
+            var myTypes = viewModelTypes.Select(x => x.FullName).ToList();
             //search for SimpleIoc.Default.Register<ViewModelBase>();
 
             var registerMethod = typeof(SimpleIoc).GetRuntimeMethods().First(x => x.IsPublic && x.Name.Equals("Register") && x.GetGenericArguments().Length == 1);
@@ -73,7 +72,7 @@ namespace fIT.App.Utilities.Navigation
             foreach (var viewModelType in serviceTypes)
             {
                 var generic = registerMethod.MakeGenericMethod(viewModelType.Key, viewModelType.Value);
-                generic.Invoke(SimpleIoc.Default, new object[] { });
+                generic.Invoke(SimpleIoc.Default, new object[] {});
             }
         }
 
@@ -97,7 +96,23 @@ namespace fIT.App.Utilities.Navigation
         /// <returns></returns>
         public T GetInstance<T>() where T : class
         {
-            return (T)ServiceLocator.Current.GetInstance(typeof(T));
+            T result = default(T);
+            if (SimpleIoc.Default.IsRegistered<T>())
+            {
+                result = (T) ServiceLocator.Current.GetInstance(typeof(T));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Returns an new Instance of the given Type each time it is called
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public T GetListEntryInstance<T>() where T : ListEntryViewModel
+        {
+            
+            return SimpleIoc.Default.GetInstanceWithoutCaching<T>();
         }
 
         /// <summary>

@@ -243,7 +243,12 @@ namespace fIT.App.Repositories
         throw new NotImplementedException();
       }
 
-      public Task<IEnumerable<PracticeModel>> GetAllPracticesAsync()
+        public Task<IEnumerable<ExerciseModel>> GetScheduleExercisesAsync(int scheduleId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<PracticeModel>> GetAllPracticesAsync()
       {
         throw new NotImplementedException();
       }
@@ -253,7 +258,12 @@ namespace fIT.App.Repositories
         throw new NotImplementedException();
       }
 
-      public Task<PracticeModel> CreatePracticeAsync(PracticeModel model)
+        public Task<IEnumerable<PracticeModel>> GetPracticesAsync(int scheduleId, int exerciseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<PracticeModel> CreatePracticeAsync(PracticeModel model)
       {
         throw new NotImplementedException();
       }

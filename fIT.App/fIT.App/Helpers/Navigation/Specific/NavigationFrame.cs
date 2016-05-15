@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
-using fIT.App.Utilities.Navigation.Attributes;
-using fIT.App.Utilities.Navigation.Interfaces;
+using fIT.App.Helpers.Navigation.Attributes;
+using fIT.App.Helpers.Navigation.Interfaces;
 using GalaSoft.MvvmLight;
 using Rg.Plugins.Popup.Pages;
 using Rg.Plugins.Popup.Services;
 using Xamarin.Forms;
 
-namespace fIT.App.Utilities.Navigation
+namespace fIT.App.Helpers.Navigation.Specific
 {
     public class NavigationFrame : IViewModelNavigation
     {
@@ -32,7 +31,7 @@ namespace fIT.App.Utilities.Navigation
 
             var allTypes = IoCLocator.Current.DomainTypes;
             var typesWithRegisterAttributes = allTypes
-                .Select(t => new { TypeInfo = t, Attribute = t.GetCustomAttribute<RegisterViewModelAttribute>() })
+                .Select(t => new { TypeInfo = t, Attribute = CustomAttributeExtensions.GetCustomAttribute<RegisterViewModelAttribute>((MemberInfo) t) })
                 .Where(p => p.Attribute != null);
             foreach (var pair in typesWithRegisterAttributes)
             {

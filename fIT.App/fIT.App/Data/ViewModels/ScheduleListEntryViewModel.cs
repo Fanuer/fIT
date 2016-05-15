@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Acr.UserDialogs;
 using AutoMapper;
+using fIT.App.Helpers;
 using fIT.App.Interfaces;
-using fIT.App.Utilities.Navigation;
 using Xamarin.Forms;
 
 namespace fIT.App.Data.ViewModels
@@ -21,15 +21,13 @@ namespace fIT.App.Data.ViewModels
         #region FIELDS
 
         private string _name;
-        private int _id;
         private int _count;
         #endregion
 
         #region CTOR
 
-        public ScheduleListEntryViewModel(IUserDialogs userDialogs = null) : base(userDialogs, "")
+        public ScheduleListEntryViewModel()
         {
-            this.OnEntryTappedCommand = new Command(async () => await this.ViewModelNavigation.PushAsync(IoCLocator.Current.GetInstance<ExerciseViewModel>()));
         }
         #endregion
 
@@ -37,21 +35,7 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region PROPERTIES
-        /// <summary>
-        /// ScheduleId
-        /// </summary>
-        public int Id
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                Set(ref _id, value);
-            }
-        }
-
+        
         /// <summary>
         /// Name of the owning Schedule
         /// </summary>
@@ -82,5 +66,10 @@ namespace fIT.App.Data.ViewModels
         }
         #endregion
 
+        protected override async Task OnEntryTappedAsync(int id)
+        {
+            var vm = AutoMapper.Map<ExerciseViewModel>(this);
+            await this.ViewModelNavigation.PushAsync(vm);
+        }
     }
 }

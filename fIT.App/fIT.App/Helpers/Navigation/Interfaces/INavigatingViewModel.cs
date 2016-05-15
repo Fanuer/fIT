@@ -1,4 +1,4 @@
-﻿namespace fIT.App.Utilities.Navigation.Interfaces
+﻿namespace fIT.App.Helpers.Navigation.Interfaces
 {
   public interface INavigatingViewModel
   {

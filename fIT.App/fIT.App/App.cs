@@ -8,11 +8,14 @@ using AutoMapper;
 using fIT.App.Data.Datamodels;
 using fIT.App.Data.ViewModels;
 using fIT.App.Helpers;
+using fIT.App.Helpers.Navigation;
+using fIT.App.Helpers.Navigation.Interfaces;
+using fIT.App.Helpers.Navigation.Specific;
 using fIT.App.Interfaces;
 using fIT.App.Pages;
 using fIT.App.Repositories;
 using fIT.App.Services;
-using fIT.App.Utilities.Navigation;
+using fIT.WebApi.Client.Data.Models.Exercise;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using Xamarin.Forms;
 
@@ -27,12 +30,12 @@ namespace fIT.App
         #region CTOR
         public App()
         {
-            AppName = "Fitter";
+                   AppName = "Fitter";
             IoCLocator.Current.RegisterServices(new Dictionary<Type, Type>()
             {
-                { typeof(IRepository), typeof(Repository) }
+                { typeof(IRepository), typeof(Repository) },
             });
-            IoCLocator.Current.RegisterViewModels(typeof(AppViewModelBase).Namespace);
+            //IoCLocator.Current.RegisterViewModels(typeof(AppViewModelBase).Namespace);
             IoCLocator.Current.RegisterService(() => UserDialogs.Instance);
             RegisterAutoMapper();
 
@@ -41,12 +44,14 @@ namespace fIT.App
             // Is Logged In
             if (String.IsNullOrEmpty(Settings.RefreshToken))
             {
-                var vm = IoCLocator.Current.GetInstance<LoginViewModel>();
+                //var vm = IoCLocator.Current.GetInstance<LoginViewModel>();
+                var vm = new LoginViewModel();
                 frame = new NavigationFrame(vm);
             }
             else
             {
-                var vm = IoCLocator.Current.GetInstance<ScheduleViewModel>();
+                //var vm = IoCLocator.Current.GetInstance<ScheduleViewModel>();
+                var vm = new ScheduleViewModel();
                 frame = new NavigationFrame(vm);
             }
 
@@ -80,8 +85,14 @@ namespace fIT.App
             {
                 var config = new MapperConfiguration(cfg =>
                 {
-                    cfg.CreateMap<ScheduleModel, Schedule>().ForMember(des => des.ExerciseCount, opt => opt.ResolveUsing(model => model.Exercises.Count()));
-                    cfg.CreateMap<ScheduleModel, ScheduleListEntryViewModel>().ForMember(vm => vm.ExerciseCount, opt => opt.ResolveUsing(model => model.Exercises.Count()));
+                    cfg.CreateMap<ScheduleModel, ScheduleListEntryViewModel>()
+                    .ForMember(vm => vm.ExerciseCount, mapConfig => mapConfig.ResolveUsing(m => m.Exercises.Count));
+
+                    cfg.CreateMap<ScheduleListEntryViewModel, ExerciseViewModel>()
+                        .ConstructUsing(model => new ExerciseViewModel(model.Name))
+                        .ForMember(exercise=> exercise.Title, mapConfig => mapConfig.ResolveUsing(m => m.Name));
+
+                    cfg.CreateMap<ExerciseModel, ExerciseListEntryViewModel>();
                 });
 
                 return config.CreateMapper();

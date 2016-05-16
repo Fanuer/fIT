@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:BasePage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:fIT.App.Pages;assembly=fIT.App"
+             xmlns:controls="clr-namespace:fIT.App.Controls;assembly=fIT.App"
+             x:Class="fIT.App.Pages.PracticePage">
+  <pages:BasePage.Padding>
+    <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Android="0,0,0,0" WinPhone="0,0,0,0"/>
+  </pages:BasePage.Padding>
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="Add" Icon="{Binding Images.Add.Source}" Command="{Binding OnAddClickedCommand}"/>
+  </ContentPage.ToolbarItems>
+  <StackLayout VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+    <Frame
+      BackgroundColor="{Binding Colors.LightGray}" >
+      <Label Text="{Binding Description}" TextColor="{Binding Colors.DarkGray}"/>
+    </Frame>
+    <controls:UnselectListView
+      x:Name="PracticeList"
+      ItemsSource="{Binding List}"
+      IsPullToRefreshEnabled="True"
+      RefreshCommand="{Binding OnRefreshCommand}"
+      IsRefreshing="{Binding IsRefreshing}"
+      BackgroundColor="{Binding Colors.White}"
+      SeparatorColor="{Binding Colors.Blue}">
+      <controls:UnselectListView.ItemTemplate>
+        <DataTemplate>
+          <TextCell
+            Text="{Binding Text}"
+            Detail="{Binding Timestamp}"
+            TextColor="{Binding Colors.Blue}"
+            DetailColor="{Binding Colors.DarkGray}">
+            <TextCell.ContextActions>
+              <MenuItem Command="{Binding Source={x:Reference PracticeList}, Path=BindingContext.OnEditClickedCommand}"  CommandParameter="{Binding Id}" Icon="{Binding Images.Edit.Source}" Text="Edit"/>
+              <MenuItem Command="{Binding Source={x:Reference PracticeList}, Path=BindingContext.OnRemoveClickedCommand}" CommandParameter="{Binding Id}" Icon="{Binding Images.Remove.Source}" Text="Remove" IsDestructive="True"/>
+            </TextCell.ContextActions>
+          </TextCell>
+        </DataTemplate>
+      </controls:UnselectListView.ItemTemplate>
+    </controls:UnselectListView>
+  </StackLayout>
+</pages:BasePage>

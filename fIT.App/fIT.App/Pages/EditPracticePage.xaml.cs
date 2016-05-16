@@ -10,10 +10,10 @@ using Xamarin.Forms;
 
 namespace fIT.App.Pages
 {
-    [RegisterViewModel(typeof(EditExerciseViewModel))]
-    public partial class EditExercisePage : PopupPage
+    [RegisterViewModel(typeof(EditPracticeViewModel))]
+    public partial class EditPracticePage : PopupPage
     {
-        public EditExercisePage()
+        public EditPracticePage()
         {
             InitializeComponent();
         }

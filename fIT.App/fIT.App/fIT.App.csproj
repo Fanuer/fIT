@@ -37,6 +37,8 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Controls\UnselectListView.cs" />
+    <Compile Include="Converter\DoubleConverter.cs" />
+    <Compile Include="Converter\IntConverter.cs" />
     <Compile Include="Data\ChangedOnlineStateEventArgs.cs" />
     <Compile Include="Data\Datamodels\Exercise.cs" />
     <Compile Include="Data\Datamodels\LocalDataModelBase.cs" />
@@ -52,10 +54,12 @@
     <Compile Include="Data\ViewModels\Abstract\ListEntryViewModel.cs" />
     <Compile Include="Data\ViewModels\Abstract\ListViewModel.cs" />
     <Compile Include="Data\ViewModels\EditExerciseViewModel.cs" />
+    <Compile Include="Data\ViewModels\EditPracticeViewModel.cs" />
     <Compile Include="Data\ViewModels\EditScheduleViewModel.cs" />
     <Compile Include="Data\ViewModels\ExerciseListEntryViewModel.cs" />
     <Compile Include="Data\ViewModels\ExerciseViewModel.cs" />
     <Compile Include="Data\ViewModels\LoginViewModel.cs" />
+    <Compile Include="Data\ViewModels\PracticeListEntryItemViewModel.cs" />
     <Compile Include="Data\ViewModels\PracticeViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleListEntryViewModel.cs" />
     <Compile Include="Data\ViewModels\ScheduleViewModel.cs" />
@@ -74,6 +78,9 @@
     <Compile Include="Pages\EditExercisePage.xaml.cs">
       <DependentUpon>EditExercisePage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pages\EditPracticePage.xaml.cs">
+      <DependentUpon>EditPracticePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\EditSchedulePage.xaml.cs">
       <DependentUpon>EditSchedulePage.xaml</DependentUpon>
     </Compile>
@@ -82,6 +89,9 @@
     </Compile>
     <Compile Include="Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PracticePage.xaml.cs">
+      <DependentUpon>PracticePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\SchedulePage.xaml.cs">
       <DependentUpon>SchedulePage.xaml</DependentUpon>
@@ -258,7 +268,18 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\PracticePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\EditPracticePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\..\packages\Xamarin.Forms.2.2.0.31\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

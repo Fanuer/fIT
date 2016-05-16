@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
+using AutoMapper.Internal;
 using fIT.App.Data.ViewModels.Abstract;
 using fIT.WebApi.Client.Data.Models.Exercise;
 
@@ -29,7 +30,7 @@ namespace fIT.App.Data.ViewModels
         {
             var um = await this.Repository.GetUserManagementAsync();
             var exercises = await um.GetAllExercisesAsync();
-            var newExercises = exercises.Where(exercise => !exercise.Schedules.All(schedule => schedule.Id == this.Id.Value));
+            var newExercises = exercises.Where(exercise => !exercise.Schedules.Any(schedule => schedule.Id == this.Id.Value));
             var vm = new EditExerciseViewModel(newExercises);
             await vm.InitAsync();
             await this.ViewModelNavigation.PushAsPopUpAsync(vm);
@@ -63,6 +64,11 @@ namespace fIT.App.Data.ViewModels
             var um = await this.Repository.GetUserManagementAsync();
             var models = await um.GetScheduleExercisesAsync(this.Id.Value);
             this.List = new ObservableCollection<ExerciseListEntryViewModel>(models.Select(x=>this.AutoMapper.Map<ExerciseListEntryViewModel>(x)));
+            this.List.Each(x =>
+            {
+                x.ScheduleId = this.Id.Value;
+                x.ViewModelNavigation = this.ViewModelNavigation;
+            });
             this.IsLoading = false;
         }
 

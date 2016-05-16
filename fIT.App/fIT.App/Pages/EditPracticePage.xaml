@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             x:Class="fIT.App.Pages.EditPracticePage">
+  <Frame
+      BackgroundColor="{Binding Colors.Blue}"
+      WidthRequest="350"
+      HorizontalOptions="Center"
+      VerticalOptions="Center">
+    <StackLayout>
+      <Label Text="Set" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
+      <StackLayout Orientation="Horizontal">
+        <Entry IsEnabled="False" Text="{Binding NumberOfRepetitions, Mode=TwoWay}"></Entry>
+        <Slider Minimum="{Binding MinNumberOfRepetitions}" Maximum="{Binding MaxNumberOfRepetitions}" Value="{Binding NumberOfRepetitions, Mode=TwoWay}"></Slider>
+      </StackLayout>
+      <Label Text="Wiederholungen" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
+      <StackLayout Orientation="Horizontal">
+        <Entry IsEnabled="False" Text="{Binding Repetitions, Mode=TwoWay}"></Entry>
+        <Slider Minimum="{Binding MinRepetitions}" Maximum="{Binding MaxRepetitions}" Value="{Binding Repetitions, Mode=TwoWay}"></Slider>
+      </StackLayout>
+      <Label Text="Wiederholungen" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
+      <Stepper Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}" Increment="{Binding StepSizeWeight}" Value="{Binding Weight, Mode=TwoWay}"></Stepper>
+      <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+        <StackLayout.Padding >
+          <Thickness Top="10"/>
+        </StackLayout.Padding>
+        <Button Text="Ok" FontSize="Medium" Command="{Binding OnOkClickCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}"/>
+        <Button Text="Cancel" FontSize="Medium" Command="{Binding OnCancelClickCommand}" TextColor="{Binding Colors.LightGray}" BackgroundColor="{Binding Colors.DarkGray}"/>
+      </StackLayout>
+    </StackLayout>
+  </Frame>
+</pages:PopupPage>

@@ -26,6 +26,7 @@ namespace fIT.App.Data.ViewModels
         {
             var vm = AutoMapper.Map<PracticeViewModel>(this);
             await this.ViewModelNavigation.PushAsync(vm);
+            await vm.InitAsync();
         }
         #endregion
 
@@ -49,6 +50,8 @@ namespace fIT.App.Data.ViewModels
             get { return _name; }
             set { Set(ref _name, value); }
         }
+
+        public int ScheduleId { get; set; }
 
         #endregion
     }

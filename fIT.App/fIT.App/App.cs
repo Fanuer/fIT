@@ -13,6 +13,7 @@ using fIT.App.Interfaces;
 using fIT.App.Repositories;
 using fIT.App.Services;
 using fIT.WebApi.Client.Data.Models.Exercise;
+using fIT.WebApi.Client.Data.Models.Practice;
 using fIT.WebApi.Client.Data.Models.Schedule;
 using Xamarin.Forms;
 
@@ -87,9 +88,16 @@ namespace fIT.App
 
                     cfg.CreateMap<ScheduleListEntryViewModel, ExerciseViewModel>()
                         .ConstructUsing(model => new ExerciseViewModel(model.Name))
-                        .ForMember(exercise=> exercise.Title, mapConfig => mapConfig.ResolveUsing(m => m.Name));
+                        .ForMember(exercise => exercise.Title, mapConfig => mapConfig.ResolveUsing(m => m.Name));
 
                     cfg.CreateMap<ExerciseModel, ExerciseListEntryViewModel>();
+
+                    cfg.CreateMap<ExerciseListEntryViewModel, PracticeViewModel>()
+                    .ForMember(exercise => exercise.Title, mapConfig => mapConfig.ResolveUsing(m => m.Name));
+                    
+                    cfg.CreateMap<PracticeModel, PracticeListEntryItemViewModel>();
+                    cfg.CreateMap<PracticeListEntryItemViewModel, EditPracticeViewModel>();
+                    cfg.CreateMap<EditPracticeViewModel, PracticeListEntryItemViewModel>();
                 });
 
                 return config.CreateMapper();

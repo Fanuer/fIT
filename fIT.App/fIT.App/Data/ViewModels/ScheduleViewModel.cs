@@ -30,7 +30,7 @@ namespace fIT.App.Data.ViewModels
         {
             if (initAsync)
             {
-                Task.Run(async () =>await this.InitAsync());
+                Task.Run(InitAsync);
             }
         }
 

@@ -5,15 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using fIT.App.Data.ViewModels;
 using fIT.App.Helpers.Navigation.Attributes;
-using Rg.Plugins.Popup.Pages;
 using Xamarin.Forms;
 
 namespace fIT.App.Pages
 {
-    [RegisterViewModel(typeof(EditExerciseViewModel))]
-    public partial class EditExercisePage : PopupPage
+    [RegisterViewModel(typeof(PracticeViewModel))]
+    public partial class PracticePage : BasePage
     {
-        public EditExercisePage()
+        public PracticePage()
         {
             InitializeComponent();
         }

@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="fIT.App.Pages.LoginPage"
              xmlns:d="clr-namespace:fIT.App.Pages;assembly=fIT.App">
-  <d:BasePage.ToolbarItems>
+  <!--d:BasePage.ToolbarItems>
     <ToolbarItem Text="Sign Up" Command="{Binding OnSignUpClickedCommand}" Priority="0"/>
-  </d:BasePage.ToolbarItems>
+  </d:BasePage.ToolbarItems-->
   <d:BasePage.Padding>
     <OnPlatform x:TypeArguments="Thickness" iOS="50, 20, 50, 0" Android="50,0,50,0" WinPhone="50,0,50,0"/>
   </d:BasePage.Padding>

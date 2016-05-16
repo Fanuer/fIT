@@ -1,7 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+<pages:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fe="clr-namespace:FreshEssentials;assembly=FreshEssentials"
+             xmlns:pages="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
              x:Class="fIT.App.Pages.EditExercisePage">
   <Frame
       BackgroundColor="{Binding Colors.Blue}"
@@ -10,7 +11,7 @@
       VerticalOptions="Center">
     <StackLayout>
       <Label Text="Übung" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
-      <fe:BindablePicker ItemsSource="{Binding Exercises}" SelectedItem="{Binding SelectedExercise, Mode=TwoWay}"/>
+      <fe:BindablePicker ItemsSource="{Binding NewExercises}" SelectedItem="{Binding SelectedExercise}" DisplayProperty="Name" BackgroundColor="{Binding Colors.LightGray}" />
       <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
         <StackLayout.Padding >
           <Thickness Top="10"/>
@@ -20,4 +21,4 @@
       </StackLayout>
     </StackLayout>
   </Frame>
-</ContentPage>
+</pages:PopupPage>

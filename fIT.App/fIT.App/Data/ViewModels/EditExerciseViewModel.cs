@@ -17,13 +17,18 @@ namespace fIT.App.Data.ViewModels
 
         #region FIELDS
 
-        private readonly IEnumerable<ExerciseModel> _newExercises;
+        private List<ExerciseModel> _newExercises;
         #endregion
 
         #region CTOR
         public EditExerciseViewModel(IEnumerable<ExerciseModel> newExercises) : base("Übung hinzufügen")
         {
-            this._newExercises = newExercises;
+            if (newExercises == null)
+            {
+                throw new ArgumentNullException(nameof(newExercises), "No Exercises to use as Picker options were passed");
+            }
+            this.NewExercises = newExercises.ToList();
+            this.SelectedExercise = NewExercises.FirstOrDefault();
         }
 
         #endregion
@@ -32,12 +37,11 @@ namespace fIT.App.Data.ViewModels
         protected override async Task HandleOkClickedAsync(ViewModelBase viewModel)
         {
             var exerciseModel = viewModel as ExerciseViewModel;
-            if (exerciseModel != null)
+            if (exerciseModel != null && SelectedExercise != null)
             {
-                var selectedExercise = this._newExercises.First(x => x.Name.Equals(SelectedExercise));
                 var um = await this.Repository.GetUserManagementAsync();
-                await um.AddExerciseToScheduleAsync(exerciseModel.Id.Value, selectedExercise.Id);
-                var entry = AutoMapper.Map<ExerciseListEntryViewModel>(selectedExercise);
+                await um.AddExerciseToScheduleAsync(exerciseModel.Id.Value, SelectedExercise.Id);
+                var entry = AutoMapper.Map<ExerciseListEntryViewModel>(SelectedExercise);
                 exerciseModel.List.Add(entry);
             }
             else
@@ -48,9 +52,13 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region PROPERTIES
+        public List<ExerciseModel> NewExercises
+        {
+            get { return _newExercises; }
+            set { Set(ref _newExercises, value); }
+        }
 
-        public IEnumerable<string> Exercises => this._newExercises.Select(x => x.Name);
-        public string SelectedExercise { get; set; }
+        public ExerciseModel SelectedExercise { get; set; }
         #endregion
 
         

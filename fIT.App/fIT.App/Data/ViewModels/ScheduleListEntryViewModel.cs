@@ -33,10 +33,16 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region METHODS
+        protected override async Task OnEntryTappedAsync(int id)
+        {
+            var vm = AutoMapper.Map<ExerciseViewModel>(this);
+            await vm.InitAsync();
+            await this.ViewModelNavigation.PushAsync(vm);
+        }
         #endregion
 
         #region PROPERTIES
-        
+
         /// <summary>
         /// Name of the owning Schedule
         /// </summary>
@@ -66,12 +72,6 @@ namespace fIT.App.Data.ViewModels
             }
         }
         #endregion
-
-        protected override async Task OnEntryTappedAsync(int id)
-        {
-            var vm = AutoMapper.Map<ExerciseViewModel>(this);
-            await vm.InitAsync();
-            await this.ViewModelNavigation.PushAsync(vm);
-        }
+        
     }
 }

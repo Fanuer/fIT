@@ -13,6 +13,10 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region FIELDS
+        private double _weight;
+        private int _numberOfRepetitions;
+        private int _repetitions;
+
         #endregion
 
         #region CTOR
@@ -26,11 +30,37 @@ namespace fIT.App.Data.ViewModels
         #endregion
 
         #region PROPERTIES
-        public DateTime Timestamp { get; set; }
-        public double Weight { get; set; }
-        public int NumberOfRepetitions { get; set; }
-        public int Repetitions { get; set; }
 
+        public double Weight
+        {
+            get { return _weight; }
+            set
+            {
+                Set(ref _weight, value);
+                this.RaisePropertyChanged("Text");
+            }
+        }
+        public int NumberOfRepetitions
+        {
+            get { return _numberOfRepetitions; }
+            set
+            {
+                Set(ref _numberOfRepetitions, value);
+                this.RaisePropertyChanged("Text");
+            }
+        }
+        public int Repetitions
+        {
+            get { return _repetitions; }
+            set
+            {
+                Set(ref _repetitions, value);
+                this.RaisePropertyChanged("Text");
+            }
+        }
+
+
+        public DateTime Timestamp { get; set; }
         public string Text => $"{this.NumberOfRepetitions} Sets à {this.Repetitions} x {this.Weight}kg";
 
         #endregion

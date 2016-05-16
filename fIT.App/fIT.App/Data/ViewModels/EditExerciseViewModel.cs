@@ -37,7 +37,7 @@ namespace fIT.App.Data.ViewModels
         protected override async Task HandleOkClickedAsync(ViewModelBase viewModel)
         {
             var exerciseModel = viewModel as ExerciseViewModel;
-            if (exerciseModel != null && SelectedExercise != null)
+            if (exerciseModel != null && SelectedExercise != null && exerciseModel.Id.HasValue)
             {
                 var um = await this.Repository.GetUserManagementAsync();
                 await um.AddExerciseToScheduleAsync(exerciseModel.Id.Value, SelectedExercise.Id);

@@ -95,8 +95,9 @@ namespace fIT.App.Repositories
                     SetServerData(session);
                     _isInitialised = true;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Debug.WriteLine($"Error occured on resettings the Server-Session: {e.Message}{Environment.NewLine}{e.StackTrace}");
                     Settings.RemoveUserSettings();
                 }
             }

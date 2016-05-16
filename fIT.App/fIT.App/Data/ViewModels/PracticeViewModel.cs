@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,7 +27,12 @@ namespace fIT.App.Data.ViewModels
         #region METHODS
         protected override async Task OnAddClickedAsync()
         {
-            var vm = new EditPracticeViewModel("Neuer Eintrag");
+            var vm = new EditPracticeViewModel("Neuer Eintrag")
+            {
+                ScheduleId = ScheduleId,
+                ExerciseId = this.Id.Value,
+                Id = -1
+            };
             await this.ViewModelNavigation.PushAsPopUpAsync(vm);
         }
 
@@ -34,24 +40,36 @@ namespace fIT.App.Data.ViewModels
         {
             var entry = this.List.First(x => x.Id == id);
             var vm = AutoMapper.Map<EditPracticeViewModel>(entry);
+            vm.ScheduleId = ScheduleId;
+            vm.ExerciseId = this.Id.Value;
+            vm.Id = id;
             vm.Title = "Eintrag bearbeiten";
             await this.ViewModelNavigation.PushAsPopUpAsync(vm);
         }
 
         protected override async Task OnRemoveClickedAsync(int id)
         {
-            var answer = await this.UserDialogs.ConfirmAsync("Do you really want to delete this entry?");
-
-            if (answer)
+            try
             {
-                this.IsLoading = true;
-                var um = await this.Repository.GetUserManagementAsync();
-                await um.DeletePracticeAsync(id);
-                var delete = this.List.First(x => x.Id == id);
-                this.List.Remove(delete);
-                this.IsLoading = false;
-                this.ShowMessage($"Entry deleted", ToastEvent.Success);
+                var answer = await this.UserDialogs.ConfirmAsync("Do you really want to delete this entry?");
+
+                if (answer)
+                {
+                    this.IsLoading = true;
+                    var um = await this.Repository.GetUserManagementAsync();
+                    await um.DeletePracticeAsync(id);
+                    var delete = this.List.First(x => x.Id == id);
+                    this.List.Remove(delete);
+                    this.IsLoading = false;
+                    this.ShowMessage($"Entry deleted", ToastEvent.Success);
+                }
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error on removing practice entry: {e.Message}{Environment.NewLine}{e.StackTrace}");
+                this.ShowMessage("Unable to delete Entry");
+            }
+            
         }
 
         public override async Task InitAsync()
@@ -59,7 +77,7 @@ namespace fIT.App.Data.ViewModels
             this.IsLoading = true;
             var um = await this.Repository.GetUserManagementAsync();
             var practices = await um.GetPracticesAsync(this.ScheduleId, this.Id.Value);
-            this.List = new ObservableCollection<PracticeListEntryItemViewModel>(practices.Select(x =>
+            this.List = new ObservableCollection<PracticeListEntryItemViewModel>(practices.OrderByDescending(x=>x.Timestamp).Select(x =>
             {
                 var result = this.AutoMapper.Map<PracticeListEntryItemViewModel>(x);
                 result.ViewModelNavigation = this.ViewModelNavigation;

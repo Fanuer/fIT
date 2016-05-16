@@ -9,18 +9,39 @@
       HorizontalOptions="Center"
       VerticalOptions="Center">
     <StackLayout>
+      <Label Text="{Binding Text}" FontSize="Large" TextColor="{Binding Colors.LightGray}" HorizontalTextAlignment="Center"/>
+
       <Label Text="Set" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
-      <StackLayout Orientation="Horizontal">
-        <Entry IsEnabled="False" Text="{Binding NumberOfRepetitions, Mode=TwoWay}"></Entry>
-        <Slider Minimum="{Binding MinNumberOfRepetitions}" Maximum="{Binding MaxNumberOfRepetitions}" Value="{Binding NumberOfRepetitions, Mode=TwoWay}"></Slider>
-      </StackLayout>
+      <!-- MAX muss vor min definiert werden -> Bug in Xamarin -->
+      <Grid x:Name="NumberOfRepetitionsGrid">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        <Label Text="{Binding MinNumberOfRepetitions}" FontSize="Small" TextColor="{Binding Colors.LightGray}" VerticalTextAlignment="Center" Grid.Row="0" Grid.Column="0"/>
+        <Slider Maximum="{Binding MaxNumberOfRepetitions}" Minimum="{Binding MinNumberOfRepetitions}" Value="{Binding NumberOfRepetitions}" BackgroundColor="{Binding Colors.LightGray}"  Grid.Row="0" Grid.Column="1"/>
+        <Label Text="{Binding MaxNumberOfRepetitions}" FontSize="Small" TextColor="{Binding Colors.LightGray}" VerticalTextAlignment="Center"  Grid.Row="0" Grid.Column="2"/>
+      </Grid>
       <Label Text="Wiederholungen" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
-      <StackLayout Orientation="Horizontal">
-        <Entry IsEnabled="False" Text="{Binding Repetitions, Mode=TwoWay}"></Entry>
-        <Slider Minimum="{Binding MinRepetitions}" Maximum="{Binding MaxRepetitions}" Value="{Binding Repetitions, Mode=TwoWay}"></Slider>
-      </StackLayout>
-      <Label Text="Wiederholungen" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
-      <Stepper Minimum="{Binding MinWeight}" Maximum="{Binding MaxWeight}" Increment="{Binding StepSizeWeight}" Value="{Binding Weight, Mode=TwoWay}"></Stepper>
+      <Grid x:Name="RepetitionsGrid">
+        <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="Auto"/>
+      </Grid.ColumnDefinitions>
+        <Label Text="{Binding MinRepetitions}" FontSize="Small" TextColor="{Binding Colors.LightGray}" VerticalTextAlignment="Center"  Grid.Row="0" Grid.Column="0"/>
+        <Slider Maximum="{Binding MaxRepetitions}" Minimum="{Binding MinRepetitions}"  Value="{Binding Repetitions}" BackgroundColor="{Binding Colors.LightGray}" Grid.Row="0" Grid.Column="1"/>
+        <Label Text="{Binding MaxRepetitions}" FontSize="Small" TextColor="{Binding Colors.LightGray}" VerticalTextAlignment="Center" Grid.Row="0" Grid.Column="2"/>
+      </Grid>
+      <Label Text="Gewicht" FontSize="Medium" TextColor="{Binding Colors.LightGray}"/>
+      <Stepper Maximum="{Binding MaxWeight}" Minimum="{Binding MinWeight}" Increment="{Binding StepSizeWeight}" Value="{Binding Weight}" BackgroundColor="{Binding Colors.LightGray}" HorizontalOptions="CenterAndExpand"/>
       <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
         <StackLayout.Padding >
           <Thickness Top="10"/>

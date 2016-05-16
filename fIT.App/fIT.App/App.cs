@@ -96,6 +96,7 @@ namespace fIT.App
                     .ForMember(exercise => exercise.Title, mapConfig => mapConfig.ResolveUsing(m => m.Name));
                     
                     cfg.CreateMap<PracticeModel, PracticeListEntryItemViewModel>();
+                    cfg.CreateMap<EditPracticeViewModel, PracticeModel>();
                     cfg.CreateMap<PracticeListEntryItemViewModel, EditPracticeViewModel>();
                     cfg.CreateMap<EditPracticeViewModel, PracticeListEntryItemViewModel>();
                 });

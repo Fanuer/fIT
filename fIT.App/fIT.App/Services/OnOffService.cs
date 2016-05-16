@@ -71,7 +71,7 @@ namespace fIT.App.Services
                             this._currentStatus = status;
                         }
                     }
-                    Debug.WriteLine("Connection checked");
+                    Debug.WriteLine($"Connection checked. Online: {this._currentStatus}");
                     await Task.Delay(this.Interval);
                 }
                 catch (Exception e)

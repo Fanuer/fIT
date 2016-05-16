@@ -22,9 +22,8 @@ namespace fIT.App.Data.ViewModels.Abstract
 
         protected EditViewModel(string title) : base(title)
         {
-            this.OnCancelClickCommand = new Command(async () => await this.ViewModelNavigation.PopAsPopUpAsync());
+            this.OnCancelClickCommand = new Command(async () =>await this.ViewModelNavigation.PopAsPopUpAsync());
             this.OnOkClickCommand = new Command(async () => await OnOkClickedHandlerAsync());
-
         }
         #endregion
 
